@@ -13,7 +13,6 @@
 			".next/**",
 			"node_modules/**",
 			"*.config.*",
-			"*.json",
 			"*.d.*",
 			"*.css"
 		]
