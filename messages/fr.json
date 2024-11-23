@@ -1,4 +1,12 @@
 {
+  "navbar": {
+    "themeToggle": {
+      "toggle": "Changer thème",
+      "dark": "Sombre",
+      "light": "Clair",
+      "system": "Système"
+    }
+  },
 	"dashbaord": {
 		"links": "Liens"
 	}
