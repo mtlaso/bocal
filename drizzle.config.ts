@@ -1,4 +1,3 @@
-import "@/db/envConfig"
 import { defineConfig } from 'drizzle-kit';
 
 console.log("process :", process.env)
