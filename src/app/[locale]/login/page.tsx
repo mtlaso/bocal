@@ -1,12 +1,11 @@
-import { NavBar } from "@/components/nav-bar";
+import { BocalLogo } from "../ui/bocal-logo";
+import { LoginForm } from "../ui/login/login-form";
 
 export default function Page() {
 	return (
-		<main>
-			<NavBar />
-			<p className="text-emerald-300 dark:text-red-400">
-				sdasiojdoiasjdioas form
-			</p>
+		<main className="min-h-screen flex flex-col items-center justify-center">
+			<BocalLogo className="text-4xl" />
+			<LoginForm />
 		</main>
 	);
 }

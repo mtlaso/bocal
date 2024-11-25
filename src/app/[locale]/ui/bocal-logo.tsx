@@ -1,6 +1,7 @@
 import { lusitana } from "./fonts";
 
-export function BocalLogo() {
-
-	return <p className={`${lusitana.className} font-semibold`}>Bocal</p>;
+export function BocalLogo({ className }: { className?: string }) {
+	return (
+		<p className={`${className} ${lusitana.className} font-extrabold`}>Bocal</p>
+	);
 }

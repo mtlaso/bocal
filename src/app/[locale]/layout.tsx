@@ -1,4 +1,5 @@
 import "@/app/[locale]/ui/globals.css";
+import { Toaster } from "@/components/ui/sonner";
 import ThemeProvider from "@/components/theme-provider";
 import { inter } from "@/app/[locale]/ui/fonts";
 import type { Metadata } from "next";
@@ -32,7 +33,7 @@ export default async function RootLayout({
 	const messages = await getMessages();
 
 	return (
-		<html lang={locale}>
+		<html lang={locale} suppressHydrationWarning>
 			<body className={`${inter.className} antialiased`}>
 				<NextIntlClientProvider messages={messages}>
 					<ThemeProvider
@@ -42,6 +43,7 @@ export default async function RootLayout({
 						disableTransitionOnChange={false}
 					>
 						{children}
+						<Toaster />
 					</ThemeProvider>
 				</NextIntlClientProvider>
 			</body>
