@@ -1,12 +1,12 @@
 import "@/app/[locale]/ui/globals.css";
-import { Toaster } from "@/components/ui/sonner";
-import ThemeProvider from "@/components/theme-provider";
 import { inter } from "@/app/[locale]/ui/fonts";
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import ThemeProvider from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 import { routing } from "@/i18n/routing";
-import { getMessages } from "next-intl/server";
+import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
 	title: {
