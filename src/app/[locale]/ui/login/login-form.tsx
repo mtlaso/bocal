@@ -8,13 +8,13 @@ import { authenticate } from "../../lib/actions";
 import { lusitana } from "../fonts";
 import { SPACING } from "../spacing";
 
-export function LoginForm() {
+export function LoginForm(): React.JSX.Element {
 	const t = useTranslations("login");
 
 	const handleProviderSignIn = async (
 		e: React.MouseEvent,
 		provider: string,
-	) => {
+	): Promise<void> => {
 		try {
 			e.preventDefault();
 			const res = await authenticate(provider);
@@ -40,7 +40,7 @@ export function LoginForm() {
 			<div className="flex flex-col gap-2">
 				<Button
 					className="text-white bg-[#4285F4]"
-					onClick={(e) => handleProviderSignIn(e, "google")}
+					onClick={(e): Promise<void> => handleProviderSignIn(e, "google")}
 				>
 					<FaGoogle className="text-white" />
 					{t("google")}
@@ -48,7 +48,7 @@ export function LoginForm() {
 
 				<Button
 					className="text-white bg-[#24292e] dark:bg-[#24292e]"
-					onClick={(e) => handleProviderSignIn(e, "github")}
+					onClick={(e): Promise<void> => handleProviderSignIn(e, "github")}
 				>
 					<FaGithub className="text-white" />
 					{t("github")}

@@ -1,42 +1,43 @@
 {
-  "navbar": {
-    "themeToggle": {
-      "toggle": "Toggle theme",
-      "dark": "Dark",
-      "light": "Light",
-      "system": "System"
-    }
-  },
-  "login": {
-    "title": "Log in to Bocal to continue.",
-    "google": "Continue with Google",
-    "github": "Continue with GitHub",
-    "error": {
-      "title": "Authentication Error",
-      "CredentialsSignin": "Invalid credentials",
-      "OAuthSignInError": "Error connecting to authentication provider",
-      "OAuthCallbackError": "Error during authentication callback",
-      "InvalidCallbackUrl": "Invalid callback URL",
-      "CallbackRouteError": "Error processing callback route",
-      "default": "Something went wrong with authentication",
-      "unexpected": {
-        "title": "Unexpected Error",
-        "description": "An unexpected error occurred. Please try again later."
-      }
-    }
-  },
-  "dashboard": {
-    "links": "Links",
-    "add": "Add",
-    "addLinkForm": {
-      "title": "Ajouter un lien",
-      "link": "Lien",
-      "add": "Ajouter"
-    },
-    "errors": {
-      "linkFieldInvalid": "Link invalid.",
-      "missingFields": "Missing fields.",
-      "unexpectedError": "An error happend. Please try again."
-    }
-  }
+	"navbar": {
+		"themeToggle": {
+			"toggle": "Toggle theme",
+			"dark": "Dark",
+			"light": "Light",
+			"system": "System"
+		}
+	},
+	"login": {
+		"title": "Log in to Bocal to continue.",
+		"google": "Continue with Google",
+		"github": "Continue with GitHub",
+		"error": {
+			"title": "Authentication Error",
+			"CredentialsSignin": "Invalid credentials",
+			"OAuthSignInError": "Error connecting to authentication provider",
+			"OAuthCallbackError": "Error during authentication callback",
+			"InvalidCallbackUrl": "Invalid callback URL",
+			"CallbackRouteError": "Error processing callback route",
+			"default": "Something went wrong with authentication",
+			"unexpected": {
+				"title": "Unexpected Error",
+				"description": "An unexpected error occurred. Please try again later."
+			}
+		}
+	},
+	"dashboard": {
+		"links": "Links",
+		"add": "Add",
+		"addLinkForm": {
+			"title": "Add a link",
+			"link": "Link",
+			"add": "Add"
+		},
+		"success": "Link added",
+		"errors": {
+			"linkFieldInvalid": "Link invalid.",
+			"missingFields": "Missing fields.",
+			"unexpectedError": "An error happend. Please try again."
+		}
+	}
 }

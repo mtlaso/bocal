@@ -28,6 +28,9 @@
 		"enabled": true,
 		"rules": {
 			"recommended": true,
+			"nursery": {
+				"useExplicitType": "warn"
+			},
 			"correctness": {
 				"noUnusedVariables": { "level": "warn", "fix": "safe" },
 				"noUnusedImports": { "level": "warn", "fix": "safe" }
