@@ -3,6 +3,7 @@ import NextAuth, { type NextAuthConfig, type DefaultSession } from "next-auth";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 import { db } from "./db/db";
+import { accounts, sessions, users, verificationTokens } from "./db/schema";
 
 declare module "next-auth" {
   /**
@@ -21,7 +22,17 @@ const config = {
     signIn: "/login",
     newUser: "/dashboard",
   },
-  adapter: DrizzleAdapter(db),
+  adapter: DrizzleAdapter(db, {
+    usersTable: users,
+    accountsTable: accounts,
+    sessionsTable: sessions,
+     verificationTokensTable: verificationTokens,
+
+
+
+
+
+  }),
   callbacks: {
     session({ session }) {
       return {

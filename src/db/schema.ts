@@ -10,29 +10,31 @@ import {
 import type { AdapterAccountType } from "next-auth/adapters";
 
 export const users = pgTable("users", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  name: text(),
-  email: text().unique(),
-  emailVerified: timestamp({ mode: "date" }),
-  image: text(),
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  name: text("name"),
+  email: text("email").unique(),
+  emailVerified: timestamp("emailVerified", { mode: "date" }),
+  image: text("image"),
 });
 
 export const accounts = pgTable(
   "accounts",
   {
-    userId: integer()
+    userId: text("userId")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
-    type: text().$type<AdapterAccountType>().notNull(),
-    provider: text().notNull(),
-    providerAccountId: text().notNull(),
-    refresh_token: text(),
-    access_token: text(),
-    expires_at: integer(),
-    token_type: text(),
-    scope: text(),
-    id_token: text(),
-    session_state: text(),
+    type: text("type").$type<AdapterAccountType>().notNull(),
+    provider: text("provider").notNull(),
+    providerAccountId: text("providerAccountId").notNull(),
+    refresh_token: text("refresh_token"),
+    access_token: text("access_token"),
+    expires_at: integer("expires_at"),
+    token_type: text("token_type"),
+    scope: text("scope"),
+    id_token: text("id_token"),
+    session_state: text("session_state"),
   },
   (table) => [
     primaryKey({ columns: [table.provider, table.providerAccountId] }),
@@ -40,36 +42,40 @@ export const accounts = pgTable(
 );
 
 export const sessions = pgTable("sessions", {
-  sessionToken: text().primaryKey(),
-  userId: integer()
+  sessionToken: text("sessionToken").primaryKey(),
+  userId: text("userId")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
-  expires: timestamp({ mode: "date" }).notNull(),
+  expires: timestamp("expires", { mode: "date" }).notNull(),
 });
 
 export const verificationTokens = pgTable(
   "verification_tokens",
   {
-    identifier: text().notNull(),
-    token: text().notNull(),
-    expires: timestamp({ mode: "date" }).notNull(),
+    identifier: text("identifier").notNull(),
+    token: text("token").notNull(),
+    expires: timestamp("expires", { mode: "date" }).notNull(),
   },
-  (table) => [primaryKey({ columns: [table.identifier, table.token] })],
+  (table) => [
+    primaryKey({
+      columns: [table.identifier, table.token],
+    }),
+  ],
 );
 
 export const authenticators = pgTable(
   "authenticators",
   {
-    credentialID: text().notNull().unique(),
-    userId: integer()
+    credentialID: text("credentialID").notNull().unique(),
+    userId: text("userId")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
-    providerAccountId: text().notNull(),
-    credentialPublicKey: text().notNull(),
-    counter: integer().notNull(),
-    credentialDeviceType: text().notNull(),
-    credentialBackedUp: boolean().notNull(),
-    transports: text(),
+    providerAccountId: text("providerAccountId").notNull(),
+    credentialPublicKey: text("credentialPublicKey").notNull(),
+    counter: integer("counter").notNull(),
+    credentialDeviceType: text("credentialDeviceType").notNull(),
+    credentialBackedUp: boolean("credentialBackedUp").notNull(),
+    transports: text("transports"),
   },
   (table) => [
     primaryKey({
