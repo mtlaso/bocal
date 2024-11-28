@@ -1,86 +1,81 @@
+import type { InferSelectModel } from "drizzle-orm";
 import {
-	boolean,
-	integer,
-	pgTable,
-	primaryKey,
-	text,
-	timestamp,
+  boolean,
+  integer,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 
-export const users = pgTable("user", {
-	id: text("id")
-		.primaryKey()
-		.$defaultFn(() => crypto.randomUUID()),
-	name: text("name"),
-	email: text("email").unique(),
-	emailVerified: timestamp("emailVerified", { mode: "date" }),
-	image: text("image"),
+export const users = pgTable("users", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  name: text(),
+  email: text().unique(),
+  emailVerified: timestamp({ mode: "date" }),
+  image: text(),
 });
 
 export const accounts = pgTable(
-	"account",
-	{
-		userId: text("userId")
-			.notNull()
-			.references(() => users.id, { onDelete: "cascade" }),
-		type: text("type").$type<AdapterAccountType>().notNull(),
-		provider: text("provider").notNull(),
-		providerAccountId: text("providerAccountId").notNull(),
-		refresh_token: text("refresh_token"),
-		access_token: text("access_token"),
-		expires_at: integer("expires_at"),
-		token_type: text("token_type"),
-		scope: text("scope"),
-		id_token: text("id_token"),
-		session_state: text("session_state"),
-	},
-	(account) => ({
-		compoundKey: primaryKey({
-			columns: [account.provider, account.providerAccountId],
-		}),
-	}),
+  "accounts",
+  {
+    userId: integer()
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    type: text().$type<AdapterAccountType>().notNull(),
+    provider: text().notNull(),
+    providerAccountId: text().notNull(),
+    refresh_token: text(),
+    access_token: text(),
+    expires_at: integer(),
+    token_type: text(),
+    scope: text(),
+    id_token: text(),
+    session_state: text(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.provider, table.providerAccountId] }),
+  ],
 );
 
-export const sessions = pgTable("session", {
-	sessionToken: text("sessionToken").primaryKey(),
-	userId: text("userId")
-		.notNull()
-		.references(() => users.id, { onDelete: "cascade" }),
-	expires: timestamp("expires", { mode: "date" }).notNull(),
+export const sessions = pgTable("sessions", {
+  sessionToken: text().primaryKey(),
+  userId: integer()
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  expires: timestamp({ mode: "date" }).notNull(),
 });
 
 export const verificationTokens = pgTable(
-	"verificationToken",
-	{
-		identifier: text("identifier").notNull(),
-		token: text("token").notNull(),
-		expires: timestamp("expires", { mode: "date" }).notNull(),
-	},
-	(verificationToken) => ({
-		compositePk: primaryKey({
-			columns: [verificationToken.identifier, verificationToken.token],
-		}),
-	}),
+  "verification_tokens",
+  {
+    identifier: text().notNull(),
+    token: text().notNull(),
+    expires: timestamp({ mode: "date" }).notNull(),
+  },
+  (table) => [primaryKey({ columns: [table.identifier, table.token] })],
 );
 
 export const authenticators = pgTable(
-	"authenticator",
-	{
-		credentialID: text("credentialID").notNull().unique(),
-		userId: text("userId")
-			.notNull()
-			.references(() => users.id, { onDelete: "cascade" }),
-		providerAccountId: text("providerAccountId").notNull(),
-		credentialPublicKey: text("credentialPublicKey").notNull(),
-		counter: integer("counter").notNull(),
-		credentialDeviceType: text("credentialDeviceType").notNull(),
-		credentialBackedUp: boolean("credentialBackedUp").notNull(),
-		transports: text("transports"),
-	},
-	(authenticator) => ({
-		compositePK: primaryKey({
-			columns: [authenticator.userId, authenticator.credentialID],
-		}),
-	}),
+  "authenticators",
+  {
+    credentialID: text().notNull().unique(),
+    userId: integer()
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    providerAccountId: text().notNull(),
+    credentialPublicKey: text().notNull(),
+    counter: integer().notNull(),
+    credentialDeviceType: text().notNull(),
+    credentialBackedUp: boolean().notNull(),
+    transports: text(),
+  },
+  (table) => [
+    primaryKey({
+      columns: [table.userId, table.credentialID],
+    }),
+  ],
 );
+
+export type User = InferSelectModel<typeof users>;
