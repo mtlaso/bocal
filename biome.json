@@ -27,7 +27,11 @@
 	"linter": {
 		"enabled": true,
 		"rules": {
-			"recommended": true
+			"recommended": true,
+			"correctness": {
+				"noUnusedVariables": { "level": "warn", "fix": "safe" },
+				"noUnusedImports": { "level": "warn", "fix": "safe" }
+			}
 		}
 	},
 	"javascript": {

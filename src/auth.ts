@@ -1,15 +1,38 @@
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import NextAuth, { type NextAuthConfig } from "next-auth";
+import NextAuth, { type NextAuthConfig, type DefaultSession } from "next-auth";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 import { db } from "./db/db";
 
+declare module "next-auth" {
+  /**
+   * Returned by `auth`, `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
+   */
+  interface Session {
+    user: {
+      id: string;
+    } & DefaultSession["user"];
+  }
+}
+
 const config = {
-	providers: [GitHub, Google],
-	pages: {
-		signIn: "/login",
-	},
-	adapter: DrizzleAdapter(db),
+  providers: [GitHub, Google],
+  pages: {
+    signIn: "/login",
+    newUser: "/dashboard",
+  },
+  adapter: DrizzleAdapter(db),
+  callbacks: {
+    session({ session }) {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: session.user.id,
+        },
+      };
+    },
+  },
 } satisfies NextAuthConfig;
 
 export const { handlers, signIn, signOut, auth } = NextAuth(config);

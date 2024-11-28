@@ -1,32 +1,42 @@
 {
-	"navbar": {
-		"themeToggle": {
-			"toggle": "Changer thème",
-			"dark": "Sombre",
-			"light": "Clair",
-			"system": "Système"
-		}
-	},
-	"login": {
-		"title": "Connectez-vous à Bocal pour continuer.",
-		"google": "Continuer avec Google",
-		"github": "Continuer avec GitHub",
-		"error": {
-			"title": "Erreur d'authentification",
-			"CredentialsSignin": "Identifiants invalides",
-			"OAuthSignInError": "Erreur lors de la connexion avec le fournisseur d'authentification",
-			"OAuthCallbackError": "Erreur lors du retour d'authentification",
-			"InvalidCallbackUrl": "URL de retour invalide",
-			"CallbackRouteError": "Erreur lors du traitement de la route de retour",
-			"default": "Une erreur s'est produite lors de l'authentification",
-			"unexpected": {
-				"title": "Erreur inattendue",
-				"description": "Une erreur inattendue s'est produite. Veuillez réessayer plus tard."
-			}
-		}
-	},
-	"dashboard": {
-		"links": "Liens",
-		"add": "Ajouter"
-	}
+  "navbar": {
+    "themeToggle": {
+      "toggle": "Changer thème",
+      "dark": "Sombre",
+      "light": "Clair",
+      "system": "Système"
+    }
+  },
+  "login": {
+    "title": "Connectez-vous à Bocal pour continuer.",
+    "google": "Continuer avec Google",
+    "github": "Continuer avec GitHub",
+    "error": {
+      "title": "Erreur d'authentification",
+      "CredentialsSignin": "Identifiants invalides",
+      "OAuthSignInError": "Erreur lors de la connexion avec le fournisseur d'authentification",
+      "OAuthCallbackError": "Erreur lors du retour d'authentification",
+      "InvalidCallbackUrl": "URL de retour invalide",
+      "CallbackRouteError": "Erreur lors du traitement de la route de retour",
+      "default": "Une erreur s'est produite lors de l'authentification",
+      "unexpected": {
+        "title": "Erreur inattendue",
+        "description": "Une erreur inattendue s'est produite. Veuillez réessayer plus tard."
+      }
+    }
+  },
+  "dashboard": {
+    "links": "Liens",
+    "add": "Ajouter",
+    "addLinkForm": {
+      "title": "Ajouter un lien",
+      "link": "Lien",
+      "add": "Ajouter"
+    },
+    "errors": {
+      "linkFieldInvalid": "Lien invalide.",
+      "missingFields": "Champ(s) manquant(s).",
+      "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer."
+    }
+  }
 }

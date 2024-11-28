@@ -1,24 +1,23 @@
-import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { useTranslations } from "next-intl";
-import { TbLinkPlus } from "react-icons/tb";
+import { AddLinkForm } from "../ui/dashboard/add-link-form";
 import { lusitana } from "../ui/fonts";
 
 export default function Page() {
-	const t = useTranslations("dashboard");
-	return (
-		<main className="min-h-screen max-w-2xl mx-auto px-4">
-			<section className="flex gap-2">
-				<h1
-					className={`${lusitana.className} font-semibold tracking-tight text-3xl`}
-				>
-					{t("links")}
-				</h1>
-				<Button variant="outline" size="icon">
-					<TbLinkPlus />
-				</Button>
-			</section>
+  const t = useTranslations("dashboard");
+  return (
+    <main className="min-h-screen max-w-2xl mx-auto px-4">
+      <section className="flex gap-2">
+        <h1
+          className={`${lusitana.className} font-semibold tracking-tight text-3xl`}
+        >
+          {t("links")}
+        </h1>
+        <AddLinkForm />
+      </section>
 
-			<section>links...</section>
-		</main>
-	);
+      <Separator className="my-4" />
+      <section>links...</section>
+    </main>
+  );
 }
