@@ -36,6 +36,7 @@ const config = {
 		authenticatorsTable: authenticators,
 	}),
 	callbacks: {
+		// biome-ignore lint/nursery/useExplicitType: auth.ts
 		session({ session }) {
 			return {
 				...session,

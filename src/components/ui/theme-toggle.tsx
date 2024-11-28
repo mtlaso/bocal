@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useTranslations } from "next-intl";
 
-export function ThemeToggle() {
+export function ThemeToggle(): React.JSX.Element {
 	const { setTheme } = useTheme();
 	const t = useTranslations("navbar.themeToggle");
 
@@ -26,13 +26,13 @@ export function ThemeToggle() {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
-				<DropdownMenuItem onClick={() => setTheme("light")}>
+				<DropdownMenuItem onClick={(): void => setTheme("light")}>
 					{t("light")}
 				</DropdownMenuItem>
-				<DropdownMenuItem onClick={() => setTheme("dark")}>
+				<DropdownMenuItem onClick={(): void => setTheme("dark")}>
 					{t("dark")}
 				</DropdownMenuItem>
-				<DropdownMenuItem onClick={() => setTheme("system")}>
+				<DropdownMenuItem onClick={(): void => setTheme("system")}>
 					{t("system")}
 				</DropdownMenuItem>
 			</DropdownMenuContent>
