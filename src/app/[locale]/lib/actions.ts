@@ -25,17 +25,17 @@ export async function authenticate(
 		if (err instanceof AuthError) {
 			switch (err.type) {
 				case "CredentialsSignin":
-					return "error.CredentialsSignin";
+					return "errors.CredentialsSignin";
 				case "OAuthSignInError":
-					return "error.OAuthSignInError";
+					return "errors.OAuthSignInError";
 				case "OAuthCallbackError":
-					return "error.OAuthCallbackError";
+					return "errors.OAuthCallbackError";
 				case "InvalidCallbackUrl":
-					return "error.InvalidCallbackUrl";
+					return "errors.InvalidCallbackUrl";
 				case "CallbackRouteError":
-					return "error.CallbackRouteError";
+					return "errors.CallbackRouteError";
 				default:
-					return "error.default";
+					return "errors.default";
 			}
 		}
 
@@ -62,7 +62,7 @@ export async function addLink(
 	try {
 		const user = await auth();
 		if (!user) {
-			throw new Error("not logged in!");
+			throw new Error("errors.notSignedIn");
 		}
 
 		await db
@@ -70,7 +70,7 @@ export async function addLink(
 			.values({ url: validatedFields.data.url, userId: user.user.id });
 	} catch (_err) {
 		return {
-			message: "errors.unexpectedError",
+			message: "errors.unexpected",
 			errors: undefined,
 		};
 	}

@@ -9,51 +9,50 @@ import { lusitana } from "../fonts";
 import { SPACING } from "../spacing";
 
 export function LoginForm(): React.JSX.Element {
-  const t = useTranslations("login");
+	const t = useTranslations("login");
 
-  const handleProviderSignIn = async (
-    e: React.MouseEvent,
-    provider: string,
-  ): Promise<void> => {
-    try {
-      e.preventDefault();
-      const res = await authenticate(provider);
+	const handleProviderSignIn = async (
+		e: React.MouseEvent,
+		provider: string,
+	): Promise<void> => {
+		try {
+			e.preventDefault();
+			const res = await authenticate(provider);
 
-      if (typeof res === "string") {
-        toast.error(t("error.title"), {
-          description: t(res),
-        });
-        return;
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error(t("error.unexpected.title"), {
-        description: t("error.unexpected.description"),
-      });
-    }
-  };
+			if (typeof res === "string") {
+				toast.error(t("errors.title"), {
+					description: t(res),
+				});
+				return;
+			}
+		} catch (_err) {
+			toast.error(t("errors.unexpected.title"), {
+				description: t("errors.unexpected.description"),
+			});
+		}
+	};
 
-  return (
-    <form className={`${SPACING.MD} `}>
-      <h1 className={`${lusitana.className} text-center`}>{t("title")}</h1>
+	return (
+		<form className={`${SPACING.MD} `}>
+			<h1 className={`${lusitana.className} text-center`}>{t("title")}</h1>
 
-      <div className="flex flex-col gap-2">
-        <Button
-          className="text-white bg-[#4285F4]"
-          onClick={(e): Promise<void> => handleProviderSignIn(e, "google")}
-        >
-          <FaGoogle className="text-white" />
-          {t("google")}
-        </Button>
+			<div className="flex flex-col gap-2">
+				<Button
+					className="text-white bg-[#4285F4]"
+					onClick={(e): Promise<void> => handleProviderSignIn(e, "google")}
+				>
+					<FaGoogle className="text-white" />
+					{t("google")}
+				</Button>
 
-        <Button
-          className="text-white bg-[#24292e] dark:bg-[#24292e]"
-          onClick={(e): Promise<void> => handleProviderSignIn(e, "github")}
-        >
-          <FaGithub className="text-white" />
-          {t("github")}
-        </Button>
-      </div>
-    </form>
-  );
+				<Button
+					className="text-white bg-[#24292e] dark:bg-[#24292e]"
+					onClick={(e): Promise<void> => handleProviderSignIn(e, "github")}
+				>
+					<FaGithub className="text-white" />
+					{t("github")}
+				</Button>
+			</div>
+		</form>
+	);
 }

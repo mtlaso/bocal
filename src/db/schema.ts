@@ -96,7 +96,7 @@ export const authenticators = pgTable(
 export const insertLinksSchema = createInsertSchema(links, {
 	url: (schema): Zod.ZodString =>
 		schema.url.url({
-			message: "errors.linkFieldInvalid",
+			message: "errors.urlFieldInvalid",
 		}),
 }).pick({ url: true });
 

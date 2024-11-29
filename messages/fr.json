@@ -1,4 +1,8 @@
 {
+	"errors": {
+		"notSignedIn": "Non connecté",
+		"unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer."
+	},
 	"navbar": {
 		"themeToggle": {
 			"toggle": "Changer thème",
@@ -11,7 +15,7 @@
 		"title": "Connectez-vous à Bocal pour continuer.",
 		"google": "Continuer avec Google",
 		"github": "Continuer avec GitHub",
-		"error": {
+		"errors": {
 			"title": "Erreur d'authentification",
 			"CredentialsSignin": "Identifiants invalides",
 			"OAuthSignInError": "Erreur lors de la connexion avec le fournisseur d'authentification",
@@ -35,9 +39,9 @@
 		},
 		"success": "Link added",
 		"errors": {
-			"linkFieldInvalid": "Lien invalide.",
+			"urlFieldInvalid": "URL invalide.",
 			"missingFields": "Champ(s) manquant(s).",
-			"unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer."
+			"unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer."
 		}
 	}
 }

@@ -1,4 +1,8 @@
 {
+	"errors": {
+		"notSignedIn": "Not signed in",
+		"unexpected": "An error happend. Please try again."
+	},
 	"navbar": {
 		"themeToggle": {
 			"toggle": "Toggle theme",
@@ -11,7 +15,7 @@
 		"title": "Log in to Bocal to continue.",
 		"google": "Continue with Google",
 		"github": "Continue with GitHub",
-		"error": {
+		"errors": {
 			"title": "Authentication Error",
 			"CredentialsSignin": "Invalid credentials",
 			"OAuthSignInError": "Error connecting to authentication provider",
@@ -35,9 +39,9 @@
 		},
 		"success": "Link added",
 		"errors": {
-			"linkFieldInvalid": "Link invalid.",
+			"urlFieldInvalid": "URL invalid.",
 			"missingFields": "Missing fields.",
-			"unexpectedError": "An error happend. Please try again."
+			"unexpected": "An error happend. Please try again."
 		}
 	}
 }
