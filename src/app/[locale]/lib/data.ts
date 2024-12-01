@@ -18,9 +18,6 @@ export async function getLinks(): Promise<
 			throw new Error("errors.notSignedIn");
 		}
 
-		// throw "err";
-		delay(3000);
-
 		return await db
 			.select({
 				id: links.id,
@@ -34,7 +31,3 @@ export async function getLinks(): Promise<
 		throw new Error("errors.unexpected");
 	}
 }
-
-const delay = (durationMs: number) => {
-	return new Promise((resolve) => setTimeout(resolve, durationMs));
-};
