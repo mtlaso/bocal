@@ -4,11 +4,12 @@ import { Suspense } from "react";
 import { AddLinkForm } from "../ui/dashboard/add-link-form";
 import { Links } from "../ui/dashboard/links";
 import { lusitana } from "../ui/fonts";
+import { LinksSkeleton } from "../ui/skeletons";
 
 export default function Page(): React.JSX.Element {
 	const t = useTranslations("dashboard");
 	return (
-		<main className="min-h-screen max-w-2xl mx-auto px-4">
+		<>
 			<section className="flex gap-2">
 				<h1
 					className={`${lusitana.className} font-semibold tracking-tight text-3xl`}
@@ -19,9 +20,12 @@ export default function Page(): React.JSX.Element {
 			</section>
 
 			<Separator className="my-4" />
-			<Suspense fallback={<div>loading...</div>}>
-				<Links />
-			</Suspense>
-		</main>
+
+			<section>
+				<Suspense fallback={<LinksSkeleton />}>
+					<Links />
+				</Suspense>
+			</section>
+		</>
 	);
 }

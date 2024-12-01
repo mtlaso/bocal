@@ -1,7 +1,8 @@
 {
 	"errors": {
 		"notSignedIn": "Non connecté",
-		"unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer."
+		"unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+		"retry": "Réessayer"
 	},
 	"navbar": {
 		"themeToggle": {
@@ -37,6 +38,7 @@
 			"link": "Lien",
 			"add": "Ajouter"
 		},
+		"ogImageAlt": "Image représentant le contenu",
 		"success": "Link added",
 		"errors": {
 			"urlFieldInvalid": "URL invalide.",

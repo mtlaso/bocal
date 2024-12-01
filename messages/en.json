@@ -1,7 +1,8 @@
 {
 	"errors": {
 		"notSignedIn": "Not signed in",
-		"unexpected": "An error happend. Please try again."
+		"unexpected": "An error happend. Please try again.",
+		"retiry": "Retry"
 	},
 	"navbar": {
 		"themeToggle": {
@@ -32,6 +33,7 @@
 	"dashboard": {
 		"links": "Links",
 		"add": "Add",
+		"ogImageAlt": "Image representing the content",
 		"addLinkForm": {
 			"title": "Add a link",
 			"link": "Link",

@@ -32,8 +32,14 @@
 				"useExplicitType": "warn"
 			},
 			"correctness": {
-				"noUnusedVariables": { "level": "warn", "fix": "safe" },
-				"noUnusedImports": { "level": "warn", "fix": "safe" }
+				"noUnusedVariables": {
+					"level": "warn",
+					"fix": "safe"
+				},
+				"noUnusedImports": {
+					"level": "warn",
+					"fix": "safe"
+				}
 			},
 			"suspicious": {
 				"noConsole": "warn"
