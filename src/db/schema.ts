@@ -7,7 +7,7 @@ import {
 	text,
 	timestamp,
 } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import type { AdapterAccountType } from "next-auth/adapters";
 
 export const users = pgTable("users", {
@@ -101,5 +101,12 @@ export const insertLinksSchema = createInsertSchema(links, {
 			message: "errors.urlFieldInvalid",
 		}),
 }).pick({ url: true });
+
+export const deleteLinkSchema = createSelectSchema(links, {
+	id: (schema): Zod.ZodNumber =>
+		schema.id.nonnegative({
+			message: "errors.idFieldInvalid",
+		}),
+}).pick({ id: true });
 
 export type User = InferSelectModel<typeof users>;

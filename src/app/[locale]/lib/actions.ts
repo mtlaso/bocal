@@ -2,7 +2,8 @@
 
 import { auth, signIn } from "@/auth";
 import { db } from "@/db/db";
-import { insertLinksSchema, links } from "@/db/schema";
+import { deleteLinkSchema, insertLinksSchema, links } from "@/db/schema";
+import { and, eq } from "drizzle-orm";
 import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
 import ogs from "open-graph-scraper";
@@ -76,9 +77,6 @@ export async function addLink(
 		const ogTitle = !error ? result.ogTitle : null;
 		const ogImageURL = !error ? result.ogImage?.at(0)?.url : null;
 
-		console.log(ogTitle);
-		console.log(ogImageURL);
-
 		await db.insert(links).values({
 			url: validatedFields.data.url,
 			userId: user.user.id,
@@ -86,10 +84,59 @@ export async function addLink(
 			ogImageURL: ogImageURL,
 		});
 	} catch (_err) {
-		console.log(_err);
 		return {
 			message: "errors.unexpected",
 			errors: undefined,
+		};
+	}
+
+	revalidatePath("/dashboard");
+	return {};
+}
+
+type DeleteLinkState = {
+	errors?: {
+		id?: string[];
+	};
+
+	data?: {
+		id?: number;
+	};
+
+	message?: string | null;
+};
+
+export async function deleteLink(id: string): Promise<DeleteLinkState> {
+	const validatedFields = deleteLinkSchema.safeParse({
+		id: Number.parseInt(id),
+	});
+
+	if (!validatedFields.success) {
+		return {
+			errors: validatedFields.error.flatten().fieldErrors,
+			data: { id: Number.parseInt(id) },
+			message: "errors.missingFields",
+		};
+	}
+
+	try {
+		const user = await auth();
+		if (!user) {
+			throw new Error("errors.notSignedIn");
+		}
+
+		await db
+			.delete(links)
+			.where(
+				and(
+					eq(links.id, validatedFields.data.id),
+					eq(links.userId, user.user.id),
+				),
+			)
+			.execute();
+	} catch (_err) {
+		return {
+			message: "errors.unexpected",
 		};
 	}
 
