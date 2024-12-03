@@ -8,15 +8,6 @@ import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
 import { scrapePage } from "./scrape";
 
-export type AddLinkState = {
-	errors?: {
-		url?: string[];
-	};
-	data?: {
-		url?: string;
-	};
-	message?: string | null;
-};
 
 export async function authenticate(
 	provider: string,
@@ -44,6 +35,17 @@ export async function authenticate(
 		throw err;
 	}
 }
+
+
+export type AddLinkState = {
+	errors?: {
+		url?: string[];
+	};
+	data?: {
+		url?: string;
+	};
+	message?: string | null;
+};
 
 export async function addLink(
 	_currState: AddLinkState,
