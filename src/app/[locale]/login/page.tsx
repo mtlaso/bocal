@@ -1,5 +1,5 @@
-import { BocalLogo } from "../ui/bocal-logo";
 import { LoginForm } from "../ui/auth/login-form";
+import { BocalLogo } from "../ui/bocal-logo";
 
 export default function Page(): React.JSX.Element {
 	return (
