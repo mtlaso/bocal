@@ -2,7 +2,7 @@
 	"errors": {
 		"notSignedIn": "Not signed in",
 		"unexpected": "An error happend. Please try again.",
-		"retiry": "Retry"
+		"retry": "Retry"
 	},
 	"navbar": {
 		"themeToggle": {
