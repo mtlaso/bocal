@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { db } from "@/db/db";
 import { links } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import "server-only";
 
 export async function getLinks(): Promise<
@@ -26,7 +26,7 @@ export async function getLinks(): Promise<
 				ogImageURL: links.ogImageURL,
 			})
 			.from(links)
-			.where(eq(links.userId, user.user.id));
+			.where(and(eq(links.userId, user.user.id), eq(links.isArchived, false)));
 	} catch (_err) {
 		throw new Error("errors.unexpected");
 	}
