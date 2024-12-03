@@ -1,7 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import { useTranslations } from "next-intl";
 import { Suspense } from "react";
-import { LogoutForm } from "../ui/auth/logout-form";
 import { AddLinkForm } from "../ui/dashboard/add-link-form";
 import { Links } from "../ui/dashboard/links";
 import { lusitana } from "../ui/fonts";
@@ -20,7 +19,6 @@ export default function Page(): React.JSX.Element {
 					</h1>
 					<AddLinkForm />
 				</div>
-				<LogoutForm />
 			</section>
 
 			<Separator className="my-4" />

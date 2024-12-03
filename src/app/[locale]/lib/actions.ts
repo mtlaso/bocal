@@ -1,6 +1,6 @@
 "use server";
 
-import { auth, signIn } from "@/auth";
+import { auth, signIn, signOut } from "@/auth";
 import { db } from "@/db/db";
 import { deleteLinkSchema, insertLinksSchema, links } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
@@ -33,6 +33,10 @@ export async function authenticate(
 
 		throw err;
 	}
+}
+
+export async function logout(): Promise<void> {
+	await signOut({ redirectTo: "/" });
 }
 
 export type AddLinkState = {

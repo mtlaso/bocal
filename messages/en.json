@@ -5,6 +5,9 @@
 		"retry": "Retry"
 	},
 	"navbar": {
+		"menu": "Menu",
+		"links": "Links",
+		"archive": "Archive",
 		"themeToggle": {
 			"toggle": "Toggle theme",
 			"dark": "Dark",
