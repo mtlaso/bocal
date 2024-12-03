@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useTranslations } from "next-intl";
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { TbLinkPlus } from "react-icons/tb";
 import { type AddLinkState, addLink } from "../../lib/actions";
 import { lusitana } from "../fonts";
@@ -25,10 +25,21 @@ export function AddLinkForm(): React.JSX.Element {
 		data: undefined,
 	};
 	const t = useTranslations("dashboard");
-	const [state, formAction, _pending] = useActionState(addLink, initialState);
+	const [state, formAction, pending] = useActionState(addLink, initialState);
+	const [isOpen, setIsOpen] = useState(false);
+
+	useEffect(() => {
+		if (
+			state.message === undefined &&
+			state.data === undefined &&
+			state.errors === undefined
+		) {
+			setIsOpen(false);
+		}
+	}, [state]);
 
 	return (
-		<Dialog>
+		<Dialog open={isOpen} onOpenChange={(status): void => setIsOpen(status)}>
 			<DialogTrigger asChild>
 				<Button variant="outline" size="icon">
 					<TbLinkPlus />
@@ -70,7 +81,7 @@ export function AddLinkForm(): React.JSX.Element {
 					</div>
 				</form>
 				<DialogFooter>
-					<Button type="submit" form="form">
+					<Button disabled={pending} type="submit" form="form">
 						{t("add")}
 					</Button>
 				</DialogFooter>
