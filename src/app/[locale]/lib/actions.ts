@@ -6,8 +6,7 @@ import { deleteLinkSchema, insertLinksSchema, links } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
-import ogs from "open-graph-scraper";
-import type { OpenGraphScraperOptions } from "open-graph-scraper/types";
+import { scrapePage } from "./scrape";
 
 export type AddLinkState = {
 	errors?: {
@@ -68,14 +67,7 @@ export async function addLink(
 			throw new Error("errors.notSignedIn");
 		}
 
-		const ogOpts = {
-			url: validatedFields.data.url,
-		} satisfies OpenGraphScraperOptions;
-
-		const ogReq = await ogs(ogOpts);
-		const { result, error } = ogReq;
-		const ogTitle = !error ? result.ogTitle : null;
-		const ogImageURL = !error ? result.ogImage?.at(0)?.url : null;
+		const { ogTitle, ogImageURL } = await scrapePage(validatedFields.data.url);
 
 		await db.insert(links).values({
 			url: validatedFields.data.url,
