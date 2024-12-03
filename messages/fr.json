@@ -41,6 +41,7 @@
 		"ogImageAlt": "Image représentant le contenu",
 		"success": "Link added",
 		"delete": "Supprimer",
+		"archive": "Archiver",
 		"errors": {
 			"urlFieldInvalid": "URL invalide.",
 			"idFieldInvalid": "ID invalide.",

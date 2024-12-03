@@ -28,6 +28,7 @@ export const links = pgTable("links", {
 		.references(() => users.id, { onDelete: "cascade" }),
 	ogTitle: text(),
 	ogImageURL: text(),
+	isArchived: boolean().default(false),
 });
 
 export const accounts = pgTable(

@@ -8,7 +8,6 @@ import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
 import { scrapePage } from "./scrape";
 
-
 export async function authenticate(
 	provider: string,
 ): Promise<string | undefined> {
@@ -35,7 +34,6 @@ export async function authenticate(
 		throw err;
 	}
 }
-
 
 export type AddLinkState = {
 	errors?: {
@@ -127,6 +125,46 @@ export async function deleteLink(id: string): Promise<DeleteLinkState> {
 					eq(links.userId, user.user.id),
 				),
 			)
+			.execute();
+	} catch (_err) {
+		return {
+			message: "errors.unexpected",
+		};
+	}
+
+	revalidatePath("/dashboard");
+	return {};
+}
+
+export async function archiveLink(id: string): Promise<DeleteLinkState> {
+	const validatedFields = deleteLinkSchema.safeParse({
+		id: Number.parseInt(id),
+	});
+
+	if (!validatedFields.success) {
+		return {
+			errors: validatedFields.error.flatten().fieldErrors,
+			data: { id: Number.parseInt(id) },
+			message: "errors.missingFields",
+		};
+	}
+
+	try {
+		const user = await auth();
+		if (!user) {
+			throw new Error("errors.notSignedIn");
+		}
+
+		await db
+			.update(links)
+			.set({ isArchived: true })
+			.where(
+				and(
+					eq(links.id, validatedFields.data.id),
+					eq(links.userId, user.user.id),
+				),
+			)
+
 			.execute();
 	} catch (_err) {
 		return {
