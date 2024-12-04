@@ -20,9 +20,9 @@ import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import type React from "react";
 import { TbMenu2 } from "react-icons/tb";
-import { useMediaQuery } from "../../lib/hooks/use-media-query";
-import { LogoutForm } from "../auth/logout-form";
-import { lusitana } from "../fonts";
+import { useMediaQuery } from "../lib/hooks/use-media-query";
+import { LogoutForm } from "./auth/logout-form";
+import { lusitana } from "./fonts";
 
 export function NavMenu(): React.JSX.Element {
 	const isDesktop = useMediaQuery("(min-width: 768px)");

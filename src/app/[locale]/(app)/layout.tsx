@@ -1,4 +1,4 @@
-import { NavMenu } from "../ui/dashboard/navigation-menu";
+import { NavMenu } from "../ui/navigation-menu";
 
 export default function DashboardLayout({
 	children,
