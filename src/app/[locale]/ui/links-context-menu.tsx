@@ -1,5 +1,9 @@
 "use client";
-import { archiveLink, deleteLink } from "@/app/[locale]/lib/actions";
+import {
+	archiveLink,
+	deleteLink,
+	unarchiveLink,
+} from "@/app/[locale]/lib/actions";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -9,13 +13,20 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { usePathname } from "@/i18n/routing";
 import { Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useTransition } from "react";
 import { BsArchive, BsThreeDots } from "react-icons/bs";
+import { TbLinkPlus } from "react-icons/tb";
 import { toast } from "sonner";
 
 export function LinksContextMenu({ id }: { id: string }): React.JSX.Element {
+	const pathname = usePathname();
+
+	const isDashboardPage = pathname === "/dashboard";
+	const isArchivePage = pathname === "/archive";
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -30,16 +41,60 @@ export function LinksContextMenu({ id }: { id: string }): React.JSX.Element {
 			<DropdownMenuContent className="w-56">
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
+					{isDashboardPage && (
+						<DropdownMenuItem>
+							<ArchiveLink id={id} />
+						</DropdownMenuItem>
+					)}
+
+					{isArchivePage && (
+						<DropdownMenuItem>
+							<UnArchiveLink id={id} />
+						</DropdownMenuItem>
+					)}
+
 					<DropdownMenuItem>
 						<DeleteLink id={id} />
-					</DropdownMenuItem>
-					<DropdownMenuItem>
-						<ArchiveLink id={id} />
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 			</DropdownMenuContent>
 		</DropdownMenu>
+	);
+}
+
+function UnArchiveLink({ id }: { id: string }): React.JSX.Element {
+	const t = useTranslations("dashboard");
+	const [isPending, startTransition] = useTransition();
+
+	const handleUnArchiveLink = (e: React.MouseEvent): void => {
+		startTransition(async () => {
+			try {
+				e.preventDefault();
+				const res = await unarchiveLink(id);
+
+				if (res.message) {
+					toast.error(t(res.message));
+					return;
+				}
+			} catch (_err) {
+				toast.error(t("errors.unexpected"));
+			}
+		});
+	};
+
+	return (
+		<>
+			<Button
+				onClick={(e): void => handleUnArchiveLink(e)}
+				variant={"ghost"}
+				size={"sm"}
+				disabled={isPending}
+			>
+				<TbLinkPlus />
+				{t("unarchive")}
+			</Button>
+		</>
 	);
 }
 
@@ -101,6 +156,7 @@ function DeleteLink({ id }: { id: string }): React.JSX.Element {
 	return (
 		<>
 			<Button
+				className="text-destructive"
 				onClick={(e): void => handleDeleteLink(e)}
 				variant={"ghost"}
 				size={"sm"}

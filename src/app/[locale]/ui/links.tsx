@@ -52,7 +52,8 @@ export async function Links({ links }: Props): Promise<React.JSX.Element> {
 				<Card
 					key={item.id}
 					className="grid grid-rows-subgrid row-span-3
-					hover:shadow-md dark:hover:shadow-xl transition-all duration-200"
+					hover:shadow-md dark:hover:shadow-xl transition-all duration-200
+					"
 				>
 					<CardHeader className="!p-0 relative">
 						<Link href={item.url} target="_blank">

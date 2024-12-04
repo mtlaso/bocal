@@ -45,6 +45,7 @@
 		"success": "Link added",
 		"delete": "Delete",
 		"archive": "Archive",
+		"unarchive": "Unarchive",
 		"errors": {
 			"urlFieldInvalid": "URL invalid.",
 			"idFieldInvalid": "ID invalid.",
