@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { LocaleToggle } from "@/components/ui/locale-toggle";
 import {
 	NavigationMenu,
 	NavigationMenuItem,
@@ -127,6 +128,7 @@ function MobileNavMenu(): React.JSX.Element {
 
 				<SheetFooter className="mt-6 flex-row flex-wrap gap-2">
 					<ThemeToggle />
+					<LocaleToggle />
 					<LogoutForm />
 				</SheetFooter>
 			</SheetContent>
