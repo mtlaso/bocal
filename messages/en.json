@@ -51,5 +51,8 @@
 			"missingFields": "Missing fields.",
 			"unexpected": "An error happend. Please try again."
 		}
+	},
+	"archive": {
+		"archive": "Archive"
 	}
 }

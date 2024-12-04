@@ -1,10 +1,10 @@
 import { auth } from "@/auth";
 import { db } from "@/db/db";
 import { links } from "@/db/schema";
-import { and, eq } from "drizzle-orm";
+import { type SQL, and, eq } from "drizzle-orm";
 import "server-only";
 
-export async function getLinks(): Promise<
+export async function getLinks({ archivedLinksOnly = false }): Promise<
 	{
 		id: number;
 		url: string;
@@ -18,6 +18,10 @@ export async function getLinks(): Promise<
 			throw new Error("errors.notSignedIn");
 		}
 
+		const archivedFilter: SQL[] = [];
+		if (archivedLinksOnly) archivedFilter.push(eq(links.isArchived, true));
+		else archivedFilter.push(eq(links.isArchived, false));
+
 		return await db
 			.select({
 				id: links.id,
@@ -26,7 +30,7 @@ export async function getLinks(): Promise<
 				ogImageURL: links.ogImageURL,
 			})
 			.from(links)
-			.where(and(eq(links.userId, user.user.id), eq(links.isArchived, false)));
+			.where(and(eq(links.userId, user.user.id), ...archivedFilter));
 	} catch (_err) {
 		throw new Error("errors.unexpected");
 	}

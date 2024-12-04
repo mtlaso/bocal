@@ -1,13 +1,16 @@
 import { Separator } from "@/components/ui/separator";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
+import { getLinks } from "../../lib/data";
 import { AddLinkForm } from "../../ui/dashboard/add-link-form";
-import { Links } from "../../ui/dashboard/links";
 import { lusitana } from "../../ui/fonts";
+import { Links } from "../../ui/links";
 import { LinksSkeleton } from "../../ui/skeletons";
 
-export default function Page(): React.JSX.Element {
-	const t = useTranslations("dashboard");
+export default async function Page(): Promise<React.JSX.Element> {
+	const t = await getTranslations("dashboard");
+	const links = await getLinks({});
+
 	return (
 		<>
 			<section className="flex justify-between">
@@ -23,11 +26,9 @@ export default function Page(): React.JSX.Element {
 
 			<Separator className="my-4" />
 
-			<section>
-				<Suspense fallback={<LinksSkeleton />}>
-					<Links />
-				</Suspense>
-			</section>
+			<Suspense fallback={<LinksSkeleton />}>
+				<Links links={links} />
+			</Suspense>
 		</>
 	);
 }

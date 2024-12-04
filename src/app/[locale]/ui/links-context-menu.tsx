@@ -1,4 +1,5 @@
 "use client";
+import { archiveLink, deleteLink } from "@/app/[locale]/lib/actions";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -13,7 +14,6 @@ import { useTranslations } from "next-intl";
 import { useTransition } from "react";
 import { BsArchive, BsThreeDots } from "react-icons/bs";
 import { toast } from "sonner";
-import { archiveLink, deleteLink } from "../../lib/actions";
 
 export function LinksContextMenu({ id }: { id: string }): React.JSX.Element {
 	return (

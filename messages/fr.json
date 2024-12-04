@@ -51,5 +51,8 @@
 			"missingFields": "Champ(s) manquant(s).",
 			"unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer."
 		}
+	},
+	"archive": {
+		"archive": "Archive"
 	}
 }

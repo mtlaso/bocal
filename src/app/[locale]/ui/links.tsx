@@ -9,11 +9,18 @@ import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
-import { getLinks } from "../../lib/data";
 import { LinksContextMenu } from "./links-context-menu";
 
-export async function Links(): Promise<React.JSX.Element> {
-	const links = await getLinks();
+type Props = {
+	links: {
+		id: number;
+		url: string;
+		ogTitle: string | null;
+		ogImageURL: string | null;
+	}[];
+};
+
+export async function Links({ links }: Props): Promise<React.JSX.Element> {
 	const t = await getTranslations("dashboard");
 
 	const removeWWW = (url: string): string => {
