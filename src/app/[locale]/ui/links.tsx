@@ -81,7 +81,7 @@ export async function Links({ links }: Props): Promise<React.JSX.Element> {
 						</Link>
 					</CardHeader>
 
-					<CardContent className="relative z-30">
+					<CardContent>
 						<CardTitle>
 							<Link href={item.url} target="_blank" className="line-clamp-3">
 								{item.ogTitle ?? new URL(item.url).host}
