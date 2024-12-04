@@ -15,10 +15,10 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Link, usePathname } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
-import type React from "react";
 import { useState } from "react";
 import { TbMenu2 } from "react-icons/tb";
 import { LogoutForm } from "./auth/logout-form";
@@ -125,7 +125,8 @@ function MobileNavMenu(): React.JSX.Element {
 					</Link>
 				</div>
 
-				<SheetFooter className="mt-6">
+				<SheetFooter className="mt-6 flex-row flex-wrap gap-2">
+					<ThemeToggle />
 					<LogoutForm />
 				</SheetFooter>
 			</SheetContent>
