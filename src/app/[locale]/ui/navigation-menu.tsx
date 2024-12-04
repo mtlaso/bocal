@@ -25,13 +25,6 @@ import { LogoutForm } from "./auth/logout-form";
 import { lusitana } from "./fonts";
 
 export function NavMenu(): React.JSX.Element {
-	// const isDesktop = useMediaQuery("(min-width: 768px)");
-
-	// if (isDesktop) {
-	// 	return <DesktopNavMenu />;
-	// }
-
-	// return <MobileNavMenu />;
 	return (
 		<>
 			<div className="md:hidden">
