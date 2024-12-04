@@ -21,18 +21,27 @@ import { useTranslations } from "next-intl";
 import type React from "react";
 import { useState } from "react";
 import { TbMenu2 } from "react-icons/tb";
-import { useMediaQuery } from "../lib/hooks/use-media-query";
 import { LogoutForm } from "./auth/logout-form";
 import { lusitana } from "./fonts";
 
 export function NavMenu(): React.JSX.Element {
-	const isDesktop = useMediaQuery("(min-width: 768px)");
+	// const isDesktop = useMediaQuery("(min-width: 768px)");
 
-	if (isDesktop) {
-		return <DesktopNavMenu />;
-	}
+	// if (isDesktop) {
+	// 	return <DesktopNavMenu />;
+	// }
 
-	return <MobileNavMenu />;
+	// return <MobileNavMenu />;
+	return (
+		<>
+			<div className="md:hidden">
+				<MobileNavMenu />
+			</div>
+			<div className="hidden md:block">
+				<DesktopNavMenu />
+			</div>
+		</>
+	);
 }
 
 function DesktopNavMenu(): React.JSX.Element {

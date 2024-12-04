@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+// ex: useMediaQuery("(min-width: 768px)")
 export function useMediaQuery(query: string): boolean {
 	const [value, setValue] = useState(false);
 
