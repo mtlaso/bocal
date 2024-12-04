@@ -69,7 +69,9 @@ function DesktopNavMenu(): React.JSX.Element {
 				</NavigationMenuItem>
 			</NavigationMenuList>
 
-			<span className="self-end">
+			<span className="flex flex-wrap gap-2">
+				<ThemeToggle />
+				<LocaleToggle />
 				<LogoutForm />
 			</span>
 		</NavigationMenu>
@@ -126,7 +128,7 @@ function MobileNavMenu(): React.JSX.Element {
 					</Link>
 				</div>
 
-				<SheetFooter className="mt-6 flex-row flex-wrap gap-2">
+				<SheetFooter className="mt-6 !justify-start flex-row flex-wrap gap-2">
 					<ThemeToggle />
 					<LocaleToggle />
 					<LogoutForm />
