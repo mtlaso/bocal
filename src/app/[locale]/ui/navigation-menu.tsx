@@ -19,6 +19,7 @@ import { Link, usePathname } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import type React from "react";
+import { useState } from "react";
 import { TbMenu2 } from "react-icons/tb";
 import { useMediaQuery } from "../lib/hooks/use-media-query";
 import { LogoutForm } from "./auth/logout-form";
@@ -75,9 +76,10 @@ function DesktopNavMenu(): React.JSX.Element {
 function MobileNavMenu(): React.JSX.Element {
 	const t = useTranslations("navbar");
 	const pathname = usePathname();
+	const [isOpen, setIsOpen] = useState(false);
 
 	return (
-		<Sheet>
+		<Sheet open={isOpen} onOpenChange={(status): void => setIsOpen(status)}>
 			<SheetTrigger asChild>
 				<Button className="py-5 mb-6" variant="outline" size="icon">
 					<TbMenu2 />
@@ -93,6 +95,7 @@ function MobileNavMenu(): React.JSX.Element {
 				</SheetHeader>
 				<div className="flex flex-col gap-4">
 					<Link
+						onClick={(): void => setIsOpen(false)}
 						href={"/dashboard"}
 						className={cn(
 							navigationMenuTriggerStyle(),
@@ -106,6 +109,7 @@ function MobileNavMenu(): React.JSX.Element {
 					</Link>
 
 					<Link
+						onClick={(): void => setIsOpen(false)}
 						href={"/archive"}
 						className={cn(
 							navigationMenuTriggerStyle(),

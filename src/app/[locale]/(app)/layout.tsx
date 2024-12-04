@@ -7,7 +7,6 @@ export default function DashboardLayout({
 }): React.JSX.Element {
 	return (
 		<div className="min-h-screen max-w-2xl mx-auto px-4">
-			// TODO: quand on clic sur un lien dans le menu mobile, // fermer le menu
 			<NavMenu />
 			<main>{children}</main>
 		</div>
