@@ -39,7 +39,7 @@ function DesktopNavMenu(): React.JSX.Element {
 	const pathname = usePathname();
 
 	return (
-		<NavigationMenu className="py-5 mb-6">
+		<NavigationMenu className="py-5 mb-6 !max-w-full justify-between">
 			<NavigationMenuList>
 				<NavigationMenuItem>
 					<Link href="/dashboard" legacyBehavior passHref>
@@ -64,6 +64,10 @@ function DesktopNavMenu(): React.JSX.Element {
 					</Link>
 				</NavigationMenuItem>
 			</NavigationMenuList>
+
+			<span className="self-end">
+				<LogoutForm />
+			</span>
 		</NavigationMenu>
 	);
 }
