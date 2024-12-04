@@ -53,10 +53,10 @@ function DesktopNavMenu(): React.JSX.Element {
 					</Link>
 				</NavigationMenuItem>
 				<NavigationMenuItem>
-					<Link href="/dashboard/archive" legacyBehavior passHref>
+					<Link href="/archive" legacyBehavior passHref>
 						<NavigationMenuLink
 							className={cn(navigationMenuTriggerStyle(), {
-								"font-semibold bg-primary": pathname === "/dashboard/archive",
+								"font-semibold bg-primary": pathname === "/archive",
 							})}
 						>
 							{t("archive")}
@@ -102,12 +102,12 @@ function MobileNavMenu(): React.JSX.Element {
 					</Link>
 
 					<Link
-						href={"/dashboard/archive"}
+						href={"/archive"}
 						className={cn(
 							navigationMenuTriggerStyle(),
 							"w-full flex justify-start ",
 							{
-								"font-semibold bg-primary": pathname === "/dashboard/archive",
+								"font-semibold bg-primary": pathname === "/archive",
 							},
 						)}
 					>
