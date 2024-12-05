@@ -7,7 +7,12 @@ import { lusitana } from "../../ui/fonts";
 import { Links } from "../../ui/links";
 import { LinksSkeleton } from "../../ui/skeletons";
 
-export default async function Page(): Promise<React.JSX.Element> {
+export default async function Page({
+	searchParams,
+}: {
+	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}): Promise<React.JSX.Element> {
+	const { sort } = await searchParams;
 	const t = await getTranslations("dashboard");
 	const links = await getLinks({});
 
@@ -25,6 +30,8 @@ export default async function Page(): Promise<React.JSX.Element> {
 			</section>
 
 			<Separator className="my-4" />
+
+			<p>sort {sort}</p>
 
 			<Suspense fallback={<LinksSkeleton />}>
 				<Links links={links} />

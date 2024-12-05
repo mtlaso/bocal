@@ -29,6 +29,7 @@ export const links = pgTable("links", {
 	ogTitle: text(),
 	ogImageURL: text(),
 	isArchived: boolean().default(false),
+	createdAt: timestamp().defaultNow().notNull(),
 });
 
 export const accounts = pgTable(
