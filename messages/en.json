@@ -8,6 +8,11 @@
 		"menu": "Menu",
 		"links": "Links",
 		"archive": "Archive",
+		"sort": {
+			"sort": "Sort",
+			"byDateAsc": "By date: ascending",
+			"byDateDesc": "By date: descending"
+		},
 		"themeToggle": {
 			"toggle": "Toggle theme",
 			"dark": "Dark",

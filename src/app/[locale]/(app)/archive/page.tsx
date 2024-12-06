@@ -5,10 +5,16 @@ import { getLinks } from "../../lib/data";
 import { lusitana } from "../../ui/fonts";
 import { Links } from "../../ui/links";
 import { LinksSkeleton } from "../../ui/skeletons";
+import { SortLinks } from "@/app/[locale]/ui/sort-links";
 
-export default async function Page(): Promise<React.JSX.Element> {
+export default async function Page({
+	searchParams,
+}: {
+	searchParams: Promise<{ sort?: string }>;
+}): Promise<React.JSX.Element> {
+	const { sort } = await searchParams;
 	const t = await getTranslations("archive");
-	const links = await getLinks({ archivedLinksOnly: true });
+	const links = await getLinks({ archivedLinksOnly: true, sort });
 	return (
 		<>
 			<section className="flex justify-between">
@@ -19,6 +25,8 @@ export default async function Page(): Promise<React.JSX.Element> {
 						{t("archive")}
 					</h1>
 				</div>
+
+				<SortLinks />
 			</section>
 
 			<Separator className="my-4" />
