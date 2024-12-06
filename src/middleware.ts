@@ -3,7 +3,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "./auth";
 import { routing } from "./i18n/routing";
 
-const protectedRoutes = ["/dashboard", "/archive"];
+const protectedRoutes = ["/dashboard", "/archive", "/feed"];
 
 function removeLanguagePrefix(path: string): string {
 	const langPrefixRegex = /^\/(?:en|fr)\//;

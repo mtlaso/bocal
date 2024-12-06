@@ -63,5 +63,8 @@
 	},
 	"archive": {
 		"archive": "Archive"
+	},
+	"rssFeed": {
+		"rssFeed": "RSS Feed"
 	}
 }
