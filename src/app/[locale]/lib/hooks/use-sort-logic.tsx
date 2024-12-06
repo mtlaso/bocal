@@ -27,7 +27,7 @@ export function useSortLogic(): SortLogicReturnType {
 
 		if (sort === sortOptions.byDateDesc) return sortOptions.byDateDesc;
 		if (sort === sortOptions.byDateAsc) return sortOptions.byDateAsc;
-		
+
 		// If sort param is not a valid value, return an empty string
 		return "";
 	};

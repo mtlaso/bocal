@@ -1,3 +1,4 @@
+import { SortLinks } from "@/app/[locale]/ui/sort-links";
 import { Separator } from "@/components/ui/separator";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
@@ -5,7 +6,6 @@ import { getLinks } from "../../lib/data";
 import { lusitana } from "../../ui/fonts";
 import { Links } from "../../ui/links";
 import { LinksSkeleton } from "../../ui/skeletons";
-import { SortLinks } from "@/app/[locale]/ui/sort-links";
 
 export default async function Page({
 	searchParams,
