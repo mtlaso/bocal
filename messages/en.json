@@ -46,7 +46,8 @@
 		"addLinkForm": {
 			"title": "Add a link",
 			"link": "Link",
-			"add": "Add"
+			"add": "Add",
+			"cancel": "Cancel"
 		},
 		"success": "Link added",
 		"delete": "Delete",

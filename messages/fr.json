@@ -45,7 +45,8 @@
 		"addLinkForm": {
 			"title": "Ajouter un lien",
 			"link": "Lien",
-			"add": "Ajouter"
+			"add": "Ajouter",
+			"cancel": "Annuler"
 		},
 		"ogImageAlt": "Image représentant le contenu",
 		"success": "Link added",
