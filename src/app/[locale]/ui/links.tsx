@@ -77,7 +77,10 @@ export async function Links({
 						<Link href={item.url} target="_blank">
 							{item.ogImageURL ? (
 								<Image
-									className="aspect-video h-auto w-full rounded-bl-xl rounded-tl-xl object-cover"
+									className={cn("aspect-video h-auto w-full  object-cover", {
+										"rounded-t-xl": view === "grid",
+										"rounded-bl-xl rounded-tl-xl": view === "list",
+									})}
 									src={item.ogImageURL}
 									width={500}
 									height={500}
@@ -87,12 +90,16 @@ export async function Links({
 							) : (
 								<div
 									className={cn(
-										`aspect-video h-auto w-full rounded-bl-xl rounded-tl-xl object-cover
+										`aspect-video h-auto w-full object-cover
 										select-none text-9xl text-foreground font-semibold
 										bg-gradient-to-br`,
 										randomBackground(
 											item.ogTitle ?? removeWWW(new URL(item.url).host),
 										),
+										{
+											"rounded-t-xl": view === "grid",
+											"rounded-bl-xl rounded-tl-xl": view === "list",
+										},
 									)}
 								/>
 							)}

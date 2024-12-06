@@ -32,7 +32,7 @@ export default async function Page({
 			<Separator className="my-4" />
 
 			<Suspense fallback={<LinksSkeleton />}>
-				<Links links={links} />
+				<Links links={links} view={"grid"} />
 			</Suspense>
 		</>
 	);

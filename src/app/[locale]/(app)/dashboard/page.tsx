@@ -35,7 +35,7 @@ export default async function Page({
 			<Separator className="my-4" />
 
 			<Suspense fallback={<LinksSkeleton />}>
-				<Links view={"list"} links={links} />
+				<Links links={links} view={"grid"} />
 			</Suspense>
 		</>
 	);
