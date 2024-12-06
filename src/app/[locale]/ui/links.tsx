@@ -18,9 +18,13 @@ type Props = {
 		ogTitle: string | null;
 		ogImageURL: string | null;
 	}[];
+	view: "grid" | "list";
 };
 
-export async function Links({ links }: Props): Promise<React.JSX.Element> {
+export async function Links({
+	links,
+	view,
+}: Props): Promise<React.JSX.Element> {
 	const t = await getTranslations("dashboard");
 
 	const removeWWW = (url: string): string => {
@@ -47,19 +51,33 @@ export async function Links({ links }: Props): Promise<React.JSX.Element> {
 	};
 
 	return (
-		<section className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4">
+		<section
+			className={cn({
+				"grid grid-cols-2 md:grid-cols-3 gap-4": view === "grid",
+				"grid grid-cols-3 grid-rows-2 gap-4": view === "list",
+			})}
+		>
 			{links.map((item) => (
 				<Card
 					key={item.id}
-					className="grid grid-rows-subgrid row-span-3
-					hover:shadow-md dark:hover:shadow-xl transition-all duration-200
-					"
+					className={cn(
+						{
+							"grid grid-rows-subgrid row-span-3 col-span-1": view === "grid",
+							"grid grid-cols-subgrid col-span-3 row-span- items-center":
+								view === "list",
+						},
+						"hover:shadow-md dark:hover:shadow-xl transition-all duration-200",
+					)}
 				>
-					<CardHeader className="!p-0 relative">
+					<CardHeader
+						className={cn("!p-0", {
+							"row-start- row-span-2": view === "list",
+						})}
+					>
 						<Link href={item.url} target="_blank">
 							{item.ogImageURL ? (
 								<Image
-									className="aspect-video h-auto w-full rounded-t-xl object-cover"
+									className="aspect-video h-auto w-full rounded-bl-xl rounded-tl-xl object-cover"
 									src={item.ogImageURL}
 									width={500}
 									height={500}
@@ -69,7 +87,7 @@ export async function Links({ links }: Props): Promise<React.JSX.Element> {
 							) : (
 								<div
 									className={cn(
-										`aspect-video h-auto w-full rounded-t-xl
+										`aspect-video h-auto w-full rounded-bl-xl rounded-tl-xl object-cover
 										select-none text-9xl text-foreground font-semibold
 										bg-gradient-to-br`,
 										randomBackground(
@@ -81,7 +99,11 @@ export async function Links({ links }: Props): Promise<React.JSX.Element> {
 						</Link>
 					</CardHeader>
 
-					<CardContent>
+					<CardContent
+						className={cn({
+							"row-start-1 col-start-2 col-span-2 p-0 ": view === "list",
+						})}
+					>
 						<CardTitle>
 							<Link href={item.url} target="_blank" className="line-clamp-3">
 								{item.ogTitle ?? new URL(item.url).host}
@@ -89,7 +111,11 @@ export async function Links({ links }: Props): Promise<React.JSX.Element> {
 						</CardTitle>
 					</CardContent>
 
-					<CardFooter className="flex justify-between">
+					<CardFooter
+						className={cn("flex justify-between", {
+							"row-start-2 col-start-2 col-span-2 pl-0": view === "list",
+						})}
+					>
 						<Link
 							href={item.url}
 							target="_blank"
@@ -98,7 +124,9 @@ export async function Links({ links }: Props): Promise<React.JSX.Element> {
 							{removeWWW(new URL(item.url).host)}
 						</Link>
 
-						<LinksContextMenu id={item.id.toString()} />
+						<div>
+							<LinksContextMenu id={item.id.toString()} />
+						</div>
 					</CardFooter>
 				</Card>
 			))}
