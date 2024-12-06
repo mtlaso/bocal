@@ -56,6 +56,7 @@ function DesktopNavMenu(): React.JSX.Element {
 						</NavigationMenuLink>
 					</Link>
 				</NavigationMenuItem>
+
 				<NavigationMenuItem>
 					<Link href="/archive" legacyBehavior passHref>
 						<NavigationMenuLink
@@ -64,6 +65,18 @@ function DesktopNavMenu(): React.JSX.Element {
 							})}
 						>
 							{t("archive")}
+						</NavigationMenuLink>
+					</Link>
+				</NavigationMenuItem>
+
+				<NavigationMenuItem>
+					<Link href="/feed" legacyBehavior passHref>
+						<NavigationMenuLink
+							className={cn(navigationMenuTriggerStyle(), {
+								"font-semibold bg-primary": pathname === "/feed",
+							})}
+						>
+							{t("rssFeed")}
 						</NavigationMenuLink>
 					</Link>
 				</NavigationMenuItem>
@@ -125,6 +138,20 @@ function MobileNavMenu(): React.JSX.Element {
 						)}
 					>
 						<span className="">{t("archive")}</span>
+					</Link>
+
+					<Link
+						onClick={(): void => setIsOpen(false)}
+						href={"/feed"}
+						className={cn(
+							navigationMenuTriggerStyle(),
+							"w-full flex justify-start ",
+							{
+								"font-semibold bg-primary": pathname === "/feed",
+							},
+						)}
+					>
+						<span className="">{t("rssFeed")}</span>
 					</Link>
 				</div>
 
