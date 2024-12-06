@@ -32,8 +32,7 @@ export async function getLinks({
 		else archivedFilter.push(eq(links.isArchived, false));
 
 		const sortFilter: SQL[] = [];
-		if (sort === sortOptions["by-date-asc"])
-			sortFilter.push(asc(links.createdAt));
+		if (sort === sortOptions.byDateAsc) sortFilter.push(asc(links.createdAt));
 		else sortFilter.push(desc(links.createdAt));
 
 		return await db

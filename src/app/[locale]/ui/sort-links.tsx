@@ -1,6 +1,17 @@
 "use client";
 
 import { sortOptions } from "@/app/[locale]/lib/schema";
+import { Button } from "@/components/ui/button";
+import {
+	Drawer,
+	DrawerClose,
+	DrawerContent,
+	DrawerDescription,
+	DrawerFooter,
+	DrawerHeader,
+	DrawerTitle,
+	DrawerTrigger,
+} from "@/components/ui/drawer";
 import {
 	Select,
 	SelectContent,
@@ -11,8 +22,6 @@ import {
 import { usePathname, useRouter } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
-
-import { TbArrowDown } from "react-icons/tb";
 
 export function SortLinks(): React.JSX.Element {
 	return (
@@ -45,10 +54,9 @@ function SortDesktop(): React.JSX.Element {
 
 		if (
 			sort !== undefined &&
-			(sort === sortOptions["by-date-asc"] ||
-				sort === sortOptions["by-date-desc"])
+			(sort === sortOptions.byDateAsc || sort === sortOptions.byDateDesc)
 		) {
-			return sort;
+			return t(`sort.${sort}`);
 		}
 
 		return t("sort.sort");
@@ -60,8 +68,12 @@ function SortDesktop(): React.JSX.Element {
 				<SelectValue placeholder={defaultValue()} />
 			</SelectTrigger>
 			<SelectContent>
-				<SelectItem value="by-date-asc">{t("sort.byDateAsc")}</SelectItem>
-				<SelectItem value="by-date-desc">{t("sort.byDateDesc")}</SelectItem>
+				<SelectItem value={sortOptions.byDateAsc}>
+					{t("sort.byDateAsc")}
+				</SelectItem>
+				<SelectItem value={sortOptions.byDateDesc}>
+					{t("sort.byDateDesc")}
+				</SelectItem>
 			</SelectContent>
 		</Select>
 	);
@@ -70,8 +82,20 @@ function SortDesktop(): React.JSX.Element {
 function SortMobile(): React.JSX.Element {
 	// Drawer
 	return (
-		<div>
-			<TbArrowDown />
-		</div>
+		<Drawer>
+			<DrawerTrigger>Open</DrawerTrigger>
+			<DrawerContent>
+				<DrawerHeader>
+					<DrawerTitle>Are you absolutely sure?</DrawerTitle>
+					<DrawerDescription>This action cannot be undone.</DrawerDescription>
+				</DrawerHeader>
+				<DrawerFooter>
+					<Button>Submit</Button>
+					<DrawerClose>
+						<Button variant="outline">Cancel</Button>
+					</DrawerClose>
+				</DrawerFooter>
+			</DrawerContent>
+		</Drawer>
 	);
 }
