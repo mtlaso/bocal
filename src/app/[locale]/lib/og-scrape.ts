@@ -1,17 +1,17 @@
 import ogs from "open-graph-scraper";
 import type { OpenGraphScraperOptions } from "open-graph-scraper/types";
 
-type ScrapeDataRespnse = {
+type ScrapeDataResponse = {
 	ogTitle: string | null;
 	ogImageURL: string | null;
 };
 
-export const ogScrape = async (url: string): Promise<ScrapeDataRespnse> => {
+export const scrapePage = async (url: string): Promise<ScrapeDataResponse> => {
 	const ogOpts = {
 		url: url,
 	} satisfies OpenGraphScraperOptions;
 
-	const data: ScrapeDataRespnse = {
+	const data: ScrapeDataResponse = {
 		ogTitle: null,
 		ogImageURL: null,
 	};
