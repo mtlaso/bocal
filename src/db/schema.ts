@@ -1,7 +1,9 @@
+import type { FeedContent } from "@/app/[locale]/lib/schema";
 import type { InferSelectModel } from "drizzle-orm";
 import {
 	boolean,
 	integer,
+	json,
 	pgTable,
 	primaryKey,
 	text,
@@ -31,6 +33,35 @@ export const links = pgTable("links", {
 	isArchived: boolean().default(false),
 	createdAt: timestamp().defaultNow().notNull(),
 });
+
+export const feeds = pgTable("feeds", {
+	id: integer().primaryKey().generatedAlwaysAsIdentity(),
+	url: text().notNull().unique(),
+	title: text().notNull(),
+	userId: text()
+		.notNull()
+		.references(() => users.id, { onDelete: "cascade" }),
+	createdAt: timestamp().defaultNow().notNull(),
+	lastSyncAt: timestamp(),
+	content: json().$type<FeedContent>(),
+	status: text().default("active").notNull(),
+	lastError: text(),
+	errorCount: integer().default(0).notNull(),
+});
+
+export const userFeeds = pgTable("user_feeds", {
+	userId : text("userId")
+		.notNull()
+		.references(() => users.id, { onDelete: "cascade" }),
+	feedId: integer()
+		.notNull()
+		.references(() => feeds.id, { onDelete: "cascade" }),
+	
+}, (table) => [
+	primaryKey({ columns: [table.userId, table.feedId] }),
+])
+
+
 
 export const accounts = pgTable(
 	"accounts",
