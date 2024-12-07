@@ -49,19 +49,18 @@ export const feeds = pgTable("feeds", {
 	errorCount: integer().default(0).notNull(),
 });
 
-export const userFeeds = pgTable("user_feeds", {
-	userId : text("userId")
-		.notNull()
-		.references(() => users.id, { onDelete: "cascade" }),
-	feedId: integer()
-		.notNull()
-		.references(() => feeds.id, { onDelete: "cascade" }),
-	
-}, (table) => [
-	primaryKey({ columns: [table.userId, table.feedId] }),
-])
-
-
+export const userFeeds = pgTable(
+	"user_feeds",
+	{
+		userId: text("userId")
+			.notNull()
+			.references(() => users.id, { onDelete: "cascade" }),
+		feedId: integer()
+			.notNull()
+			.references(() => feeds.id, { onDelete: "cascade" }),
+	},
+	(table) => [primaryKey({ columns: [table.userId, table.feedId] })],
+);
 
 export const accounts = pgTable(
 	"accounts",

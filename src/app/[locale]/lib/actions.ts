@@ -1,12 +1,12 @@
 "use server";
 
+import { ogScrape } from "@/app/[locale]/lib/og-scrape";
 import { auth, signIn, signOut } from "@/auth";
 import { db } from "@/db/db";
 import { deleteLinkSchema, insertLinksSchema, links } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
-import { ogScrape } from "./og-scrape";
 
 export async function authenticate(
 	provider: string,

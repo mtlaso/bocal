@@ -6,7 +6,7 @@ type ScrapeDataResponse = {
 	ogImageURL: string | null;
 };
 
-export const scrapePage = async (url: string): Promise<ScrapeDataResponse> => {
+export const ogScrape = async (url: string): Promise<ScrapeDataResponse> => {
 	const ogOpts = {
 		url: url,
 	} satisfies OpenGraphScraperOptions;
