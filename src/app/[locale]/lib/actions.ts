@@ -6,7 +6,7 @@ import { deleteLinkSchema, insertLinksSchema, links } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
-import { scrapePage } from "./scrape";
+import { ogScrape } from "./og-scrape";
 
 export async function authenticate(
 	provider: string,
@@ -71,7 +71,7 @@ export async function addLink(
 			throw new Error("errors.notSignedIn");
 		}
 
-		const { ogTitle, ogImageURL } = await scrapePage(validatedFields.data.url);
+		const { ogTitle, ogImageURL } = await ogScrape(validatedFields.data.url);
 
 		await db.insert(links).values({
 			url: validatedFields.data.url,
