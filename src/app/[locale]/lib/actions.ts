@@ -272,13 +272,13 @@ export async function addFeed(
 			if (!feed) {
 				const res = await feedService.fetchFeed(validatedFields.data.url);
 				const xml = await res.text();
-				const content = await feedService.parseFeed(xml);
+				const { content, title } = await feedService.parseFeed(xml);
 
 				const newFeed = await tx
 					.insert(feeds)
 					.values({
 						url: validatedFields.data.url,
-						title: content.items[0].title,
+						title,
 						lastSyncAt: new Date(),
 						content: content,
 					})

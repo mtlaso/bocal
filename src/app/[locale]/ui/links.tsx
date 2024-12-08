@@ -1,3 +1,4 @@
+import { removeWWW } from "@/app/[locale]/lib/remove-www";
 import {
 	Card,
 	CardContent,
@@ -26,14 +27,6 @@ export async function Links({
 	view,
 }: Props): Promise<React.JSX.Element> {
 	const t = await getTranslations("dashboard");
-
-	const removeWWW = (url: string): string => {
-		if (url.startsWith("www.")) {
-			return url.slice(4);
-		}
-
-		return url;
-	};
 
 	const randomBackground = (firstLetter: string): string => {
 		const letter = firstLetter.toUpperCase();

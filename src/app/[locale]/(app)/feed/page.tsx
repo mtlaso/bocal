@@ -1,10 +1,15 @@
+import { getUserFeeds } from "@/app/[locale]/lib/data";
+import { Feeds } from "@/app/[locale]/ui/dashboard/feeds";
 import { AddFeedForm } from "@/app/[locale]/ui/feed/add-feed-form";
 import { lusitana } from "@/app/[locale]/ui/fonts";
 import { Separator } from "@/components/ui/separator";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
+import { Suspense } from "react";
 
-export default function Page(): React.JSX.Element {
-	const t = useTranslations("rssFeed");
+export default async function Page(): Promise<React.JSX.Element> {
+	const t = await getTranslations("rssFeed");
+	const userFeeds = await getUserFeeds();
+
 	return (
 		<>
 			<section className="flex justify-between">
@@ -20,7 +25,9 @@ export default function Page(): React.JSX.Element {
 
 			<Separator className="my-4" />
 
-			<p>content here...</p>
+			<Suspense fallback={<p>TODO: change this loading visual...</p>}>
+				<Feeds feeds={userFeeds} />
+			</Suspense>
 		</>
 	);
 }

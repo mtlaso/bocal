@@ -66,7 +66,12 @@ const fetchWithTimeout = async (
 	}
 };
 
-export async function parseFeed(xml: string): Promise<FeedContent> {
+type ParseFeedResponse = {
+	title: string;
+	content: FeedContent;
+};
+
+export async function parseFeed(xml: string): Promise<ParseFeedResponse> {
 	try {
 		if (xml.length > MAX_CONTENT_SIZE) {
 			throw new FeedTooLarge();
@@ -120,7 +125,9 @@ export async function parseFeed(xml: string): Promise<FeedContent> {
 		}
 
 		return {
-			items: items
+			// TODO: translate "No title"
+			title: res.feed?.title ?? res.rss.channel.title ?? "No title",
+			content: items
 				// .sort((a, b) => new Date(b).getTime() - new Date(a).getTime())
 				.slice(0, MAX_ITEMS),
 		};
