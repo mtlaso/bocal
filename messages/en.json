@@ -8,7 +8,7 @@
 		"menu": "Menu",
 		"links": "Links",
 		"archive": "Archive",
-		"rssFeed": "RSS/Atom Feed",
+		"rssFeed": "Feeds",
 		"close": "Close",
 		"sort": {
 			"sort": "Sort",
@@ -65,7 +65,7 @@
 		"archive": "Archive"
 	},
 	"rssFeed": {
-		"rssFeed": "RSS/Atom Feed",
+		"rssFeed": "Feeds",
 		"add": "Add",
 		"success": "Feed added",
 		"addFeedForm": {

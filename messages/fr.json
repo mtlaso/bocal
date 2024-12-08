@@ -8,7 +8,7 @@
 		"menu": "Menu",
 		"links": "Liens",
 		"archive": "Archive",
-		"rssFeed": "Flux RSS/Atom",
+		"rssFeed": "Flux",
 		"close": "Fermer",
 		"sort": {
 			"sort": "Trier",
@@ -65,7 +65,7 @@
 		"archive": "Archive"
 	},
 	"rssFeed": {
-		"rssFeed": "Flux RSS/Atom",
+		"rssFeed": "Flux",
 		"add": "Ajouter",
 		"success": "Flux ajouté",
 		"addFeedForm": {
