@@ -68,6 +68,12 @@
 		"rssFeed": "Flux",
 		"add": "Ajouter",
 		"success": "Flux ajouté",
+		"info": {
+			"textPartOne": "Vous suivez",
+			"textFeedsCount": "{count, plural, =0 {aucun flux} =1 {un flux} other {# flux}}",
+			"textPartTwo": "avec",
+			"textUnreachableCount": "{count} inaccessible."
+		},
 		"addFeedForm": {
 			"title": "Ajouter un flux RSS/Atom",
 			"link": "Lien",

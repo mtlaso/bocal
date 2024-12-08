@@ -13,9 +13,12 @@ export async function Feeds({ feeds }: Props): Promise<React.JSX.Element> {
 			</h1>
 			{feeds.map((feed) => (
 				<div key={feed.id}>
+					{/* return <p>Following xxx feeds with xxx unreachable</p>; */}
 					{/* <p>{JSON.stringify(feed)}</p> */}
 					<h1 className="tracking-tight text-xl">{feed.title}</h1>
-					<p className="text-muted-foreground">{removeWWW(new URL(feed.url).host)}</p>
+					<p className="text-muted-foreground">
+						{removeWWW(new URL(feed.url).host)}
+					</p>
 				</div>
 			))}
 		</section>
