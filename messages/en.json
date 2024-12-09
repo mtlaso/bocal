@@ -84,10 +84,7 @@
 		"errors": {
 			"unexpected": "An error happend. Please try again.",
 			"urlFieldInvalid": "URL invalid.",
-			"urlNotAFeed": "URL is not a RSS/Atom feed.",
-			"feedTooLarge": "Feed is too large.",
 			"feedUnreachable": "Feed is unreachable.",
-			"feedMalformed": "Feed is malformed.",
 			"feedCannotBeProcessed": "Feed cannot be processed.",
 			"feedAlreadyFollowed": "Feed already followed.",
 			"missingFields": "Missing fields."

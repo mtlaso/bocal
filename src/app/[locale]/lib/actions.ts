@@ -270,9 +270,9 @@ export async function addFeed(
 			// If the feed does not exist, add it.
 			// And fetch the feed content.
 			if (!feed) {
-				const res = await feedService.fetchFeed(validatedFields.data.url);
-				const xml = await res.text();
-				const { content, title } = await feedService.parseFeed(xml);
+				const { content, title } = await feedService.parseFeed(
+					validatedFields.data.url,
+				);
 
 				const newFeed = await tx
 					.insert(feeds)
@@ -318,30 +318,9 @@ export async function addFeed(
 			};
 		}
 	} catch (err) {
-		if (err instanceof feedService.UrlNotAFeed) {
-			return {
-				message: "errors.urlNotAFeed",
-				errors: undefined,
-			};
-		}
-
-		if (err instanceof feedService.FeedTooLarge) {
-			return {
-				message: "errors.feedTooLarge",
-				errors: undefined,
-			};
-		}
-
 		if (err instanceof feedService.FeedUnreachable) {
 			return {
 				message: "errors.feedUnreachable",
-				errors: undefined,
-			};
-		}
-
-		if (err instanceof feedService.FeedMalformed) {
-			return {
-				message: "errors.feedMalformed",
 				errors: undefined,
 			};
 		}

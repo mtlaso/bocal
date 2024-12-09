@@ -52,8 +52,8 @@ export async function getLinks({
 
 /**
  * Get user feeds.
- * Also triggers background sync for feeds to get the latest content.
  */
+// TODO: Also triggers background sync for feeds to get the latest content.
 export async function getUserFeeds(): Promise<Feed[]> {
 	try {
 		const user = await auth();

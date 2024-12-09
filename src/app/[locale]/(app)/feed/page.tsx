@@ -1,4 +1,5 @@
 import { getUserFeeds } from "@/app/[locale]/lib/data";
+import { flattenFeedsContent } from "@/app/[locale]/lib/flatten-feeds-content";
 import { Feeds } from "@/app/[locale]/ui/dashboard/feeds";
 import { AddFeedForm } from "@/app/[locale]/ui/feed/add-feed-form";
 import { FeedInfo } from "@/app/[locale]/ui/feed/feed-info";
@@ -11,6 +12,7 @@ import { Suspense } from "react";
 export default async function Page(): Promise<React.JSX.Element> {
 	const t = await getTranslations("rssFeed");
 	const userFeeds = await getUserFeeds();
+	const flattenedFeeds = flattenFeedsContent(userFeeds);
 
 	return (
 		<>
@@ -31,7 +33,7 @@ export default async function Page(): Promise<React.JSX.Element> {
 			<Separator className="my-4" />
 
 			<Suspense fallback={<p>TODO: change this loading visual...</p>}>
-				<Feeds feeds={userFeeds} />
+				<Feeds feeds={userFeeds} flattenedContent={flattenedFeeds} />
 			</Suspense>
 		</>
 	);

@@ -4,14 +4,17 @@ export enum sortOptions {
 }
 
 export type FeedContent = {
-	items: {
-		id: string;
-		title: string;
-		url: string;
-		content: string;
-		date: string;
-		author?: string;
-	}[];
+	id: string;
+	title: string;
+	url: string;
+	content: string;
+	date: string;
+	author?: string;
+};
+
+export type FlattenedFeedsContent = FeedContent & {
+	feedTitle: string;
+	feedId: number;
 };
 
 export enum FeedStatus {

@@ -40,7 +40,7 @@ export const feeds = pgTable("feeds", {
 	title: text().notNull(),
 	createdAt: timestamp().defaultNow().notNull(),
 	lastSyncAt: timestamp(),
-	content: json().$type<FeedContent>(),
+	content: json().$type<FeedContent[]>(),
 	status: text({ enum: ["active", "error", "inactive"] })
 		.notNull()
 		.default("active"),

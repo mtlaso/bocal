@@ -82,10 +82,7 @@
 		"errors": {
 			"unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer.",
 			"urlFieldInvalid": "URL invalide.",
-			"urlNotAFeed": "L'URL n'est pas un flux RSS/Atom.",
-			"feedTooLarge": "Le flux est trop volumineux.",
 			"feedUnreachable": "Le flux est inaccessible.",
-			"feedMalformed": "Le flux est mal formé.",
 			"feedCannotBeProcessed": "Le flux ne peut pas être traité.",
 			"feedAlreadyFollowed": "Le flux est déjà suivi.",
 			"missingFields": "Champ(s) manquant(s)."
