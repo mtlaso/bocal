@@ -1,6 +1,8 @@
 import { createHash } from "node:crypto";
 import { removeWWW } from "@/app/[locale]/lib/remove-www";
+import { sanitizeHTML } from "@/app/[locale]/lib/sanitize-html";
 import type { FeedContent } from "@/app/[locale]/lib/schema";
+import { decode } from "html-entities";
 import Parser from "rss-parser";
 
 const MAX_ITEMS = 20;
@@ -36,11 +38,13 @@ export async function parseFeed(url: string): Promise<ParseFeedResponse> {
 		const content = feed.items.map((item) => {
 			return {
 				id: item.guid ?? generateStableId(item),
-				title: item.title ?? removeWWW(url),
+				title: item.title ? decode(sanitizeHTML(item.title)) : removeWWW(url),
 				url: item.link ?? url,
-				content: item.content ?? item.contentSnippet ?? "",
+				content: decode(
+					sanitizeHTML(item.content ?? item.contentSnippet ?? ""),
+				),
 				date: item.isoDate ?? item.pubDate ?? new Date().toISOString(),
-				author: item.creator ?? "",
+				author: item.creator ? decode(sanitizeHTML(item.creator)) : "",
 			} satisfies FeedContent;
 		});
 
