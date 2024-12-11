@@ -2,6 +2,8 @@
 
 import { useMediaQuery } from "@/app/[locale]/lib/hooks/use-media-query";
 import { lusitana } from "@/app/[locale]/ui/fonts";
+import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
 	Sheet,
 	SheetContent,
@@ -10,9 +12,10 @@ import {
 	SheetTrigger,
 } from "@/components/ui/sheet";
 import type { Feed } from "@/db/schema";
+import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { TbCircle, TbRadarFilled, TbRss } from "react-icons/tb";
+import { TbRadarFilled, TbRss } from "react-icons/tb";
 
 type Props = {
 	feeds: Feed[];
@@ -99,34 +102,36 @@ function FeedInfoMenuDesktop({
 				</SheetHeader>
 				<div className="flex flex-col gap-4">
 					<div
-						className="flex justify-between items-center flex-wrap
-					hover:bg-gray-100 p-2 rounded-lg
-					transition-all duration-200 cursor-pointer"
+						className={cn(
+							navigationMenuTriggerStyle(),
+							"w-full px-2 flex justify-between items-center flex-wrap",
+						)}
 					>
 						<div className="flex gap-2">
-							<TbRadarFilled size={20} className="text-primary font-bold" />
+							<TbRadarFilled size={20} className="text-primary" />
 							<p>{t("allFeeds")}</p>
 						</div>
 						<p className="text-primary">{totalFeeds}</p>
 					</div>
 
-					<div>
-						{/* default feed unread  */}
+					<ScrollArea className="max-h-svh overflow-auto">
 						{feeds.map((feed) => (
-							<div
+							<li
 								key={feed.id}
-								className="flex justify-between items-center flex-wrap
-							hover:bg-gray-100 p-2 rounded-lg
-							transition-all duration-200 cursor-pointer"
+								className={cn(
+									navigationMenuTriggerStyle(),
+									`flex justify-between items-center flex-wrap
+									cursor-pointer w-full px-2`,
+								)}
 							>
 								<div className="flex gap-2">
-									<TbRss size={20} className="text-primary font-bold" />
+									<TbRss size={20} className="text-primary" />
 									<p>{feed.title}</p>
 								</div>
 								<p className="text-primary">{feed.content?.length}</p>
-							</div>
+							</li>
 						))}
-					</div>
+					</ScrollArea>
 				</div>
 			</SheetContent>
 		</Sheet>
