@@ -9,7 +9,6 @@ export type FeedContent = {
 	url: string;
 	content: string;
 	date: string;
-	author?: string;
 };
 
 export type FlattenedFeedsContent = FeedContent & {

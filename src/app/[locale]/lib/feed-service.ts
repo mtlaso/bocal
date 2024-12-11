@@ -38,13 +38,12 @@ export async function parseFeed(url: string): Promise<ParseFeedResponse> {
 		const content = feed.items.map((item) => {
 			return {
 				id: item.guid ?? generateStableId(item),
-				title: item.title ? decode(sanitizeHTML(item.title)) : removeWWW(url),
+				title: decode(sanitizeHTML(item.title ?? removeWWW(url))),
 				url: item.link ?? url,
 				content: decode(
 					sanitizeHTML(item.content ?? item.contentSnippet ?? ""),
 				),
 				date: item.isoDate ?? item.pubDate ?? new Date().toISOString(),
-				author: item.creator ? decode(sanitizeHTML(item.creator)) : "",
 			} satisfies FeedContent;
 		});
 
