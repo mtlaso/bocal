@@ -2,8 +2,9 @@ import { getUserFeeds } from "@/app/[locale]/lib/data";
 import { flattenFeedsContent } from "@/app/[locale]/lib/flatten-feeds-content";
 import { Feeds } from "@/app/[locale]/ui/dashboard/feeds";
 import { AddFeedForm } from "@/app/[locale]/ui/feed/add-feed-form";
-import { FeedInfo } from "@/app/[locale]/ui/feed/feed-info";
+import { FeedInfoMenu } from "@/app/[locale]/ui/feed/feed-info-menu";
 import { lusitana } from "@/app/[locale]/ui/fonts";
+import { LinksSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
 import { getTranslations } from "next-intl/server";
@@ -27,12 +28,12 @@ export default async function Page(): Promise<React.JSX.Element> {
 						<AddFeedForm />
 					</div>
 				</div>
-				<FeedInfo className="text-muted-foreground" feeds={userFeeds} />
+				<FeedInfoMenu className="text-muted-foreground" feeds={userFeeds} />
 			</section>
 
 			<Separator className="my-4" />
 
-			<Suspense fallback={<p>TODO: change this loading visual...</p>}>
+			<Suspense fallback={<LinksSkeleton />}>
 				<Feeds feeds={userFeeds} flattenedContent={flattenedFeeds} />
 			</Suspense>
 		</>
