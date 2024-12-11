@@ -76,7 +76,7 @@
 			"title": "Flux RSS/Atom",
 			"allFeeds": "Tout le contenu"
 		},
-	 "addFeedForm": {
+		"addFeedForm": {
 			"title": "Ajouter un flux RSS/Atom",
 			"link": "Lien",
 			"cancel": "Annuler"

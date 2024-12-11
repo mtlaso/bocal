@@ -15,34 +15,19 @@ import type { Feed } from "@/db/schema";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { TbRadarFilled, TbRss } from "react-icons/tb";
+import { TbPlugConnectedX, TbRadarFilled, TbRss } from "react-icons/tb";
 
 type Props = {
 	feeds: Feed[];
-	className?: React.HTMLAttributes<HTMLDivElement>["className"];
 };
 
-export function FeedInfoMenu({ feeds, className }: Props): React.JSX.Element {
-	const _t = useTranslations("rssFeed.info");
+export function FeedInfoMenu({ feeds }: Props): React.JSX.Element {
 	const totalFeeds = feeds.length;
 	const unreachableFeeds = feeds.filter((feed) => feed.errorType !== null);
 	const totalContent = feeds.reduce(
 		(sum, feed) => sum + (feed.content?.length ?? 0),
 		0,
 	);
-
-	// return (
-	// 	<p className={className}>
-	// 		<span>{t("textPartOne")}&nbsp;</span>
-	// 		<Link className="underline" href="#">
-	// 			{t("textFeedsCount", { count: totalFeeds })}
-	// 		</Link>
-	// 		<span>&nbsp;{t("textPartTwo")}&nbsp;</span>
-	// 		<Link className="underline" href="#">
-	// 			{t("textUnreachableCount", { count: unreachableFeeds.length })}
-	// 		</Link>
-	// 	</p>
-	// );
 
 	const [_isOpen, _setIsOpen] = useState(false);
 	const _isDesktop = useMediaQuery("(min-width: 768px)");
@@ -81,7 +66,7 @@ function FeedInfoMenuDesktop({
 	return (
 		<Sheet open={isOpen} onOpenChange={(status): void => setIsOpen(status)}>
 			<SheetTrigger asChild>
-				<p>
+				<p className={"text-muted-foreground"}>
 					<span>{t("textPartOne")}&nbsp;</span>
 					<button type="button" className="underline">
 						{t("textFeedsCount", { count: totalFeeds })}
@@ -104,34 +89,52 @@ function FeedInfoMenuDesktop({
 					<div
 						className={cn(
 							navigationMenuTriggerStyle(),
-							"w-full px-2 flex justify-between items-center flex-wrap",
+							`w-full px-2 cursor-pointer
+							 flex justify-between items-center flex-wrap`,
 						)}
 					>
 						<div className="flex gap-2">
 							<TbRadarFilled size={20} className="text-primary" />
 							<p>{t("allFeeds")}</p>
 						</div>
-						<p className="text-primary">{totalFeeds}</p>
+						<p className="text-primary">{totalContent}</p>
 					</div>
 
-					<ScrollArea className="max-h-svh overflow-auto">
-						{feeds.map((feed) => (
-							<li
-								key={feed.id}
-								className={cn(
-									navigationMenuTriggerStyle(),
-									`flex justify-between items-center flex-wrap
+					<div>
+						<p className="text-muted-foreground text-sm font-bold">
+							{t("textFeedsCount", { count: totalFeeds })}
+						</p>
+						<ScrollArea className="max-h-svh overflow-auto">
+							{feeds.map((feed) => (
+								<div
+									key={feed.id}
+									className={cn(
+										navigationMenuTriggerStyle(),
+										`grid grid-cols-[80%_20%] gap-2
 									cursor-pointer w-full px-2`,
-								)}
-							>
-								<div className="flex gap-2">
-									<TbRss size={20} className="text-primary" />
-									<p>{feed.title}</p>
+										{
+											"text-muted-foreground": feed.errorType !== null,
+										},
+									)}
+								>
+									<div className="flex gap-2 items-center overflow-hidden">
+										{feed.errorType !== null ? (
+											<TbPlugConnectedX
+												size={20}
+												className="text-destructive shrink-0"
+											/>
+										) : (
+											<TbRss size={20} className="text-primary shrink-0" />
+										)}
+										<p className="truncate">{feed.title}</p>
+									</div>
+									<p className="text-end text-primary">
+										{feed.content?.length}
+									</p>
 								</div>
-								<p className="text-primary">{feed.content?.length}</p>
-							</li>
-						))}
-					</ScrollArea>
+							))}
+						</ScrollArea>
+					</div>
 				</div>
 			</SheetContent>
 		</Sheet>

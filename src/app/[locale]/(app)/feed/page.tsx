@@ -28,7 +28,7 @@ export default async function Page(): Promise<React.JSX.Element> {
 						<AddFeedForm />
 					</div>
 				</div>
-				<FeedInfoMenu className="text-muted-foreground" feeds={userFeeds} />
+				<FeedInfoMenu feeds={userFeeds} />
 			</section>
 
 			<Separator className="my-4" />
