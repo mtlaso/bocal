@@ -17,10 +17,15 @@ type Props = {
 export function Feeds({ flattenedContent }: Props): React.JSX.Element {
 	const locale = useLocale();
 	const { selectedFeed } = useSelectedFeedStore();
+
+	const filteredContent = flattenedContent.filter((feed) => {
+		if (selectedFeed === "all") return true;
+		return feed.feedId.toString() === selectedFeed;
+	});
+
 	return (
 		<section className="grid gap-4">
-			{selectedFeed}
-			{flattenedContent.map((item, index, arr) => (
+			{filteredContent.map((item, index, arr) => (
 				<div key={`${item.id}-${item.feedId}`}>
 					<Link className={SPACING.SM} href={item.url} target="_blank">
 						<h1 className="tracking-tight text-xl font-semibold">
