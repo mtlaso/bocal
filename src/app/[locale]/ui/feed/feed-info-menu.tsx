@@ -1,6 +1,7 @@
 "use client";
 
 import { useMediaQuery } from "@/app/[locale]/lib/hooks/use-media-query";
+import { useSelectedFeedStore } from "@/app/[locale]/lib/stores/selected-feed-store";
 import { lusitana } from "@/app/[locale]/ui/fonts";
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -62,6 +63,7 @@ function FeedInfoMenuDesktop({
 }): React.JSX.Element {
 	const t = useTranslations("rssFeed.info");
 	const [isOpen, setIsOpen] = useState(false);
+	const { setSelectedFeed } = useSelectedFeedStore();
 
 	return (
 		<Sheet open={isOpen} onOpenChange={(status): void => setIsOpen(status)}>
@@ -78,7 +80,7 @@ function FeedInfoMenuDesktop({
 						</button>
 					</p>
 					<p className="text-muted-foreground">
-						TODO! statut du feed selectionee ici!!! (par pour 'tous')
+						TODO! statut du feed selectionee ici!!! (pas pour 'tous')
 					</p>
 				</div>
 			</SheetTrigger>
@@ -91,7 +93,11 @@ function FeedInfoMenuDesktop({
 					</SheetTitle>
 				</SheetHeader>
 				<div className="flex flex-col gap-4">
-					<div
+					<button
+						type="button"
+						onClick={(): void => {
+							setSelectedFeed("all");
+						}}
 						className={cn(
 							navigationMenuTriggerStyle(),
 							`w-full px-2 cursor-pointer
@@ -103,7 +109,7 @@ function FeedInfoMenuDesktop({
 							<p>{t("allFeeds")}</p>
 						</div>
 						<p className="text-primary">{totalContent}</p>
-					</div>
+					</button>
 
 					<div>
 						<p className="text-muted-foreground text-sm font-bold">
@@ -111,7 +117,11 @@ function FeedInfoMenuDesktop({
 						</p>
 						<ScrollArea className="max-h-svh overflow-auto">
 							{feeds.map((feed) => (
-								<div
+								<button
+									type="button"
+									onClick={(): void => {
+										setSelectedFeed(feed.id.toString());
+									}}
 									key={feed.id}
 									className={cn(
 										navigationMenuTriggerStyle(),
@@ -136,7 +146,7 @@ function FeedInfoMenuDesktop({
 									<p className="text-end text-primary">
 										{feed.content?.length}
 									</p>
-								</div>
+								</button>
 							))}
 						</ScrollArea>
 					</div>
