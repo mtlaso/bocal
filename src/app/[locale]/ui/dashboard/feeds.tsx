@@ -2,6 +2,7 @@
 
 import { removeWWW } from "@/app/[locale]/lib/remove-www";
 import type { FlattenedFeedsContent } from "@/app/[locale]/lib/schema";
+import { useSelectedFeedStore } from "@/app/[locale]/lib/stores/selected-feed-store";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
 import type { Feed } from "@/db/schema";
@@ -15,8 +16,10 @@ type Props = {
 
 export function Feeds({ flattenedContent }: Props): React.JSX.Element {
 	const locale = useLocale();
+	const { selectedFeed } = useSelectedFeedStore();
 	return (
 		<section className="grid gap-4">
+			{selectedFeed}
 			{flattenedContent.map((item, index, arr) => (
 				<div key={`${item.id}-${item.feedId}`}>
 					<Link className={SPACING.SM} href={item.url} target="_blank">

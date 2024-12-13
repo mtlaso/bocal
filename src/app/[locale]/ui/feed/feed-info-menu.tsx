@@ -63,7 +63,7 @@ function FeedInfoMenuDesktop({
 }): React.JSX.Element {
 	const t = useTranslations("rssFeed.info");
 	const [isOpen, setIsOpen] = useState(false);
-	const { setSelectedFeed } = useSelectedFeedStore();
+	const { setSelectedFeed, selectedFeed } = useSelectedFeedStore();
 
 	return (
 		<Sheet open={isOpen} onOpenChange={(status): void => setIsOpen(status)}>
@@ -102,13 +102,27 @@ function FeedInfoMenuDesktop({
 							navigationMenuTriggerStyle(),
 							`w-full px-2 cursor-pointer
 							 flex justify-between items-center flex-wrap`,
+							{
+								"!bg-primary": selectedFeed === "all",
+							},
 						)}
 					>
 						<div className="flex gap-2">
-							<TbRadarFilled size={20} className="text-primary" />
+							<TbRadarFilled
+								size={20}
+								className={cn("text-primary", {
+									"text-secondary": selectedFeed === "all",
+								})}
+							/>
 							<p>{t("allFeeds")}</p>
 						</div>
-						<p className="text-primary">{totalContent}</p>
+						<p
+							className={cn("text-primary", {
+								"text-secondary": selectedFeed === "all",
+							})}
+						>
+							{totalContent}
+						</p>
 					</button>
 
 					<div>
@@ -125,10 +139,11 @@ function FeedInfoMenuDesktop({
 									key={feed.id}
 									className={cn(
 										navigationMenuTriggerStyle(),
-										`grid grid-cols-[80%_20%] gap-2
+										`grid grid-cols-[80%_20%]
 									cursor-pointer w-full px-2`,
 										{
 											"text-muted-foreground": feed.errorType !== null,
+											"!bg-primary": selectedFeed === feed.id.toString(),
 										},
 									)}
 								>
@@ -136,14 +151,25 @@ function FeedInfoMenuDesktop({
 										{feed.errorType !== null ? (
 											<TbPlugConnectedX
 												size={20}
-												className="text-destructive shrink-0"
+												className={cn("text-destructive shrink-0", {
+													"text-secondary": selectedFeed === feed.id.toString(),
+												})}
 											/>
 										) : (
-											<TbRss size={20} className="text-primary shrink-0" />
+											<TbRss
+												size={20}
+												className={cn("text-primary shrink-0", {
+													"text-secondary": selectedFeed === feed.id.toString(),
+												})}
+											/>
 										)}
 										<p className="truncate">{feed.title}</p>
 									</div>
-									<p className="text-end text-primary">
+									<p
+										className={cn("text-primary text-end", {
+											"text-secondary": selectedFeed === feed.id.toString(),
+										})}
+									>
 										{feed.content?.length}
 									</p>
 								</button>
