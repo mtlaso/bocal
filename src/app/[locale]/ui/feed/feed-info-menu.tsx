@@ -77,7 +77,9 @@ function FeedInfoMenuDesktop({
 							{t("textUnreachableCount", { count: totalUnreachableFeeds })}
 						</button>
 					</p>
-					<p className="text-muted-foreground">TODO! statut du feed selectionee ici!!! (par pour 'tous')</p>
+					<p className="text-muted-foreground">
+						TODO! statut du feed selectionee ici!!! (par pour 'tous')
+					</p>
 				</div>
 			</SheetTrigger>
 			<SheetContent side={"left"}>
