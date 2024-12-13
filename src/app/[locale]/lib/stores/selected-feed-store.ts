@@ -13,7 +13,7 @@ export const useSelectedFeedStore = create<SelectedFeedStore>()(
 			setSelectedFeed: (feed: string): void => set({ selectedFeed: feed }),
 		}),
 		{
-			name: "selected-food-storage",
+			name: "selected-feed-storage",
 		},
 	),
 );

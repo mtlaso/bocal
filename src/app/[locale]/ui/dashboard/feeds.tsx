@@ -3,11 +3,13 @@
 import { removeWWW } from "@/app/[locale]/lib/remove-www";
 import type { FlattenedFeedsContent } from "@/app/[locale]/lib/schema";
 import { useSelectedFeedStore } from "@/app/[locale]/lib/stores/selected-feed-store";
+import { LinksSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
 import type { Feed } from "@/db/schema";
 import { Link } from "@/i18n/routing";
 import { useLocale } from "next-intl";
+import { useEffect, useState } from "react";
 
 type Props = {
 	feeds: Feed[];
@@ -22,6 +24,16 @@ export function Feeds({ flattenedContent }: Props): React.JSX.Element {
 		if (selectedFeed === "all") return true;
 		return feed.feedId.toString() === selectedFeed;
 	});
+
+	const [isHydrated, setIsHydrated] = useState(false);
+
+	useEffect(() => {
+		setIsHydrated(true);
+	});
+
+	if (!isHydrated) {
+		return <LinksSkeleton />;
+	}
 
 	return (
 		<section className="grid gap-4">
