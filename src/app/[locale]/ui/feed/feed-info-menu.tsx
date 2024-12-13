@@ -14,6 +14,7 @@ import type { Feed } from "@/db/schema";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { BsThreeDots } from "react-icons/bs";
 import { TbPlugConnectedX, TbRadarFilled, TbRss } from "react-icons/tb";
 
 type Props = {
@@ -148,46 +149,56 @@ function FeedMenuItem({
 	const { setSelectedFeed, selectedFeed } = useSelectedFeedStore();
 
 	return (
-		<button
-			type="button"
-			onClick={(): void => {
-				setSelectedFeed(feed.id.toString());
-			}}
-			className={cn(
-				navigationMenuTriggerStyle(),
-				`grid grid-cols-[80%_20%]
-									cursor-pointer w-full px-2`,
-				{
-					"text-muted-foreground": feed.errorType !== null,
-					"!bg-primary": selectedFeed === feed.id.toString(),
-				},
-			)}
-		>
-			<div className="flex gap-2 items-center overflow-hidden">
-				{feed.errorType !== null ? (
-					<TbPlugConnectedX
-						size={20}
-						className={cn("text-destructive shrink-0", {
-							"text-secondary": selectedFeed === feed.id.toString(),
-						})}
-					/>
-				) : (
-					<TbRss
-						size={20}
-						className={cn("text-primary shrink-0", {
-							"text-secondary": selectedFeed === feed.id.toString(),
-						})}
-					/>
+		<div className="flex items-center justify-around gap-4">
+			<button
+				type="button"
+				onClick={(): void => {
+					setSelectedFeed(feed.id.toString());
+				}}
+				className={cn(
+					navigationMenuTriggerStyle(),
+					`grid gridcols-[80%_1fr_1fr] grid-cols-[80%_1fr] gap-4
+				cursor-pointer w-full px-2`,
+					{
+						"text-muted-foreground": feed.errorType !== null,
+						"!bg-primary": selectedFeed === feed.id.toString(),
+					},
 				)}
-				<p className="truncate">{feed.title}</p>
-			</div>
-			<p
-				className={cn("text-primary text-end", {
-					"text-secondary": selectedFeed === feed.id.toString(),
-				})}
 			>
-				{feed.content?.length}
-			</p>
-		</button>
+				<div className="flex gap-2 items-center overflow-hidden">
+					{feed.errorType !== null ? (
+						<TbPlugConnectedX
+							size={20}
+							className={cn("text-destructive shrink-0", {
+								"text-secondary": selectedFeed === feed.id.toString(),
+							})}
+						/>
+					) : (
+						<TbRss
+							size={20}
+							className={cn("text-primary shrink-0", {
+								"text-secondary": selectedFeed === feed.id.toString(),
+							})}
+						/>
+					)}
+					<div>
+						<p className="truncate">{feed.title}</p>
+					</div>
+				</div>
+				<div className="flex gap-4 items-center justify-end ">
+					<p
+						className={cn("text-primary text-end", {
+							"text-secondary": selectedFeed === feed.id.toString(),
+						})}
+					>
+						{feed.content?.length}
+					</p>
+				</div>
+			</button>
+
+			<div className="block md:hidden ">
+				<BsThreeDots size={20} />
+			</div>
+		</div>
 	);
 }

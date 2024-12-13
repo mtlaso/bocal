@@ -46,7 +46,7 @@ export async function Links({
 	return (
 		<section
 			className={cn({
-				"grid grid-cols-2 md:grid-cols-3 gap-4": view === "grid",
+				"grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4": view === "grid",
 				"grid grid-cols-3 grid-rows-2 gap-4": view === "list",
 			})}
 		>
@@ -56,10 +56,10 @@ export async function Links({
 					className={cn(
 						{
 							"grid grid-rows-subgrid row-span-3 col-span-1": view === "grid",
-							"grid grid-cols-subgrid col-span-3 row-span- items-center":
+							"grid grid-cols-subgrid col-span-3 row-span-2 items-center":
 								view === "list",
 						},
-						"hover:shadow-md dark:hover:shadow-xl transition-all duration-200",
+						"hover:shadow-md dark:hover:shadow-xl transition-all duration-200 break-all",
 					)}
 				>
 					<CardHeader
@@ -70,7 +70,7 @@ export async function Links({
 						<Link href={item.url} target="_blank">
 							{item.ogImageURL ? (
 								<Image
-									className={cn("aspect-video h-auto w-full  object-cover", {
+									className={cn("aspect-video h-auto w-full object-cover", {
 										"rounded-t-xl": view === "grid",
 										"rounded-bl-xl rounded-tl-xl": view === "list",
 									})}
@@ -112,14 +112,14 @@ export async function Links({
 					</CardContent>
 
 					<CardFooter
-						className={cn("flex justify-between", {
+						className={cn("grid grid-cols2 grid-cols-[90%_1fr] gap-2", {
 							"row-start-2 col-start-2 col-span-2 pl-0": view === "list",
 						})}
 					>
 						<Link
 							href={item.url}
 							target="_blank"
-							className="text-sm text-muted-foreground"
+							className=" text-sm text-muted-foreground truncate"
 						>
 							{removeWWW(new URL(item.url).host)}
 						</Link>

@@ -1,6 +1,6 @@
 import { getUserFeeds } from "@/app/[locale]/lib/data";
 import { flattenFeedsContent } from "@/app/[locale]/lib/flatten-feeds-content";
-import { Feeds } from "@/app/[locale]/ui/dashboard/feeds";
+import { Feeds } from "@/app/[locale]/ui/feed/feeds";
 import { AddFeedForm } from "@/app/[locale]/ui/feed/add-feed-form";
 import { FeedInfoMenu } from "@/app/[locale]/ui/feed/feed-info-menu";
 import { lusitana } from "@/app/[locale]/ui/fonts";
