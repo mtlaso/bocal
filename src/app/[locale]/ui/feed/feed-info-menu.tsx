@@ -66,16 +66,19 @@ function FeedInfoMenuDesktop({
 	return (
 		<Sheet open={isOpen} onOpenChange={(status): void => setIsOpen(status)}>
 			<SheetTrigger asChild>
-				<p className={"text-muted-foreground"}>
-					<span>{t("textPartOne")}&nbsp;</span>
-					<button type="button" className="underline">
-						{t("textFeedsCount", { count: totalFeeds })}
-					</button>
-					<span>&nbsp;{t("textPartTwo")}&nbsp;</span>
-					<button type="button" className="underline">
-						{t("textUnreachableCount", { count: totalUnreachableFeeds })}
-					</button>
-				</p>
+				<div>
+					<p className={"text-muted-foreground"}>
+						<span>{t("textPartOne")}&nbsp;</span>
+						<button type="button" className="underline">
+							{t("textFeedsCount", { count: totalFeeds })}
+						</button>
+						<span>&nbsp;{t("textPartTwo")}&nbsp;</span>
+						<button type="button" className="underline">
+							{t("textUnreachableCount", { count: totalUnreachableFeeds })}
+						</button>
+					</p>
+					<p className="text-muted-foreground">TODO! statut du feed selectionee ici!!! (par pour 'tous')</p>
+				</div>
 			</SheetTrigger>
 			<SheetContent side={"left"}>
 				<SheetHeader>

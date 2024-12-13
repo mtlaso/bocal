@@ -4,11 +4,9 @@ import { Feeds } from "@/app/[locale]/ui/dashboard/feeds";
 import { AddFeedForm } from "@/app/[locale]/ui/feed/add-feed-form";
 import { FeedInfoMenu } from "@/app/[locale]/ui/feed/feed-info-menu";
 import { lusitana } from "@/app/[locale]/ui/fonts";
-import { LinksSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
 import { getTranslations } from "next-intl/server";
-import { Suspense } from "react";
 
 export default async function Page(): Promise<React.JSX.Element> {
 	const t = await getTranslations("rssFeed");
@@ -33,9 +31,7 @@ export default async function Page(): Promise<React.JSX.Element> {
 
 			<Separator className="my-4" />
 
-			<Suspense fallback={<LinksSkeleton />}>
-				<Feeds feeds={userFeeds} flattenedContent={flattenedFeeds} />
-			</Suspense>
+			<Feeds feeds={userFeeds} flattenedContent={flattenedFeeds} />
 		</>
 	);
 }

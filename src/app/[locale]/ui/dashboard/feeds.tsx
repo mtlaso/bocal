@@ -1,20 +1,20 @@
+"use client";
+
 import { removeWWW } from "@/app/[locale]/lib/remove-www";
 import type { FlattenedFeedsContent } from "@/app/[locale]/lib/schema";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
 import type { Feed } from "@/db/schema";
 import { Link } from "@/i18n/routing";
-import { getLocale } from "next-intl/server";
+import { useLocale } from "next-intl";
 
 type Props = {
 	feeds: Feed[];
 	flattenedContent: FlattenedFeedsContent[];
 };
 
-export async function Feeds({
-	flattenedContent,
-}: Props): Promise<React.JSX.Element> {
-	const locale = await getLocale();
+export function Feeds({ flattenedContent }: Props): React.JSX.Element {
+	const locale = useLocale();
 	return (
 		<section className="grid gap-4">
 			{flattenedContent.map((item, index, arr) => (
