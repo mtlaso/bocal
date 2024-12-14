@@ -69,7 +69,7 @@
 		"add": "Ajouter",
 		"unfollow": "Ne plus suivre",
 		"success": "Flux ajouté",
-		"sucessUnfollow": "Flux plus suivi",
+		"successUnfollow": "Flux plus suivi",
 		"info": {
 			"textPartOne": "Vous suivez",
 			"textFeedsCount": "{count, plural, =0 {aucun flux} =1 {un flux} other {# flux}}",

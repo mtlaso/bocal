@@ -138,12 +138,12 @@ function LinkForm({
 				</div>
 
 				{state.errors?.url?.map((err) => (
-					<p className="mt-2 text-sm text-red-500" key={err}>
+					<p className="mt-2 text-sm text-destructive" key={err}>
 						{t(err)}
 					</p>
 				))}
 				{state?.message && (
-					<p className="mt-2 text-sm text-red-500">{t(state.message)}</p>
+					<p className="mt-2 text-sm text-destructive">{t(state.message)}</p>
 				)}
 			</div>
 

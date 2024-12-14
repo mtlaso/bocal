@@ -350,24 +350,21 @@ export type UnfollowFeedState = {
 		feedId?: string[];
 	};
 	data?: {
-		feedId?: string;
+		feedId?: number;
 	};
 	message?: string | null;
 	successMessage?: string | null;
 };
 
-export async function unfollowFeed(
-	_currState: UnfollowFeedState,
-	formData: FormData,
-): Promise<UnfollowFeedState> {
+export async function unfollowFeed(id: string): Promise<UnfollowFeedState> {
 	const validatedFields = unfollowFeedSchema.safeParse({
-		feedId: Number.parseInt(formData.get("feedId")?.toString() ?? ""),
+		feedId: Number.parseInt(id),
 	});
 
 	if (!validatedFields.success) {
 		return {
 			errors: validatedFields.error.flatten().fieldErrors,
-			data: { feedId: formData.get("feedId")?.toString() },
+			data: { feedId: Number.parseInt(id) },
 			message: "errors.missingFields",
 		};
 	}

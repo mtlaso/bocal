@@ -1,7 +1,4 @@
-import {
-	type UnfollowFeedState,
-	unfollowFeed,
-} from "@/app/[locale]/lib/actions";
+import { unfollowFeed } from "@/app/[locale]/lib/actions";
 import { useSelectedFeedStore } from "@/app/[locale]/lib/stores/selected-feed-store";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,7 +11,7 @@ import {
 import type { Feed } from "@/db/schema";
 import { Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useActionState, useEffect } from "react";
+import { useTransition } from "react";
 import { TbSettings } from "react-icons/tb";
 import { toast } from "sonner";
 export function FeedInfoContextMenu({
@@ -31,6 +28,7 @@ export function FeedInfoContextMenu({
 				<button
 					type="button"
 					className="flex items-center gap-1 text-muted-foreground underline"
+					disabled={selectedFeed === "all"}
 				>
 					<TbSettings />
 					{selectedFeed === "all" && t("allFeeds")}
@@ -40,8 +38,8 @@ export function FeedInfoContextMenu({
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56">
 				<DropdownMenuGroup>
-					<DropdownMenuItem>
-						{selectedFeed !== "all" && <UnfollowFeed />}
+					<DropdownMenuItem disabled={selectedFeed === "all"}>
+						<UnfollowFeed />
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 			</DropdownMenuContent>
@@ -51,44 +49,41 @@ export function FeedInfoContextMenu({
 
 function UnfollowFeed(): React.JSX.Element {
 	const t = useTranslations("rssFeed");
-	const { selectedFeed } = useSelectedFeedStore();
+	const { selectedFeed, setSelectedFeed } = useSelectedFeedStore();
+	const [pending, startTransition] = useTransition();
 
-	const initlialState: UnfollowFeedState = {
-		errors: undefined,
-		message: undefined,
-		data: undefined,
+	const handleUnfollow = (e: React.MouseEvent): void => {
+		startTransition(async () => {
+			try {
+				e.preventDefault();
+				if (selectedFeed === "all") return;
+
+				const res = await unfollowFeed(selectedFeed);
+				if (res.message) {
+					toast.error(res.message);
+					return;
+				}
+
+				setSelectedFeed("all");
+				toast.success(t(res.successMessage));
+			} catch (_err) {
+				toast.error(t("errors.unexpected"));
+			}
+		});
 	};
-	const [state, formAction, pending] = useActionState(
-		unfollowFeed,
-		initlialState,
-	);
-
-	useEffect((): void => {
-		if (state.successMessage) {
-			toast.success(t(state.successMessage));
-			return;
-		}
-
-		if (state.message) {
-			toast.error(t(state.message));
-			return;
-		}
-	}, [state.message, state.successMessage, t]);
-
-	if (selectedFeed === "all") return <></>;
 
 	return (
-		<form action={formAction}>
+		<>
 			<Button
 				className="text-destructive"
+				onClick={handleUnfollow}
 				variant={"ghost"}
 				size={"sm"}
 				disabled={pending}
 			>
-				<input type="hidden" name="feedId" value={selectedFeed} />
 				<Trash />
 				{t("unfollow")}
 			</Button>
-		</form>
+		</>
 	);
 }
