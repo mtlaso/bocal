@@ -10,7 +10,6 @@ import {
 	DropdownMenuContent,
 	DropdownMenuGroup,
 	DropdownMenuItem,
-	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { usePathname } from "@/i18n/routing";
@@ -39,7 +38,6 @@ export function LinksContextMenu({ id }: { id: string }): React.JSX.Element {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56">
-				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
 					{isDashboardPage && (
 						<DropdownMenuItem>
@@ -57,7 +55,6 @@ export function LinksContextMenu({ id }: { id: string }): React.JSX.Element {
 						<DeleteLink id={id} />
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
-				<DropdownMenuSeparator />
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);

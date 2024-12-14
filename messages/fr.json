@@ -67,7 +67,9 @@
 	"rssFeed": {
 		"rssFeed": "Flux",
 		"add": "Ajouter",
+		"unfollow": "Ne plus suivre",
 		"success": "Flux ajouté",
+		"sucessUnfollow": "Flux plus suivi",
 		"info": {
 			"textPartOne": "Vous suivez",
 			"textFeedsCount": "{count, plural, =0 {aucun flux} =1 {un flux} other {# flux}}",
@@ -87,7 +89,8 @@
 			"feedUnreachable": "Le flux est inaccessible.",
 			"feedCannotBeProcessed": "Le flux ne peut pas être traité.",
 			"feedAlreadyFollowed": "Le flux est déjà suivi.",
-			"missingFields": "Champ(s) manquant(s)."
+			"missingFields": "Champ(s) manquant(s).",
+			"idFieldInvalid": "ID invalide."
 		}
 	}
 }

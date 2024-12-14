@@ -10,6 +10,7 @@ import {
 	insertFeedsSchema,
 	insertLinksSchema,
 	links,
+	unfollowFeedSchema,
 	usersFeeds,
 } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
@@ -341,5 +342,59 @@ export async function addFeed(
 	revalidatePath("/feed");
 	return {
 		successMessage: "success",
+	};
+}
+
+export type UnfollowFeedState = {
+	errors?: {
+		feedId?: string[];
+	};
+	data?: {
+		feedId?: string;
+	};
+	message?: string | null;
+	successMessage?: string | null;
+};
+
+export async function unfollowFeed(
+	_currState: UnfollowFeedState,
+	formData: FormData,
+): Promise<UnfollowFeedState> {
+	const validatedFields = unfollowFeedSchema.safeParse({
+		feedId: Number.parseInt(formData.get("feedId")?.toString() ?? ""),
+	});
+
+	if (!validatedFields.success) {
+		return {
+			errors: validatedFields.error.flatten().fieldErrors,
+			data: { feedId: formData.get("feedId")?.toString() },
+			message: "errors.missingFields",
+		};
+	}
+
+	try {
+		const user = await auth();
+		if (!user) {
+			throw new Error("errors.notSignedIn");
+		}
+
+		await db
+			.delete(usersFeeds)
+			.where(
+				and(
+					eq(usersFeeds.userId, user.user.id),
+					eq(usersFeeds.feedId, validatedFields.data.feedId),
+				),
+			)
+			.execute();
+	} catch (_err) {
+		return {
+			message: "errors.unexpected",
+		};
+	}
+
+	revalidatePath("/feed");
+	return {
+		successMessage: "successUnfollow",
 	};
 }

@@ -151,5 +151,12 @@ export const insertFeedsSchema = createInsertSchema(feeds, {
 		}),
 }).pick({ url: true });
 
+export const unfollowFeedSchema = createSelectSchema(usersFeeds, {
+	feedId: (schema): Zod.ZodNumber =>
+		schema.feedId.nonnegative({
+			message: "errors.idFieldInvalid",
+		}),
+}).pick({ feedId: true });
+
 export type User = InferSelectModel<typeof users>;
 export type Feed = InferSelectModel<typeof feeds>;
