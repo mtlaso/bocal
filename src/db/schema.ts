@@ -48,7 +48,13 @@ export const feeds = pgTable("feeds", {
 	lastError: text(),
 	errorCount: integer().default(0).notNull(),
 	errorType: text({
-		enum: ["fetch_error", "parse_error", "timeout_error", "invalid_url"],
+		enum: [
+			"fetch_error",
+			"parse_error",
+			"timeout_error",
+			"invalid_url",
+			"unknown_error",
+		],
 	}),
 });
 

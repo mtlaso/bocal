@@ -1,9 +1,12 @@
 import { sortOptions } from "@/app/[locale]/lib/schema";
-import { auth } from "@/auth";
 import { db } from "@/db/db";
 import { type Feed, feeds, links, usersFeeds } from "@/db/schema";
 import { type SQL, and, asc, desc, eq } from "drizzle-orm";
 import "server-only";
+import { feedService } from "@/app/[locale]/lib/feed-service";
+import { auth } from "@/auth";
+
+const ONE_HOUR = 60 * 60 * 1000;
 
 type GetLinksProps = {
 	archivedLinksOnly?: boolean;
@@ -50,10 +53,6 @@ export async function getLinks({
 	}
 }
 
-/**
- * Get user feeds.
- */
-// TODO: Also triggers background sync for feeds to get the latest content.
 export async function getUserFeeds(): Promise<Feed[]> {
 	try {
 		const user = await auth();
@@ -79,8 +78,14 @@ export async function getUserFeeds(): Promise<Feed[]> {
 			.where(eq(usersFeeds.userId, user.user.id))
 			.orderBy(desc(feeds.createdAt));
 
-		// TODO: Implement background sync
-		// void triggetBackgroundSync(userFeedsRes);
+		const now = new Date();
+		const outdatedFeeds = userFeedsRes.filter(
+			(feed) =>
+				!feed.lastSyncAt ||
+				now.getTime() - feed.lastSyncAt.getTime() > ONE_HOUR,
+		);
+
+		void feedService.triggerBackgroundSync(outdatedFeeds);
 
 		return userFeedsRes;
 	} catch (_err) {
