@@ -71,6 +71,25 @@ export const usersFeeds = pgTable(
 	(table) => [primaryKey({ columns: [table.userId, table.feedId] })],
 );
 
+export const usersFeedsReadContent = pgTable(
+	"users_feeds_read_content",
+	{
+		userId: text()
+			.notNull()
+			.references(() => users.id, { onDelete: "cascade" }),
+		feedId: integer()
+			.notNull()
+			.references(() => feeds.id, { onDelete: "cascade" }),
+		feedContentId: integer().notNull(),
+		readAt: timestamp().defaultNow().notNull(),
+	},
+	(table) => [
+		primaryKey({
+			columns: [table.userId, table.feedId, table.feedContentId],
+		}),
+	],
+);
+
 export const accounts = pgTable(
 	"accounts",
 	{

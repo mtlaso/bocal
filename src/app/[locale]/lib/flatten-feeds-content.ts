@@ -10,6 +10,7 @@ export const flattenFeedsContent = (feeds: Feed[]): FlattenedFeedsContent[] => {
 				...item,
 				feedTitle: feed.title,
 				feedId: feed.id,
+				// isRead: feed.readItems.includes(item.id),
 			} satisfies FlattenedFeedsContent;
 		});
 	});
