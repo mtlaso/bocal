@@ -80,7 +80,7 @@ export const usersFeedsReadContent = pgTable(
 		feedId: integer()
 			.notNull()
 			.references(() => feeds.id, { onDelete: "cascade" }),
-		feedContentId: integer().notNull(),
+		feedContentId: text().notNull(),
 		readAt: timestamp().defaultNow().notNull(),
 	},
 	(table) => [
