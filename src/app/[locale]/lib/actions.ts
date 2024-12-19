@@ -9,13 +9,22 @@ import {
 	feeds,
 	insertFeedsSchema,
 	insertLinksSchema,
+	insertUsersFeedsReadContentSchema,
 	links,
 	unfollowFeedSchema,
 	usersFeeds,
+	usersFeedsReadContent,
 } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
+
+type State<T, E extends string = keyof T & string> = {
+	errors?: { [key in E]?: string[] };
+	data?: T;
+	message?: string | null;
+	successMessage?: string | null;
+};
 
 export async function authenticate(
 	provider: string,
@@ -394,4 +403,52 @@ export async function unfollowFeed(id: string): Promise<UnfollowFeedState> {
 	return {
 		successMessage: "successUnfollow",
 	};
+}
+
+export type MarkFeedContentAsReadState = State<{
+	feedId?: number;
+	feedContentId?: string;
+}>;
+
+export async function markFeedContentAsRead(
+	feedId: number,
+	feedContentId: string,
+): Promise<MarkFeedContentAsReadState> {
+	const validatedFields = insertUsersFeedsReadContentSchema.safeParse({
+		feedId,
+		feedContentId,
+	});
+
+	if (!validatedFields.success) {
+		return {
+			errors: validatedFields.error.flatten().fieldErrors,
+			data: { feedId, feedContentId },
+			message: "errors.missingFields",
+		};
+	}
+
+	try {
+		const user = await auth();
+		if (!user) {
+			throw new Error("errors.notSignedIn");
+		}
+
+		await db
+			.insert(usersFeedsReadContent)
+			.values({
+				userId: user.user.id,
+				feedId: validatedFields.data.feedId,
+				feedContentId: validatedFields.data.feedContentId,
+				readAt: new Date(),
+			})
+			.onConflictDoNothing()
+			.execute();
+	} catch (_err) {
+		return {
+			message: "errors.unexpected",
+		};
+	}
+
+	revalidatePath("/feed");
+	return {};
 }

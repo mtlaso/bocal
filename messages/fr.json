@@ -90,7 +90,8 @@
 			"feedCannotBeProcessed": "Le flux ne peut pas être traité.",
 			"feedAlreadyFollowed": "Le flux est déjà suivi.",
 			"missingFields": "Champ(s) manquant(s).",
-			"idFieldInvalid": "ID invalide."
+			"idFieldInvalid": "ID invalide.",
+			"feedContentIdFieldInvalid": "ID de contenu invalide."
 		}
 	}
 }

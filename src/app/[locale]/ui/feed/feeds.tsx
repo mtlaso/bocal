@@ -1,29 +1,51 @@
 "use client";
+import { markFeedContentAsRead } from "@/app/[locale]/lib/actions";
 import { removeWWW } from "@/app/[locale]/lib/remove-www";
 import type { FlattenedFeedsContent } from "@/app/[locale]/lib/schema";
 import { useSelectedFeedStore } from "@/app/[locale]/lib/stores/selected-feed-store";
 import { LinksSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
-import type { Feed } from "@/db/schema";
 import { Link } from "@/i18n/routing";
-import { useLocale } from "next-intl";
-import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
+import { useLocale, useTranslations } from "next-intl";
+import { useEffect, useState, useTransition } from "react";
+import { toast } from "sonner";
 
 type Props = {
-	feeds: Feed[];
 	flattenedContent: FlattenedFeedsContent[];
 };
 
 export function Feeds({ flattenedContent }: Props): React.JSX.Element {
+	const t = useTranslations("rssFeed");
+	const [_, startTransition] = useTransition();
 	const [isHydrated, setIsHydrated] = useState(false);
 	const locale = useLocale();
 	const { selectedFeed } = useSelectedFeedStore();
 
-	const items = flattenedContent.filter((feed) => {
+	const items = flattenedContent.filter(async (feed) => {
 		if (selectedFeed === "all") return true;
 		return feed.feedId.toString() === selectedFeed;
 	});
+
+	const handleMarkAsRead = (
+		e: React.MouseEvent,
+		feedId: number,
+		feedContentId: string,
+	): void => {
+		startTransition(async () => {
+			try {
+				e.preventDefault();
+				const res = await markFeedContentAsRead(feedId, feedContentId);
+
+				if (res.message) {
+					toast.error(t(res.message));
+				}
+			} catch (_err) {
+				toast.error(t("errors.unexpected"));
+			}
+		});
+	};
 
 	useEffect(() => {
 		setIsHydrated(true);
@@ -37,7 +59,16 @@ export function Feeds({ flattenedContent }: Props): React.JSX.Element {
 		<section className="grid gap-4">
 			{items.map((item, index, arr) => (
 				<div key={`${item.id}-${item.feedId}`}>
-					<Link className={SPACING.SM} href={item.url} target="_blank">
+					<Link
+						onClick={(e): void => {
+							handleMarkAsRead(e, item.feedId, item.id);
+						}}
+						className={cn(SPACING.SM, {
+							"bg-primary-oreground opacity-50": item.isRead,
+						})}
+						href={item.url}
+						target="_blank"
+					>
 						<h1 className="tracking-tight text-xl font-semibold">
 							{item.title}
 						</h1>

@@ -1,3 +1,5 @@
+import type { UsersFeedsReadContent } from "@/db/schema";
+
 export enum sortOptions {
 	byDateAsc = "byDateAsc",
 	byDateDesc = "byDateDesc",
@@ -14,6 +16,7 @@ export type FeedContent = {
 export type FlattenedFeedsContent = FeedContent & {
 	feedTitle: string;
 	feedId: number;
+	isRead: UsersFeedsReadContent | null;
 };
 
 export enum FeedStatus {

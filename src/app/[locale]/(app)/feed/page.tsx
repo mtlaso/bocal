@@ -11,7 +11,7 @@ import { getTranslations } from "next-intl/server";
 export default async function Page(): Promise<React.JSX.Element> {
 	const t = await getTranslations("rssFeed");
 	const userFeeds = await getUserFeeds();
-	const flattenedFeeds = flattenFeedsContent(userFeeds);
+	const flattenedFeeds = await flattenFeedsContent(userFeeds);
 
 	return (
 		<>
@@ -28,10 +28,18 @@ export default async function Page(): Promise<React.JSX.Element> {
 				</div>
 				<FeedInfoMenu feeds={userFeeds} />
 			</section>
-
 			<Separator className="my-4" />
-
-			<Feeds feeds={userFeeds} flattenedContent={flattenedFeeds} />
+			<ol start={50} className="bg-destructive">
+				<li>
+					TODO BUG: quand on ajoute un feed, changer le selectedFeed pour le
+					nouveau feed ou "all"
+				</li>
+				<li>
+					TODO: afficher un checkbox/switch pour afficher les feeds lus ou non
+					et pouvoir les marquer manuellement comme lus
+				</li>
+			</ol>
+			<Feeds flattenedContent={flattenedFeeds} />
 		</>
 	);
 }

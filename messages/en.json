@@ -92,7 +92,8 @@
 			"feedCannotBeProcessed": "Feed cannot be processed.",
 			"feedAlreadyFollowed": "Feed already followed.",
 			"missingFields": "Missing fields.",
-			"idFieldInvalid": "ID invalid."
+			"idFieldInvalid": "ID invalid.",
+			"feedContentIdFieldInvalid": "Content ID invalid."
 		}
 	}
 }

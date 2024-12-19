@@ -1,6 +1,13 @@
 import { sortOptions } from "@/app/[locale]/lib/schema";
 import { db } from "@/db/db";
-import { type Feed, feeds, links, usersFeeds } from "@/db/schema";
+import {
+	type Feed,
+	type UsersFeedsReadContent,
+	feeds,
+	links,
+	usersFeeds,
+	usersFeedsReadContent,
+} from "@/db/schema";
 import { type SQL, and, asc, desc, eq } from "drizzle-orm";
 import "server-only";
 import { feedService } from "@/app/[locale]/lib/feed-service";
@@ -88,6 +95,44 @@ export async function getUserFeeds(): Promise<Feed[]> {
 		void feedService.triggerBackgroundSync(outdatedFeeds);
 
 		return userFeedsRes;
+	} catch (_err) {
+		throw new Error("errors.unexpected");
+	}
+}
+
+export async function isFeedContentRead(
+	feedId: number,
+	feedContentId: string,
+): Promise<UsersFeedsReadContent | null> {
+	try {
+		const user = await auth();
+		if (!user) {
+			throw new Error("errors.notSignedIn");
+		}
+
+		const data = await db
+			.select({
+				userId: usersFeedsReadContent.userId,
+				feedId: usersFeedsReadContent.feedId,
+				feedContentId: usersFeedsReadContent.feedContentId,
+				readAt: usersFeedsReadContent.readAt,
+			})
+			.from(usersFeedsReadContent)
+			.limit(1)
+			.where(
+				and(
+					eq(usersFeedsReadContent.userId, user.user.id),
+					eq(usersFeedsReadContent.feedId, feedId),
+					eq(usersFeedsReadContent.feedContentId, feedContentId),
+				),
+			)
+			.execute();
+
+		if (data.length === 0) {
+			return null;
+		}
+
+		return data[0];
 	} catch (_err) {
 		throw new Error("errors.unexpected");
 	}

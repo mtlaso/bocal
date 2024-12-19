@@ -183,5 +183,22 @@ export const unfollowFeedSchema = createSelectSchema(usersFeeds, {
 		}),
 }).pick({ feedId: true });
 
+export const insertUsersFeedsReadContentSchema = createSelectSchema(
+	usersFeedsReadContent,
+	{
+		feedId: (schema): Zod.ZodNumber =>
+			schema.feedId.nonnegative({
+				message: "errors.idFieldInvalid",
+			}),
+		feedContentId: (schema): Zod.ZodString =>
+			schema.feedContentId.nonempty({
+				message: "errors.feedContentIdFieldInvalid",
+			}),
+	},
+).pick({ feedId: true, feedContentId: true });
+
 export type User = InferSelectModel<typeof users>;
 export type Feed = InferSelectModel<typeof feeds>;
+export type UsersFeedsReadContent = InferSelectModel<
+	typeof usersFeedsReadContent
+>;
