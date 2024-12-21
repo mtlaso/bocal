@@ -9,33 +9,27 @@ import { Separator } from "@/components/ui/separator";
 import { getTranslations } from "next-intl/server";
 
 export default async function Page(): Promise<React.JSX.Element> {
-	const t = await getTranslations("rssFeed");
-	const userFeeds = await getUserFeeds();
-	const flattenedFeeds = await flattenFeedsContent(userFeeds);
+  const t = await getTranslations("rssFeed");
+  const userFeeds = await getUserFeeds();
+  const flattenedFeeds = await flattenFeedsContent(userFeeds);
 
-	return (
-		<>
-			<section className={SPACING.SM}>
-				<div className="flex justify-between">
-					<div className="flex gap-2">
-						<h1
-							className={`${lusitana.className} font-semibold tracking-tight text-3xl`}
-						>
-							{t("rssFeed")}
-						</h1>
-						<AddFeedForm />
-					</div>
-				</div>
-				<FeedInfoMenu feeds={userFeeds} />
-			</section>
-			<Separator className="my-4" />
-			<ul>
-				<li>
-					afficher le nb de contenu non lu dans le menu gauche, a la place du
-					nombre total de contenu dans un feed
-				</li>
-			</ul>
-			<Feeds flattenedContent={flattenedFeeds} />
-		</>
-	);
+  return (
+    <>
+      <section className={SPACING.SM}>
+        <div className="flex justify-between">
+          <div className="flex gap-2">
+            <h1
+              className={`${lusitana.className} font-semibold tracking-tight text-3xl`}
+            >
+              {t("rssFeed")}
+            </h1>
+            <AddFeedForm />
+          </div>
+        </div>
+        <FeedInfoMenu feeds={userFeeds} />
+      </section>
+      <Separator className="my-4" />
+      <Feeds flattenedContent={flattenedFeeds} />
+    </>
+  );
 }
