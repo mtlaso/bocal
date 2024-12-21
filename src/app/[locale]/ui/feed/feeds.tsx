@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { useLocale, useTranslations } from "next-intl";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 type Props = {
@@ -18,7 +18,6 @@ type Props = {
 
 export function Feeds({ flattenedContent }: Props): React.JSX.Element {
 	const t = useTranslations("rssFeed");
-	const [_, startTransition] = useTransition();
 	const [isHydrated, setIsHydrated] = useState(false);
 	const locale = useLocale();
 	const { selectedFeed } = useSelectedFeedStore();
@@ -28,23 +27,19 @@ export function Feeds({ flattenedContent }: Props): React.JSX.Element {
 		return feed.feedId.toString() === selectedFeed;
 	});
 
-	const handleMarkAsRead = (
-		e: React.MouseEvent,
+	const handleMarkAsRead = async (
 		feedId: number,
 		feedContentId: string,
-	): void => {
-		startTransition(async () => {
-			try {
-				e.preventDefault();
-				const res = await markFeedContentAsRead(feedId, feedContentId);
+	): Promise<void> => {
+		try {
+			const res = await markFeedContentAsRead(feedId, feedContentId);
 
-				if (res.message) {
-					toast.error(t(res.message));
-				}
-			} catch (_err) {
-				toast.error(t("errors.unexpected"));
+			if (res.message) {
+				toast.error(t(res.message));
 			}
-		});
+		} catch (_err) {
+			toast.error(t("errors.unexpected"));
+		}
 	};
 
 	useEffect(() => {
@@ -60,8 +55,8 @@ export function Feeds({ flattenedContent }: Props): React.JSX.Element {
 			{items.map((item, index, arr) => (
 				<div key={`${item.id}-${item.feedId}`}>
 					<Link
-						onClick={(e): void => {
-							handleMarkAsRead(e, item.feedId, item.id);
+						onClick={(): void => {
+							handleMarkAsRead(item.feedId, item.id);
 						}}
 						className={cn(SPACING.SM, {
 							"bg-primary-oreground opacity-50": item.isRead,
