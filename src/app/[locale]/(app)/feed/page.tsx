@@ -31,10 +31,6 @@ export default async function Page(): Promise<React.JSX.Element> {
 			<Separator className="my-4" />
 			<ol start={50} className="bg-destructive">
 				<li>
-					TODO BUG: quand on ajoute un feed, changer le selectedFeed pour le
-					nouveau feed ou "all"
-				</li>
-				<li>
 					TODO: afficher un checkbox/switch pour afficher les feeds lus ou non
 					et pouvoir les marquer manuellement comme lus
 				</li>

@@ -52,7 +52,6 @@ export function Feeds({ flattenedContent }: Props): React.JSX.Element {
 
 	return (
 		<section className="grid gap-4">
-			<code>{selectedFeed}</code>
 			{items.map((item, index, arr) => (
 				<div key={`${item.id}-${item.feedId}`}>
 					<Link
@@ -68,8 +67,6 @@ export function Feeds({ flattenedContent }: Props): React.JSX.Element {
 						<h1 className="tracking-tight text-xl font-semibold">
 							{item.title}
 						</h1>
-						<p>{item.id}</p>
-						<p>{item.feedId}</p>
 						<div>
 							<p className="text-primary font-medium">
 								{removeWWW(new URL(item.url).host)}

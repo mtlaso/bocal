@@ -384,15 +384,27 @@ export async function unfollowFeed(id: string): Promise<UnfollowFeedState> {
 			throw new Error("errors.notSignedIn");
 		}
 
-		await db
-			.delete(usersFeeds)
-			.where(
-				and(
-					eq(usersFeeds.userId, user.user.id),
-					eq(usersFeeds.feedId, validatedFields.data.feedId),
-				),
-			)
-			.execute();
+		await db.transaction(async (tx) => {
+			await tx
+				.delete(usersFeeds)
+				.where(
+					and(
+						eq(usersFeeds.userId, user.user.id),
+						eq(usersFeeds.feedId, validatedFields.data.feedId),
+					),
+				)
+				.execute();
+
+			await tx
+				.delete(usersFeedsReadContent)
+				.where(
+					and(
+						eq(usersFeedsReadContent.userId, user.user.id),
+						eq(usersFeedsReadContent.feedId, validatedFields.data.feedId),
+					),
+				)
+				.execute();
+		});
 	} catch (_err) {
 		return {
 			message: "errors.unexpected",
