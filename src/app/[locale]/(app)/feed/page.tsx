@@ -29,16 +29,12 @@ export default async function Page(): Promise<React.JSX.Element> {
 				<FeedInfoMenu feeds={userFeeds} />
 			</section>
 			<Separator className="my-4" />
-			<ol start={50} className="bg-destructive">
+			<ul>
 				<li>
-					TODO: afficher un checkbox/switch pour afficher les feeds lus ou non
-					et pouvoir les marquer manuellement comme lus
+					afficher le nb de contenu non lu dans le menu gauche, a la place du
+					nombre total de contenu dans un feed
 				</li>
-				<li>
-					Quand un utilisateur ne suit plus un feed, enlever les references dans{" "}
-					<code>users_feeds_read_content</code>
-				</li>
-			</ol>
+			</ul>
 			<Feeds flattenedContent={flattenedFeeds} />
 		</>
 	);

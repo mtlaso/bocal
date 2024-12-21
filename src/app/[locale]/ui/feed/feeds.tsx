@@ -1,13 +1,17 @@
 "use client";
-import { markFeedContentAsRead } from "@/app/[locale]/lib/actions";
+import {
+	markFeedContentAsRead,
+	markFeedContentAsUnread,
+} from "@/app/[locale]/lib/actions";
 import { removeWWW } from "@/app/[locale]/lib/remove-www";
 import type { FlattenedFeedsContent } from "@/app/[locale]/lib/schema";
 import { useSelectedFeedStore } from "@/app/[locale]/lib/stores/selected-feed-store";
 import { LinksSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
-import { Separator } from "@/components/ui/separator";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
+import type { CheckedState } from "@radix-ui/react-checkbox";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -42,6 +46,33 @@ export function Feeds({ flattenedContent }: Props): React.JSX.Element {
 		}
 	};
 
+	const handleMarkAsUnread = async (
+		feedId: number,
+		feedContentId: string,
+	): Promise<void> => {
+		try {
+			const res = await markFeedContentAsUnread(feedId, feedContentId);
+
+			if (res.message) {
+				toast.error(t(res.message));
+			}
+		} catch (_err) {
+			toast.error(t("errors.unexpected"));
+		}
+	};
+
+	const handleToggleReadStatus = (
+		checkState: CheckedState,
+		feedId: number,
+		feedContentId: string,
+	): void => {
+		if (checkState) {
+			handleMarkAsRead(feedId, feedContentId);
+		} else {
+			handleMarkAsUnread(feedId, feedContentId);
+		}
+	};
+
 	useEffect(() => {
 		setIsHydrated(true);
 	}, []);
@@ -51,16 +82,30 @@ export function Feeds({ flattenedContent }: Props): React.JSX.Element {
 	}
 
 	return (
-		<section className="grid gap-4">
-			{items.map((item, index, arr) => (
-				<div key={`${item.id}-${item.feedId}`}>
+		<section className={cn("grid", SPACING.MD)}>
+			{items.map((item) => (
+				<div key={`${item.id}-${item.feedId}`} className="flex items-start">
+					<div className="mt-2 mr-2">
+						<Checkbox
+							id={`readToggle-${item.id}`}
+							className="rounded-full border-dashed"
+							checked={item.isRead !== null}
+							onCheckedChange={(e): void => {
+								handleToggleReadStatus(e, item.feedId, item.id);
+							}}
+						/>
+						<label htmlFor={`readToggle-${item.id}`} className="sr-only">
+							{item.isRead !== null ? t("markAsUnread") : t("markAsRead")}
+						</label>
+					</div>
+
 					<Link
-						onClick={(): void => {
-							handleMarkAsRead(item.feedId, item.id);
-						}}
-						className={cn(SPACING.SM, {
+						className={cn(SPACING.SM, "flex-grow", {
 							"bg-primary-oreground opacity-50": item.isRead,
 						})}
+						onClick={(): Promise<void> =>
+							handleMarkAsRead(item.feedId, item.id)
+						}
 						href={item.url}
 						target="_blank"
 					>
@@ -76,9 +121,6 @@ export function Feeds({ flattenedContent }: Props): React.JSX.Element {
 							</p>
 						</div>
 					</Link>
-					{index !== arr.length - 1 && (
-						<Separator className="my-4 opacity-100" />
-					)}
 				</div>
 			))}
 		</section>

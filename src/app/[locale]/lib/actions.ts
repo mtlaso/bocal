@@ -6,6 +6,7 @@ import { auth, signIn, signOut } from "@/auth";
 import { db } from "@/db/db";
 import {
 	deleteLinkSchema,
+	deleteUsersFeedsReadContentSchema,
 	feeds,
 	insertFeedsSchema,
 	insertLinksSchema,
@@ -454,6 +455,57 @@ export async function markFeedContentAsRead(
 				readAt: new Date(),
 			})
 			.onConflictDoNothing()
+			.execute();
+	} catch (_err) {
+		return {
+			message: "errors.unexpected",
+		};
+	}
+
+	revalidatePath("/feed");
+	return {};
+}
+
+export type MarkFeedContentAsUnreadState = State<{
+	feedId?: number;
+	feedContentId?: string;
+}>;
+
+export async function markFeedContentAsUnread(
+	feedId: number,
+	feedContentId: string,
+): Promise<MarkFeedContentAsUnreadState> {
+	const validatedFields = deleteUsersFeedsReadContentSchema.safeParse({
+		feedId,
+		feedContentId,
+	});
+
+	if (!validatedFields.success) {
+		return {
+			errors: validatedFields.error.flatten().fieldErrors,
+			data: { feedId, feedContentId },
+			message: "errors.missingFields",
+		};
+	}
+
+	try {
+		const user = await auth();
+		if (!user) {
+			throw new Error("errors.notSignedIn");
+		}
+
+		await db
+			.delete(usersFeedsReadContent)
+			.where(
+				and(
+					eq(usersFeedsReadContent.userId, user.user.id),
+					eq(usersFeedsReadContent.feedId, validatedFields.data.feedId),
+					eq(
+						usersFeedsReadContent.feedContentId,
+						validatedFields.data.feedContentId,
+					),
+				),
+			)
 			.execute();
 	} catch (_err) {
 		return {

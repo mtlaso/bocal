@@ -70,6 +70,8 @@
 		"unfollow": "Unfollow",
 		"success": "Feed added",
 		"successUnfollow": "Feed unfollowed",
+		"markAsRead": "Mark as read",
+		"markAsUnread": "Mark as unread",
 		"info": {
 			"textPartOne": "Following",
 			"textFeedsCount": "{count, plural, =0 {no feeds yet} =1 {one feed} other {# feeds}}",
