@@ -38,6 +38,10 @@ export default async function Page(): Promise<React.JSX.Element> {
 					TODO: afficher un checkbox/switch pour afficher les feeds lus ou non
 					et pouvoir les marquer manuellement comme lus
 				</li>
+				<li>
+					Quand un utilisateur ne suit plus un feed, enlever les references dans{" "}
+					<code>users_feeds_read_content</code>
+				</li>
 			</ol>
 			<Feeds flattenedContent={flattenedFeeds} />
 		</>
