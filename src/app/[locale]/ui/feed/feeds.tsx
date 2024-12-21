@@ -13,7 +13,7 @@ import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import type { CheckedState } from "@radix-ui/react-checkbox";
 import { useLocale, useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useOptimistic, useState } from "react";
 import { toast } from "sonner";
 
 type Props = {
@@ -21,9 +21,7 @@ type Props = {
 };
 
 export function Feeds({ flattenedContent }: Props): React.JSX.Element {
-	const t = useTranslations("rssFeed");
 	const [isHydrated, setIsHydrated] = useState(false);
-	const locale = useLocale();
 	const { selectedFeed } = useSelectedFeedStore();
 
 	const items = flattenedContent.filter((content) => {
@@ -31,34 +29,72 @@ export function Feeds({ flattenedContent }: Props): React.JSX.Element {
 		return content.feedId.toString() === selectedFeed;
 	});
 
+	useEffect(() => {
+		setIsHydrated(true);
+	}, []);
+
+	if (!isHydrated) {
+		return <LinksSkeleton />;
+	}
+
+	return (
+		<section className={cn("grid", SPACING.MD)}>
+			{items.map((item) => (
+				<Item item={item} key={`${item.id}-${item.feedId}`} />
+			))}
+		</section>
+	);
+}
+
+const Item = ({ item }: { item: FlattenedFeedsContent }): React.JSX.Element => {
+	const t = useTranslations("rssFeed");
+	const locale = useLocale();
+	// optimistic update, because the api is slow
+	// and we don't want the user to wait for the api to respond
+	// before marking the content as read
+	// will be updated if the api call fails
+	// or if the user refreshes the page
+
+	const [isReadOptimistic, addIsReadOptimistic] = useOptimistic(
+		item.isRead !== null,
+	);
+
 	const handleMarkAsRead = async (
 		feedId: number,
 		feedContentId: string,
 	): Promise<void> => {
-		try {
-			const res = await markFeedContentAsRead(feedId, feedContentId);
+		startTransition(async () => {
+			try {
+				addIsReadOptimistic(true);
+				const res = await markFeedContentAsRead(feedId, feedContentId);
 
-			if (res.message) {
-				toast.error(t(res.message));
+				if (res.message) {
+					toast.error(t(res.message));
+				}
+			} catch (_err) {
+				addIsReadOptimistic(false);
+				toast.error(t("errors.unexpected"));
 			}
-		} catch (_err) {
-			toast.error(t("errors.unexpected"));
-		}
+		});
 	};
 
 	const handleMarkAsUnread = async (
 		feedId: number,
 		feedContentId: string,
 	): Promise<void> => {
-		try {
-			const res = await markFeedContentAsUnread(feedId, feedContentId);
+		startTransition(async () => {
+			try {
+				addIsReadOptimistic(false);
+				const res = await markFeedContentAsUnread(feedId, feedContentId);
 
-			if (res.message) {
-				toast.error(t(res.message));
+				if (res.message) {
+					toast.error(t(res.message));
+				}
+			} catch (_err) {
+				addIsReadOptimistic(true);
+				toast.error(t("errors.unexpected"));
 			}
-		} catch (_err) {
-			toast.error(t("errors.unexpected"));
-		}
+		});
 	};
 
 	const handleToggleReadStatus = (
@@ -72,57 +108,40 @@ export function Feeds({ flattenedContent }: Props): React.JSX.Element {
 			handleMarkAsUnread(feedId, feedContentId);
 		}
 	};
-
-	useEffect(() => {
-		setIsHydrated(true);
-	}, []);
-
-	if (!isHydrated) {
-		return <LinksSkeleton />;
-	}
-
 	return (
-		<section className={cn("grid", SPACING.MD)}>
-			{items.map((item) => (
-				<div key={`${item.id}-${item.feedId}`} className="flex items-start">
-					<div className="mt-2 mr-2">
-						<Checkbox
-							id={`readToggle-${item.id}`}
-							className="rounded-full border-dashed"
-							checked={item.isRead !== null}
-							onCheckedChange={(e): void => {
-								handleToggleReadStatus(e, item.feedId, item.id);
-							}}
-						/>
-						<label htmlFor={`readToggle-${item.id}`} className="sr-only">
-							{item.isRead !== null ? t("markAsUnread") : t("markAsRead")}
-						</label>
-					</div>
+		<div className="flex items-start">
+			<div className="mt-2 mr-2">
+				<Checkbox
+					id={`readToggle-${item.id}`}
+					className="rounded-full border-dashed"
+					checked={isReadOptimistic}
+					onCheckedChange={(e): void => {
+						handleToggleReadStatus(e, item.feedId, item.id);
+					}}
+				/>
+				<label htmlFor={`readToggle-${item.id}`} className="sr-only">
+					{isReadOptimistic !== null ? t("markAsUnread") : t("markAsRead")}
+				</label>
+			</div>
 
-					<Link
-						className={cn(SPACING.SM, "flex-grow", {
-							"bg-primary-oreground opacity-50": item.isRead,
-						})}
-						onClick={(): Promise<void> =>
-							handleMarkAsRead(item.feedId, item.id)
-						}
-						href={item.url}
-						target="_blank"
-					>
-						<h1 className="tracking-tight text-xl font-semibold">
-							{item.title}
-						</h1>
-						<div>
-							<p className="text-primary font-medium">
-								{removeWWW(new URL(item.url).host)}
-							</p>
-							<p className="text-muted-foreground">
-								{new Date(item.date).toLocaleDateString(locale)}
-							</p>
-						</div>
-					</Link>
+			<Link
+				className={cn(SPACING.SM, "flex-grow", {
+					"bg-primary-oreground opacity-50": isReadOptimistic,
+				})}
+				onClick={(): Promise<void> => handleMarkAsRead(item.feedId, item.id)}
+				href={item.url}
+				target="_blank"
+			>
+				<h1 className="tracking-tight text-xl font-semibold">{item.title}</h1>
+				<div>
+					<p className="text-primary font-medium">
+						{removeWWW(new URL(item.url).host)}
+					</p>
+					<p className="text-muted-foreground">
+						{new Date(item.date).toLocaleDateString(locale)}
+					</p>
 				</div>
-			))}
-		</section>
+			</Link>
+		</div>
 	);
-}
+};
