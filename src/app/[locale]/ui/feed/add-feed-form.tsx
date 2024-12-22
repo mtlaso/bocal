@@ -24,7 +24,6 @@ import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useActionState, useState } from "react";
 import { TbLinkPlus } from "react-icons/tb";
-import { lusitana } from "../fonts";
 
 export function AddFeedForm(): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
@@ -61,9 +60,7 @@ function AddFeedFormDesktop({
 			</DialogTrigger>
 			<DialogContent className="w-11/12 sm:max-w-md">
 				<DialogHeader>
-					<DialogTitle className={`${lusitana.className}`}>
-						{t("addFeedForm.title")}
-					</DialogTitle>
+					<DialogTitle>{t("addFeedForm.title")}</DialogTitle>
 				</DialogHeader>
 				<FeedForm />
 			</DialogContent>
@@ -88,7 +85,7 @@ function AddFeedFormMobile({
 			</DrawerTrigger>
 			<DrawerContent>
 				<DrawerHeader>
-					<DialogTitle className={cn("text-left", lusitana.className)}>
+					<DialogTitle className="text-left">
 						{t("addFeedForm.title")}
 					</DialogTitle>
 				</DrawerHeader>

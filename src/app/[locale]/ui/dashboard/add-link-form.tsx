@@ -25,7 +25,6 @@ import { useTranslations } from "next-intl";
 import { useActionState, useState } from "react";
 import { TbLinkPlus } from "react-icons/tb";
 import { type AddLinkState, addLink } from "../../lib/actions";
-import { lusitana } from "../fonts";
 import { SPACING } from "../spacing";
 
 export function AddLinkForm(): React.JSX.Element {
@@ -63,9 +62,7 @@ function AddLinkFormDesktop({
 			</DialogTrigger>
 			<DialogContent className="w-11/12 sm:max-w-md">
 				<DialogHeader>
-					<DialogTitle className={`${lusitana.className}`}>
-						{t("addLinkForm.title")}
-					</DialogTitle>
+					<DialogTitle>{t("addLinkForm.title")}</DialogTitle>
 				</DialogHeader>
 				<LinkForm />
 			</DialogContent>
@@ -89,7 +86,7 @@ function AddLinkFormMobile({
 				</Button>
 			</DrawerTrigger>
 			<DrawerContent>
-				<DrawerHeader className={cn("text-left", lusitana.className)}>
+				<DrawerHeader className="text-left">
 					<DrawerTitle>{t("addLinkForm.title")}</DrawerTitle>
 				</DrawerHeader>
 				<LinkForm className="px-4" />

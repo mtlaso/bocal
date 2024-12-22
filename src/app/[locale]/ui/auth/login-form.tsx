@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import { toast } from "sonner";
 import { authenticate } from "../../lib/actions";
-import { lusitana } from "../fonts";
 import { SPACING } from "../spacing";
 
 export function LoginForm(): React.JSX.Element {
@@ -34,7 +33,7 @@ export function LoginForm(): React.JSX.Element {
 
 	return (
 		<form className={`${SPACING.MD} `}>
-			<h1 className={`${lusitana.className} text-center`}>{t("title")}</h1>
+			<h1 className="text-center">{t("title")}</h1>
 
 			<div className="flex flex-col gap-2">
 				<Button

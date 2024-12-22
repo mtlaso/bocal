@@ -23,7 +23,6 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { TbMenu2 } from "react-icons/tb";
 import { LogoutForm } from "./auth/logout-form";
-import { lusitana } from "./fonts";
 
 export function NavMenu(): React.JSX.Element {
 	return (
@@ -105,9 +104,7 @@ function MobileNavMenu(): React.JSX.Element {
 			</SheetTrigger>
 			<SheetContent className="w-full">
 				<SheetHeader>
-					<SheetTitle
-						className={`${lusitana.className} mb-6 text-left text-4xl leading-tight`}
-					>
+					<SheetTitle className="mb-6 text-left text-4xl leading-tight">
 						{t("menu")}
 					</SheetTitle>
 				</SheetHeader>

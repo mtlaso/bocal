@@ -1,7 +1,6 @@
 "use client";
 import { useSelectedFeedStore } from "@/app/[locale]/lib/stores/selected-feed-store";
 import { FeedInfoContextMenu } from "@/app/[locale]/ui/feed/feed-info-context-menu";
-import { lusitana } from "@/app/[locale]/ui/fonts";
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -40,9 +39,7 @@ export function FeedInfoMenu({ feeds }: Props): React.JSX.Element {
 				/>
 				<SheetContent side={"left"}>
 					<SheetHeader>
-						<SheetTitle
-							className={`${lusitana.className} mb-6 text-left text-4xl leading-tight`}
-						>
+						<SheetTitle className="mb-6 text-left text-4xl leading-tight">
 							{t("title")}
 						</SheetTitle>
 					</SheetHeader>
