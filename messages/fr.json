@@ -91,6 +91,7 @@
 			"feedUnreachable": "Le flux est inaccessible.",
 			"feedCannotBeProcessed": "Le flux ne peut pas être traité.",
 			"feedAlreadyFollowed": "Le flux est déjà suivi.",
+			"maxFeedsReached": "Nombre maximum de flux atteint.",
 			"missingFields": "Champ(s) manquant(s).",
 			"idFieldInvalid": "ID invalide.",
 			"feedContentIdFieldInvalid": "ID de contenu invalide."

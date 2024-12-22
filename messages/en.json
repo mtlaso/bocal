@@ -86,13 +86,13 @@
 			"link": "Link",
 			"cancel": "Cancel"
 		},
-
 		"errors": {
 			"unexpected": "An error happend. Please try again.",
 			"urlFieldInvalid": "URL invalid.",
 			"feedUnreachable": "Feed is unreachable.",
 			"feedCannotBeProcessed": "Feed cannot be processed.",
 			"feedAlreadyFollowed": "Feed already followed.",
+			"maxFeedsReached": "Maximum number of feeds reached.",
 			"missingFields": "Missing fields.",
 			"idFieldInvalid": "ID invalid.",
 			"feedContentIdFieldInvalid": "Content ID invalid."

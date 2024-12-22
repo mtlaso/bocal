@@ -231,6 +231,8 @@ export async function addFeed(
 	_currState: AddFeedState,
 	formData: FormData,
 ): Promise<AddFeedState> {
+	const MAX_FEEDS = 20;
+
 	const validatedFields = insertFeedsSchema.safeParse({
 		url: formData.get("url"),
 	});
@@ -249,9 +251,20 @@ export async function addFeed(
 			throw new Error("errors.notSignedIn");
 		}
 
+		let isMaxFeedsReached = false;
 		let isFeedAlreadyFollowed = false;
 
 		await db.transaction(async (tx) => {
+			// Check if user is following more than 20 feeds (max)
+			const userFeeds = await tx.query.usersFeeds.findMany({
+				where: eq(usersFeeds.userId, user.user.id),
+			});
+
+			if (userFeeds.length >= MAX_FEEDS) {
+				isMaxFeedsReached = true;
+				return;
+			}
+
 			let feed = await tx.query.feeds.findFirst({
 				where: eq(feeds.url, validatedFields.data.url),
 			});
@@ -303,6 +316,13 @@ export async function addFeed(
 		if (isFeedAlreadyFollowed) {
 			return {
 				message: "errors.feedAlreadyFollowed",
+				errors: undefined,
+			};
+		}
+
+		if (isMaxFeedsReached) {
+			return {
+				message: "errors.maxFeedsReached",
 				errors: undefined,
 			};
 		}
