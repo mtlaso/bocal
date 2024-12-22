@@ -2,7 +2,13 @@
 	"errors": {
 		"notSignedIn": "Non connecté",
 		"unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer.",
-		"retry": "Réessayer"
+		"retry": "Réessayer",
+		"404PageNotFound": "Page non trouvée",
+		"404": {
+			"title": "404 - Page non trouvée",
+			"description": "La page que vous recherchez n'existe pas.",
+			"goToHome": "Aller à l'accueil"
+		}
 	},
 	"navbar": {
 		"menu": "Menu",

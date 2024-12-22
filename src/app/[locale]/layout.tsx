@@ -1,11 +1,7 @@
 import "@/app/[locale]/ui/globals.css";
-import { inter } from "@/app/[locale]/ui/fonts";
-import ThemeProvider from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/sonner";
+import BaseLayout from "@/components/ui/base-layout";
 import { routing } from "@/i18n/routing";
 import type { Metadata } from "next";
-import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
@@ -30,23 +26,5 @@ export default async function RootLayout({
 		notFound();
 	}
 
-	const messages = await getMessages();
-
-	return (
-		<html lang={locale} suppressHydrationWarning>
-			<body className={`${inter.className} antialiased mb-12`}>
-				<NextIntlClientProvider messages={messages}>
-					<ThemeProvider
-						attribute="class"
-						defaultTheme="system"
-						enableSystem
-						disableTransitionOnChange={false}
-					>
-						{children}
-						<Toaster />
-					</ThemeProvider>
-				</NextIntlClientProvider>
-			</body>
-		</html>
-	);
+	return <BaseLayout locale={locale}>{children}</BaseLayout>;
 }
