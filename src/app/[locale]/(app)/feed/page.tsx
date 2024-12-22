@@ -5,7 +5,20 @@ import { FeedInfoMenu } from "@/app/[locale]/ui/feed/feed-info-menu";
 import { Feeds } from "@/app/[locale]/ui/feed/feeds";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+
+export async function generateMetadata({
+	// @ts-ignore
+	params: { locale },
+}): Promise<Metadata> {
+	const t = await getTranslations({ locale, namespace: "metadata.rssFeed" });
+
+	return {
+		title: t("title"),
+		description: t("description"),
+	} satisfies Metadata;
+}
 
 export default async function Page(): Promise<React.JSX.Element> {
 	const t = await getTranslations("rssFeed");

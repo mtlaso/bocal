@@ -1,4 +1,20 @@
 {
+	"metadata": {
+		"title": "Bocal",
+		"description": "Bocal is a link and RSS/Atom feed manager.",
+		"dashboard": {
+			"title": "Dashboard",
+			"description": "Manage your links here."
+		},
+		"archive": {
+			"title": "Archive",
+			"description": "View your archived links here."
+		},
+		"rssFeed": {
+			"title": "RSS/Atom feeds",
+			"description": "Follow your RSS/Atom feeds here."
+		}
+	},
 	"errors": {
 		"notSignedIn": "Not signed in",
 		"unexpected": "An error happened. Please try again.",

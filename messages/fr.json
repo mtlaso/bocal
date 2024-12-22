@@ -1,4 +1,20 @@
 {
+	"metadata": {
+		"title": "Bocal",
+		"description": "Bocal est un gestionnaire de liens et de flux RSS/Atom.",
+		"dashboard": {
+			"title": "Tableau de bord",
+			"description": "Gérez vos liens ici."
+		},
+		"archive": {
+			"title": "Archive",
+			"description": "Consultez vos liens archivés ici."
+		},
+		"rssFeed": {
+			"title": "Flux RSS/Atom",
+			"description": "Suivez vos flux RSS/Atom ici."
+		}
+	},
 	"errors": {
 		"notSignedIn": "Non connecté",
 		"unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer.",
