@@ -8,9 +8,11 @@ import { Links } from "../../ui/links";
 import { LinksSkeleton } from "../../ui/skeletons";
 
 export async function generateMetadata({
-	// @ts-ignore
-	params: { locale },
+	params,
+}: {
+	params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
+	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "metadata.archive" });
 
 	return {
