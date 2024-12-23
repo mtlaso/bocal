@@ -2,6 +2,9 @@ name: Create/Delete Branch for Pull Request
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  NEON_PROJECT_ID: ${{ secrets.NEON_PROJECT_ID }}
+  NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
 
 on:
   pull_request:
@@ -32,19 +35,37 @@ jobs:
         name: Install pnpm
         with:
           version: 9
-          run_install: true
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22 # LTS
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Install Vercel CLI
         run: pnpm install --global vercel@latest
 
       - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=preview --token=${{ env.VERCEL_TOKEN }}
 
       - name: Build Project Artifacts
-        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel build --token=${{ env.VERCEL_TOKEN }}
 
       - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+        id: deploy
+        run: vercel deploy --prebuilt --token=${{ env.VERCEL_TOKEN }}
+
+      - name: Comment on Pull Request
+        if: success()
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            Vercel Preview URL :rocket: : ${{ steps.deploy.outputs.preview_url }}
+            Neon branch :elephant: : https://console.neon.tech/app/projects/${{ env.NEON_PROJECT_ID }}/branches/${{ steps.create-branch.outputs.branch_id }}
 
   create_neon_branch:
     name: Create Neon Branch
@@ -65,7 +86,7 @@ jobs:
         with:
           project_id: ${{ vars.NEON_PROJECT_ID }}
           branch_name: preview/pr-${{ github.event.number }}-${{ needs.setup.outputs.branch }}
-          api_key: ${{ secrets.NEON_API_KEY }}
+          api_key: ${{ env.NEON_API_KEY }}
 
       # The step above creates a new Neon branch.
       # You may want to do something with the new branch, such as run migrations, run tests
@@ -83,8 +104,6 @@ jobs:
           # OR to use unpooled connection
           # DATABASE_URL: "${{ steps.create_neon_branch.outputs.db_url }}"
 
-
-
   delete_neon_branch:
     name: Delete Neon Branch
     needs: setup
@@ -94,6 +113,6 @@ jobs:
       - name: Delete Neon Branch
         uses: neondatabase/delete-branch-action@v3
         with:
-          project_id: ${{ vars.NEON_PROJECT_ID }}
+          project_id: ${{ env.NEON_PROJECT_ID }}
           branch: preview/pr-${{ github.event.number }}-${{ needs.setup.outputs.branch }}
-          api_key: ${{ secrets.NEON_API_KEY }}
+          api_key: ${{ env.NEON_API_KEY }}
