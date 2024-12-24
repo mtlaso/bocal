@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: pnpm/action-setup@v4
         name: Install pnpm
         with:
@@ -52,10 +52,10 @@ jobs:
         with:
           node-version: 22
           cache: 'pnpm'
-      
+
       - name: Install dependencies
         run: pnpm install
-      
+
       - name: Create Neon Branch
         id: create_neon_branch
         uses: neondatabase/create-branch-action@v5
@@ -74,32 +74,19 @@ jobs:
         # DATABASE_URL: "${{ steps.create_neon_branch.outputs.db_url }}"
         run: |
           touch .env
-    
+
           echo DATABASE_URL=${{ steps.create_neon_branch.outputs.db_url_with_pooler }} >> .env
           echo DIRECT_URL=${{ steps.create_neon_branch.outputs.db_url }} >> .env
-    
+
           pnpm drizzle-kit push
 
-# Following the step above, which runs database migrations, you may want to check
-# for schema changes in your database. We recommend using the following action to
-# post a comment to your pull request with the schema diff. For this action to work,
-# you also need to give permissions to the workflow job to be able to post comments
-# and read your repository contents. Add the following permissions to the workflow job:
-#
-# permissions:
-#   contents: read
-#   pull-requests: write
-#
-# You can also check out https://github.com/neondatabase/schema-diff-action for more
-# information on how to use the schema diff action.
-# You can uncomment the lines below to enable the schema diff action.
       - name: Post Schema Diff Comment to PR
         uses: neondatabase/schema-diff-action@v1
         with:
           project_id: ${{ vars.NEON_PROJECT_ID }}
           compare_branch: preview/pr-${{ github.event.number }}-${{ needs.setup.outputs.branch }}
           api_key: ${{ secrets.NEON_API_KEY }}
-          
+
       - name: Install Vercel CLI
         run: pnpm install --global vercel@latest
 
@@ -108,12 +95,21 @@ jobs:
 
       - name: Build Project Artifacts
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
-        
+
       - name: Deploy Project Artifacts to Vercel
+        id: deploy
         run: |
           VERCEL_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
           echo "preview_url=$VERCEL_URL" >> $GITHUB_OUTPUT
-      
+
+      - name: Comment on PR
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            Vercel Preview URL 🚀 : ${{ steps.deploy.outputs.preview_url }}
+            Neon branch 🐘 : https://console.neon.tech/app/projects/${{ secrets.NEON_PROJECT_ID }}/branches/${{ steps.create_neon_branch.outputs.branch_id }}
+
+
   delete_neon_branch:
     name: Delete Neon Branch
     needs: setup
@@ -125,4 +121,4 @@ jobs:
         with:
           project_id: ${{ vars.NEON_PROJECT_ID }}
           branch: preview/pr-${{ github.event.number }}-${{ needs.setup.outputs.branch }}
-          api_key: ${{ secrets.NEON_API_KEY }}
+          api_key: ${{
