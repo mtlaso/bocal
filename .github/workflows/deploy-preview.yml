@@ -120,7 +120,7 @@ jobs:
         with:
           message: |
             Vercel Preview URL 🚀 : ${{ steps.deploy.outputs.preview_url }}
-            Neon branch 🐘 : https://console.neon.tech/app/projects/${{ secrets.NEON_PROJECT_ID }}/branches/${{ steps.create_neon_branch.outputs.branch_id }}
+            Neon branch 🐘 : https://console.neon.tech/app/projects/${{ vars.NEON_PROJECT_ID }}/branches/${{ steps.create_neon_branch.outputs.branch_id }}
 
 
   delete_neon_branch:
