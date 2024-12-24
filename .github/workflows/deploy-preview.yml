@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: pnpm/action-setup@v4
         name: Install pnpm
         with:
@@ -52,10 +52,10 @@ jobs:
         with:
           node-version: 22
           cache: 'pnpm'
-      
+
       - name: Install dependencies
         run: pnpm install
-      
+
       - name: Create Neon Branch
         id: create_neon_branch
         uses: neondatabase/create-branch-action@v5
@@ -74,10 +74,10 @@ jobs:
         # DATABASE_URL: "${{ steps.create_neon_branch.outputs.db_url }}"
         run: |
           touch .env
-    
+
           echo DATABASE_URL=${{ steps.create_neon_branch.outputs.db_url_with_pooler }} >> .env
           echo DIRECT_URL=${{ steps.create_neon_branch.outputs.db_url }} >> .env
-    
+
           pnpm drizzle-kit push
 
 # Following the step above, which runs database migrations, you may want to check
@@ -99,7 +99,7 @@ jobs:
           project_id: ${{ vars.NEON_PROJECT_ID }}
           compare_branch: preview/pr-${{ github.event.number }}-${{ needs.setup.outputs.branch }}
           api_key: ${{ secrets.NEON_API_KEY }}
-          
+
       - name: Install Vercel CLI
         run: pnpm install --global vercel@latest
 
@@ -108,12 +108,21 @@ jobs:
 
       - name: Build Project Artifacts
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
-        
+
       - name: Deploy Project Artifacts to Vercel
+        id: deploy
         run: |
           VERCEL_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
           echo "preview_url=$VERCEL_URL" >> $GITHUB_OUTPUT
-      
+
+      - name: Comment on PR
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            Vercel Preview URL 🚀 : ${{ steps.deploy.outputs.preview_url }}
+            Neon branch 🐘 : https://console.neon.tech/app/projects/${{ secrets.NEON_PROJECT_ID }}/branches/${{ steps.create_neon_branch.outputs.branch_id }}
+
+
   delete_neon_branch:
     name: Delete Neon Branch
     needs: setup
