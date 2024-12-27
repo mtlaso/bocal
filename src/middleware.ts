@@ -3,41 +3,58 @@ import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "./auth";
 import { routing } from "./i18n/routing";
 
-const protectedRoutes = ["/dashboard", "/archive", "/feed"];
+const protectedRoutes = ["/dashboard", "/archive", "/feed"] as const;
 
 function removeLanguagePrefix(path: string): string {
 	const langPrefixRegex = /^\/(?:en|fr)\//;
 	return path.replace(langPrefixRegex, "/");
 }
 
-export async function middleware(
-	req: NextRequest,
-): Promise<NextResponse<unknown>> {
+function languagePrefix(req: NextRequest): string {
+	return /^\/(?:en|fr)\//.test(req.nextUrl.pathname)
+		? `/${req.nextUrl.pathname.split("/")[1]}`
+		: "";
+}
+
+const i18nMiddleware = createMiddleware(routing);
+
+const authMiddleware = auth((req) => {
+	const langPrefix = languagePrefix(req);
 	const pathnameWithoutLang = removeLanguagePrefix(req.nextUrl.pathname);
 
-	const authRes = await auth();
-	if (!authRes) {
+	if (req.auth) {
+		if (req.nextUrl.pathname === "/login") {
+			return NextResponse.redirect(
+				new URL(`${langPrefix}/dashboard`, req.nextUrl.origin),
+			);
+		}
+
+		return i18nMiddleware(req);
+	}
+
+	if (pathnameWithoutLang === "/login") {
+		return i18nMiddleware(req);
+	}
+
+	return NextResponse.redirect(
+		new URL(`${langPrefix}/login`, req.nextUrl.origin),
+	);
+});
+
+export default function middleware(req: NextRequest): NextResponse {
+	try {
+		const pathnameWithoutLang = removeLanguagePrefix(req.nextUrl.pathname);
 		const isProtectedRoute = protectedRoutes.some((route) =>
 			pathnameWithoutLang.startsWith(route),
 		);
 
-		if (isProtectedRoute) {
-			const langPrefix = /^\/(?:en|fr)\//.test(req.nextUrl.pathname)
-				? `/${req.nextUrl.pathname.split("/")[1]}`
-				: "";
-			return NextResponse.redirect(new URL(`${langPrefix}/login`, req.url));
-		}
-	}
+		const isAuthRequired = isProtectedRoute || pathnameWithoutLang === "/login";
 
-	if (authRes && pathnameWithoutLang === "/login") {
-		const langPrefix = /^\/(?:en|fr)\//.test(req.nextUrl.pathname)
-			? `/${req.nextUrl.pathname.split("/")[1]}`
-			: "";
-		return NextResponse.redirect(new URL(`${langPrefix}/dashboard`, req.url));
+		// biome-ignore lint/suspicious/noExplicitAny: middleware.ts
+		return isAuthRequired ? (authMiddleware as any)(req) : i18nMiddleware(req);
+	} catch (_err) {
+		return NextResponse.redirect("/error");
 	}
-
-	const handleI18n = createMiddleware(routing);
-	return handleI18n(req);
 }
 
 export const config = {

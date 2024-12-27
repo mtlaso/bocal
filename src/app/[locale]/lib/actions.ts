@@ -31,7 +31,7 @@ export async function authenticate(
 	provider: string,
 ): Promise<string | undefined> {
 	try {
-		await signIn(provider, { redirectTo: "/login" });
+		await signIn(provider, { redirectTo: "/dashboard" });
 	} catch (err) {
 		if (err instanceof AuthError) {
 			switch (err.type) {
