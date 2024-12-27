@@ -56,6 +56,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Setup Biome
+        uses: biomejs/setup-biome@v2
+        with:
+          version: latest
+
+      - name: Run Biome
+        run: biome ci .
+
       - name: Create Neon Branch
         id: create_neon_branch
         uses: neondatabase/create-branch-action@v5
