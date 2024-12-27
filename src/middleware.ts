@@ -18,30 +18,6 @@ function languagePrefix(req: NextRequest): string {
 
 const i18nMiddleware = createMiddleware(routing);
 
-const _authMiddleware2 = (nextReq: NextRequest) =>
-	auth((req) => {
-		const langPrefix = languagePrefix(nextReq);
-		const pathnameWithoutLang = removeLanguagePrefix(req.nextUrl.pathname);
-
-		if (req.auth) {
-			if (req.nextUrl.pathname === "/login") {
-				return NextResponse.redirect(
-					new URL(`${langPrefix}/dashboard`, req.nextUrl.origin),
-				);
-			}
-
-			return i18nMiddleware(nextReq);
-		}
-
-		if (pathnameWithoutLang === "/login") {
-			return i18nMiddleware(nextReq);
-		}
-
-		return NextResponse.redirect(
-			new URL(`${langPrefix}/login`, req.nextUrl.origin),
-		);
-	});
-
 const authMiddleware = (req: NextRequest): NextResponse => {
 	const handler = auth((req) => {
 		const langPrefix = languagePrefix(req);
