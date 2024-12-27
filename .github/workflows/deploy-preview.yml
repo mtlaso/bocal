@@ -112,7 +112,7 @@ jobs:
       - name: Deploy Project Artifacts to Vercel
         id: deploy
         run: |
-          VERCEL_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}) \
+          VERCEL_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} \
           -e DATABASE_URL="${{ steps.create_neon_branch.outputs.db_url_with_pooler }}" \
           -e DIRECT_URL="${{ steps.create_neon_branch.outputs.db_url }}")
           echo "preview_url=$VERCEL_URL" >> $GITHUB_OUTPUT
