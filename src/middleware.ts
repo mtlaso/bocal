@@ -18,48 +18,39 @@ function languagePrefix(req: NextRequest): string {
 
 const i18nMiddleware = createMiddleware(routing);
 
-const authMiddleware = (req: NextRequest): NextResponse => {
-	const handler = auth((req) => {
-		const langPrefix = languagePrefix(req);
-		const pathnameWithoutLang = removeLanguagePrefix(req.nextUrl.pathname);
-
-		if (req.auth) {
-			if (req.nextUrl.pathname === "/login") {
-				return NextResponse.redirect(
-					new URL(`${langPrefix}/dashboard`, req.nextUrl.origin),
-				);
-			}
-
-			return i18nMiddleware(req);
-		}
-
-		if (pathnameWithoutLang === "/login") {
-			return i18nMiddleware(req);
-		}
-
-		return NextResponse.redirect(
-			new URL(`${langPrefix}/login`, req.nextUrl.origin),
-		);
-	});
-
-	return handler(req, { params: {} }) as NextResponse;
-};
-
-export default function middleware(req: NextRequest): NextResponse {
+export default auth((req) => {
 	try {
-		const pathnameWithoutLang = removeLanguagePrefix(req.nextUrl.pathname);
+		const langPrefix = languagePrefix(req);
+		const pathname = removeLanguagePrefix(req.nextUrl.pathname);
+
 		const isProtectedRoute = protectedRoutes.some((route) =>
-			pathnameWithoutLang.startsWith(route),
+			pathname.startsWith(route),
 		);
+		const isAuthenticated = Boolean(req.auth);
+		const isAuthRequired = isProtectedRoute || pathname === "/login";
+		const isLoginPage = pathname === "/login";
 
-		const isAuthRequired = isProtectedRoute || pathnameWithoutLang === "/login";
+		if (isLoginPage && !isAuthenticated) {
+			return i18nMiddleware(req);
+		}
 
-		// biome-ignore lint/suspicious/noExplicitAny: middleware.ts
-		return isAuthRequired ? (authMiddleware as any)(req) : i18nMiddleware(req);
+		if (isAuthenticated && isLoginPage) {
+			return NextResponse.redirect(
+				new URL(`${langPrefix}/dashboard`, req.nextUrl.origin),
+			);
+		}
+
+		if (!isAuthenticated && isAuthRequired) {
+			return NextResponse.redirect(
+				new URL(`${langPrefix}/login`, req.nextUrl.origin),
+			);
+		}
+
+		return i18nMiddleware(req);
 	} catch (_err) {
 		return NextResponse.redirect("/error");
 	}
-}
+});
 
 export const config = {
 	matcher: [
