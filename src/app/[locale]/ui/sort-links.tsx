@@ -1,7 +1,6 @@
 "use client";
-
-import { useSortLogic } from "@/app/[locale]/lib/hooks/use-sort-logic";
-import { sortOptions } from "@/app/[locale]/lib/types";
+import { searchParamsParsers } from "@/app/[locale]/lib/stores/search-params";
+import { SortOptions } from "@/app/[locale]/lib/types";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,8 +21,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import {} from "@/i18n/routing";
 import { useTranslations } from "next-intl";
+import { useQueryStates } from "nuqs";
 import { TbArrowsSort } from "react-icons/tb";
 
 export function SortLinks(): React.JSX.Element {
@@ -41,18 +40,25 @@ export function SortLinks(): React.JSX.Element {
 
 function SortDesktop(): React.JSX.Element {
 	const t = useTranslations("navbar");
-	const { value, handleChange } = useSortLogic();
+	const [{ sortLinks }, setSortLinks] = useQueryStates(searchParamsParsers);
 
 	return (
-		<Select onValueChange={(e): void => handleChange(e)} value={value()}>
+		<Select
+			onValueChange={async (e): Promise<void> => {
+				await setSortLinks({
+					sortLinks: e as SortOptions,
+				});
+			}}
+			value={sortLinks}
+		>
 			<SelectTrigger className="w-[180px]">
 				<SelectValue placeholder={t("sort.sort")} />
 			</SelectTrigger>
 			<SelectContent>
-				<SelectItem value={sortOptions.byDateAsc}>
+				<SelectItem value={SortOptions.BY_DATE_ASC}>
 					{t("sort.byDateAsc")}
 				</SelectItem>
-				<SelectItem value={sortOptions.byDateDesc}>
+				<SelectItem value={SortOptions.BY_DATE_DESC}>
 					{t("sort.byDateDesc")}
 				</SelectItem>
 			</SelectContent>
@@ -62,7 +68,8 @@ function SortDesktop(): React.JSX.Element {
 
 function SortMobile(): React.JSX.Element {
 	const t = useTranslations("navbar");
-	const { value, handleChange } = useSortLogic();
+	const [{ sortLinks }, setSortLinks] = useQueryStates(searchParamsParsers);
+
 	return (
 		<Drawer>
 			<DrawerTrigger asChild>
@@ -80,12 +87,14 @@ function SortMobile(): React.JSX.Element {
 					<div className="p-4 pb-0">
 						<RadioGroup
 							className={`${SPACING.SM}`}
-							value={value()}
-							onValueChange={(e): void => handleChange(e)}
+							value={sortLinks}
+							onValueChange={async (e): Promise<void> => {
+								await setSortLinks({ sortLinks: e as SortOptions });
+							}}
 						>
 							<div className="flex items-center space-x-2">
 								<RadioGroupItem
-									value={sortOptions.byDateAsc}
+									value={SortOptions.BY_DATE_ASC}
 									id={t("sort.byDateAsc")}
 								/>
 								<Label htmlFor={t("sort.byDateAsc")}>
@@ -94,7 +103,7 @@ function SortMobile(): React.JSX.Element {
 							</div>
 							<div className="flex items-center space-x-2">
 								<RadioGroupItem
-									value={sortOptions.byDateDesc}
+									value={SortOptions.BY_DATE_DESC}
 									id={t("sort.byDateDesc")}
 								/>
 								<Label htmlFor={t("sort.byDateDesc")}>

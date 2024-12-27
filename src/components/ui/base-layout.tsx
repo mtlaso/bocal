@@ -3,6 +3,7 @@ import ThemeProvider from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 type Props = {
 	children: React.ReactNode;
@@ -25,7 +26,7 @@ export default async function BaseLayout({
 						enableSystem
 						disableTransitionOnChange={false}
 					>
-						{children}
+						<NuqsAdapter>{children}</NuqsAdapter>
 						<Toaster />
 					</ThemeProvider>
 				</NextIntlClientProvider>
