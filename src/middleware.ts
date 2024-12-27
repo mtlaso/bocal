@@ -3,15 +3,16 @@ import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "./auth";
 import { routing } from "./i18n/routing";
 
-const protectedRoutes = ["/dashboard", "/archive", "/feed"] as const;
+const PROTECTED_ROUTES = new Set(["/dashboard", "/archive", "/feed"]);
+const LANG_PREFIX_REGEX = /^\/(?:en|fr)\//;
+const LOGIN_PATH = "/login";
 
 function removeLanguagePrefix(path: string): string {
-	const langPrefixRegex = /^\/(?:en|fr)\//;
-	return path.replace(langPrefixRegex, "/");
+	return path.replace(LANG_PREFIX_REGEX, "/");
 }
 
 function languagePrefix(req: NextRequest): string {
-	return /^\/(?:en|fr)\//.test(req.nextUrl.pathname)
+	return LANG_PREFIX_REGEX.test(req.nextUrl.pathname)
 		? `/${req.nextUrl.pathname.split("/")[1]}`
 		: "";
 }
@@ -22,13 +23,11 @@ export default auth((req) => {
 	try {
 		const langPrefix = languagePrefix(req);
 		const pathname = removeLanguagePrefix(req.nextUrl.pathname);
+		const isProtectedRoute = PROTECTED_ROUTES.has(pathname);
 
-		const isProtectedRoute = protectedRoutes.some((route) =>
-			pathname.startsWith(route),
-		);
 		const isAuthenticated = Boolean(req.auth);
-		const isAuthRequired = isProtectedRoute || pathname === "/login";
-		const isLoginPage = pathname === "/login";
+		const isAuthRequired = isProtectedRoute || pathname === LOGIN_PATH;
+		const isLoginPage = pathname === LOGIN_PATH;
 
 		if (isLoginPage && !isAuthenticated) {
 			return i18nMiddleware(req);
@@ -42,12 +41,13 @@ export default auth((req) => {
 
 		if (!isAuthenticated && isAuthRequired) {
 			return NextResponse.redirect(
-				new URL(`${langPrefix}/login`, req.nextUrl.origin),
+				new URL(`${langPrefix}${LOGIN_PATH}`, req.nextUrl.origin),
 			);
 		}
 
 		return i18nMiddleware(req);
-	} catch (_err) {
+	} catch (err) {
+		console.error(err);
 		return NextResponse.redirect("/error");
 	}
 });
