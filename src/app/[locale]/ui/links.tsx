@@ -1,4 +1,8 @@
+"use client";
+
 import { removeWWW } from "@/app/[locale]/lib/remove-www";
+import { searchParamsParsers } from "@/app/[locale]/lib/stores/search-params";
+import { SortOptions } from "@/app/[locale]/lib/types";
 import {
 	Card,
 	CardContent,
@@ -8,8 +12,9 @@ import {
 } from "@/components/ui/card";
 import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
+import { useQueryStates } from "nuqs";
 import { LinksContextMenu } from "./links-context-menu";
 
 type Props = {
@@ -22,11 +27,19 @@ type Props = {
 	view: "grid" | "list";
 };
 
-export async function Links({
-	links,
-	view,
-}: Props): Promise<React.JSX.Element> {
-	const t = await getTranslations("dashboard");
+export function Links({ links, view }: Props): React.JSX.Element {
+	const [{ sortLinks }] = useQueryStates(searchParamsParsers);
+	const t = useTranslations("dashboard");
+
+	const items = [...links];
+	switch (sortLinks) {
+		case SortOptions.BY_DATE_ASC:
+			items.sort((a, b) => a.id - b.id);
+			break;
+		case SortOptions.BY_DATE_DESC:
+			items.sort((a, b) => b.id - a.id);
+			break;
+	}
 
 	const randomBackground = (firstLetter: string): string => {
 		const letter = firstLetter.toUpperCase();
@@ -50,7 +63,7 @@ export async function Links({
 				"grid grid-cols-3 grid-rows-2 gap-4": view === "list",
 			})}
 		>
-			{links.map((item) => (
+			{items.map((item) => (
 				<Card
 					key={item.id}
 					className={cn(

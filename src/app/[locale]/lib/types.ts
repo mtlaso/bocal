@@ -1,8 +1,8 @@
 import type { UsersFeedsReadContent } from "@/db/schema";
 
-export enum sortOptions {
-	byDateAsc = "byDateAsc",
-	byDateDesc = "byDateDesc",
+export enum SortOptions {
+	BY_DATE_ASC = "byDateAsc",
+	BY_DATE_DESC = "byDateDesc",
 }
 
 export type FeedContent = {

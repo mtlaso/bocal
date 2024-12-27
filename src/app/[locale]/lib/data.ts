@@ -1,4 +1,3 @@
-import { sortOptions } from "@/app/[locale]/lib/types";
 import { db } from "@/db/db";
 import {
 	type Feed,
@@ -8,7 +7,7 @@ import {
 	usersFeeds,
 	usersFeedsReadContent,
 } from "@/db/schema";
-import { type SQL, and, asc, desc, eq } from "drizzle-orm";
+import { type SQL, and, desc, eq } from "drizzle-orm";
 import "server-only";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 import { auth } from "@/auth";
@@ -17,7 +16,6 @@ const ONE_HOUR = 60 * 60 * 1000;
 
 type GetLinksProps = {
 	archivedLinksOnly?: boolean;
-	sort?: string;
 };
 
 type GetLinksResponse = {
@@ -29,7 +27,6 @@ type GetLinksResponse = {
 
 export async function getLinks({
 	archivedLinksOnly,
-	sort,
 }: GetLinksProps): Promise<GetLinksResponse[]> {
 	try {
 		const user = await auth();
@@ -41,10 +38,6 @@ export async function getLinks({
 		if (archivedLinksOnly) archivedFilter.push(eq(links.isArchived, true));
 		else archivedFilter.push(eq(links.isArchived, false));
 
-		const sortFilter: SQL[] = [];
-		if (sort === sortOptions.byDateAsc) sortFilter.push(asc(links.createdAt));
-		else sortFilter.push(desc(links.createdAt));
-
 		return await db
 			.select({
 				id: links.id,
@@ -54,7 +47,8 @@ export async function getLinks({
 			})
 			.from(links)
 			.where(and(eq(links.userId, user.user.id), ...archivedFilter))
-			.orderBy(...sortFilter);
+			.orderBy(desc(links.createdAt))
+			.execute();
 	} catch (_err) {
 		throw new Error("errors.unexpected");
 	}
