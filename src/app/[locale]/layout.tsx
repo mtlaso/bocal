@@ -6,9 +6,11 @@ import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({
-	// @ts-ignore
-	params: { locale },
+	params,
+}: {
+	params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
+	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "metadata" });
 
 	return {
