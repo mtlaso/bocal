@@ -1,5 +1,5 @@
 import { isFeedContentRead } from "@/app/[locale]/lib/data";
-import type { FlattenedFeedsContent } from "@/app/[locale]/lib/schema";
+import type { FlattenedFeedsContent } from "@/app/[locale]/lib/types";
 import "server-only";
 import type { Feed } from "@/db/schema";
 

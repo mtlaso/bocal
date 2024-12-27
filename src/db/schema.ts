@@ -1,4 +1,4 @@
-import type { FeedContent } from "@/app/[locale]/lib/schema";
+import type { FeedContent } from "@/app/[locale]/lib/types";
 import type { InferSelectModel } from "drizzle-orm";
 import {
 	boolean,

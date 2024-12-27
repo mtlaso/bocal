@@ -1,4 +1,4 @@
-import { sortOptions } from "@/app/[locale]/lib/schema";
+import { sortOptions } from "@/app/[locale]/lib/types";
 import { db } from "@/db/db";
 import {
 	type Feed,

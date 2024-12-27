@@ -4,8 +4,8 @@ import {
 	markFeedContentAsUnread,
 } from "@/app/[locale]/lib/actions";
 import { removeWWW } from "@/app/[locale]/lib/remove-www";
-import type { FlattenedFeedsContent } from "@/app/[locale]/lib/schema";
 import { useSelectedFeedStore } from "@/app/[locale]/lib/stores/selected-feed-store";
+import type { FlattenedFeedsContent } from "@/app/[locale]/lib/types";
 import { LinksSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Checkbox } from "@/components/ui/checkbox";

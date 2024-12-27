@@ -1,4 +1,4 @@
-import { sortOptions } from "@/app/[locale]/lib/schema";
+import { sortOptions } from "@/app/[locale]/lib/types";
 import { usePathname, useRouter } from "@/i18n/routing";
 import { useSearchParams } from "next/navigation";
 

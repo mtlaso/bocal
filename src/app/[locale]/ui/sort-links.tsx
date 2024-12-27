@@ -1,7 +1,7 @@
 "use client";
 
 import { useSortLogic } from "@/app/[locale]/lib/hooks/use-sort-logic";
-import { sortOptions } from "@/app/[locale]/lib/schema";
+import { sortOptions } from "@/app/[locale]/lib/types";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Button } from "@/components/ui/button";
 import {
