@@ -25,7 +25,7 @@ export async function generateMetadata({
 }
 
 type PageProps = {
-	searchParams: Promise<SearchParams>; // Next.js 15+: async searchParams prop
+	searchParams: Promise<SearchParams>;
 };
 
 export default async function Page({

@@ -21,7 +21,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import {} from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { useQueryStates } from "nuqs";
 import { TbArrowsSort } from "react-icons/tb";
@@ -70,6 +69,7 @@ function SortDesktop(): React.JSX.Element {
 function SortMobile(): React.JSX.Element {
 	const t = useTranslations("navbar");
 	const [{ sortLinks }, setSortLinks] = useQueryStates(searchParamsParsers);
+
 	return (
 		<Drawer>
 			<DrawerTrigger asChild>

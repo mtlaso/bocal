@@ -1,7 +1,11 @@
+import { searchParamsCache } from "@/app/[locale]/lib/stores/search-params";
+import { LinksSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SortLinks } from "@/app/[locale]/ui/sort-links";
 import { Separator } from "@/components/ui/separator";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import type { SearchParams } from "nuqs";
+import { Suspense } from "react";
 import { getLinks } from "../../lib/data";
 import { Links } from "../../ui/links";
 
@@ -19,8 +23,15 @@ export async function generateMetadata({
 	} satisfies Metadata;
 }
 
-export default async function Page(): Promise<React.JSX.Element> {
+type PageProps = {
+	searchParams: Promise<SearchParams>;
+};
+
+export default async function Page({
+	searchParams,
+}: PageProps): Promise<React.JSX.Element> {
 	const t = await getTranslations("archive");
+	await searchParamsCache.parse(searchParams);
 	const links = await getLinks({ archivedLinksOnly: true });
 
 	return (
@@ -32,12 +43,16 @@ export default async function Page(): Promise<React.JSX.Element> {
 					</h1>
 				</div>
 
-				<SortLinks />
+				<Suspense fallback={<>...</>}>
+					<SortLinks />
+				</Suspense>
 			</section>
 
 			<Separator className="my-4" />
 
-			<Links links={links} view={"grid"} />
+			<Suspense fallback={<LinksSkeleton />}>
+				<Links links={links} view={"grid"} />
+			</Suspense>
 		</>
 	);
 }
