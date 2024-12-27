@@ -20,9 +20,7 @@ const i18nMiddleware = createMiddleware(routing);
 
 const authMiddleware = auth((req) => {
 	const langPrefix = languagePrefix(req);
-
-	console.log("inside authMiddlware");
-	console.log("req.auth", req.auth);
+	const pathnameWithoutLang = removeLanguagePrefix(req.nextUrl.pathname);
 
 	if (req.auth) {
 		if (req.nextUrl.pathname === "/login") {
@@ -31,6 +29,10 @@ const authMiddleware = auth((req) => {
 			);
 		}
 
+		return i18nMiddleware(req);
+	}
+
+	if (pathnameWithoutLang === "/login") {
 		return i18nMiddleware(req);
 	}
 
@@ -48,12 +50,9 @@ export default function middleware(req: NextRequest): NextResponse {
 
 		const isAuthRequired = isProtectedRoute || pathnameWithoutLang === "/login";
 
-		console.log("isProtectedRoute", isProtectedRoute);
-
 		// biome-ignore lint/suspicious/noExplicitAny: middleware.ts
 		return isAuthRequired ? (authMiddleware as any)(req) : i18nMiddleware(req);
-	} catch (err) {
-		console.log("err", err);
+	} catch (_err) {
 		return NextResponse.redirect("/error");
 	}
 }
