@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { removeWWW } from "@/app/[locale]/lib/remove-www";
 import { sanitizeHTML } from "@/app/[locale]/lib/sanitize-html";
-import type { FeedContent } from "@/app/[locale]/lib/schema";
+import type { FeedContent } from "@/app/[locale]/lib/types";
 import { db } from "@/db/db";
 import { type Feed, feeds } from "@/db/schema";
 import { eq, sql } from "drizzle-orm";
