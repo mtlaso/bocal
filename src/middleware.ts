@@ -18,28 +18,32 @@ function languagePrefix(req: NextRequest): string {
 
 const i18nMiddleware = createMiddleware(routing);
 
-const authMiddleware = auth((req) => {
-	const langPrefix = languagePrefix(req);
-	const pathnameWithoutLang = removeLanguagePrefix(req.nextUrl.pathname);
+const authMiddleware = (req: NextRequest): NextResponse => {
+	const handler = auth((req) => {
+		const langPrefix = languagePrefix(req);
+		const pathnameWithoutLang = removeLanguagePrefix(req.nextUrl.pathname);
 
-	if (req.auth) {
-		if (req.nextUrl.pathname === "/login") {
-			return NextResponse.redirect(
-				new URL(`${langPrefix}/dashboard`, req.nextUrl.origin),
-			);
+		if (req.auth) {
+			if (req.nextUrl.pathname === "/login") {
+				return NextResponse.redirect(
+					new URL(`${langPrefix}/dashboard`, req.nextUrl.origin),
+				);
+			}
+
+			return i18nMiddleware(req);
 		}
 
-		return i18nMiddleware(req);
-	}
+		if (pathnameWithoutLang === "/login") {
+			return i18nMiddleware(req);
+		}
 
-	if (pathnameWithoutLang === "/login") {
-		return i18nMiddleware(req);
-	}
+		return NextResponse.redirect(
+			new URL(`${langPrefix}/login`, req.nextUrl.origin),
+		);
+	});
 
-	return NextResponse.redirect(
-		new URL(`${langPrefix}/login`, req.nextUrl.origin),
-	);
-});
+	return handler(req, { params: {} }) as NextResponse;
+};
 
 export default function middleware(req: NextRequest): NextResponse {
 	try {
