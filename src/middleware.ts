@@ -12,10 +12,21 @@ function removeLanguagePrefix(path: string): string {
 	return path.replace(LANG_PREFIX_REGEX, "/");
 }
 
-function languagePrefix(req: NextRequest): string {
+function getLanguagePrefix(req: NextRequest): string {
 	return LANG_PREFIX_REGEX.test(req.nextUrl.pathname)
 		? `/${req.nextUrl.pathname.split("/")[1]}`
 		: "";
+}
+
+function getSessionCookieName(): string {
+	// See next-auth/packages/core/src/lib/utils/cookie.ts (on github).
+	// https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/lib/utils/cookie.ts#L59
+	const cookieName = "authjs.session-token";
+	if (process.env.VERCEL_ENV) {
+		return `__Secure-${cookieName}`;
+	}
+
+	return cookieName;
 }
 
 const i18nMiddleware = createMiddleware(routing);
@@ -23,11 +34,13 @@ const i18nMiddleware = createMiddleware(routing);
 export default async function middleware(
 	req: NextRequest,
 ): Promise<NextResponse> {
-	const langPrefix = languagePrefix(req);
+	const langPrefix = getLanguagePrefix(req);
 	const pathname = removeLanguagePrefix(req.nextUrl.pathname);
 	const isProtectedRoute = PROTECTED_ROUTES.has(pathname);
 	const isPublicRoute = PUBLIC_ROUTES.has(pathname);
-	const sessionCookie = (await cookies()).get("authjs.session-token")?.value;
+
+	const sessCookieName = getSessionCookieName();
+	const sessionCookie = (await cookies()).get(sessCookieName)?.value;
 
 	/**
     Using optimistic authorization by only checking for the presence of a cookie.
