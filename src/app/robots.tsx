@@ -1,7 +1,8 @@
+import { getAppUrl } from "@/app/[locale]/lib/get-app-url";
 import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-	const sitemap = `${process.env.APP_URL}/sitemap.xml`;
+	const sitemap = `${getAppUrl()}/sitemap.xml`;
 	return {
 		rules: {
 			userAgent: "*",

@@ -1,7 +1,6 @@
+import { getAppUrl } from "@/app/[locale]/lib/get-app-url";
 import { type Locale, getPathname, routing } from "@/i18n/routing";
 import type { MetadataRoute } from "next";
-
-const HOST = process.env.APP_URL;
 
 export default function sitemap(): MetadataRoute.Sitemap {
 	return [
@@ -35,5 +34,5 @@ function getEntry(href: Href): {
 
 function getUrl(href: Href, locale: Locale): string {
 	const pathname = getPathname({ locale, href });
-	return HOST + pathname;
+	return getAppUrl() + pathname;
 }
