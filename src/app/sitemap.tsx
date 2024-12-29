@@ -1,4 +1,4 @@
-import { getAppUrl } from "@/app/[locale]/lib/get-app-url";
+import { getAppBaseUrl } from "@/app/[locale]/lib/get-app-base-url";
 import { type Locale, getPathname, routing } from "@/i18n/routing";
 import type { MetadataRoute } from "next";
 
@@ -34,5 +34,5 @@ function getEntry(href: Href): {
 
 function getUrl(href: Href, locale: Locale): string {
 	const pathname = getPathname({ locale, href });
-	return getAppUrl() + pathname;
+	return getAppBaseUrl() + pathname;
 }
