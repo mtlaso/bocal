@@ -1,16 +1,26 @@
-import { getTranslations } from "next-intl/server";
+import { cookies } from "next/headers";
 import { ImageResponse } from "next/og";
 
-type Props = {
-	params: {
-		locale: string;
-	};
-};
+const LOCALES = new Set(["en", "fr"]);
+const TEXTS = {
+	en: {
+		title: "Bocal",
+		description:
+			"Save interesting articles and never miss updates from your favorite RSS feeds.",
+	},
+	fr: {
+		title: "Bocal",
+		description:
+			"Sauvegardez des articles intéressants et ne manquez jamais les mises à jour de vos flux RSS.",
+	},
+} as const;
 
-export default async function OpenGraphImage({
-	params,
-}: Props): Promise<ImageResponse> {
-	const t = await getTranslations({ params, namespace: "metadata" });
+export async function GET(): Promise<ImageResponse> {
+	const cookieStore = await cookies();
+	const cookieLocale = cookieStore.get("NEXT_LOCALE")?.value;
+	const locale =
+		cookieLocale && LOCALES.has(cookieLocale) ? cookieLocale : "en";
+
 	return new ImageResponse(
 		<div
 			style={{
@@ -51,7 +61,7 @@ export default async function OpenGraphImage({
 						color: "transparent",
 					}}
 				>
-					{t("title")}
+					{TEXTS[locale as keyof typeof TEXTS].title}
 				</h1>
 				<p
 					style={{
@@ -62,7 +72,7 @@ export default async function OpenGraphImage({
 						margin: "0",
 					}}
 				>
-					{t("description")}
+					{TEXTS[locale as keyof typeof TEXTS].description}
 				</p>
 			</div>
 		</div>,
