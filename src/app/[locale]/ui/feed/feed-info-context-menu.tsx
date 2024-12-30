@@ -65,7 +65,7 @@ function UnfollowFeed(): React.JSX.Element {
 
 				const res = await unfollowFeed(selectedFeed);
 				if (res.message) {
-					toast.error(res.message);
+					toast.error(t(res.message));
 					return;
 				}
 
