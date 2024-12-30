@@ -11,49 +11,49 @@ import { AddLinkForm } from "../../ui/dashboard/add-link-form";
 import { Links } from "../../ui/links";
 
 export async function generateMetadata({
-	params,
+  params,
 }: {
-	params: Promise<{ locale: string }>;
+  params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-	const { locale } = await params;
-	const t = await getTranslations({ locale, namespace: "metadata.dashboard" });
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata.dashboard" });
 
-	return {
-		title: t("title"),
-		description: t("description"),
-	} satisfies Metadata;
+  return {
+    title: t("title"),
+    description: t("description"),
+  } satisfies Metadata;
 }
 
 type PageProps = {
-	searchParams: Promise<SearchParams>;
+  searchParams: Promise<SearchParams>;
 };
 
 export default async function Page({
-	searchParams,
+  searchParams,
 }: PageProps): Promise<React.JSX.Element> {
-	const t = await getTranslations("dashboard");
-	await searchParamsCache.parse(searchParams);
-	const links = await getLinks({});
+  const t = await getTranslations("dashboard");
+  await searchParamsCache.parse(searchParams);
+  const links = await getLinks({});
 
-	return (
-		<>
-			<section className="flex justify-between">
-				<div className="flex gap-2">
-					<h1 className="font-semibold tracking-tight text-3xl">
-						{t("links")}
-					</h1>
-					<AddLinkForm />
-				</div>
-				<Suspense fallback={<>...</>}>
-					<SortLinks />
-				</Suspense>
-			</section>
+  return (
+    <>
+      <section className="flex justify-between">
+        <div className="flex gap-2">
+          <h1 className="font-semibold tracking-tight text-3xl">
+            {t("links")}
+          </h1>
+          <AddLinkForm />
+        </div>
+        <Suspense fallback={<>...</>}>
+          <SortLinks />
+        </Suspense>
+      </section>
 
-			<Separator className="my-4" />
+      <Separator className="my-4" />
 
-			<Suspense fallback={<LinksSkeleton />}>
-				<Links links={links} view={"grid"} />
-			</Suspense>
-		</>
-	);
+      <Suspense fallback={<LinksSkeleton />}>
+        <Links links={links} view={"grid"} />
+      </Suspense>
+    </>
+  );
 }
