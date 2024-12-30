@@ -13,6 +13,10 @@
 		"rssFeed": {
 			"title": "RSS/Atom feeds",
 			"description": "Follow your RSS/Atom feeds here."
+		},
+		"privacyPolicy": {
+			"title": "Privacy Policy",
+			"description": "Read our privacy policy."
 		}
 	},
 	"errors": {
