@@ -1,5 +1,8 @@
 "use client";
-import { useSelectedFeedStore } from "@/app/[locale]/lib/stores/selected-feed-store";
+import {
+	SELECTED_FEED_DEFAULT,
+	searchParamsParsers,
+} from "@/app/[locale]/lib/stores/search-params";
 import { FeedInfoContextMenu } from "@/app/[locale]/ui/feed/feed-info-context-menu";
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -13,6 +16,7 @@ import {
 import type { Feed } from "@/db/schema";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
+import { useQueryStates } from "nuqs";
 import { useState } from "react";
 import { TbPlugConnectedX, TbRadarFilled, TbRss } from "react-icons/tb";
 
@@ -37,6 +41,7 @@ export function FeedInfoMenu({ feeds }: Props): React.JSX.Element {
 					totalFeeds={feeds.length}
 					totalUnreachableFeeds={unreachableFeeds.length}
 				/>
+
 				<SheetContent side={"left"}>
 					<SheetHeader>
 						<SheetTitle className="mb-6 text-left text-4xl leading-tight">
@@ -96,20 +101,21 @@ function FeedMenuItemAll({
 	totalContent: number;
 }): React.JSX.Element {
 	const t = useTranslations("rssFeed.info");
-	const { setSelectedFeed, selectedFeed } = useSelectedFeedStore();
+	const [{ selectedFeed }, setSelectedFeed] =
+		useQueryStates(searchParamsParsers);
 
 	return (
 		<button
 			type="button"
 			onClick={(): void => {
-				setSelectedFeed("all");
+				setSelectedFeed({ selectedFeed: SELECTED_FEED_DEFAULT });
 			}}
 			className={cn(
 				navigationMenuTriggerStyle(),
 				`w-full px-2 cursor-pointer
 							 flex justify-between items-center flex-wrap`,
 				{
-					"!bg-primary": selectedFeed === "all",
+					"!bg-primary": selectedFeed === SELECTED_FEED_DEFAULT,
 				},
 			)}
 		>
@@ -117,14 +123,14 @@ function FeedMenuItemAll({
 				<TbRadarFilled
 					size={20}
 					className={cn("text-primary", {
-						"text-secondary": selectedFeed === "all",
+						"text-secondary": selectedFeed === SELECTED_FEED_DEFAULT,
 					})}
 				/>
 				<p>{t("allFeeds")}</p>
 			</div>
 			<p
 				className={cn("text-primary", {
-					"text-secondary": selectedFeed === "all",
+					"text-secondary": selectedFeed === SELECTED_FEED_DEFAULT,
 				})}
 			>
 				{totalContent}
@@ -138,13 +144,14 @@ function FeedMenuItem({
 }: {
 	feed: Feed;
 }): React.JSX.Element {
-	const { setSelectedFeed, selectedFeed } = useSelectedFeedStore();
+	const [{ selectedFeed }, setSelectedFeed] =
+		useQueryStates(searchParamsParsers);
 
 	return (
 		<button
 			type="button"
 			onClick={(): void => {
-				setSelectedFeed(feed.id.toString());
+				setSelectedFeed({ selectedFeed: feed.id.toString() });
 			}}
 			className={cn(
 				navigationMenuTriggerStyle(),

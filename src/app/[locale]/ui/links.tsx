@@ -39,6 +39,8 @@ export function Links({ links, view }: Props): React.JSX.Element {
 		case SortOptions.BY_DATE_DESC:
 			items.sort((a, b) => b.id - a.id);
 			break;
+		default:
+			break;
 	}
 
 	const randomBackground = (firstLetter: string): string => {

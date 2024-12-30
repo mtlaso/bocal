@@ -4,7 +4,10 @@ import {
 	markFeedContentAsUnread,
 } from "@/app/[locale]/lib/actions";
 import { removeWWW } from "@/app/[locale]/lib/remove-www";
-import { useSelectedFeedStore } from "@/app/[locale]/lib/stores/selected-feed-store";
+import {
+	SELECTED_FEED_DEFAULT,
+	searchParamsParsers,
+} from "@/app/[locale]/lib/stores/search-params";
 import type { FlattenedFeedsContent } from "@/app/[locale]/lib/types";
 import { LinksSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
@@ -13,6 +16,7 @@ import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import type { CheckedState } from "@radix-ui/react-checkbox";
 import { useLocale, useTranslations } from "next-intl";
+import { useQueryStates } from "nuqs";
 import { startTransition, useEffect, useOptimistic, useState } from "react";
 import { toast } from "sonner";
 
@@ -22,10 +26,10 @@ type Props = {
 
 export function Feeds({ flattenedContent }: Props): React.JSX.Element {
 	const [isHydrated, setIsHydrated] = useState(false);
-	const { selectedFeed } = useSelectedFeedStore();
+	const [{ selectedFeed }] = useQueryStates(searchParamsParsers);
 
 	const items = flattenedContent.filter((content) => {
-		if (selectedFeed === "all") return true;
+		if (selectedFeed === SELECTED_FEED_DEFAULT) return true;
 		return content.feedId.toString() === selectedFeed;
 	});
 
@@ -49,12 +53,12 @@ export function Feeds({ flattenedContent }: Props): React.JSX.Element {
 const Item = ({ item }: { item: FlattenedFeedsContent }): React.JSX.Element => {
 	const t = useTranslations("rssFeed");
 	const locale = useLocale();
+
 	// optimistic update, because the api is slow
 	// and we don't want the user to wait for the api to respond
 	// before marking the content as read
 	// will be updated if the api call fails
 	// or if the user refreshes the page
-
 	const [isReadOptimistic, addIsReadOptimistic] = useOptimistic(
 		item.isRead !== null,
 	);

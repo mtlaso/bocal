@@ -44,10 +44,8 @@ function SortDesktop(): React.JSX.Element {
 
 	return (
 		<Select
-			onValueChange={async (e): Promise<void> => {
-				await setSortLinks({
-					sortLinks: e as SortOptions,
-				});
+			onValueChange={(e): void => {
+				setSortLinks({ sortLinks: e as SortOptions });
 			}}
 			value={sortLinks}
 		>
@@ -88,8 +86,8 @@ function SortMobile(): React.JSX.Element {
 						<RadioGroup
 							className={`${SPACING.SM}`}
 							value={sortLinks}
-							onValueChange={async (e): Promise<void> => {
-								await setSortLinks({ sortLinks: e as SortOptions });
+							onValueChange={(e): void => {
+								setSortLinks({ sortLinks: e as SortOptions });
 							}}
 						>
 							<div className="flex items-center space-x-2">

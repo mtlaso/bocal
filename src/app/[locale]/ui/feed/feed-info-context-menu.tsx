@@ -1,5 +1,8 @@
 import { unfollowFeed } from "@/app/[locale]/lib/actions";
-import { useSelectedFeedStore } from "@/app/[locale]/lib/stores/selected-feed-store";
+import {
+	SELECTED_FEED_DEFAULT,
+	searchParamsParsers,
+} from "@/app/[locale]/lib/stores/search-params";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -11,6 +14,7 @@ import {
 import type { Feed } from "@/db/schema";
 import { Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useQueryStates } from "nuqs";
 import { useTransition } from "react";
 import { TbSettings } from "react-icons/tb";
 import { toast } from "sonner";
@@ -19,7 +23,7 @@ export function FeedInfoContextMenu({
 }: {
 	feeds: Feed[];
 }): React.JSX.Element {
-	const { selectedFeed } = useSelectedFeedStore();
+	const [{ selectedFeed }] = useQueryStates(searchParamsParsers);
 	const t = useTranslations("rssFeed.info");
 
 	return (
@@ -28,17 +32,17 @@ export function FeedInfoContextMenu({
 				<button
 					type="button"
 					className="flex items-center gap-1 text-muted-foreground underline"
-					disabled={selectedFeed === "all"}
+					disabled={selectedFeed === SELECTED_FEED_DEFAULT}
 				>
 					<TbSettings />
-					{selectedFeed === "all" && t("allFeeds")}
-					{selectedFeed !== "all" &&
+					{selectedFeed === SELECTED_FEED_DEFAULT && t("allFeeds")}
+					{selectedFeed !== SELECTED_FEED_DEFAULT &&
 						feeds.find((feed) => feed.id.toString() === selectedFeed)?.title}
 				</button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56">
 				<DropdownMenuGroup>
-					<DropdownMenuItem disabled={selectedFeed === "all"}>
+					<DropdownMenuItem disabled={selectedFeed === SELECTED_FEED_DEFAULT}>
 						<UnfollowFeed />
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
@@ -49,22 +53,23 @@ export function FeedInfoContextMenu({
 
 function UnfollowFeed(): React.JSX.Element {
 	const t = useTranslations("rssFeed");
-	const { selectedFeed, setSelectedFeed } = useSelectedFeedStore();
+	const [{ selectedFeed }, setSelectedFeed] =
+		useQueryStates(searchParamsParsers);
 	const [pending, startTransition] = useTransition();
 
 	const handleUnfollow = (e: React.MouseEvent): void => {
 		startTransition(async () => {
 			try {
 				e.preventDefault();
-				if (selectedFeed === "all") return;
+				if (selectedFeed === SELECTED_FEED_DEFAULT) return;
 
 				const res = await unfollowFeed(selectedFeed);
 				if (res.message) {
-					toast.error(res.message);
+					toast.error(t(res.message));
 					return;
 				}
 
-				setSelectedFeed("all");
+				setSelectedFeed({ selectedFeed: SELECTED_FEED_DEFAULT });
 				toast.success(t(res.successMessage));
 			} catch (_err) {
 				toast.error(t("errors.unexpected"));
