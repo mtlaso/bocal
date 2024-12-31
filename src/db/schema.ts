@@ -54,12 +54,9 @@ export const feeds = pgTable("feeds", {
 	createdAt: timestamp().defaultNow().notNull(),
 	lastSyncAt: timestamp(),
 	content: json().$type<FeedContent[]>(),
-	status: pgEnum("_status", enumToPgEnum(FeedStatusType))()
+	status: pgEnum("status", enumToPgEnum(FeedStatusType))()
 		.notNull()
 		.default(FeedStatusType.ACTIVE),
-	// status: text({ enum: ["active", "error", "inactive"] })
-	//   .notNull()
-	//   .default("active"),
 	lastError: text(),
 	errorCount: integer().default(0).notNull(),
 	errorType: pgEnum("errorType", enumToPgEnum(FeedErrorType))(),
