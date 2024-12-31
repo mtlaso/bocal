@@ -1,7 +1,11 @@
 import { createHash } from "node:crypto";
 import { removeWWW } from "@/app/[locale]/lib/remove-www";
 import { sanitizeHTML } from "@/app/[locale]/lib/sanitize-html";
-import { type FeedContent, FeedErrorType } from "@/app/[locale]/lib/types";
+import {
+	type FeedContent,
+	FeedErrorType,
+	FeedStatusType,
+} from "@/app/[locale]/lib/types";
 import { db } from "@/db/db";
 import { type Feed, feeds } from "@/db/schema";
 import { eq, sql } from "drizzle-orm";
@@ -91,7 +95,7 @@ async function triggerBackgroundSync(outdatedFeeds: Feed[]): Promise<void> {
 					lastSyncAt: new Date(),
 					errorCount: 0,
 					lastError: null,
-					status: "active",
+					status: FeedStatusType.ACTIVE,
 				})
 				.where(eq(feeds.id, feed.id));
 		} catch (err) {
@@ -123,7 +127,7 @@ async function triggerBackgroundSync(outdatedFeeds: Feed[]): Promise<void> {
 					errorCount: sql`${feeds.errorCount} + 1`,
 					lastError: errMsg,
 					errorType: errType,
-					status: "error",
+					status: FeedStatusType.ERROR,
 				})
 				.where(eq(feeds.id, feed.id));
 		}

@@ -19,7 +19,7 @@ export type FlattenedFeedsContent = FeedContent & {
 	isRead: UsersFeedsReadContent | null;
 };
 
-export enum FeedStatus {
+export enum FeedStatusType {
 	ACTIVE = "active",
 	ERROR = "error",
 	INACTIVE = "inactive",

@@ -1,4 +1,8 @@
-import { type FeedContent, FeedErrorType } from "@/app/[locale]/lib/types";
+import {
+	type FeedContent,
+	FeedErrorType,
+	FeedStatusType,
+} from "@/app/[locale]/lib/types";
 import type { InferSelectModel } from "drizzle-orm";
 import {
 	boolean,
@@ -50,9 +54,12 @@ export const feeds = pgTable("feeds", {
 	createdAt: timestamp().defaultNow().notNull(),
 	lastSyncAt: timestamp(),
 	content: json().$type<FeedContent[]>(),
-	status: text({ enum: ["active", "error", "inactive"] })
+	status: pgEnum("_status", enumToPgEnum(FeedStatusType))()
 		.notNull()
-		.default("active"),
+		.default(FeedStatusType.ACTIVE),
+	// status: text({ enum: ["active", "error", "inactive"] })
+	//   .notNull()
+	//   .default("active"),
 	lastError: text(),
 	errorCount: integer().default(0).notNull(),
 	errorType: pgEnum("errorType", enumToPgEnum(FeedErrorType))(),
