@@ -4,7 +4,7 @@ import "server-only";
 export const getAppBaseUrl = cache(() => {
 	switch (process.env.VERCEL_ENV) {
 		case "production":
-			return `https://${process.env.VERCEL_URL}`;
+			return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
 		case "preview": {
 			// https://vercel.com/docs/projects/environment-variables/system-environment-variables#VERCEL_PROJECT_PRODUCTION_URL
 			const opt1 = process.env.VERCEL_PROJECT_PRODUCTION_URL;
