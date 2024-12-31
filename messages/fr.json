@@ -103,7 +103,7 @@
 			"textFeedsCount": "{count, plural, =0 {aucun flux} =1 {un flux} other {# flux}}",
 			"textPartTwo": "avec",
 			"textUnreachableCount": "{count} inaccessible.",
-			"title": "Flux RSS/Atom",
+			"title": "Flux",
 			"allFeeds": "Tout le contenu"
 		},
 		"addFeedForm": {
