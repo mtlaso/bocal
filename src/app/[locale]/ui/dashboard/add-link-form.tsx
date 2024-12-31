@@ -123,7 +123,7 @@ function LinkForm({
 
 				<div className="relative">
 					<Input
-						className="block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+						className="block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 outline-2 placeholder:text-gray-500"
 						name="url"
 						autoFocus
 						id="url"
