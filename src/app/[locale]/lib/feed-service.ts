@@ -1,7 +1,11 @@
 import { createHash } from "node:crypto";
 import { removeWWW } from "@/app/[locale]/lib/remove-www";
 import { sanitizeHTML } from "@/app/[locale]/lib/sanitize-html";
-import type { FeedContent } from "@/app/[locale]/lib/types";
+import {
+	type FeedContent,
+	FeedErrorType,
+	FeedStatusType,
+} from "@/app/[locale]/lib/types";
 import { db } from "@/db/db";
 import { type Feed, feeds } from "@/db/schema";
 import { eq, sql } from "drizzle-orm";
@@ -91,17 +95,12 @@ async function triggerBackgroundSync(outdatedFeeds: Feed[]): Promise<void> {
 					lastSyncAt: new Date(),
 					errorCount: 0,
 					lastError: null,
-					status: "active",
+					status: FeedStatusType.ACTIVE,
 				})
 				.where(eq(feeds.id, feed.id));
 		} catch (err) {
 			let errMsg = "errors.unexpected";
-			let errType:
-				| "fetch_error"
-				| "parse_error"
-				| "timeout_error"
-				| "invalid_url"
-				| "unknown_error" = "unknown_error";
+			let errType = FeedErrorType.UNKNOWN;
 
 			if (err instanceof Error) {
 				errMsg = err.message;
@@ -109,17 +108,17 @@ async function triggerBackgroundSync(outdatedFeeds: Feed[]): Promise<void> {
 
 			if (err instanceof feedService.FeedUnreachable) {
 				errMsg = "errors.feedUnreachable";
-				errType = "fetch_error";
+				errType = FeedErrorType.FETCH;
 			}
 
 			if (err instanceof feedService.FeedCannotBeProcessed) {
 				errMsg = "errors.feedCannotBeProcessed";
-				errType = "parse_error";
+				errType = FeedErrorType.PARSE;
 			}
 
 			if (err instanceof feedService.FeedTimeout) {
 				errMsg = "errors.feedTimeout";
-				errType = "timeout_error";
+				errType = FeedErrorType.TIMEOUT;
 			}
 
 			await db
@@ -128,7 +127,7 @@ async function triggerBackgroundSync(outdatedFeeds: Feed[]): Promise<void> {
 					errorCount: sql`${feeds.errorCount} + 1`,
 					lastError: errMsg,
 					errorType: errType,
-					status: "error",
+					status: FeedStatusType.ERROR,
 				})
 				.where(eq(feeds.id, feed.id));
 		}
