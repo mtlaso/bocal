@@ -4,7 +4,7 @@ import { SortLinks } from "@/app/[locale]/ui/sort-links";
 import { Separator } from "@/components/ui/separator";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import type { SearchParams } from "nuqs";
+import type { SearchParams } from "nuqs/server";
 import { Suspense } from "react";
 import { getLinks } from "../../lib/data";
 import { Links } from "../../ui/links";
