@@ -1,5 +1,4 @@
 import type { UsersFeedsReadContent } from "@/db/schema";
-import type { Locales } from "@/i18n/routing";
 
 export enum SortOptions {
 	BY_DATE_ASC = "byDateAsc",
@@ -31,13 +30,5 @@ export enum FeedErrorType {
 	PARSE = "parse_error",
 	TIMEOUT = "timeout_error",
 	INVALID_URL = "invalid_url",
+	UNKNOWN = "unknown_error",
 }
-
-export type PrivacyPolicyData = {
-	projectName: string;
-	lastUpdated: string;
-	siteUrl: string;
-	collectedInformation: {
-		[key in Locales]: string[];
-	};
-};

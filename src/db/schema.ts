@@ -1,9 +1,10 @@
-import type { FeedContent } from "@/app/[locale]/lib/types";
+import { type FeedContent, FeedErrorType } from "@/app/[locale]/lib/types";
 import type { InferSelectModel } from "drizzle-orm";
 import {
 	boolean,
 	integer,
 	json,
+	pgEnum,
 	pgTable,
 	primaryKey,
 	text,
@@ -11,6 +12,14 @@ import {
 } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import type { AdapterAccountType } from "next-auth/adapters";
+
+// biome-ignore lint/suspicious/noExplicitAny: locale exception.
+function enumToPgEnum<T extends Record<string, any>>(
+	myEnum: T,
+): [T[keyof T], ...T[keyof T][]] {
+	// biome-ignore lint/suspicious/noExplicitAny: locale exception.
+	return Object.values(myEnum).map((value: any) => `${value}`) as any;
+}
 
 export const users = pgTable("users", {
 	id: text()
@@ -44,18 +53,9 @@ export const feeds = pgTable("feeds", {
 	status: text({ enum: ["active", "error", "inactive"] })
 		.notNull()
 		.default("active"),
-
 	lastError: text(),
 	errorCount: integer().default(0).notNull(),
-	errorType: text({
-		enum: [
-			"fetch_error",
-			"parse_error",
-			"timeout_error",
-			"invalid_url",
-			"unknown_error",
-		],
-	}),
+	errorType: pgEnum("errorType", enumToPgEnum(FeedErrorType))(),
 });
 
 export const usersFeeds = pgTable(
