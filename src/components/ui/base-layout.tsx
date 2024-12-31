@@ -3,6 +3,7 @@ import ThemeProvider from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+import Script from "next/script";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 type Props = {
@@ -31,6 +32,11 @@ export default async function BaseLayout({
 					</ThemeProvider>
 				</NextIntlClientProvider>
 			</body>
+			<Script
+				defer
+				data-site-id="bocal.dnncrye.dev"
+				src="https://assets.onedollarstats.com/tracker.js"
+			/>
 		</html>
 	);
 }
