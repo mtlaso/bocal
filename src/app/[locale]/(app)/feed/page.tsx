@@ -1,5 +1,6 @@
 import { getUserFeeds } from "@/app/[locale]/lib/data";
 import { flattenFeedsContent } from "@/app/[locale]/lib/flatten-feeds-content";
+import { searchParamsCache } from "@/app/[locale]/lib/stores/search-params";
 import { AddFeedForm } from "@/app/[locale]/ui/feed/add-feed-form";
 import { FeedInfoMenu } from "@/app/[locale]/ui/feed/feed-info-menu";
 import { Feeds } from "@/app/[locale]/ui/feed/feeds";
@@ -7,6 +8,7 @@ import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import type { SearchParams } from "nuqs/server";
 import { Suspense } from "react";
 
 export async function generateMetadata({
@@ -23,8 +25,15 @@ export async function generateMetadata({
 	} satisfies Metadata;
 }
 
-export default async function Page(): Promise<React.JSX.Element> {
+type PageProps = {
+	searchParams: Promise<SearchParams>;
+};
+
+export default async function Page({
+	searchParams,
+}: PageProps): Promise<React.JSX.Element> {
 	const t = await getTranslations("rssFeed");
+	await searchParamsCache.parse(searchParams);
 	const userFeeds = await getUserFeeds();
 	const flattenedFeeds = await flattenFeedsContent(userFeeds);
 
