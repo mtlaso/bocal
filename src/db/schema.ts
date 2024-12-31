@@ -8,7 +8,6 @@ import {
 	boolean,
 	integer,
 	json,
-	pgEnum,
 	pgTable,
 	primaryKey,
 	text,
@@ -54,12 +53,14 @@ export const feeds = pgTable("feeds", {
 	createdAt: timestamp().defaultNow().notNull(),
 	lastSyncAt: timestamp(),
 	content: json().$type<FeedContent[]>(),
-	status: pgEnum("status", enumToPgEnum(FeedStatusType))()
+	status: text({ enum: enumToPgEnum(FeedStatusType) })
 		.notNull()
 		.default(FeedStatusType.ACTIVE),
 	lastError: text(),
 	errorCount: integer().default(0).notNull(),
-	errorType: pgEnum("errorType", enumToPgEnum(FeedErrorType))(),
+	errorType: text({
+		enum: enumToPgEnum(FeedErrorType),
+	}),
 });
 
 export const usersFeeds = pgTable(
