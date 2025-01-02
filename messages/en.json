@@ -1,7 +1,29 @@
 {
 	"metadata": {
 		"title": "Bocal",
-		"description": "Save interesting articles and never miss updates from your favorite RSS feeds.",
+		"login": "Log in",
+		"headline": "Things to read later and feeds in one place",
+		"ctaButton": "Get started",
+		"description": "The content you care is scattered around the internet. Bring together your RSS feeds, reading list and other web sources in one easy-to-browse place.",
+		"lastCtaHeadline": "Ready to get started?",
+		"lastCtaDescription": "Save content to read later. Sort it, archive it, organize it as you wish 🪄.",
+		"features": [
+			{
+				"key": "0",
+				"title": "Save content to read",
+				"description": "Save anything with a link to read later. Sort it, archive it, organize it as you wish."
+			},
+			{
+				"key": "1",
+				"title": "Keep up with blogs, YouTube, Reddit... anything with a feed",
+				"description": "Keep up with anything with RSS or Atom feeds."
+			},
+			{
+				"key": "2",
+				"title": "Following newsletters?",
+				"description": "Free? Paid? We do that too."
+			}
+		],
 		"dashboard": {
 			"title": "Dashboard",
 			"description": "Manage your links here."
@@ -17,7 +39,12 @@
 		"privacyPolicy": {
 			"title": "Privacy Policy",
 			"description": "Read our privacy policy."
-		}
+		},
+		"termsOfService": {
+			"title": "Terms of Service",
+			"description": "Read our terms of service."
+		},
+		"footerShortDescription": "Bocal — all your content in one place."
 	},
 	"errors": {
 		"notSignedIn": "Not signed in",
