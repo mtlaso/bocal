@@ -1,5 +1,3 @@
-"use client";
-
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Button } from "@/components/ui/button";
 import {
@@ -69,22 +67,20 @@ export default function Home(): React.JSX.Element {
 						SPACING.MD,
 					)}
 				>
-					{t
-						.raw("features")
-						?.map(
-							(feature: {
-								key: number;
-								title: string;
-								description: string;
-							}) => (
-								<div className={SPACING.SM} key={feature.key}>
-									<h1 className="text-xl md:text-2xl font-extrabold leading-none tracking-tight">
-										{feature.title}
-									</h1>
-									<p>{feature.description}</p>
-								</div>
-							),
-						)}
+					{t.raw("features")?.map(
+						(feature: {
+							key: number;
+							title: string;
+							description: string;
+						}) => (
+							<div className={SPACING.SM} key={feature.key}>
+								<h1 className="text-xl md:text-2xl font-extrabold leading-none tracking-tight">
+									{feature.title}
+								</h1>
+								<p>{feature.description}</p>
+							</div>
+						),
+					)}
 				</section>
 
 				{/* last cta  */}
