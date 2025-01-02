@@ -6,7 +6,7 @@ export default function DashboardLayout({
 	children: React.ReactNode;
 }): React.JSX.Element {
 	return (
-		<div className="min-h-screen max-w-6xl mx-auto px-4">
+		<div className="min-h-screen max-w-6xl mx-auto px-4 mb-12">
 			<NavMenu />
 			<main>{children}</main>
 		</div>

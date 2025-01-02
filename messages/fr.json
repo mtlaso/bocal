@@ -1,7 +1,29 @@
 {
 	"metadata": {
 		"title": "Bocal",
-		"description": "Sauvegardez des articles intéressants et ne manquez jamais les mises à jour de vos flux RSS.",
+		"login": "Se connecter",
+		"headline": "Les choses à lire et à suivre, au même endroit",
+		"ctaButton": "Commencer",
+		"description": "Plus besoin de jongler entre différentes apps et onglets. Sauvegardez simplement vos lectures et suivez vos sources préférées en un seul endroit",
+		"lastCtaHeadline": "Prêt à commencer?",
+		"lastCtaDescription": "Sauvegardez du contenu à lire plus tard. Triez-le, archivez-le, organisez-le comme vous le souhaitez 🪄.",
+		"features": [
+			{
+				"key": "0",
+				"title": "Sauvegardez du contenu à lire",
+				"description": "Sauvegardez n'importe quel lien pour le lire plus tard. Triez, archivez et organisez comme bon vous semble."
+			},
+			{
+				"key": "1",
+				"title": "Restez à jour avec les blogs, YouTube, Reddit... tout ce qui a un flux",
+				"description": "Suivez tout ce qui a des flux RSS ou Atom."
+			},
+			{
+				"key": "2",
+				"title": "Vous êtes abonné à des newsletters ?",
+				"description": "Gratuites ? Payantes ? Nous gérons ça aussi."
+			}
+		],
 		"dashboard": {
 			"title": "Tableau de bord",
 			"description": "Gérez vos liens ici."
@@ -17,7 +39,12 @@
 		"privacyPolicy": {
 			"title": "Politique de confidentialité",
 			"description": "Consultez notre politique de confidentialité."
-		}
+		},
+		"termsOfService": {
+			"title": "Conditions d'utilisation",
+			"description": "Consultez nos conditions d'utilisation."
+		},
+		"footerShortDescription": "Bocal — tout votre contenu au même endroit."
 	},
 	"errors": {
 		"notSignedIn": "Non connecté",

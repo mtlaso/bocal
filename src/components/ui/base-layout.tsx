@@ -19,7 +19,7 @@ export default async function BaseLayout({
 
 	return (
 		<html lang={locale} suppressHydrationWarning>
-			<body className={`${inter.className} antialiased mb-12`}>
+			<body className={`${inter.className} antialiased`}>
 				<NextIntlClientProvider messages={messages}>
 					<ThemeProvider
 						attribute="class"
