@@ -11,8 +11,10 @@ import {
 	insertFeedsSchema,
 	insertLinksSchema,
 	insertUsersFeedsReadContentSchema,
+	insertUsersSchema,
 	links,
 	unfollowFeedSchema,
+	users,
 	usersFeeds,
 	usersFeedsReadContent,
 } from "@/db/schema";
@@ -505,5 +507,45 @@ export async function markFeedContentAsUnread(
 	}
 
 	revalidatePath("/feed");
+	return {};
+}
+
+export type SetFeedContentLimitState = State<{
+	feedContentLimit?: string;
+}>;
+
+export async function setFeedContentLimit(
+	feedContentLimit: string,
+): Promise<SetFeedContentLimitState> {
+	const validatedFields = insertUsersSchema.safeParse({
+		feedContentLimit: Number.parseInt(feedContentLimit),
+	});
+
+	if (!validatedFields.success) {
+		return {
+			errors: validatedFields.error.flatten().fieldErrors,
+			data: { feedContentLimit },
+			message: "errors.missingFields",
+		};
+	}
+
+	try {
+		const user = await auth();
+		if (!user) {
+			throw new Error("errors.notSignedIn");
+		}
+
+		await db
+			.update(users)
+			.set({ feedContentLimit: validatedFields.data.feedContentLimit })
+			.where(eq(users.id, user.user.id))
+			.execute();
+	} catch (_err) {
+		return {
+			message: "errors.unexpected",
+		};
+	}
+
+	revalidatePath("/settings");
 	return {};
 }
