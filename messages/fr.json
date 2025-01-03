@@ -1,165 +1,197 @@
 {
-  "metadata": {
-    "title": "Bocal",
-    "login": "Se connecter",
-    "headline": "Les choses à lire et à suivre, au même endroit",
-    "ctaButton": "Commencer",
-    "description": "Plus besoin de jongler entre différentes apps et onglets. Sauvegardez simplement vos lectures et suivez vos sources préférées en un seul endroit",
-    "lastCtaHeadline": "Prêt à commencer?",
-    "lastCtaDescription": "Sauvegardez du contenu à lire plus tard. Triez-le, archivez-le, organisez-le comme vous le souhaitez 🪄.",
-    "features": [
-      {
-        "key": "0",
-        "title": "Sauvegardez du contenu à lire",
-        "description": "Sauvegardez n'importe quel lien pour le lire plus tard. Triez, archivez et organisez comme bon vous semble."
-      },
-      {
-        "key": "1",
-        "title": "Restez à jour avec les blogs, YouTube, Reddit... tout ce qui a un flux",
-        "description": "Suivez tout ce qui a des flux RSS ou Atom."
-      },
-      {
-        "key": "2",
-        "title": "Vous êtes abonné à des newsletters ?",
-        "description": "Gratuites ? Payantes ? Nous gérons ça aussi."
-      }
-    ],
-    "dashboard": {
-      "title": "Tableau de bord",
-      "description": "Gérez vos liens ici."
-    },
-    "archive": {
-      "title": "Archive",
-      "description": "Consultez vos liens archivés ici."
-    },
-    "rssFeed": {
-      "title": "Flux RSS/Atom",
-      "description": "Suivez vos flux RSS/Atom ici."
-    },
-    "settings": {
-      "title": "Paramètres",
-      "description": "Gérez vos paramètres ici."
-    },
-    "legal": {
-      "title": "Légal",
-      "description": "Information légale."
-    },
-    "privacyPolicy": {
-      "title": "Politique de confidentialité",
-      "description": "Consultez notre politique de confidentialité."
-    },
-    "termsOfService": {
-      "title": "Conditions d'utilisation",
-      "description": "Consultez nos conditions d'utilisation."
-    },
-    "footerShortDescription": "Bocal — tout votre contenu au même endroit."
-  },
-  "errors": {
-    "notSignedIn": "Non connecté",
-    "unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer.",
-    "retry": "Réessayer",
-    "404PageNotFound": "Page non trouvée",
-    "404": {
-      "title": "404 - Page non trouvée",
-      "description": "La page que vous recherchez n'existe pas.",
-      "goToHome": "Aller à l'accueil"
-    }
-  },
-  "navbar": {
-    "menu": "Menu",
-    "links": "Liens",
-    "archive": "Archive",
-    "rssFeed": "Flux",
-    "settings": "Paramètres",
-    "close": "Fermer",
-    "sort": {
-      "sort": "Trier",
-      "byDateAsc": "Par date: ascendant",
-      "byDateDesc": "Par date: descendant"
-    },
-    "themeToggle": {
-      "toggle": "Changer thème",
-      "dark": "Sombre",
-      "light": "Clair",
-      "system": "Système"
-    }
-  },
-  "login": {
-    "title": "Connectez-vous à Bocal pour continuer.",
-    "google": "Continuer avec Google",
-    "github": "Continuer avec GitHub",
-    "errors": {
-      "title": "Erreur d'authentification",
-      "CredentialsSignin": "Identifiants invalides",
-      "OAuthSignInError": "Erreur lors de la connexion avec le fournisseur d'authentification",
-      "OAuthCallbackError": "Erreur lors du retour d'authentification",
-      "InvalidCallbackUrl": "URL de retour invalide",
-      "CallbackRouteError": "Erreur lors du traitement de la route de retour",
-      "default": "Une erreur s'est produite lors de l'authentification",
-      "unexpected": {
-        "title": "Erreur inattendue",
-        "description": "Une erreur inattendue s'est produite. Veuillez réessayer plus tard."
-      }
-    }
-  },
-  "dashboard": {
-    "links": "Liens",
-    "add": "Ajouter",
-    "addLinkForm": {
-      "title": "Ajouter un lien",
-      "link": "Lien",
-      "add": "Ajouter",
-      "cancel": "Annuler"
-    },
-    "ogImageAlt": "Image représentant le contenu",
-    "success": "Link added",
-    "delete": "Supprimer",
-    "archive": "Archiver",
-    "unarchive": "Désarchiver",
-    "errors": {
-      "urlFieldInvalid": "URL invalide.",
-      "idFieldInvalid": "ID invalide.",
-      "missingFields": "Champ(s) manquant(s).",
-      "unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer."
-    }
-  },
-  "archive": {
-    "archive": "Archive"
-  },
-  "rssFeed": {
-    "rssFeed": "Flux",
-    "add": "Ajouter",
-    "unfollow": "Ne plus suivre",
-    "success": "Flux ajouté",
-    "successUnfollow": "Flux plus suivi",
-    "markAsRead": "Marquer comme lu",
-    "markAsUnread": "Marquer comme non lu",
-    "info": {
-      "textPartOne": "Vous suivez",
-      "textFeedsCount": "{count, plural, =0 {aucun flux} =1 {un flux} other {# flux}}",
-      "textPartTwo": "avec",
-      "textUnreachableCount": "{count} inaccessible.",
-      "title": "Flux",
-      "allFeeds": "Tout le contenu"
-    },
-    "addFeedForm": {
-      "title": "Ajouter un flux RSS/Atom",
-      "link": "Lien",
-      "cancel": "Annuler"
-    },
-    "errors": {
-      "unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer.",
-      "urlFieldInvalid": "URL invalide.",
-      "feedUnreachable": "Le flux est inaccessible.",
-      "feedCannotBeProcessed": "Le flux ne peut pas être traité.",
-      "feedAlreadyFollowed": "Le flux est déjà suivi.",
-      "maxFeedsReached": "Nombre maximum de flux atteint.",
-      "missingFields": "Champ(s) manquant(s).",
-      "idFieldInvalid": "ID invalide.",
-      "feedContentIdFieldInvalid": "ID de contenu invalide."
-    }
-  },
-  "settings": {
-    "title": "Paramètres"
-  }
+	"metadata": {
+		"title": "Bocal",
+		"login": "Se connecter",
+		"headline": "Les choses à lire et à suivre, au même endroit",
+		"ctaButton": "Commencer",
+		"description": "Plus besoin de jongler entre différentes apps et onglets. Sauvegardez simplement vos lectures et suivez vos sources préférées en un seul endroit",
+		"lastCtaHeadline": "Prêt à commencer?",
+		"lastCtaDescription": "Sauvegardez du contenu à lire plus tard. Triez-le, archivez-le, organisez-le comme vous le souhaitez 🪄.",
+		"features": [
+			{
+				"key": "0",
+				"title": "Sauvegardez du contenu à lire",
+				"description": "Sauvegardez n'importe quel lien pour le lire plus tard. Triez, archivez et organisez comme bon vous semble."
+			},
+			{
+				"key": "1",
+				"title": "Restez à jour avec les blogs, YouTube, Reddit... tout ce qui a un flux",
+				"description": "Suivez tout ce qui a des flux RSS ou Atom."
+			},
+			{
+				"key": "2",
+				"title": "Vous êtes abonné à des newsletters ?",
+				"description": "Gratuites ? Payantes ? Nous gérons ça aussi."
+			}
+		],
+		"dashboard": {
+			"title": "Tableau de bord",
+			"description": "Gérez vos liens ici."
+		},
+		"archive": {
+			"title": "Archive",
+			"description": "Consultez vos liens archivés ici."
+		},
+		"rssFeed": {
+			"title": "Flux RSS/Atom",
+			"description": "Suivez vos flux RSS/Atom ici."
+		},
+		"settings": {
+			"title": "Paramètres",
+			"description": "Gérez vos paramètres ici."
+		},
+		"legal": {
+			"title": "Légal",
+			"description": "Information légale."
+		},
+		"privacyPolicy": {
+			"title": "Politique de confidentialité",
+			"description": "Consultez notre politique de confidentialité."
+		},
+		"termsOfService": {
+			"title": "Conditions d'utilisation",
+			"description": "Consultez nos conditions d'utilisation."
+		},
+		"footerShortDescription": "Bocal — tout votre contenu au même endroit."
+	},
+	"errors": {
+		"notSignedIn": "Non connecté",
+		"unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+		"retry": "Réessayer",
+		"404PageNotFound": "Page non trouvée",
+		"404": {
+			"title": "404 - Page non trouvée",
+			"description": "La page que vous recherchez n'existe pas.",
+			"goToHome": "Aller à l'accueil"
+		}
+	},
+	"navbar": {
+		"menu": "Menu",
+		"links": "Liens",
+		"archive": "Archive",
+		"rssFeed": "Flux",
+		"settings": "Paramètres",
+		"close": "Fermer",
+		"sort": {
+			"sort": "Trier",
+			"byDateAsc": "Par date: ascendant",
+			"byDateDesc": "Par date: descendant"
+		},
+		"themeToggle": {
+			"toggle": "Changer thème",
+			"dark": "Sombre",
+			"light": "Clair",
+			"system": "Système"
+		}
+	},
+	"login": {
+		"title": "Connectez-vous à Bocal pour continuer.",
+		"google": "Continuer avec Google",
+		"github": "Continuer avec GitHub",
+		"errors": {
+			"title": "Erreur d'authentification",
+			"CredentialsSignin": "Identifiants invalides",
+			"OAuthSignInError": "Erreur lors de la connexion avec le fournisseur d'authentification",
+			"OAuthCallbackError": "Erreur lors du retour d'authentification",
+			"InvalidCallbackUrl": "URL de retour invalide",
+			"CallbackRouteError": "Erreur lors du traitement de la route de retour",
+			"default": "Une erreur s'est produite lors de l'authentification",
+			"unexpected": {
+				"title": "Erreur inattendue",
+				"description": "Une erreur inattendue s'est produite. Veuillez réessayer plus tard."
+			}
+		}
+	},
+	"dashboard": {
+		"links": "Liens",
+		"add": "Ajouter",
+		"addLinkForm": {
+			"title": "Ajouter un lien",
+			"link": "Lien",
+			"add": "Ajouter",
+			"cancel": "Annuler"
+		},
+		"ogImageAlt": "Image représentant le contenu",
+		"success": "Link added",
+		"delete": "Supprimer",
+		"archive": "Archiver",
+		"unarchive": "Désarchiver",
+		"errors": {
+			"urlFieldInvalid": "URL invalide.",
+			"idFieldInvalid": "ID invalide.",
+			"missingFields": "Champ(s) manquant(s).",
+			"unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer."
+		}
+	},
+	"archive": {
+		"archive": "Archive"
+	},
+	"rssFeed": {
+		"rssFeed": "Flux",
+		"add": "Ajouter",
+		"unfollow": "Ne plus suivre",
+		"success": "Flux ajouté",
+		"successUnfollow": "Flux plus suivi",
+		"markAsRead": "Marquer comme lu",
+		"markAsUnread": "Marquer comme non lu",
+		"info": {
+			"textPartOne": "Vous suivez",
+			"textFeedsCount": "{count, plural, =0 {aucun flux} =1 {un flux} other {# flux}}",
+			"textPartTwo": "avec",
+			"textUnreachableCount": "{count} inaccessible.",
+			"title": "Flux",
+			"allFeeds": "Tout le contenu"
+		},
+		"addFeedForm": {
+			"title": "Ajouter un flux RSS/Atom",
+			"link": "Lien",
+			"cancel": "Annuler"
+		},
+		"errors": {
+			"unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+			"urlFieldInvalid": "URL invalide.",
+			"feedUnreachable": "Le flux est inaccessible.",
+			"feedCannotBeProcessed": "Le flux ne peut pas être traité.",
+			"feedAlreadyFollowed": "Le flux est déjà suivi.",
+			"maxFeedsReached": "Nombre maximum de flux atteint.",
+			"missingFields": "Champ(s) manquant(s).",
+			"idFieldInvalid": "ID invalide.",
+			"feedContentIdFieldInvalid": "ID de contenu invalide."
+		}
+	},
+	"settings": {
+		"title": "Paramètres",
+		"profileSection": {
+			"title": "Profil",
+			"name": "Nom",
+			"email": "Courriel"
+		},
+		"viewSection": {
+			"title": "Affichage",
+			"hideImages": {
+				"title": "Masquer les images",
+				"description": "Masquer les images dans les liens."
+			},
+			"gridView": {
+				"title": "Vue en grille",
+				"description": "Afficher les liens en grille."
+			},
+			"feed": {
+				"title": "Limite d'articles par flux",
+				"description": "Définir le nombre d'articles à afficher par flux.",
+				"placeholder": "Nombre d'articles"
+			}
+		},
+		"exportDataSection": {
+			"title": "Exporter données du compte",
+			"description": "Exporter vos données au format JSON.",
+			"export": "Exporter"
+		},
+		"deleteAccountSection": {
+			"title": "Supprimer le compte !",
+			"description": "Supprimer définitivement votre compte. Cetet action est irréversible.",
+			"delete": "Supprimer"
+		}
+	},
+	"submit": "Enregistrer"
 }

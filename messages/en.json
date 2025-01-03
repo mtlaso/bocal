@@ -1,164 +1,196 @@
 {
-  "metadata": {
-    "title": "Bocal",
-    "login": "Log in",
-    "headline": "Things to read later and feeds in one place",
-    "ctaButton": "Get started",
-    "description": "The content you care is scattered around the internet. Bring together your RSS feeds, reading list and other web sources in one easy-to-browse place.",
-    "lastCtaHeadline": "Ready to get started?",
-    "lastCtaDescription": "Save content to read later. Sort it, archive it, organize it as you wish 🪄.",
-    "features": [
-      {
-        "key": "0",
-        "title": "Save content to read",
-        "description": "Save anything with a link to read later. Sort it, archive it, organize it as you wish."
-      },
-      {
-        "key": "1",
-        "title": "Keep up with blogs, YouTube, Reddit... anything with a feed",
-        "description": "Keep up with anything with RSS or Atom feeds."
-      },
-      {
-        "key": "2",
-        "title": "Following newsletters?",
-        "description": "Free? Paid? We do that too."
-      }
-    ],
-    "dashboard": {
-      "title": "Dashboard",
-      "description": "Manage your links here."
-    },
-    "archive": {
-      "title": "Archive",
-      "description": "View your archived links here."
-    },
-    "rssFeed": {
-      "title": "RSS/Atom feeds",
-      "description": "Follow your RSS/Atom feeds here."
-    },
-    "settings": {
-      "title": "Settings",
-      "description": "Manage your settings here."
-    },
-    "legal": {
-      "title": "Legal",
-      "description": "Legal information."
-    },
-    "privacyPolicy": {
-      "title": "Privacy Policy",
-      "description": "Read our privacy policy."
-    },
-    "termsOfService": {
-      "title": "Terms of Service",
-      "description": "Read our terms of service."
-    },
-    "footerShortDescription": "Bocal — all your content in one place."
-  },
-  "errors": {
-    "notSignedIn": "Not signed in",
-    "unexpected": "An error happened. Please try again.",
-    "retry": "Retry",
-    "404": {
-      "title": "404 - Page not found",
-      "description": "The page you are looking for does not exist.",
-      "goToHome": "Go to home"
-    }
-  },
-  "navbar": {
-    "menu": "Menu",
-    "links": "Links",
-    "archive": "Archive",
-    "rssFeed": "Feeds",
-    "settings": "Settings",
-    "close": "Close",
-    "sort": {
-      "sort": "Sort",
-      "byDateAsc": "By date: ascending",
-      "byDateDesc": "By date: descending"
-    },
-    "themeToggle": {
-      "toggle": "Toggle theme",
-      "dark": "Dark",
-      "light": "Light",
-      "system": "System"
-    }
-  },
-  "login": {
-    "title": "Log in to Bocal to continue.",
-    "google": "Continue with Google",
-    "github": "Continue with GitHub",
-    "errors": {
-      "title": "Authentication Error",
-      "CredentialsSignin": "Invalid credentials",
-      "OAuthSignInError": "Error connecting to authentication provider",
-      "OAuthCallbackError": "Error during authentication callback",
-      "InvalidCallbackUrl": "Invalid callback URL",
-      "CallbackRouteError": "Error processing callback route",
-      "default": "Something went wrong with authentication",
-      "unexpected": {
-        "title": "Unexpected Error",
-        "description": "An unexpected error occurred. Please try again later."
-      }
-    }
-  },
-  "dashboard": {
-    "links": "Links",
-    "add": "Add",
-    "ogImageAlt": "Image representing content",
-    "addLinkForm": {
-      "title": "Add a link",
-      "link": "Link",
-      "add": "Add",
-      "cancel": "Cancel"
-    },
-    "success": "Link added",
-    "delete": "Delete",
-    "archive": "Archive",
-    "unarchive": "Unarchive",
-    "errors": {
-      "urlFieldInvalid": "URL invalid.",
-      "idFieldInvalid": "ID invalid.",
-      "missingFields": "Missing fields.",
-      "unexpected": "An error happened. Please try again."
-    }
-  },
-  "archive": {
-    "archive": "Archive"
-  },
-  "rssFeed": {
-    "rssFeed": "Feeds",
-    "add": "Add",
-    "unfollow": "Unfollow",
-    "success": "Feed added",
-    "successUnfollow": "Feed unfollowed",
-    "markAsRead": "Mark as read",
-    "markAsUnread": "Mark as unread",
-    "info": {
-      "textPartOne": "Following",
-      "textFeedsCount": "{count, plural, =0 {no feeds yet} =1 {one feed} other {# feeds}}",
-      "textPartTwo": "with",
-      "textUnreachableCount": "{count} unreachable.",
-      "title": "Feeds",
-      "allFeeds": "All content"
-    },
-    "addFeedForm": {
-      "title": "Add a RSS/Atom feed",
-      "link": "Link",
-      "cancel": "Cancel"
-    },
-    "errors": {
-      "unexpected": "An error happened. Please try again.",
-      "urlFieldInvalid": "URL invalid.",
-      "feedUnreachable": "Feed is unreachable.",
-      "feedCannotBeProcessed": "Feed cannot be processed.",
-      "feedAlreadyFollowed": "Feed already followed.",
-      "maxFeedsReached": "Maximum number of feeds reached.",
-      "missingFields": "Missing fields.",
-      "idFieldInvalid": "ID invalid.",
-      "feedContentIdFieldInvalid": "Content ID invalid."
-    }
-  },
-  "settings": {
-    "title": "Settings"
-  }
+	"metadata": {
+		"title": "Bocal",
+		"login": "Log in",
+		"headline": "Things to read later and feeds in one place",
+		"ctaButton": "Get started",
+		"description": "The content you care is scattered around the internet. Bring together your RSS feeds, reading list and other web sources in one easy-to-browse place.",
+		"lastCtaHeadline": "Ready to get started?",
+		"lastCtaDescription": "Save content to read later. Sort it, archive it, organize it as you wish 🪄.",
+		"features": [
+			{
+				"key": "0",
+				"title": "Save content to read",
+				"description": "Save anything with a link to read later. Sort it, archive it, organize it as you wish."
+			},
+			{
+				"key": "1",
+				"title": "Keep up with blogs, YouTube, Reddit... anything with a feed",
+				"description": "Keep up with anything with RSS or Atom feeds."
+			},
+			{
+				"key": "2",
+				"title": "Following newsletters?",
+				"description": "Free? Paid? We do that too."
+			}
+		],
+		"dashboard": {
+			"title": "Dashboard",
+			"description": "Manage your links here."
+		},
+		"archive": {
+			"title": "Archive",
+			"description": "View your archived links here."
+		},
+		"rssFeed": {
+			"title": "RSS/Atom feeds",
+			"description": "Follow your RSS/Atom feeds here."
+		},
+		"settings": {
+			"title": "Settings",
+			"description": "Manage your settings here."
+		},
+		"legal": {
+			"title": "Legal",
+			"description": "Legal information."
+		},
+		"privacyPolicy": {
+			"title": "Privacy Policy",
+			"description": "Read our privacy policy."
+		},
+		"termsOfService": {
+			"title": "Terms of Service",
+			"description": "Read our terms of service."
+		},
+		"footerShortDescription": "Bocal — all your content in one place."
+	},
+	"errors": {
+		"notSignedIn": "Not signed in",
+		"unexpected": "An error happened. Please try again.",
+		"retry": "Retry",
+		"404": {
+			"title": "404 - Page not found",
+			"description": "The page you are looking for does not exist.",
+			"goToHome": "Go to home"
+		}
+	},
+	"navbar": {
+		"menu": "Menu",
+		"links": "Links",
+		"archive": "Archive",
+		"rssFeed": "Feeds",
+		"settings": "Settings",
+		"close": "Close",
+		"sort": {
+			"sort": "Sort",
+			"byDateAsc": "By date: ascending",
+			"byDateDesc": "By date: descending"
+		},
+		"themeToggle": {
+			"toggle": "Toggle theme",
+			"dark": "Dark",
+			"light": "Light",
+			"system": "System"
+		}
+	},
+	"login": {
+		"title": "Log in to Bocal to continue.",
+		"google": "Continue with Google",
+		"github": "Continue with GitHub",
+		"errors": {
+			"title": "Authentication Error",
+			"CredentialsSignin": "Invalid credentials",
+			"OAuthSignInError": "Error connecting to authentication provider",
+			"OAuthCallbackError": "Error during authentication callback",
+			"InvalidCallbackUrl": "Invalid callback URL",
+			"CallbackRouteError": "Error processing callback route",
+			"default": "Something went wrong with authentication",
+			"unexpected": {
+				"title": "Unexpected Error",
+				"description": "An unexpected error occurred. Please try again later."
+			}
+		}
+	},
+	"dashboard": {
+		"links": "Links",
+		"add": "Add",
+		"ogImageAlt": "Image representing content",
+		"addLinkForm": {
+			"title": "Add a link",
+			"link": "Link",
+			"add": "Add",
+			"cancel": "Cancel"
+		},
+		"success": "Link added",
+		"delete": "Delete",
+		"archive": "Archive",
+		"unarchive": "Unarchive",
+		"errors": {
+			"urlFieldInvalid": "URL invalid.",
+			"idFieldInvalid": "ID invalid.",
+			"missingFields": "Missing fields.",
+			"unexpected": "An error happened. Please try again."
+		}
+	},
+	"archive": {
+		"archive": "Archive"
+	},
+	"rssFeed": {
+		"rssFeed": "Feeds",
+		"add": "Add",
+		"unfollow": "Unfollow",
+		"success": "Feed added",
+		"successUnfollow": "Feed unfollowed",
+		"markAsRead": "Mark as read",
+		"markAsUnread": "Mark as unread",
+		"info": {
+			"textPartOne": "Following",
+			"textFeedsCount": "{count, plural, =0 {no feeds yet} =1 {one feed} other {# feeds}}",
+			"textPartTwo": "with",
+			"textUnreachableCount": "{count} unreachable.",
+			"title": "Feeds",
+			"allFeeds": "All content"
+		},
+		"addFeedForm": {
+			"title": "Add a RSS/Atom feed",
+			"link": "Link",
+			"cancel": "Cancel"
+		},
+		"errors": {
+			"unexpected": "An error happened. Please try again.",
+			"urlFieldInvalid": "URL invalid.",
+			"feedUnreachable": "Feed is unreachable.",
+			"feedCannotBeProcessed": "Feed cannot be processed.",
+			"feedAlreadyFollowed": "Feed already followed.",
+			"maxFeedsReached": "Maximum number of feeds reached.",
+			"missingFields": "Missing fields.",
+			"idFieldInvalid": "ID invalid.",
+			"feedContentIdFieldInvalid": "Content ID invalid."
+		}
+	},
+	"settings": {
+		"title": "Settings",
+		"profileSection": {
+			"title": "Profile",
+			"description": "Manage your profile here.",
+			"name": "Name",
+			"email": "Email"
+		},
+		"viewSection": {
+			"title": "View",
+			"hideImages": {
+				"title": "Hide images",
+				"description": "Hide images in links."
+			},
+			"gridView": {
+				"title": "Grid view",
+				"description": "Use grid layout for links."
+			},
+			"feed": {
+				"title": "Items limit per feed",
+				"description": "Set the maximum number of items per feed."
+			}
+		},
+		"exportDataSection": {
+			"title": "Export acount data",
+			"description": "Export your data here.",
+			"export": "Export"
+		},
+		"deleteAccountSection": {
+			"title": "Delete account!",
+			"description": "Delete your account here. This is irreversible.",
+			"delete": "Delete account"
+		},
+		"submit": "Save"
+	}
 }
