@@ -24,41 +24,41 @@ Lien: [bocal.dnncrye.dev](https://bocal.dnncrye.dev)
 2. Installer les dépendances : `pnpm install` (**installer pnpm au préalable**)
 
 3. Setup PostgreSQL
-  3.1. Créer une base de données PostgreSQL (avec Docker/docker-compose)
-  ```yml
-  # docker-compose.yml
-  services:
-    postgres:
-      container_name: bocal-postgres
-      image: postgres
-      hostname: localhost
-      ports:
-        - "5432:5432"
-      environment:
-        POSTGRES_USER: admin
-        POSTGRES_PASSWORD: root
-        POSTGRES_DB: bocal
-      volumes:
-        - postgres-data:/var/lib/postgresql/data
-      restart: unless-stopped
-
-    pgadmin:
-      container_name: container-pgadmin
-      image: dpage/pgadmin4
-      depends_on:
-        - postgres
-      ports:
-        - "5050:80"
-      environment:
-        PGADMIN_DEFAULT_EMAIL: admin@admin.admin
-        PGADMIN_DEFAULT_PASSWORD: admin
-      restart: unless-stopped
-
-  volumes:
-    postgres-data:
-  ```
-
-  3.2. Lancer la base de données: `docker-compose up -d # docker-compose down`
+    3.1 Créer une base de données PostgreSQL (avec Docker/docker-compose)
+    ```yml
+    # docker-compose.yml
+    services:
+      postgres:
+        container_name: bocal-postgres
+        image: postgres
+        hostname: localhost
+        ports:
+          - "5432:5432"
+        environment:
+          POSTGRES_USER: admin
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: bocal
+        volumes:
+          - postgres-data:/var/lib/postgresql/data
+        restart: unless-stopped
+  
+      pgadmin:
+        container_name: container-pgadmin
+        image: dpage/pgadmin4
+        depends_on:
+          - postgres
+        ports:
+          - "5050:80"
+        environment:
+          PGADMIN_DEFAULT_EMAIL: admin@admin.admin
+          PGADMIN_DEFAULT_PASSWORD: admin
+        restart: unless-stopped
+  
+    volumes:
+      postgres-data:
+    ```
+  
+    3.2. Lancer la base de données: `docker-compose up -d # docker-compose down`
 
 4. Crée un ficher `.env` et configurer les variables d'environnement ([set up OAuth avec GitHub et Google](https://authjs.dev/getting-started/authentication/oauth))
 ```bash
@@ -107,41 +107,40 @@ Auth.js (authentication)
 2. Install dependencies: `pnpm install` (**setup pnpm in needed**)
 
 3. Setup PostgreSQL
-
-  3.1 Create a docker-compose.yml file:
-  ```yml
-  # docker-compose.yml
-  services:
-    postgres:
-      container_name: bocal-postgres
-      image: postgres
-      hostname: localhost
-      ports:
-        - "5432:5432"
-      environment:
-        POSTGRES_USER: admin
-        POSTGRES_PASSWORD: root
-        POSTGRES_DB: bocal
-      volumes:
-        - postgres-data:/var/lib/postgresql/data
-      restart: unless-stopped
-
-    pgadmin:
-      container_name: container-pgadmin
-      image: dpage/pgadmin4
-      depends_on:
-        - postgres
-      ports:
-        - "5050:80"
-      environment:
-        PGADMIN_DEFAULT_EMAIL: admin@admin.admin
-        PGADMIN_DEFAULT_PASSWORD: admin
-      restart: unless-stopped
-
-  volumes:
-    postgres-data:
-  ```
-  3. Start the database: `docker-compose up -d # docker-compose down`
+    3.1 Create a docker-compose.yml file:
+    ```yml
+    # docker-compose.yml
+    services:
+      postgres:
+        container_name: bocal-postgres
+        image: postgres
+        hostname: localhost
+        ports:
+          - "5432:5432"
+        environment:
+          POSTGRES_USER: admin
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: bocal
+        volumes:
+          - postgres-data:/var/lib/postgresql/data
+        restart: unless-stopped
+  
+      pgadmin:
+        container_name: container-pgadmin
+        image: dpage/pgadmin4
+        depends_on:
+          - postgres
+        ports:
+          - "5050:80"
+        environment:
+          PGADMIN_DEFAULT_EMAIL: admin@admin.admin
+          PGADMIN_DEFAULT_PASSWORD: admin
+        restart: unless-stopped
+  
+    volumes:
+      postgres-data:
+    ```
+    3.2  Start the database: `docker-compose up -d # docker-compose down`
 
 4. Create a .env file in the root directory and configure the environment variables ([set up OAuth avec GitHub et Google](https://authjs.dev/getting-started/authentication/oauth))
 ```bash
