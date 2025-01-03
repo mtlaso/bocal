@@ -86,7 +86,8 @@ jobs:
           echo DATABASE_URL=${{ steps.create_neon_branch.outputs.db_url_with_pooler }} >> .env
           echo DIRECT_URL=${{ steps.create_neon_branch.outputs.db_url }} >> .env
 
-          pnpm drizzle-kit push --force --verbose
+          pnpm drizzle-kit generate
+          pnpm drizzle-kit migrate
 
       - name: Post Schema Diff Comment to PR
         uses: neondatabase/schema-diff-action@v1
