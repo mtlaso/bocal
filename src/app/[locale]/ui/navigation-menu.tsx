@@ -45,36 +45,51 @@ function DesktopNavMenu(): React.JSX.Element {
 		<NavigationMenu className="py-5 mb-6 !max-w-full justify-between">
 			<NavigationMenuList>
 				<NavigationMenuItem>
-					<NavigationMenuLink
-						href="/dashboard"
-						className={cn(navigationMenuTriggerStyle(), {
-							"font-semibold bg-primary": pathname === "/dashboard",
-						})}
-					>
-						{t("links")}
-					</NavigationMenuLink>
+					<Link href="/dashboard" legacyBehavior passHref>
+						<NavigationMenuLink
+							className={cn(navigationMenuTriggerStyle(), {
+								"font-semibold bg-primary": pathname === "/dashboard",
+							})}
+						>
+							{t("links")}
+						</NavigationMenuLink>
+					</Link>
 				</NavigationMenuItem>
 
 				<NavigationMenuItem>
-					<NavigationMenuLink
-						href="/archive"
-						className={cn(navigationMenuTriggerStyle(), {
-							"font-semibold bg-primary": pathname === "/archive",
-						})}
-					>
-						{t("archive")}
-					</NavigationMenuLink>
+					<Link href="/archive" legacyBehavior passHref>
+						<NavigationMenuLink
+							className={cn(navigationMenuTriggerStyle(), {
+								"font-semibold bg-primary": pathname === "/archive",
+							})}
+						>
+							{t("archive")}
+						</NavigationMenuLink>
+					</Link>
 				</NavigationMenuItem>
 
 				<NavigationMenuItem>
-					<NavigationMenuLink
-						href="/feed"
-						className={cn(navigationMenuTriggerStyle(), {
-							"font-semibold bg-primary": pathname === "/feed",
-						})}
-					>
-						{t("rssFeed")}
-					</NavigationMenuLink>
+					<Link href={"/feed"} legacyBehavior passHref>
+						<NavigationMenuLink
+							className={cn(navigationMenuTriggerStyle(), {
+								"font-semibold bg-primary": pathname === "/feed",
+							})}
+						>
+							{t("rssFeed")}
+						</NavigationMenuLink>
+					</Link>
+				</NavigationMenuItem>
+
+				<NavigationMenuItem>
+					<Link href="/settings" legacyBehavior passHref>
+						<NavigationMenuLink
+							className={cn(navigationMenuTriggerStyle(), {
+								"font-semibold bg-primary": pathname === "/settings",
+							})}
+						>
+							{t("settings")}
+						</NavigationMenuLink>
+					</Link>
 				</NavigationMenuItem>
 			</NavigationMenuList>
 
@@ -142,6 +157,20 @@ function MobileNavMenu(): React.JSX.Element {
 							"w-full flex justify-start ",
 							{
 								"font-semibold bg-primary": pathname === "/feed",
+							},
+						)}
+					>
+						<span className="">{t("rssFeed")}</span>
+					</Link>
+
+					<Link
+						onClick={(): void => setIsOpen(false)}
+						href={"/settings"}
+						className={cn(
+							navigationMenuTriggerStyle(),
+							"w-full flex justify-start ",
+							{
+								"font-semibold bg-primary": pathname === "/settings",
 							},
 						)}
 					>

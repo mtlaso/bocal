@@ -36,6 +36,10 @@
 			"title": "Flux RSS/Atom",
 			"description": "Suivez vos flux RSS/Atom ici."
 		},
+		"settings": {
+			"title": "Paramètres",
+			"description": "Gérez vos paramètres ici."
+		},
 		"legal": {
 			"title": "Légal",
 			"description": "Information légale."
@@ -66,6 +70,7 @@
 		"links": "Liens",
 		"archive": "Archive",
 		"rssFeed": "Flux",
+		"settings": "Paramètres",
 		"close": "Fermer",
 		"sort": {
 			"sort": "Trier",
@@ -152,6 +157,41 @@
 			"missingFields": "Champ(s) manquant(s).",
 			"idFieldInvalid": "ID invalide.",
 			"feedContentIdFieldInvalid": "ID de contenu invalide."
+		}
+	},
+	"settings": {
+		"title": "Paramètres",
+		"profileSection": {
+			"title": "Profil",
+			"name": "Nom",
+			"email": "Courriel"
+		},
+		"viewSection": {
+			"title": "Affichage",
+			"hideImages": {
+				"title": "Masquer les images",
+				"description": "Masquer les images dans les liens."
+			},
+			"gridView": {
+				"title": "Vue en grille",
+				"description": "Afficher les liens en grille."
+			},
+			"feed": {
+				"title": "Limite d'articles par flux",
+				"description": "Définir le nombre d'articles à afficher par flux.",
+				"placeholder": "Nombre d'articles"
+			},
+			"submit": "Enregistrer"
+		},
+		"exportDataSection": {
+			"title": "Exporter données du compte",
+			"description": "Exporter vos données au format JSON.",
+			"export": "Exporter"
+		},
+		"deleteAccountSection": {
+			"title": "Supprimer le compte !",
+			"description": "Supprimer définitivement votre compte. Cetet action est irréversible.",
+			"delete": "Supprimer"
 		}
 	}
 }
