@@ -23,48 +23,7 @@ export function Settings({
 	const t = useTranslations("settings");
 	return (
 		<section>
-			<section className={cn("mb-12", SPACING.MD)}>
-				<h1 className="text-xl font-medium">{t("profileSection.title")}</h1>
-
-				<div className={SPACING.SM}>
-					<div>
-						<Label htmlFor="email" className="block text-sm font-medium">
-							{t("profileSection.email")}
-						</Label>
-
-						<div className="relative">
-							<Input
-								disabled
-								className="rounded-md border py-2 pl-10 outline-2 placeholder:text-gray-500"
-								autoFocus
-								id="email"
-								value={email ?? ""}
-							/>
-
-							<TbMail className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
-						</div>
-					</div>
-
-					<div>
-						<Label htmlFor="name" className="block text-sm font-medium">
-							{t("profileSection.name")}
-						</Label>
-
-						<div className="relative">
-							<Input
-								disabled
-								className="rounded-md border py-2 pl-10 outline-2 placeholder:text-gray-500"
-								autoFocus
-								id="name"
-								value={name ?? ""}
-							/>
-
-							<TbUser className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
-						</div>
-					</div>
-				</div>
-			</section>
-
+			<ProfileSection name={name ?? ""} email={email ?? ""} />
 			<ViewSection feedContentLimit={feedContentLimit} />
 
 			{/* export section */}
@@ -105,6 +64,57 @@ export function Settings({
 		</section>
 	);
 }
+
+const ProfileSection = ({
+	email,
+	name,
+}: { email: string; name: string }): React.JSX.Element => {
+	const t = useTranslations("settings.profileSection");
+
+	return (
+		<section className={cn("mb-12", SPACING.MD)}>
+			<h1 className="text-xl font-medium">{t("title")}</h1>
+
+			<div className={SPACING.SM}>
+				<div>
+					<Label htmlFor="email" className="block text-sm font-medium">
+						{t("email")}
+					</Label>
+
+					<div className="relative">
+						<Input
+							disabled
+							className="rounded-md border py-2 pl-10 outline-2 placeholder:text-gray-500"
+							autoFocus
+							id="email"
+							value={email}
+						/>
+
+						<TbMail className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+					</div>
+				</div>
+
+				<div>
+					<Label htmlFor="name" className="block text-sm font-medium">
+						{t("name")}
+					</Label>
+
+					<div className="relative">
+						<Input
+							disabled
+							className="rounded-md border py-2 pl-10 outline-2 placeholder:text-gray-500"
+							autoFocus
+							id="name"
+							value={name}
+						/>
+
+						<TbUser className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+					</div>
+				</div>
+			</div>
+		</section>
+	);
+};
 
 const ViewSection = ({
 	feedContentLimit,
