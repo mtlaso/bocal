@@ -179,7 +179,8 @@
 			"feed": {
 				"title": "Items limit per feed",
 				"description": "Set the maximum number of items per feed."
-			}
+			},
+			"submit": "Save"
 		},
 		"exportDataSection": {
 			"title": "Export acount data",
@@ -190,7 +191,6 @@
 			"title": "Delete account!",
 			"description": "Delete your account here. This is irreversible.",
 			"delete": "Delete account"
-		},
-		"submit": "Save"
+		}
 	}
 }

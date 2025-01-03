@@ -121,7 +121,7 @@ export function Settings({ email, name }: Props): React.JSX.Element {
 					</div>
 
 					<Button disabled type="submit">
-						{t("submit")}
+						{t("viewSection.submit")}
 					</Button>
 				</form>
 			</section>

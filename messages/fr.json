@@ -180,7 +180,8 @@
 				"title": "Limite d'articles par flux",
 				"description": "Définir le nombre d'articles à afficher par flux.",
 				"placeholder": "Nombre d'articles"
-			}
+			},
+			"submit": "Enregistrer"
 		},
 		"exportDataSection": {
 			"title": "Exporter données du compte",
@@ -192,6 +193,5 @@
 			"description": "Supprimer définitivement votre compte. Cetet action est irréversible.",
 			"delete": "Supprimer"
 		}
-	},
-	"submit": "Enregistrer"
+	}
 }
