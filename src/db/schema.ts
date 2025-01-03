@@ -32,6 +32,7 @@ export const users = pgTable("users", {
 	email: text().unique(),
 	emailVerified: timestamp({ mode: "date" }),
 	image: text(),
+	contentLimitPerFeed: integer().default(10).notNull(),
 });
 
 export const links = pgTable("links", {
