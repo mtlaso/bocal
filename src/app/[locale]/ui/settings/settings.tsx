@@ -113,7 +113,7 @@ const ViewSection = (): React.JSX.Element => {
 		<section className={cn("mb-12", SPACING.MD)}>
 			<h1 className="text-xl font-medium">{t("title")}</h1>
 
-			<form className={SPACING.SM}>
+			<div className={SPACING.SM}>
 				{/* section 1 */}
 				<div className="flex items-center justify-between gap-4 border rounded-md p-3">
 					<div className={SPACING.SM}>
@@ -164,7 +164,7 @@ const ViewSection = (): React.JSX.Element => {
 						</SelectContent>
 					</Select>
 				</div>
-			</form>
+			</div>
 		</section>
 	);
 };
