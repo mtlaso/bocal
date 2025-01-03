@@ -19,7 +19,7 @@ Lien: [bocal.dnncrye.dev](https://bocal.dnncrye.dev)
 
 # Installation
 
-1. Cloner le repo : `git clone https://github.com/votre-username/feedamphora.git`
+1. Cloner le repo
 
 2. Installer les dépendances : `pnpm install` (**installer pnpm au préalable**)
 
@@ -78,6 +78,8 @@ DATABASE_URL="postgres://.../bocal" (voir docker-compose.yml)
 
 7. Ouvrir [http://localhost:3000](http://localhost:3000) dans votre navigateur pour voir le résultat.
 
+8. Vous pouvez aussi utiliser drizzle-kit studio pour intéragir avec la base de données : `pnpm drizzle-kit studio`
+
 ---
 # En
 
@@ -100,9 +102,9 @@ Auth.js (authentication)
 
 # Installation
 
-1. Clone the repository: `git clone https://github.com/your-username/bocal.git`
+1. Clone the repository
 
-2. Install dependencies: `pnpm install`
+2. Install dependencies: `pnpm install` (**setup pnpm in needed**)
 
 3. Setup PostgreSQL
 
@@ -158,3 +160,5 @@ DATABASE_URL="postgres://.../bocal" (see docker-compose.yml)
 6. Start the development server: `pnpm dev`
 
 7. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+8. You can also use drizzle-kit studio to interact with the database: `pnpm drizzle-kit studio`
