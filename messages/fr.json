@@ -190,7 +190,7 @@
 		},
 		"deleteAccountSection": {
 			"title": "Supprimer le compte !",
-			"description": "Supprimer définitivement votre compte. Cetet action est irréversible.",
+			"description": "Supprimer définitivement votre compte. Cette action est irréversible.",
 			"delete": "Supprimer"
 		}
 	}

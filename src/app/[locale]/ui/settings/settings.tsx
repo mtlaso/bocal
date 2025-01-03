@@ -12,6 +12,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { TbMail, TbUserCircle } from "react-icons/tb";
 
@@ -23,8 +24,8 @@ type Props = {
 export function Settings({ email, name }: Props): React.JSX.Element {
 	const t = useTranslations("settings");
 	return (
-		<section className={SPACING.MD}>
-			<section className={SPACING.SM}>
+		<section>
+			<section className={cn("mb-12", SPACING.MD)}>
 				<h1 className="text-xl font-medium">{t("profileSection.title")}</h1>
 
 				<div className={SPACING.SM}>
@@ -64,76 +65,20 @@ export function Settings({ email, name }: Props): React.JSX.Element {
 				</div>
 			</section>
 
-			{/* view section */}
-			<section className={SPACING.SM}>
-				<h1 className="text-xl font-medium">{t("viewSection.title")}</h1>
-
-				<form className={SPACING.MD}>
-					{/* section 1 */}
-					<div className="flex items-center justify-between gap-4 border rounded-md p-3">
-						<div className={SPACING.SM}>
-							<Label className="font-bold text-base" htmlFor="hide-images">
-								{t("viewSection.hideImages.title")}
-							</Label>
-							<p className="text-sm text-muted-foreground">
-								{t("viewSection.hideImages.description")}
-							</p>
-						</div>
-
-						<Switch id="hide-images" />
-					</div>
-
-					{/* section 2 */}
-					<div className="flex items-center justify-between gap-4 border rounded-md p-3">
-						<div className={SPACING.SM}>
-							<Label className="font-bold text-base" htmlFor="grid-view">
-								{t("viewSection.gridView.title")}
-							</Label>
-							<p className="text-sm text-muted-foreground">
-								{t("viewSection.gridView.description")}
-							</p>
-						</div>
-
-						<Switch id="grid-view" />
-					</div>
-
-					{/* section 3 */}
-					<div className="flex items-center justify-between gap-4 border rounded-md p-3">
-						<div className={SPACING.SM}>
-							<Label className="font-bold text-base" htmlFor="rss-limit">
-								{t("viewSection.feed.title")}
-							</Label>
-							<p className="text-sm text-muted-foreground">
-								{t("viewSection.feed.description")}
-							</p>
-						</div>
-
-						<Select name="test">
-							<SelectTrigger className="w-[180px]">
-								<SelectValue placeholder={t("viewSection.feed.title")} />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectItem value="10">10</SelectItem>
-								<SelectItem value="15">15</SelectItem>
-								<SelectItem value="20">20</SelectItem>
-							</SelectContent>
-						</Select>
-					</div>
-
-					<Button disabled type="submit">
-						{t("viewSection.submit")}
-					</Button>
-				</form>
-			</section>
+			<ViewSection />
 
 			{/* export section */}
-			<section className={SPACING.SM}>
-				<h1 className="text-xl font-medium">{t("exportDataSection.title")}</h1>
-
-				<form className={SPACING.MD}>
+			<section className={cn("mb-12", SPACING.MD)}>
+				<div className={SPACING.SM}>
+					<h1 className="text-xl font-medium">
+						{t("exportDataSection.title")}
+					</h1>
 					<p className="text-sm text-muted-foreground">
 						{t("exportDataSection.description")}
 					</p>
+				</div>
+
+				<form className={SPACING.MD}>
 					<Button disabled type="submit">
 						{t("exportDataSection.export")}
 					</Button>
@@ -141,15 +86,17 @@ export function Settings({ email, name }: Props): React.JSX.Element {
 			</section>
 
 			{/* delete section */}
-			<section className={SPACING.SM}>
-				<h1 className="text-xl font-medium text-destructive">
-					{t("deleteAccountSection.title")}
-				</h1>
-
-				<form className={SPACING.MD}>
+			<section className={SPACING.MD}>
+				<div className={SPACING.SM}>
+					<h1 className="text-xl font-medium text-destructive">
+						{t("deleteAccountSection.title")}
+					</h1>
 					<p className="text-sm text-muted-foreground">
 						{t("deleteAccountSection.description")}
 					</p>
+				</div>
+
+				<form className={SPACING.MD}>
 					<Button disabled variant={"destructive"} type="submit">
 						{t("deleteAccountSection.delete")}
 					</Button>
@@ -158,3 +105,66 @@ export function Settings({ email, name }: Props): React.JSX.Element {
 		</section>
 	);
 }
+
+const ViewSection = (): React.JSX.Element => {
+	const t = useTranslations("settings.viewSection");
+
+	return (
+		<section className={cn("mb-12", SPACING.MD)}>
+			<h1 className="text-xl font-medium">{t("title")}</h1>
+
+			<form className={SPACING.SM}>
+				{/* section 1 */}
+				<div className="flex items-center justify-between gap-4 border rounded-md p-3">
+					<div className={SPACING.SM}>
+						<Label className="font-bold text-base" htmlFor="hide-images">
+							{t("hideImages.title")}
+						</Label>
+						<p className="text-sm text-muted-foreground">
+							{t("hideImages.description")}
+						</p>
+					</div>
+
+					<Switch id="hide-images" />
+				</div>
+
+				{/* section 2 */}
+				<div className="flex items-center justify-between gap-4 border rounded-md p-3">
+					<div className={SPACING.SM}>
+						<Label className="font-bold text-base" htmlFor="grid-view">
+							{t("gridView.title")}
+						</Label>
+						<p className="text-sm text-muted-foreground">
+							{t("gridView.description")}
+						</p>
+					</div>
+
+					<Switch id="grid-view" />
+				</div>
+
+				{/* section 3 */}
+				<div className="flex items-center justify-between gap-4 border rounded-md p-3">
+					<div className={SPACING.SM}>
+						<Label className="font-bold text-base" htmlFor="rss-limit">
+							{t("feed.title")}
+						</Label>
+						<p className="text-sm text-muted-foreground">
+							{t("feed.description")}
+						</p>
+					</div>
+
+					<Select name="test">
+						<SelectTrigger className="w-[180px]">
+							<SelectValue placeholder={t("feed.title")} />
+						</SelectTrigger>
+						<SelectContent>
+							<SelectItem value="10">10</SelectItem>
+							<SelectItem value="15">15</SelectItem>
+							<SelectItem value="20">20</SelectItem>
+						</SelectContent>
+					</Select>
+				</div>
+			</form>
+		</section>
+	);
+};
