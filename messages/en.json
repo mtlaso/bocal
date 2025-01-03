@@ -36,6 +36,10 @@
 			"title": "RSS/Atom feeds",
 			"description": "Follow your RSS/Atom feeds here."
 		},
+		"legal": {
+			"title": "Legal",
+			"description": "Legal information."
+		},
 		"privacyPolicy": {
 			"title": "Privacy Policy",
 			"description": "Read our privacy policy."

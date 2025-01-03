@@ -36,6 +36,10 @@
 			"title": "Flux RSS/Atom",
 			"description": "Suivez vos flux RSS/Atom ici."
 		},
+		"legal": {
+			"title": "Légal",
+			"description": "Information légale."
+		},
 		"privacyPolicy": {
 			"title": "Politique de confidentialité",
 			"description": "Consultez notre politique de confidentialité."
