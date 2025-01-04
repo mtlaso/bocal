@@ -1,5 +1,5 @@
-import { getUserData } from "@/app/[locale]/lib/data";
 import { Settings } from "@/app/[locale]/ui/settings/settings";
+import { auth } from "@/auth";
 import { Separator } from "@/components/ui/separator";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
@@ -20,7 +20,10 @@ export async function generateMetadata({
 
 export default async function Page(): Promise<React.JSX.Element> {
 	const t = await getTranslations("settings");
-	const user = await getUserData();
+	const user = await auth();
+	if (!user?.user) {
+		throw new Error("errors.notSignedIn");
+	}
 
 	return (
 		<>
@@ -31,9 +34,9 @@ export default async function Page(): Promise<React.JSX.Element> {
 			<Separator className="my-4" />
 
 			<Settings
-				email={user.email}
-				name={user.name}
-				feedContentLimit={user.feedContentLimit}
+				email={user.user.email ?? null}
+				name={user.user.name ?? null}
+				feedContentLimit={user.user.feedContentLimit}
 			/>
 		</>
 	);

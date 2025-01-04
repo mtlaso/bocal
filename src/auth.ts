@@ -18,6 +18,7 @@ declare module "next-auth" {
 	interface Session {
 		user: {
 			id: string;
+			feedContentLimit: number;
 		} & DefaultSession["user"];
 	}
 }
@@ -44,6 +45,7 @@ const config = {
 				user: {
 					...session.user,
 					id: session.user.id,
+					feedContentLimit: session.user.feedContentLimit,
 				},
 			};
 		},

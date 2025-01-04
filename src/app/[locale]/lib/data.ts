@@ -1,11 +1,9 @@
 import { db } from "@/db/db";
 import {
 	type Feed,
-	type User,
 	type UsersFeedsReadContent,
 	feeds,
 	links,
-	users,
 	usersFeeds,
 	usersFeedsReadContent,
 } from "@/db/schema";
@@ -129,35 +127,6 @@ export async function isFeedContentRead(
 		}
 
 		return data[0];
-	} catch (_err) {
-		throw new Error("errors.unexpected");
-	}
-}
-
-export async function getUserData(): Promise<User> {
-	try {
-		const user = await auth();
-		if (!user) {
-			throw new Error("errors.notSignedIn");
-		}
-
-		const d = await db
-			.select({
-				id: users.id,
-				name: users.name,
-				email: users.email,
-				emailVerified: users.emailVerified,
-				image: users.image,
-				feedContentLimit: users.feedContentLimit,
-			})
-			.from(users)
-			.where(eq(users.id, user.user.id))
-			.limit(1)
-			.execute();
-
-		if (d.length === 0) throw new Error("errors.userNotFound");
-
-		return d[0];
 	} catch (_err) {
 		throw new Error("errors.unexpected");
 	}
