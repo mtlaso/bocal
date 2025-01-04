@@ -21,6 +21,9 @@ export async function generateMetadata({
 export default async function Page(): Promise<React.JSX.Element> {
 	const t = await getTranslations("settings");
 	const user = await auth();
+	if (!user?.user) {
+		throw new Error("errors.notSignedIn");
+	}
 
 	return (
 		<>
@@ -30,7 +33,11 @@ export default async function Page(): Promise<React.JSX.Element> {
 
 			<Separator className="my-4" />
 
-			<Settings email={user?.user.email ?? ""} name={user?.user.name ?? ""} />
+			<Settings
+				email={user.user.email ?? null}
+				name={user.user.name ?? null}
+				feedContentLimit={user.user.feedContentLimit}
+			/>
 		</>
 	);
 }

@@ -58,6 +58,7 @@
 		"notSignedIn": "Not signed in",
 		"unexpected": "An error happened. Please try again.",
 		"retry": "Retry",
+		"userNotFound": "User not found",
 		"404": {
 			"title": "404 - Page not found",
 			"description": "The page you are looking for does not exist.",
@@ -180,6 +181,11 @@
 				"title": "Items limit per feed",
 				"description": "Set the maximum number of items per feed."
 			},
+			"errors": {
+				"contentLimitPerFeedFieldInvalid": "Content limit per feed invalid.",
+				"missingFields": "Missing fields."
+			},
+			"success": "Settings saved",
 			"submit": "Save"
 		},
 		"exportDataSection": {

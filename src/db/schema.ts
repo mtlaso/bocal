@@ -3,9 +3,10 @@ import {
 	FeedErrorType,
 	FeedStatusType,
 } from "@/app/[locale]/lib/types";
-import type { InferSelectModel } from "drizzle-orm";
+import { type InferSelectModel, sql } from "drizzle-orm";
 import {
 	boolean,
+	check,
 	integer,
 	json,
 	pgTable,
@@ -24,15 +25,27 @@ function enumToPgEnum<T extends Record<string, any>>(
 	return Object.values(myEnum).map((value: any) => `${value}`) as any;
 }
 
-export const users = pgTable("users", {
-	id: text()
-		.primaryKey()
-		.$defaultFn(() => crypto.randomUUID()),
-	name: text(),
-	email: text().unique(),
-	emailVerified: timestamp({ mode: "date" }),
-	image: text(),
-});
+export const users = pgTable(
+	"users",
+	{
+		id: text()
+			.primaryKey()
+			.$defaultFn(() => crypto.randomUUID()),
+		name: text(),
+		email: text().unique(),
+		emailVerified: timestamp({ mode: "date" }),
+		image: text(),
+		feedContentLimit: integer().default(10).notNull(),
+	},
+	(table) => [
+		{
+			checkConstraint: check(
+				"contentLimitPerFeed",
+				sql`${table.feedContentLimit} > 0 AND ${table.feedContentLimit} <= 100`,
+			),
+		},
+	],
+);
 
 export const links = pgTable("links", {
 	id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -159,6 +172,20 @@ export const authenticators = pgTable(
 		}),
 	],
 );
+
+export const insertUsersSchema = createInsertSchema(users, {
+	feedContentLimit: (schema): Zod.ZodNumber =>
+		schema.feedContentLimit
+			.min(0, {
+				message: "errors.feedContentLimitFieldInvalid",
+			})
+			.max(100, {
+				message: "errors.feedContentLimitFieldInvalid",
+			})
+			.nonnegative({
+				message: "errors.feedContentLimitFieldInvalid",
+			}),
+}).pick({ feedContentLimit: true });
 
 export const insertLinksSchema = createInsertSchema(links, {
 	url: (schema): Zod.ZodString =>

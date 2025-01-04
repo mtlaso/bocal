@@ -58,6 +58,7 @@
 		"notSignedIn": "Non connecté",
 		"unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer.",
 		"retry": "Réessayer",
+		"userNotFound": "Utilisateur non trouvé",
 		"404PageNotFound": "Page non trouvée",
 		"404": {
 			"title": "404 - Page non trouvée",
@@ -181,6 +182,11 @@
 				"description": "Définir le nombre d'articles à afficher par flux.",
 				"placeholder": "Nombre d'articles"
 			},
+			"errors": {
+				"contentLimitPerFeedFieldInvalid": "Limite de contenu par flux invalide.",
+				"missingFields": "Champ(s) manquant(s)."
+			},
+			"success": "Paramètres enregistrés",
 			"submit": "Enregistrer"
 		},
 		"exportDataSection": {
@@ -190,7 +196,7 @@
 		},
 		"deleteAccountSection": {
 			"title": "Supprimer le compte !",
-			"description": "Supprimer définitivement votre compte. Cetet action est irréversible.",
+			"description": "Supprimer définitivement votre compte. Cette action est irréversible.",
 			"delete": "Supprimer"
 		}
 	}
