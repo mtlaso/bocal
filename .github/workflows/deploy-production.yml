@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read # Limite explicitement les permissions
+  contents: read
 
 jobs:
   deploy-production:
