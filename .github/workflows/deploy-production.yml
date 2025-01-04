@@ -50,7 +50,7 @@ jobs:
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Setup Environment
-        run: cp .env.production .env # For drizzle-kit.
+        run: cp .vercel/.env.production.local .env # For drizzle-kit.
 
       - name: Run Migrations
         run: |
