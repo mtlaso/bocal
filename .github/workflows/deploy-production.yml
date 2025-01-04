@@ -11,7 +11,7 @@ concurrency:
 
 permissions:
   contents: read # Limite explicitement les permissions
-  
+
 jobs:
   deploy-production:
     name: Deploy to Vercel
@@ -49,11 +49,13 @@ jobs:
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
+      - name: Setup Environment
+        run: cp .env.production .env # For drizzle-kit.
+
       - name: Run Migrations
         run: |
           pnpm drizzle-kit generate
           pnpm drizzle-kit migrate
-
 
       - name: Build Project Artifacts
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
