@@ -4,7 +4,6 @@ import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { TbMail, TbUser } from "react-icons/tb";
@@ -126,34 +125,6 @@ const ViewSection = ({
 			<h1 className="text-xl font-medium">{t("title")}</h1>
 
 			<div className={SPACING.SM}>
-				{/* section 1 */}
-				<div className="flex items-center justify-between gap-4 border rounded-md p-3">
-					<div className={SPACING.SM}>
-						<Label className="font-bold text-base" htmlFor="hide-images">
-							{t("hideImages.title")}
-						</Label>
-						<p className="text-sm text-muted-foreground">
-							{t("hideImages.description")}
-						</p>
-					</div>
-
-					<Switch id="hide-images" />
-				</div>
-
-				{/* section 2 */}
-				<div className="flex items-center justify-between gap-4 border rounded-md p-3">
-					<div className={SPACING.SM}>
-						<Label className="font-bold text-base" htmlFor="grid-view">
-							{t("gridView.title")}
-						</Label>
-						<p className="text-sm text-muted-foreground">
-							{t("gridView.description")}
-						</p>
-					</div>
-
-					<Switch id="grid-view" />
-				</div>
-
 				<FeedContentLimitForm feedContentLimit={feedContentLimit} />
 			</div>
 		</section>
