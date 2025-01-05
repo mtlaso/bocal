@@ -34,8 +34,8 @@ export default async function Page({
 }: PageProps): Promise<React.JSX.Element> {
 	const t = await getTranslations("rssFeed");
 	await searchParamsCache.parse(searchParams);
-	const userFeeds = await getUserFeeds();
-	const flattenedFeeds = await flattenFeedsContent(userFeeds);
+	const { feeds, limit } = await getUserFeeds();
+	const flattenedFeeds = await flattenFeedsContent(feeds, limit);
 
 	return (
 		<>
@@ -49,7 +49,7 @@ export default async function Page({
 					</div>
 				</div>
 				<Suspense fallback={<>...</>}>
-					<FeedInfoMenu feeds={userFeeds} />
+					<FeedInfoMenu feeds={feeds} />
 				</Suspense>
 			</section>
 

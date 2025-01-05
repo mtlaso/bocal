@@ -25,6 +25,7 @@ function enumToPgEnum<T extends Record<string, any>>(
 	return Object.values(myEnum).map((value: any) => `${value}`) as any;
 }
 
+export const MAX_FEED_CONTENT_LIMIT = 100;
 export const users = pgTable(
 	"users",
 	{
@@ -41,7 +42,7 @@ export const users = pgTable(
 		check(
 			"feedContentLimit_check",
 			sql`
-    ${and(gt(table.feedContentLimit, 0), lte(table.feedContentLimit, 100))}
+    ${and(gt(table.feedContentLimit, 0), lte(table.feedContentLimit, MAX_FEED_CONTENT_LIMIT))}
       `,
 		),
 	],
@@ -179,7 +180,7 @@ export const insertUsersSchema = createInsertSchema(users, {
 			.gt(0, {
 				message: "errors.feedContentLimitFieldInvalid",
 			})
-			.lte(100, {
+			.lte(MAX_FEED_CONTENT_LIMIT, {
 				message: "errors.feedContentLimitFieldInvalid",
 			}),
 }).pick({ feedContentLimit: true });

@@ -7,12 +7,11 @@ import {
 	FeedStatusType,
 } from "@/app/[locale]/lib/types";
 import { db } from "@/db/db";
-import { type Feed, feeds } from "@/db/schema";
+import { type Feed, MAX_FEED_CONTENT_LIMIT, feeds } from "@/db/schema";
 import { eq, sql } from "drizzle-orm";
 import { decode } from "html-entities";
 import Parser from "rss-parser";
 
-const MAX_ITEMS = 20;
 const USER_AGENT = "RSS bocal.dnncry.dev/1.0";
 const SYNC_BATCH_SIZE = 10;
 
@@ -47,7 +46,7 @@ export async function parseFeed(url: string): Promise<ParseFeedResponse> {
 			},
 		}).parseURL(url);
 
-		feed.items = feed.items.slice(0, MAX_ITEMS);
+		feed.items = feed.items.slice(0, MAX_FEED_CONTENT_LIMIT);
 
 		const content = feed.items.map((item) => {
 			return {
