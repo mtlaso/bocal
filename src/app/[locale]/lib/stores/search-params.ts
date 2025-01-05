@@ -1,9 +1,5 @@
 import { SortOptions } from "@/app/[locale]/lib/types";
-import {
-	createSearchParamsCache,
-	parseAsString,
-	parseAsStringEnum,
-} from "nuqs/server";
+import { parseAsString, parseAsStringEnum } from "nuqs/server";
 
 export const SELECTED_FEED_DEFAULT = "all";
 
@@ -13,5 +9,3 @@ export const searchParamsParsers = {
 	).withDefault(SortOptions.BY_DATE_DESC),
 	selectedFeed: parseAsString.withDefault(SELECTED_FEED_DEFAULT),
 };
-
-export const searchParamsCache = createSearchParamsCache(searchParamsParsers);
