@@ -19,47 +19,13 @@ export function Settings({
 	name,
 	feedContentLimit,
 }: Props): React.JSX.Element {
-	const t = useTranslations("settings");
+	const _t = useTranslations("settings");
 	return (
 		<section>
 			<ProfileSection name={name ?? ""} email={email ?? ""} />
 			<ViewSection feedContentLimit={feedContentLimit} />
-
-			{/* export section */}
-			<section className={cn("mb-12", SPACING.MD)}>
-				<div className={SPACING.SM}>
-					<h1 className="text-xl font-medium">
-						{t("exportDataSection.title")}
-					</h1>
-					<p className="text-sm text-muted-foreground">
-						{t("exportDataSection.description")}
-					</p>
-				</div>
-
-				<form className={SPACING.MD}>
-					<Button disabled type="submit">
-						{t("exportDataSection.export")}
-					</Button>
-				</form>
-			</section>
-
-			{/* delete section */}
-			<section className={SPACING.MD}>
-				<div className={SPACING.SM}>
-					<h1 className="text-xl font-medium text-destructive">
-						{t("deleteAccountSection.title")}
-					</h1>
-					<p className="text-sm text-muted-foreground">
-						{t("deleteAccountSection.description")}
-					</p>
-				</div>
-
-				<form className={SPACING.MD}>
-					<Button disabled variant={"destructive"} type="submit">
-						{t("deleteAccountSection.delete")}
-					</Button>
-				</form>
-			</section>
+			<ExportDataSection />
+			<DeleteAccountSection />
 		</section>
 	);
 }
@@ -127,6 +93,43 @@ const ViewSection = ({
 			<div className={SPACING.SM}>
 				<FeedContentLimitForm feedContentLimit={feedContentLimit} />
 			</div>
+		</section>
+	);
+};
+
+const ExportDataSection = (): React.JSX.Element => {
+	const t = useTranslations("settings.exportDataSection");
+	return (
+		<section className={cn("mb-12", SPACING.MD)}>
+			<div className={SPACING.SM}>
+				<h1 className="text-xl font-medium">{t("title")}</h1>
+				<p className="text-sm text-muted-foreground">{t("description")}</p>
+			</div>
+
+			<form className={SPACING.SM}>
+				<Button disabled type="submit">
+					{t("export")}
+				</Button>
+			</form>
+		</section>
+	);
+};
+
+const DeleteAccountSection = (): React.JSX.Element => {
+	const t = useTranslations("settings.deleteAccountSection");
+
+	return (
+		<section className={SPACING.MD}>
+			<div className={SPACING.SM}>
+				<h1 className="text-xl font-medium text-destructive">{t("title")}</h1>
+				<p className="text-sm text-muted-foreground">{t("description")}</p>
+			</div>
+
+			<form>
+				<Button disabled variant={"destructive"} type="submit">
+					{t("delete")}
+				</Button>
+			</form>
 		</section>
 	);
 };
