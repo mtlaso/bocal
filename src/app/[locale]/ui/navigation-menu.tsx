@@ -174,7 +174,7 @@ function MobileNavMenu(): React.JSX.Element {
 							},
 						)}
 					>
-						<span className="">{t("settings")}</span>
+						<span className="">{t("rssFeed")}</span>
 					</Link>
 				</div>
 

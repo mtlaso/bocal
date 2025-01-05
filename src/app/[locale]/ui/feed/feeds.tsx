@@ -58,11 +58,6 @@ const Item = ({ item }: { item: FlattenedFeedsContent }): React.JSX.Element => {
 	const t = useTranslations("rssFeed");
 	const locale = useLocale();
 
-	// optimistic update, because the api is slow
-	// and we don't want the user to wait for the api to respond
-	// before marking the content as read
-	// will be updated if the api call fails
-	// or if the user refreshes the page
 	const [isReadOptimistic, addIsReadOptimistic] = useOptimistic(
 		item.isRead !== null,
 	);
