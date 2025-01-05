@@ -233,7 +233,7 @@ export async function addFeed(
 	_currState: AddFeedState,
 	formData: FormData,
 ): Promise<AddFeedState> {
-	const MAX_FEEDS = 20;
+	const MAX_FEEDS_FOLLOWED = 100;
 
 	const validatedFields = insertFeedsSchema.safeParse({
 		url: formData.get("url"),
@@ -257,12 +257,11 @@ export async function addFeed(
 		let isFeedAlreadyFollowed = false;
 
 		await db.transaction(async (tx) => {
-			// Check if user is following more than 20 feeds (max)
 			const userFeeds = await tx.query.usersFeeds.findMany({
 				where: eq(usersFeeds.userId, user.user.id),
 			});
 
-			if (userFeeds.length >= MAX_FEEDS) {
+			if (userFeeds.length >= MAX_FEEDS_FOLLOWED) {
 				isMaxFeedsReached = true;
 				return;
 			}
@@ -271,6 +270,10 @@ export async function addFeed(
 				where: eq(feeds.url, validatedFields.data.url),
 			});
 
+			// TODO: Maybe remove some parameters from the URL before checking if the feed exists.
+			// So we could avoid duplicates like http://example.com/feed and http://example.com/feed?some_data=...
+			// But we need to be careful with this, because some feeds may have different content based on the parameters.
+			// to be continued...
 			// If the feed does not exist, add it.
 			// And fetch the feed content.
 			if (!feed) {

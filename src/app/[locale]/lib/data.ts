@@ -54,12 +54,20 @@ export async function getLinks({
 	}
 }
 
-export async function getUserFeeds(): Promise<Feed[]> {
+export async function getUserFeeds(): Promise<{
+	feeds: Feed[];
+	limit: number;
+}> {
 	try {
 		const user = await auth();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
+
+		// This is returned from the function so we wont have to call `await auth()` outside which would send a request to the database,
+		// therefore slowing down the response time.
+		// Not ideal but it's a tradeoff for performance.
+		const limit = user.user.feedContentLimit;
 
 		const userFeedsRes = await db
 			.select({
@@ -88,7 +96,7 @@ export async function getUserFeeds(): Promise<Feed[]> {
 
 		void feedService.triggerBackgroundSync(outdatedFeeds);
 
-		return userFeedsRes;
+		return { feeds: userFeedsRes, limit };
 	} catch (_err) {
 		throw new Error("errors.unexpected");
 	}

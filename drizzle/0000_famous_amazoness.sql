@@ -63,7 +63,10 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"emailVerified" timestamp,
 	"image" text,
 	"feedContentLimit" integer DEFAULT 10 NOT NULL,
-	CONSTRAINT "users_email_unique" UNIQUE("email")
+	CONSTRAINT "users_email_unique" UNIQUE("email"),
+	CONSTRAINT "feedContentLimit_check" CHECK (
+    ("users"."feedContentLimit" > $1 and "users"."feedContentLimit" <= $2)
+      )
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users_feeds" (

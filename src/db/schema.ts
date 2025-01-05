@@ -3,7 +3,7 @@ import {
 	FeedErrorType,
 	FeedStatusType,
 } from "@/app/[locale]/lib/types";
-import { type InferSelectModel, sql } from "drizzle-orm";
+import { type InferSelectModel, and, gt, lte, sql } from "drizzle-orm";
 import {
 	boolean,
 	check,
@@ -25,6 +25,7 @@ function enumToPgEnum<T extends Record<string, any>>(
 	return Object.values(myEnum).map((value: any) => `${value}`) as any;
 }
 
+export const MAX_FEED_CONTENT_LIMIT = 100;
 export const users = pgTable(
 	"users",
 	{
@@ -38,12 +39,12 @@ export const users = pgTable(
 		feedContentLimit: integer().default(10).notNull(),
 	},
 	(table) => [
-		{
-			checkConstraint: check(
-				"contentLimitPerFeed",
-				sql`${table.feedContentLimit} > 0 AND ${table.feedContentLimit} <= 100`,
-			),
-		},
+		check(
+			"feedContentLimit_check",
+			sql`
+    ${and(gt(table.feedContentLimit, 0), lte(table.feedContentLimit, MAX_FEED_CONTENT_LIMIT))}
+      `,
+		),
 	],
 );
 
@@ -176,13 +177,10 @@ export const authenticators = pgTable(
 export const insertUsersSchema = createInsertSchema(users, {
 	feedContentLimit: (schema): Zod.ZodNumber =>
 		schema.feedContentLimit
-			.min(0, {
+			.gt(0, {
 				message: "errors.feedContentLimitFieldInvalid",
 			})
-			.max(100, {
-				message: "errors.feedContentLimitFieldInvalid",
-			})
-			.nonnegative({
+			.lte(MAX_FEED_CONTENT_LIMIT, {
 				message: "errors.feedContentLimitFieldInvalid",
 			}),
 }).pick({ feedContentLimit: true });

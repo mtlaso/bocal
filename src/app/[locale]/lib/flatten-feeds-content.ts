@@ -34,7 +34,6 @@ export const flattenFeedsContent = async (
 
 			return dateB - dateA;
 		});
-
 		return orderedItems;
 	} catch (_error) {
 		throw new Error("errors.unexpected");
