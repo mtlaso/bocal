@@ -1,5 +1,5 @@
 {
-	"id": "8ce5f838-9e9f-4251-bda9-165a1741e3f6",
+	"id": "336b97ad-8bd5-439d-82f0-a1ce5beb0cfc",
 	"prevId": "00000000-0000-0000-0000-000000000000",
 	"version": "7",
 	"dialect": "postgresql",
@@ -445,7 +445,12 @@
 				}
 			},
 			"policies": {},
-			"checkConstraints": {},
+			"checkConstraints": {
+				"feedContentLimit_check": {
+					"name": "feedContentLimit_check",
+					"value": "\n    (\"users\".\"feedContentLimit\" > $1 and \"users\".\"feedContentLimit\" <= $2)\n      "
+				}
+			},
 			"isRLSEnabled": false
 		},
 		"public.users_feeds": {
