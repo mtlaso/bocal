@@ -10,7 +10,6 @@ import type { Feed } from "@/db/schema";
  */
 export const flattenFeedsContent = async (
 	feeds: Feed[],
-	limit: number,
 ): Promise<FlattenedFeedsContent[]> => {
 	try {
 		const promiseAllItems = feeds.flatMap((feed) => {
@@ -29,15 +28,12 @@ export const flattenFeedsContent = async (
 
 		const allItems = await Promise.all(promiseAllItems);
 
-		const orderedItems = allItems
-			.sort((a, b) => {
-				const dateA = a?.date ? new Date(a.date).getTime() : 0;
-				const dateB = b?.date ? new Date(b.date).getTime() : 0;
+		const orderedItems = allItems.sort((a, b) => {
+			const dateA = a?.date ? new Date(a.date).getTime() : 0;
+			const dateB = b?.date ? new Date(b.date).getTime() : 0;
 
-				return dateB - dateA;
-			})
-			.slice(0, limit);
-
+			return dateB - dateA;
+		});
 		return orderedItems;
 	} catch (_error) {
 		throw new Error("errors.unexpected");

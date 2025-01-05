@@ -35,7 +35,7 @@ export default async function Page({
 	const t = await getTranslations("rssFeed");
 	await searchParamsCache.parse(searchParams);
 	const { feeds, limit } = await getUserFeeds();
-	const flattenedFeeds = await flattenFeedsContent(feeds, limit);
+	const flattenedFeeds = await flattenFeedsContent(feeds);
 
 	return (
 		<>
@@ -56,7 +56,7 @@ export default async function Page({
 			<Separator className="my-4" />
 
 			<Suspense fallback={<>...</>}>
-				<Feeds flattenedContent={flattenedFeeds} />
+				<Feeds flattenedContent={flattenedFeeds} limit={limit} />
 			</Suspense>
 		</>
 	);

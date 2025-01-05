@@ -22,16 +22,20 @@ import { toast } from "sonner";
 
 type Props = {
 	flattenedContent: FlattenedFeedsContent[];
+	limit?: number;
 };
 
-export function Feeds({ flattenedContent }: Props): React.JSX.Element {
+export function Feeds({ flattenedContent, limit }: Props): React.JSX.Element {
 	const [isHydrated, setIsHydrated] = useState(false);
 	const [{ selectedFeed }] = useQueryStates(searchParamsParsers);
+	const limitValue = limit ?? 10;
 
-	const items = flattenedContent.filter((content) => {
-		if (selectedFeed === SELECTED_FEED_DEFAULT) return true;
-		return content.feedId.toString() === selectedFeed;
-	});
+	const items = flattenedContent
+		.filter((content) => {
+			if (selectedFeed === SELECTED_FEED_DEFAULT) return true;
+			return content.feedId.toString() === selectedFeed;
+		})
+		.slice(0, limitValue);
 
 	useEffect(() => {
 		setIsHydrated(true);
