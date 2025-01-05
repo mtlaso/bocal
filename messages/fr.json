@@ -135,6 +135,8 @@
 		"successUnfollow": "Flux plus suivi",
 		"markAsRead": "Marquer comme lu",
 		"markAsUnread": "Marquer comme non lu",
+		"copyFeedURL": "Copier l'URL du flux",
+		"feedURLCopied": "URL du flux copiée",
 		"info": {
 			"textPartOne": "Vous suivez",
 			"textFeedsCount": "{count, plural, =0 {aucun flux} =1 {un flux} other {# flux}}",
@@ -157,7 +159,8 @@
 			"maxFeedsReached": "Nombre maximum de flux atteint.",
 			"missingFields": "Champ(s) manquant(s).",
 			"idFieldInvalid": "ID invalide.",
-			"feedContentIdFieldInvalid": "ID de contenu invalide."
+			"feedContentIdFieldInvalid": "ID de contenu invalide.",
+			"cannotCopyFeedURL": "Impossible de copier l'URL du flux."
 		}
 	},
 	"settings": {
