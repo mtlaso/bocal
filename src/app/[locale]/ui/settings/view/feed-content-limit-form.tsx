@@ -59,6 +59,23 @@ export function FeedContentLimitForm({
 					<SelectItem value="10">10</SelectItem>
 					<SelectItem value="15">15</SelectItem>
 					<SelectItem value="20">20</SelectItem>
+					<SelectItem value="25">25</SelectItem>
+					<SelectItem value="30">30</SelectItem>
+					<SelectItem value="35">35</SelectItem>
+					<SelectItem value="40">40</SelectItem>
+					<SelectItem value="42">42</SelectItem>
+					<SelectItem value="45">45</SelectItem>
+					<SelectItem value="50">50</SelectItem>
+					<SelectItem value="55">55</SelectItem>
+					<SelectItem value="60">60</SelectItem>
+					<SelectItem value="65">65</SelectItem>
+					<SelectItem value="70">70</SelectItem>
+					<SelectItem value="75">75</SelectItem>
+					<SelectItem value="80">80</SelectItem>
+					<SelectItem value="85">85</SelectItem>
+					<SelectItem value="90">90</SelectItem>
+					<SelectItem value="95">95</SelectItem>
+					<SelectItem value="100">100</SelectItem>
 				</SelectContent>
 			</Select>
 		</div>
