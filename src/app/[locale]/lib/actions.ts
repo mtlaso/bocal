@@ -552,3 +552,50 @@ export async function setFeedContentLimit(
 	revalidatePath("/settings");
 	return {};
 }
+
+export type ArchiveFeedContentState = State<{
+	url: string;
+}>;
+
+// This function is exactly the same as the one to add a link (AddLink).
+// The only difference is the endpoint to revalidate the path and the archiving.
+// They are seperated just in case.
+export async function archiveFeedContent(
+	url: string,
+): Promise<ArchiveFeedContentState> {
+	const validatedFields = insertLinksSchema.safeParse({
+		url: url,
+	});
+
+	if (!validatedFields.success) {
+		return {
+			errors: validatedFields.error.flatten().fieldErrors,
+			data: { url: url },
+			message: "errors.missingFields",
+		};
+	}
+
+	try {
+		const user = await auth();
+		if (!user) {
+			throw new Error("errors.notSignedIn");
+		}
+
+		const { ogTitle, ogImageURL } = await ogScrape(validatedFields.data.url);
+
+		await db.insert(links).values({
+			url: validatedFields.data.url,
+			userId: user.user.id,
+			ogTitle: ogTitle,
+			ogImageURL: ogImageURL,
+			isArchived: true,
+		});
+	} catch (_err) {
+		return {
+			message: "errors.unexpected",
+		};
+	}
+
+	revalidatePath("/archive");
+	return { successMessage: "success" };
+}

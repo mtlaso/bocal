@@ -9,6 +9,7 @@ import {
 	searchParamsParsers,
 } from "@/app/[locale]/lib/stores/search-params";
 import type { FlattenedFeedsContent } from "@/app/[locale]/lib/types";
+import { FeedsContextMenu } from "@/app/[locale]/ui/feed/feeds-context-menu";
 import { LinksSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -111,9 +112,13 @@ const Item = ({ item }: { item: FlattenedFeedsContent }): React.JSX.Element => {
 			handleMarkAsUnread(feedId, feedContentId);
 		}
 	};
+
 	return (
-		<div className="flex items-start">
-			<div className="mt-2 mr-2">
+		<div className="flex items-start justify-start">
+			<div
+				className="pt-1 pr-2
+        flex flex-col justify-between h-full"
+			>
 				<Checkbox
 					id={`readToggle-${item.id}`}
 					className="rounded-full border-dashed"
@@ -145,6 +150,10 @@ const Item = ({ item }: { item: FlattenedFeedsContent }): React.JSX.Element => {
 					</p>
 				</div>
 			</Link>
+
+			<div>
+				<FeedsContextMenu url={item.url} />
+			</div>
 		</div>
 	);
 };

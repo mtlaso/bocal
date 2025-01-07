@@ -137,6 +137,16 @@
 		"markAsUnread": "Marquer comme non lu",
 		"copyFeedURL": "Copier l'URL du flux",
 		"feedURLCopied": "URL du flux copiée",
+		"contextMenu": {
+			"archive": "Archiver",
+			"errors": {
+				"feedIdFieldInvalid": "ID de flux invalide.",
+				"feedContentIdFieldInvalid": "ID de contenu invalide.",
+				"missingFields": "Champ(s) manquant(s).",
+				"unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer."
+			},
+			"success": "Contenu archivé"
+		},
 		"info": {
 			"textPartOne": "Vous suivez",
 			"textFeedsCount": "{count, plural, =0 {aucun flux} =1 {un flux} other {# flux}}",

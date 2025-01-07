@@ -26,8 +26,6 @@ export async function generateMetadata({
 
 export default async function Page(): Promise<React.JSX.Element> {
 	const t = await getTranslations("rssFeed");
-	// const { feeds, limit } = await getUserFeeds();
-	// const flattenedFeeds = await flattenFeedsContent(feeds);
 
 	return (
 		<>
