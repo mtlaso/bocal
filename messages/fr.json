@@ -137,6 +137,9 @@
 		"markAsUnread": "Marquer comme non lu",
 		"copyFeedURL": "Copier l'URL du flux",
 		"feedURLCopied": "URL du flux copiée",
+		"contextMenu": {
+			"archive": "Archiver"
+		},
 		"info": {
 			"textPartOne": "Vous suivez",
 			"textFeedsCount": "{count, plural, =0 {aucun flux} =1 {un flux} other {# flux}}",
