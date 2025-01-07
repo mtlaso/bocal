@@ -137,7 +137,14 @@
 		"copyFeedURL": "Copy feed URL",
 		"feedURLCopied": "Feed URL copied",
 		"contextMenu": {
-			"archive": "Archive"
+			"archive": "Archive",
+			"errors": {
+				"feedIdFieldInvalid": "ID invalid.",
+				"feedContentIdFieldInvalid": "Content ID invalid.",
+				"missingFields": "Missing fields.",
+				"unexpected": "An error happened. Please try again."
+			},
+			"success": "Content archived"
 		},
 		"info": {
 			"textPartOne": "Following",

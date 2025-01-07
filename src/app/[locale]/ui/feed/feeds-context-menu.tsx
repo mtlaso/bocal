@@ -1,3 +1,4 @@
+import { archiveFeedContent } from "@/app/[locale]/lib/actions";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -7,10 +8,16 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useTranslations } from "next-intl";
+import { useTransition } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { TbArchive } from "react-icons/tb";
+import { toast } from "sonner";
 
-export function FeedsContextMenu(): React.JSX.Element {
+type Props = {
+	url: string;
+};
+
+export function FeedsContextMenu({ url }: Props): React.JSX.Element {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -21,7 +28,7 @@ export function FeedsContextMenu(): React.JSX.Element {
 			<DropdownMenuContent className="w-56">
 				<DropdownMenuGroup>
 					<DropdownMenuItem>
-						<ArchiveFeedContent />
+						<ArchiveFeedContent url={url} />
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 			</DropdownMenuContent>
@@ -29,12 +36,37 @@ export function FeedsContextMenu(): React.JSX.Element {
 	);
 }
 
-function ArchiveFeedContent(): React.JSX.Element {
-	const t = useTranslations("rssFeed");
+function ArchiveFeedContent({ url }: Props): React.JSX.Element {
+	const t = useTranslations("rssFeed.contextMenu");
+	const [isPending, startTransition] = useTransition();
+
+	const handleArchiveFeed = (): void => {
+		startTransition(async () => {
+			try {
+				const res = await archiveFeedContent(url);
+				if (res.message) {
+					toast.error(t(res.message));
+					return;
+				}
+
+				toast.success(t(res.successMessage));
+			} catch (_err) {
+				toast.error(t("errors.unexpected"));
+			}
+		});
+	};
+
 	return (
-		<Button type="button" variant={"ghost"} size={"sm"}>
+		<Button
+			onClick={handleArchiveFeed}
+			disabled={isPending}
+			type="submit"
+			variant={"ghost"}
+			size={"sm"}
+			className="flex justify-start flex-grow"
+		>
 			<TbArchive />
-			<span>{t("contextMenu.archive")}</span>
+			{t("archive")}
 		</Button>
 	);
 }

@@ -152,7 +152,7 @@ const Item = ({ item }: { item: FlattenedFeedsContent }): React.JSX.Element => {
 			</Link>
 
 			<div>
-				<FeedsContextMenu />
+				<FeedsContextMenu url={item.url} />
 			</div>
 		</div>
 	);

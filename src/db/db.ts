@@ -15,10 +15,10 @@ if (!process.env.VERCEL_ENV) {
 	pool = new PoolPg({
 		connectionString: process.env.DATABASE_URL,
 	});
-	_db = drizzlePg({ client: pool, schema, logger: true });
+	_db = drizzlePg({ client: pool, schema, logger: false });
 } else {
 	pool = new Pool({ connectionString: process.env.DATABASE_URL });
-	_db = drizzle({ client: pool, schema, logger: true });
+	_db = drizzle({ client: pool, schema, logger: false });
 }
 
 export const db = _db;

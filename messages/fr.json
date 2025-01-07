@@ -138,7 +138,14 @@
 		"copyFeedURL": "Copier l'URL du flux",
 		"feedURLCopied": "URL du flux copiée",
 		"contextMenu": {
-			"archive": "Archiver"
+			"archive": "Archiver",
+			"errors": {
+				"feedIdFieldInvalid": "ID de flux invalide.",
+				"feedContentIdFieldInvalid": "ID de contenu invalide.",
+				"missingFields": "Champ(s) manquant(s).",
+				"unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer."
+			},
+			"success": "Contenu archivé"
 		},
 		"info": {
 			"textPartOne": "Vous suivez",
