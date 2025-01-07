@@ -41,6 +41,7 @@ function ArchiveFeedContent({ url }: Props): React.JSX.Element {
 	const [isPending, startTransition] = useTransition();
 
 	const handleArchiveFeed = (): void => {
+		toast.success(t("success"));
 		startTransition(async () => {
 			try {
 				const res = await archiveFeedContent(url);
@@ -48,8 +49,6 @@ function ArchiveFeedContent({ url }: Props): React.JSX.Element {
 					toast.error(t(res.message));
 					return;
 				}
-
-				toast.success(t(res.successMessage));
 			} catch (_err) {
 				toast.error(t("errors.unexpected"));
 			}
