@@ -1,6 +1,6 @@
 "use client";
 
-import { removeWWW } from "@/app/[locale]/lib/remove-www";
+import { parseURL } from "@/app/[locale]/lib/parse-url";
 import { searchParamsParsers } from "@/app/[locale]/lib/stores/search-params";
 import { SortOptions } from "@/app/[locale]/lib/types";
 import {
@@ -102,7 +102,7 @@ export function Links({ links, view }: Props): React.JSX.Element {
 										select-none text-9xl text-foreground font-semibold
 										bg-gradient-to-br`,
 										randomBackground(
-											item.ogTitle ?? removeWWW(new URL(item.url).host),
+											item.ogTitle ?? parseURL(new URL(item.url).host),
 										),
 										{
 											"rounded-t-xl": view === "grid",
@@ -136,7 +136,7 @@ export function Links({ links, view }: Props): React.JSX.Element {
 							target="_blank"
 							className=" text-sm text-muted-foreground truncate"
 						>
-							{removeWWW(new URL(item.url).host)}
+							{parseURL(new URL(item.url).host)}
 						</Link>
 
 						<LinksContextMenu id={item.id.toString()} />
