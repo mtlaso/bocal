@@ -86,6 +86,7 @@ function UnArchiveLink({ id }: { id: string }): React.JSX.Element {
 				onClick={(e): void => handleUnArchiveLink(e)}
 				variant={"ghost"}
 				size={"sm"}
+				className="flex justify-start flex-grow"
 				disabled={isPending}
 			>
 				<TbLinkPlus />
@@ -122,6 +123,7 @@ function ArchiveLink({ id }: { id: string }): React.JSX.Element {
 				variant={"ghost"}
 				size={"sm"}
 				disabled={isPending}
+				className="flex justify-start flex-grow"
 			>
 				<BsArchive />
 				{t("archive")}
@@ -153,7 +155,7 @@ function DeleteLink({ id }: { id: string }): React.JSX.Element {
 	return (
 		<>
 			<Button
-				className="text-destructive"
+				className="text-destructive flex justify-start flex-grow"
 				onClick={(e): void => handleDeleteLink(e)}
 				variant={"ghost"}
 				size={"sm"}

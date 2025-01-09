@@ -139,9 +139,7 @@ export function Links({ links, view }: Props): React.JSX.Element {
 							{removeWWW(new URL(item.url).host)}
 						</Link>
 
-						<div>
-							<LinksContextMenu id={item.id.toString()} />
-						</div>
+						<LinksContextMenu id={item.id.toString()} />
 					</CardFooter>
 				</Card>
 			))}
