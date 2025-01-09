@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { removeWWW } from "@/app/[locale]/lib/remove-www";
+import { parseURL } from "@/app/[locale]/lib/parse-url";
 import { sanitizeHTML } from "@/app/[locale]/lib/sanitize-html";
 import {
 	type FeedContent,
@@ -53,7 +53,7 @@ export async function parseFeed(url: string): Promise<ParseFeedResponse> {
 				// TODO: should we use guid or always generate a stable id?
 				// guid could somehow be the same for different items if the feed is not well formed...
 				id: item.guid ?? generateStableId(item),
-				title: decode(sanitizeHTML(item.title ?? removeWWW(url))),
+				title: decode(sanitizeHTML(item.title ?? parseURL(url))),
 				url: item.link ?? url,
 				content: decode(
 					sanitizeHTML(item.content ?? item.contentSnippet ?? ""),
@@ -63,7 +63,7 @@ export async function parseFeed(url: string): Promise<ParseFeedResponse> {
 		});
 
 		return {
-			title: feed.title ?? removeWWW(url),
+			title: feed.title ?? parseURL(url),
 			content,
 		};
 	} catch (err) {
