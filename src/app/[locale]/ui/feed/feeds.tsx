@@ -10,7 +10,6 @@ import {
 } from "@/app/[locale]/lib/stores/search-params";
 import type { FlattenedFeedsContent } from "@/app/[locale]/lib/types";
 import { FeedsContextMenu } from "@/app/[locale]/ui/feed/feeds-context-menu";
-import { LinksSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Link } from "@/i18n/routing";
@@ -18,7 +17,7 @@ import { cn } from "@/lib/utils";
 import type { CheckedState } from "@radix-ui/react-checkbox";
 import { useLocale, useTranslations } from "next-intl";
 import { useQueryStates } from "nuqs";
-import { startTransition, useEffect, useOptimistic, useState } from "react";
+import { startTransition, useOptimistic } from "react";
 import { toast } from "sonner";
 
 type Props = {
@@ -27,7 +26,6 @@ type Props = {
 };
 
 export function Feeds({ flattenedContent, limit }: Props): React.JSX.Element {
-	const [isHydrated, setIsHydrated] = useState(false);
 	const [{ selectedFeed }] = useQueryStates(searchParamsParsers);
 	const limitValue = limit ?? 10;
 
@@ -38,16 +36,8 @@ export function Feeds({ flattenedContent, limit }: Props): React.JSX.Element {
 		})
 		.slice(0, limitValue);
 
-	useEffect(() => {
-		setIsHydrated(true);
-	}, []);
-
-	if (!isHydrated) {
-		return <LinksSkeleton />;
-	}
-
 	return (
-		<section className={cn("grid", SPACING.MD)}>
+		<section className={cn("grid break-all", SPACING.MD)}>
 			{items.map((item) => (
 				<Item item={item} key={`${item.id}-${item.feedId}`} />
 			))}
