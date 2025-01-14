@@ -52,7 +52,7 @@ export async function parseFeed(url: string): Promise<ParseFeedResponse> {
 			return {
 				// TODO: should we use guid or always generate a stable id?
 				// guid could somehow be the same for different items if the feed is not well formed...
-				id: item.guid ?? generateStableId(item),
+				id: generateStableId(item),
 				title: decode(sanitizeHTML(item.title ?? parseURL(url))),
 				url: item.link ?? url,
 				content: decode(
