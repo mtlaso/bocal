@@ -44,7 +44,7 @@ export default function Home(): React.JSX.Element {
 				{/* hero */}
 				<section
 					className={cn(
-						"min-h-[50dvh] flex flex-col items-center justify-center max-w-prose mx-auto text-center mt10",
+						"min-h-[50dvh] flex flex-col items-center justify-center max-w-prose mx-auto text-center",
 						SPACING.MD,
 					)}
 				>
