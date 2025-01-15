@@ -6,22 +6,22 @@
 		"ctaButton": "Get started",
 		"description": "The content you care is scattered around the internet. Bring together your RSS feeds, reading list and other web sources in one easy-to-browse place.",
 		"lastCtaHeadline": "Ready to get started?",
-		"lastCtaDescription": "Save content to read later. Sort it, archive it, organize it as you wish 🪄.",
+		"lastCtaDescription": "One place to keep and follow everything, it's that simple 🪄",
 		"features": [
 			{
 				"key": "0",
 				"title": "Save content to read",
-				"description": "Save anything with a link to read later. Sort it, archive it, organize it as you wish."
+				"description": "Keep any link for later in an organized space. Sort and archive easily to find your content when you need it."
 			},
 			{
 				"key": "1",
-				"title": "Keep up with blogs, YouTube, Reddit... anything with a feed",
-				"description": "Keep up with anything with RSS or Atom feeds."
+				"title": "Follow your favorite sources",
+				"description": "Blogs, YouTube, Reddit... Stay updated with all your favorite content through RSS and Atom feeds."
 			},
 			{
 				"key": "2",
-				"title": "Following newsletters?",
-				"description": "Free? Paid? We do that too."
+				"title": "Centralize your newsletters (coming soon)",
+				"description": "Free or paid, keep all your newsletters in the same place as your other content."
 			}
 		],
 		"dashboard": {

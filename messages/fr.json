@@ -2,11 +2,11 @@
 	"metadata": {
 		"title": "Bocal",
 		"login": "Se connecter",
-		"headline": "Les choses à lire et à suivre, au même endroit",
+		"headline": "Les choses à lire plus tard et à suivre, au même endroit",
 		"ctaButton": "Commencer",
 		"description": "Plus besoin de jongler entre différentes apps et onglets. Sauvegardez simplement vos lectures et suivez vos sources préférées en un seul endroit",
 		"lastCtaHeadline": "Prêt à commencer?",
-		"lastCtaDescription": "Sauvegardez du contenu à lire plus tard. Triez-le, archivez-le, organisez-le comme vous le souhaitez 🪄.",
+		"lastCtaDescription": "Un seul endroit pour tout sauvegarder et suivre, c'est aussi simple que ça 🪄",
 		"features": [
 			{
 				"key": "0",
@@ -15,13 +15,13 @@
 			},
 			{
 				"key": "1",
-				"title": "Restez à jour avec les blogs, YouTube, Reddit... tout ce qui a un flux",
-				"description": "Suivez tout ce qui a des flux RSS ou Atom."
+				"title": "Suivez vos sources préférées",
+				"description": "Blogs, YouTube, Reddit... Restez à jour avec tous vos contenus préférés grâce aux flux RSS et Atom."
 			},
 			{
 				"key": "2",
-				"title": "Vous êtes abonné à des newsletters ?",
-				"description": "Gratuites ? Payantes ? Nous gérons ça aussi."
+				"title": "Centralisez vos newsletters (bientôt disponible)",
+				"description": "Gratuites ou payantes, gardez toutes vos newsletters au même endroit que vos autres contenus."
 			}
 		],
 		"dashboard": {
