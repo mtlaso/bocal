@@ -19,7 +19,6 @@ export function Settings({
 	name,
 	feedContentLimit,
 }: Props): React.JSX.Element {
-	const _t = useTranslations("settings");
 	return (
 		<section>
 			<ProfileSection name={name ?? ""} email={email ?? ""} />

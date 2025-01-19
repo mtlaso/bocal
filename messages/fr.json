@@ -11,12 +11,12 @@
 			{
 				"key": "0",
 				"title": "Sauvegardez du contenu à lire",
-				"description": "Sauvegardez n'importe quel lien pour le lire plus tard. Triez, archivez et organisez comme bon vous semble."
+				"description": "Sauvegardez n'importe quel lien pour le lire plus tard."
 			},
 			{
 				"key": "1",
 				"title": "Suivez vos sources préférées",
-				"description": "Blogs, YouTube, Reddit... Restez à jour avec tous vos contenus préférés grâce aux flux RSS et Atom."
+				"description": "Blogs, YouTube, Reddit... Restez à jour avec tous vos contenus grâce aux flux RSS et Atom."
 			},
 			{
 				"key": "2",
@@ -204,7 +204,7 @@
 		},
 		"exportDataSection": {
 			"title": "Exporter données du compte",
-			"description": "Exporter vos données au format JSON.",
+			"description": "Exporter vos données.",
 			"export": "Exporter"
 		},
 		"deleteAccountSection": {
