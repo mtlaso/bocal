@@ -111,8 +111,8 @@ const HeroSection = (): React.JSX.Element => {
 
 			<div className="flex justify-center">
 				<Link href="/login">
-					<ShimmerButton className="shadow-2xl h-12 px-12">
-						{t("ctaButton")}
+					<ShimmerButton className="shadow-2xl dark:shadow-none h-12 px-12">
+						<span className="dark:text-white">{t("ctaButton")}</span>
 					</ShimmerButton>
 				</Link>
 			</div>
