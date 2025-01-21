@@ -28,20 +28,10 @@ type Props = {
 };
 
 export function Links({ links, view }: Props): React.JSX.Element {
-	const [{ sortLinks }] = useQueryStates(searchParamsParsers);
+	const [{ sortLinks, searchedLink }] = useQueryStates(searchParamsParsers);
 	const t = useTranslations("dashboard");
 
-	const items = [...links];
-	switch (sortLinks) {
-		case SortOptions.BY_DATE_ASC:
-			items.sort((a, b) => a.id - b.id);
-			break;
-		case SortOptions.BY_DATE_DESC:
-			items.sort((a, b) => b.id - a.id);
-			break;
-		default:
-			break;
-	}
+	const items = filter(links, sortLinks, searchedLink);
 
 	const randomBackground = (firstLetter: string): string => {
 		const letter = firstLetter.toUpperCase();
@@ -145,4 +135,40 @@ export function Links({ links, view }: Props): React.JSX.Element {
 			))}
 		</section>
 	);
+}
+
+function filter(
+	links: Props["links"],
+	sortLinks: SortOptions,
+	searchedLink: string,
+): Props["links"] {
+	let items = [...links];
+
+	// Filter.
+	if (searchedLink) {
+		items = items.filter((item) => {
+			const url = URL.parse(item.url);
+
+			return (
+				item.ogTitle
+					?.toLowerCase()
+					.includes(searchedLink.toLowerCase().trim()) ||
+				url?.host?.toLowerCase().includes(searchedLink.toLowerCase().trim())
+			);
+		});
+	}
+
+	// Sort.
+	switch (sortLinks) {
+		case SortOptions.BY_DATE_ASC:
+			items.sort((a, b) => a.id - b.id);
+			break;
+		case SortOptions.BY_DATE_DESC:
+			items.sort((a, b) => b.id - a.id);
+			break;
+		default:
+			break;
+	}
+
+	return items;
 }
