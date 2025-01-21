@@ -1,13 +1,18 @@
 "use client";
 
+import { searchParamsParsers } from "@/app/[locale]/lib/stores/search-params";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useTranslations } from "next-intl";
+import { useQueryStates } from "nuqs";
 import { useRef, useState } from "react";
 import { TbSearch } from "react-icons/tb";
 
 export function SearchLinksDesktop(): React.JSX.Element {
+	const [{ searchedLink }, setSearchedLink] =
+		useQueryStates(searchParamsParsers);
+
 	const t = useTranslations("navbar.search-links");
 	const [open, setOpen] = useState(false);
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -17,6 +22,7 @@ export function SearchLinksDesktop(): React.JSX.Element {
 			if (inputRef.current) {
 				inputRef.current.blur();
 				inputRef.current.value = "";
+				setSearchedLink({ searchedLink: "" });
 			}
 
 			setOpen(false);
@@ -55,6 +61,10 @@ export function SearchLinksDesktop(): React.JSX.Element {
 						id="search-links"
 						placeholder={t("search")}
 						onKeyDown={handleCloseWithEscape}
+						defaultValue={searchedLink}
+						onChange={(e): Promise<URLSearchParams> =>
+							setSearchedLink({ searchedLink: e.currentTarget.value })
+						}
 					/>
 
 					<TbSearch className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
