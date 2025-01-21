@@ -1,4 +1,7 @@
-import { SearchLinks } from "@/app/[locale]/ui/search-links";
+import {
+	SearchLinksDesktop,
+	SearchLinksMobile,
+} from "@/app/[locale]/ui/search-links";
 import { LinksSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SortLinks } from "@/app/[locale]/ui/sort-links";
 import { SPACING } from "@/app/[locale]/ui/spacing";
@@ -31,20 +34,25 @@ export default async function Page(): Promise<React.JSX.Element> {
 		<>
 			<section className={SPACING.SM}>
 				<div className="flex justify-between">
-					<div className="flex gap-2">
+					<div className="flex gap-2 w-full">
 						<h1 className="font-semibold tracking-tight text-3xl">
 							{t("links")}
 						</h1>
 						<AddLinkForm />
+						<Suspense>
+							<SearchLinksDesktop />
+						</Suspense>
 					</div>
 
-					<Suspense>
-						<SortLinks />
-					</Suspense>
+					<div>
+						<Suspense>
+							<SortLinks />
+						</Suspense>
+					</div>
 				</div>
 
 				<Suspense>
-					<SearchLinks />
+					<SearchLinksMobile />
 				</Suspense>
 			</section>
 
