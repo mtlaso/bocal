@@ -78,6 +78,9 @@
 			"byDateAsc": "Par date: ascendant",
 			"byDateDesc": "Par date: descendant"
 		},
+		"search-links": {
+			"search": "Rechercher"
+		},
 		"themeToggle": {
 			"toggle": "Changer thème",
 			"dark": "Sombre",
