@@ -88,7 +88,6 @@ export function SearchLinksMobile(): React.JSX.Element {
 			<div className="relative">
 				<Input
 					className="rounded-md border py-2 pl-10 outline-2 placeholder:text-gray-500"
-					autoFocus
 					id="search-links"
 					placeholder={t("search")}
 					defaultValue={searchedLink}
