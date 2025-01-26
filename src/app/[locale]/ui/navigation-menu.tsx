@@ -114,12 +114,14 @@ function MobileNavMenu(): React.JSX.Element {
 					<TbMenu2 />
 				</Button>
 			</SheetTrigger>
+
 			<SheetContent className="w-full">
 				<SheetHeader>
 					<SheetTitle className="mb-6 text-left text-4xl leading-tight">
 						{t("menu")}
 					</SheetTitle>
 				</SheetHeader>
+
 				<div className="flex flex-col gap-4">
 					<Link
 						onClick={(): void => setIsOpen(false)}
