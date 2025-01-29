@@ -136,11 +136,14 @@ const FeaturesSection = (): React.JSX.Element => {
 					description: string;
 				}) => (
 					<Card
-						className={cn("hover:shadow-md transition-all duration-200", {
-							"md:row-start-1 md:col-span-2": feature.key === "0",
-							"md:row-start-1 md:row-span-2": feature.key === "1",
-							"md:row-start-2 md:col-span-2": feature.key === "2",
-						})}
+						className={cn(
+							"hover:shadow-md transition-all duration-200 bg-transparent",
+							{
+								"md:row-start-1 md:col-span-2": feature.key === "0",
+								"md:row-start-1 md:row-span-2": feature.key === "1",
+								"md:row-start-2 md:col-span-2": feature.key === "2",
+							},
+						)}
 						key={feature.key}
 					>
 						<CardHeader>
