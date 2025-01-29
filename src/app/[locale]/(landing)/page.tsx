@@ -137,7 +137,7 @@ const FeaturesSection = (): React.JSX.Element => {
 				}) => (
 					<Card
 						className={cn(
-							"hover:shadow-md transition-all duration-200 gri grid-rows-subgri col-span1 gridcols-subgrid",
+							"hover:shadow-md transition-all duration-200 bg-transparent",
 							{
 								"md:row-start-1 md:col-span-2": feature.key === "0",
 								"md:row-start-1 md:row-span-2": feature.key === "1",
