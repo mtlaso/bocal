@@ -18,13 +18,10 @@ export function SearchLinksDesktop(): React.JSX.Element {
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	const handleOpen = (): void => {
-		if (open) {
-			if (inputRef.current) {
-				inputRef.current.blur();
-				inputRef.current.value = "";
-				setSearchedLink({ searchedLink: "" });
-			}
-
+		if (open && inputRef.current) {
+			inputRef.current.blur();
+			inputRef.current.value = "";
+			setSearchedLink({ searchedLink: "" });
 			setOpen(false);
 		} else {
 			inputRef.current?.focus();
@@ -48,7 +45,7 @@ export function SearchLinksDesktop(): React.JSX.Element {
 			</Button>
 			<div
 				className={`transition-all duration-200 ease-out
-				 ${open ? "w-64 opacity-100" : "w-0 opacity-0"}`}
+				 ${open ? "w-64 opacity-100 pointer-events-auto" : "w-0 opacity-0 pointer-events-none"}`}
 			>
 				<Label htmlFor="search-links-desktop" className="sr-only">
 					{t("search")}
@@ -69,9 +66,10 @@ export function SearchLinksDesktop(): React.JSX.Element {
 					/>
 
 					<TbSearch className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+
 					<button
 						type="button"
-						onClick={(_e): Promise<URLSearchParams> =>
+						onClick={(): Promise<URLSearchParams> =>
 							setSearchedLink({ searchedLink: "" })
 						}
 						className="absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500"
