@@ -3,7 +3,12 @@ import { cookies } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import { routing } from "./i18n/routing";
 
-const PROTECTED_ROUTES = new Set(["/dashboard", "/archive", "/feed"]);
+const PROTECTED_ROUTES = new Set([
+	"/dashboard",
+	"/archive",
+	"/feed",
+	"/settings",
+]);
 const PUBLIC_ROUTES = new Set(["/login"]);
 const LANG_PREFIX_REGEX = /^\/(?:en|fr)\//;
 const LOGIN_PATH = "/login";
