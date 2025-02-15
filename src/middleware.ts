@@ -3,8 +3,13 @@ import { cookies } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import { routing } from "./i18n/routing";
 
-const PROTECTED_ROUTES = new Set(["/dashboard", "/archive", "/feed"]);
-const PUBLIC_ROUTES = new Set(["/login"]);
+const PROTECTED_ROUTES = new Set([
+	"/dashboard",
+	"/archive",
+	"/feed",
+	"/settings",
+]);
+const PUBLIC_ROUTES = new Set(["/", "/login"]);
 const LANG_PREFIX_REGEX = /^\/(?:en|fr)\//;
 const LOGIN_PATH = "/login";
 
@@ -22,6 +27,7 @@ function getSessionCookieName(): string {
 	// See next-auth/packages/core/src/lib/utils/cookie.ts (on github).
 	// https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/lib/utils/cookie.ts#L59
 	const cookieName = "authjs.session-token";
+	// If the environment is Vercel, the cookie name must be prefixed with `__Secure-` (production)
 	if (process.env.VERCEL_ENV) {
 		return `__Secure-${cookieName}`;
 	}
