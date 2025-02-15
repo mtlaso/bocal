@@ -9,7 +9,7 @@ const PROTECTED_ROUTES = new Set([
 	"/feed",
 	"/settings",
 ]);
-const PUBLIC_ROUTES = new Set(["/login"]);
+const PUBLIC_ROUTES = new Set(["/", "/login"]);
 const LANG_PREFIX_REGEX = /^\/(?:en|fr)\//;
 const LOGIN_PATH = "/login";
 
@@ -27,6 +27,7 @@ function getSessionCookieName(): string {
 	// See next-auth/packages/core/src/lib/utils/cookie.ts (on github).
 	// https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/lib/utils/cookie.ts#L59
 	const cookieName = "authjs.session-token";
+	// If the environment is Vercel, the cookie name must be prefixed with `__Secure-` (production)
 	if (process.env.VERCEL_ENV) {
 		return `__Secure-${cookieName}`;
 	}
