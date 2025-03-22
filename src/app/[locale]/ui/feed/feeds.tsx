@@ -111,7 +111,7 @@ const Item = ({ item }: { item: FlattenedFeedsContent }): React.JSX.Element => {
 			>
 				<Checkbox
 					id={`readToggle-${item.id}`}
-					className="rounded-full border-dashed"
+					className="rounded-full border border-dashed border-primary"
 					checked={isReadOptimistic}
 					onCheckedChange={(e): void => {
 						handleToggleReadStatus(e, item.feedId, item.id);
@@ -123,7 +123,7 @@ const Item = ({ item }: { item: FlattenedFeedsContent }): React.JSX.Element => {
 			</div>
 
 			<Link
-				className={cn(SPACING.SM, "flex-grow", {
+				className={cn(SPACING.SM, "grow", {
 					"bg-primary-oreground opacity-50": isReadOptimistic,
 				})}
 				onClick={(): Promise<void> => handleMarkAsRead(item.feedId, item.id)}

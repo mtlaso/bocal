@@ -68,7 +68,7 @@ export function Links({ links, view }: Props): React.JSX.Element {
 					)}
 				>
 					<CardHeader
-						className={cn("!p-0", {
+						className={cn("p-0!", {
 							"row-start- row-span-2": view === "list",
 						})}
 					>
@@ -90,7 +90,7 @@ export function Links({ links, view }: Props): React.JSX.Element {
 									className={cn(
 										`aspect-video h-auto w-full object-cover
 										select-none text-9xl text-foreground font-semibold
-										bg-gradient-to-br`,
+										bg-linear-to-br`,
 										randomBackground(
 											item.ogTitle ?? parseURL(new URL(item.url).host),
 										),

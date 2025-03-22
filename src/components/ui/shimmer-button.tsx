@@ -1,9 +1,11 @@
-import React, { type CSSProperties } from "react";
+import React, {
+	type CSSProperties,
+	type ComponentPropsWithoutRef,
+} from "react";
 
 import { cn } from "@/lib/utils";
 
-export interface ShimmerButtonProps
-	extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ShimmerButtonProps extends ComponentPropsWithoutRef<"button"> {
 	shimmerColor?: string;
 	shimmerSize?: string;
 	borderRadius?: string;
@@ -29,7 +31,7 @@ export const ShimmerButton = React.forwardRef<
 			...props
 		},
 		ref,
-	): React.JSX.Element => {
+	) => {
 		return (
 			<button
 				style={
