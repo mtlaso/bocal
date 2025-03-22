@@ -44,7 +44,7 @@ export function FeedInfoMenu({ feeds }: Props): React.JSX.Element {
 
 				<SheetContent side={"left"}>
 					<SheetHeader>
-						<SheetTitle className="mb-6 text-left text-4xl leading-tight">
+						<SheetTitle className="text-left text-4xl leading-tight">
 							{t("title")}
 						</SheetTitle>
 					</SheetHeader>
