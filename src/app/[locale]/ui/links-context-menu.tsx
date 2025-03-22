@@ -51,7 +51,7 @@ export function LinksContextMenu({ id }: { id: string }): React.JSX.Element {
 						</DropdownMenuItem>
 					)}
 
-					<DropdownMenuItem>
+					<DropdownMenuItem variant="destructive">
 						<DeleteLink id={id} />
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
@@ -82,16 +82,15 @@ function UnArchiveLink({ id }: { id: string }): React.JSX.Element {
 
 	return (
 		<>
-			<Button
+			<button
+				type="button"
 				onClick={(e): void => handleUnArchiveLink(e)}
-				variant={"ghost"}
-				size={"sm"}
-				className="flex justify-start grow"
+				className="flex justify-start items-center grow text-sm gap-2 p-1"
 				disabled={isPending}
 			>
 				<TbLinkPlus />
 				{t("unarchive")}
-			</Button>
+			</button>
 		</>
 	);
 }
@@ -118,16 +117,15 @@ function ArchiveLink({ id }: { id: string }): React.JSX.Element {
 
 	return (
 		<>
-			<Button
+			<button
 				onClick={(e): void => handleArchiveLink(e)}
-				variant={"ghost"}
-				size={"sm"}
+				type="button"
 				disabled={isPending}
-				className="flex justify-start grow"
+				className="flex justify-start items-center grow text-sm gap-2 p-1"
 			>
 				<BsArchive />
 				{t("archive")}
-			</Button>
+			</button>
 		</>
 	);
 }
@@ -154,16 +152,15 @@ function DeleteLink({ id }: { id: string }): React.JSX.Element {
 
 	return (
 		<>
-			<Button
-				className="text-destructive flex justify-start grow"
+			<button
+				className="flex justify-start items-center grow text-sm gap-2 p-1"
+				type="button"
 				onClick={(e): void => handleDeleteLink(e)}
-				variant={"ghost"}
-				size={"sm"}
 				disabled={isPending}
 			>
 				<Trash />
 				{t("delete")}
-			</Button>
+			</button>
 		</>
 	);
 }

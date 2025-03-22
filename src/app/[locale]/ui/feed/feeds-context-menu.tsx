@@ -1,5 +1,4 @@
 import { archiveFeedContent } from "@/app/[locale]/lib/actions";
-import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -56,16 +55,14 @@ function ArchiveFeedContent({ url }: Props): React.JSX.Element {
 	};
 
 	return (
-		<Button
+		<button
+			className="flex justify-start items-center grow text-sm gap-2 p-1"
 			onClick={handleArchiveFeed}
 			disabled={isPending}
 			type="submit"
-			variant={"ghost"}
-			size={"sm"}
-			className="flex justify-start grow"
 		>
 			<TbArchive />
 			{t("archive")}
-		</Button>
+		</button>
 	);
 }

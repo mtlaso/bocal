@@ -3,7 +3,6 @@ import {
 	SELECTED_FEED_DEFAULT,
 	searchParamsParsers,
 } from "@/app/[locale]/lib/stores/search-params";
-import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -43,7 +42,10 @@ export function FeedInfoContextMenu({
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56">
 				<DropdownMenuGroup>
-					<DropdownMenuItem disabled={selectedFeed === SELECTED_FEED_DEFAULT}>
+					<DropdownMenuItem
+						variant="destructive"
+						disabled={selectedFeed === SELECTED_FEED_DEFAULT}
+					>
 						<UnfollowFeed />
 					</DropdownMenuItem>
 					{selectedFeed !== SELECTED_FEED_DEFAULT && feed?.url && (
@@ -84,18 +86,15 @@ function UnfollowFeed(): React.JSX.Element {
 	};
 
 	return (
-		<>
-			<Button
-				className="flex justify-start grow text-destructive"
-				onClick={handleUnfollow}
-				variant={"ghost"}
-				size={"sm"}
-				disabled={pending}
-			>
-				<Trash />
-				{t("unfollow")}
-			</Button>
-		</>
+		<button
+			type="button"
+			className="flex justify-start items-center grow text-sm gap-2 p-1"
+			onClick={handleUnfollow}
+			disabled={pending}
+		>
+			<Trash className="text-destructive" />
+			{t("unfollow")}
+		</button>
 	);
 }
 
@@ -114,16 +113,13 @@ function CopyFeedURL({ url }: { url: string }): React.JSX.Element {
 	};
 
 	return (
-		<>
-			<Button
-				onClick={handleCopy}
-				variant={"ghost"}
-				size={"sm"}
-				className="flex justify-start grow"
-			>
-				<TbClipboard />
-				{t("copyFeedURL")}
-			</Button>
-		</>
+		<button
+			type="button"
+			onClick={handleCopy}
+			className="flex justify-start items-center grow text-sm gap-2 p-1"
+		>
+			<TbClipboard />
+			{t("copyFeedURL")}
+		</button>
 	);
 }
