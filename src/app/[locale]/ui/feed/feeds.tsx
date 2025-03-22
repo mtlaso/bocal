@@ -111,7 +111,7 @@ const Item = ({ item }: { item: FlattenedFeedsContent }): React.JSX.Element => {
 			>
 				<Checkbox
 					id={`readToggle-${item.id}`}
-					className="rounded-full border-dashed"
+					className="rounded-full border border-dashed border-primary"
 					checked={isReadOptimistic}
 					onCheckedChange={(e): void => {
 						handleToggleReadStatus(e, item.feedId, item.id);
