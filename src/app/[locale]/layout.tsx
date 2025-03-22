@@ -1,4 +1,4 @@
-import { getAppBaseUrl } from "@/app/[locale]/lib/get-app-base-url";
+import { getAppBaseURL } from "@/app/[locale]/lib/get-app-base-url";
 import "@/app/[locale]/ui/globals.css";
 import BaseLayout from "@/components/ui/base-layout";
 import { routing } from "@/i18n/routing";
@@ -20,7 +20,7 @@ export async function generateMetadata({
 			default: "Bocal",
 		},
 		description: t("description"),
-		metadataBase: new URL(getAppBaseUrl()),
+		metadataBase: new URL(getAppBaseURL()),
 		openGraph: {
 			images: [
 				{

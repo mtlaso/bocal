@@ -1,7 +1,7 @@
 import { cache } from "react";
 import "server-only";
 
-export const getAppBaseUrl = cache(() => {
+export const getAppBaseURL = cache(() => {
 	switch (process.env.VERCEL_ENV) {
 		case "production":
 			return "https://bocal.dnncrye.dev";
