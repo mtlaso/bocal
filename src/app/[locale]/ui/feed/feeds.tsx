@@ -123,7 +123,7 @@ const Item = ({ item }: { item: FlattenedFeedsContent }): React.JSX.Element => {
 			</div>
 
 			<Link
-				className={cn(SPACING.SM, "flex-grow", {
+				className={cn(SPACING.SM, "grow", {
 					"bg-primary-oreground opacity-50": isReadOptimistic,
 				})}
 				onClick={(): Promise<void> => handleMarkAsRead(item.feedId, item.id)}

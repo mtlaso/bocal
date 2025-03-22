@@ -86,7 +86,7 @@ function UnfollowFeed(): React.JSX.Element {
 	return (
 		<>
 			<Button
-				className="flex justify-start flex-grow text-destructive"
+				className="flex justify-start grow text-destructive"
 				onClick={handleUnfollow}
 				variant={"ghost"}
 				size={"sm"}
@@ -119,7 +119,7 @@ function CopyFeedURL({ url }: { url: string }): React.JSX.Element {
 				onClick={handleCopy}
 				variant={"ghost"}
 				size={"sm"}
-				className="flex justify-start flex-grow"
+				className="flex justify-start grow"
 			>
 				<TbClipboard />
 				{t("copyFeedURL")}

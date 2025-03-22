@@ -62,7 +62,7 @@ function ArchiveFeedContent({ url }: Props): React.JSX.Element {
 			type="submit"
 			variant={"ghost"}
 			size={"sm"}
-			className="flex justify-start flex-grow"
+			className="flex justify-start grow"
 		>
 			<TbArchive />
 			{t("archive")}

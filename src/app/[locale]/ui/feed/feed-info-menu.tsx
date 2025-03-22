@@ -115,7 +115,7 @@ function FeedMenuItemAll({
 				`w-full px-2 cursor-pointer
 							 flex justify-between items-center flex-wrap`,
 				{
-					"!bg-primary": selectedFeed === SELECTED_FEED_DEFAULT,
+					"bg-primary!": selectedFeed === SELECTED_FEED_DEFAULT,
 				},
 			)}
 		>
@@ -159,7 +159,7 @@ function FeedMenuItem({
 				cursor-pointer w-full px-2`,
 				{
 					"text-muted-foreground": feed.errorType !== null,
-					"!bg-primary": selectedFeed === feed.id.toString(),
+					"bg-primary!": selectedFeed === feed.id.toString(),
 				},
 			)}
 		>

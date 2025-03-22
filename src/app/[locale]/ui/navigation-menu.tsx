@@ -42,7 +42,7 @@ function DesktopNavMenu(): React.JSX.Element {
 	const pathname = usePathname();
 
 	return (
-		<NavigationMenu className="py-5 mb-6 !max-w-full justify-between">
+		<NavigationMenu className="py-5 mb-6 max-w-full! justify-between">
 			<NavigationMenuList>
 				<NavigationMenuItem>
 					<Link href="/dashboard" legacyBehavior passHref>
@@ -180,7 +180,7 @@ function MobileNavMenu(): React.JSX.Element {
 					</Link>
 				</div>
 
-				<SheetFooter className="mt-6 !justify-start flex-row flex-wrap gap-2">
+				<SheetFooter className="mt-6 justify-start! flex-row flex-wrap gap-2">
 					<ThemeToggle />
 					<LocaleToggle />
 					<LogoutForm />
