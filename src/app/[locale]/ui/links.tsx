@@ -64,7 +64,7 @@ export function Links({ links, view }: Props): React.JSX.Element {
 							"grid grid-cols-subgrid col-span-3 row-span-2 items-center":
 								view === "list",
 						},
-						"hover:shadow-md dark:hover:shadow-xl transition-all duration-200 break-all",
+						"hover:shadow-md transition-all duration-200 break-all",
 					)}
 				>
 					<CardHeader
