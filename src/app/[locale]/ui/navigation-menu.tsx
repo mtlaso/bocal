@@ -48,7 +48,7 @@ function DesktopNavMenu(): React.JSX.Element {
 					<Link href="/dashboard" legacyBehavior passHref>
 						<NavigationMenuLink
 							className={cn(navigationMenuTriggerStyle(), {
-								"font-semibold bg-primary": pathname === "/dashboard",
+								"font-semibold bg-accent": pathname === "/dashboard",
 							})}
 						>
 							{t("links")}
@@ -60,7 +60,7 @@ function DesktopNavMenu(): React.JSX.Element {
 					<Link href="/archive" legacyBehavior passHref>
 						<NavigationMenuLink
 							className={cn(navigationMenuTriggerStyle(), {
-								"font-semibold bg-primary": pathname === "/archive",
+								"font-semibold bg-accent": pathname === "/archive",
 							})}
 						>
 							{t("archive")}
@@ -72,7 +72,7 @@ function DesktopNavMenu(): React.JSX.Element {
 					<Link href={"/feed"} legacyBehavior passHref>
 						<NavigationMenuLink
 							className={cn(navigationMenuTriggerStyle(), {
-								"font-semibold bg-primary": pathname === "/feed",
+								"font-semibold bg-accent": pathname === "/feed",
 							})}
 						>
 							{t("rssFeed")}
@@ -84,7 +84,7 @@ function DesktopNavMenu(): React.JSX.Element {
 					<Link href="/settings" legacyBehavior passHref>
 						<NavigationMenuLink
 							className={cn(navigationMenuTriggerStyle(), {
-								"font-semibold bg-primary": pathname === "/settings",
+								"font-semibold bg-accent": pathname === "/settings",
 							})}
 						>
 							{t("settings")}
@@ -128,9 +128,9 @@ function MobileNavMenu(): React.JSX.Element {
 						href={"/dashboard"}
 						className={cn(
 							navigationMenuTriggerStyle(),
-							"w-full flex justify-start ",
+							"w-full flex justify-start",
 							{
-								"font-semibold bg-primary": pathname === "/dashboard",
+								"font-semibold bg-accent": pathname === "/dashboard",
 							},
 						)}
 					>
@@ -142,9 +142,9 @@ function MobileNavMenu(): React.JSX.Element {
 						href={"/archive"}
 						className={cn(
 							navigationMenuTriggerStyle(),
-							"w-full flex justify-start ",
+							"w-full flex justify-start",
 							{
-								"font-semibold bg-primary": pathname === "/archive",
+								"font-semibold bg-accent": pathname === "/archive",
 							},
 						)}
 					>
@@ -156,9 +156,9 @@ function MobileNavMenu(): React.JSX.Element {
 						href={"/feed"}
 						className={cn(
 							navigationMenuTriggerStyle(),
-							"w-full flex justify-start ",
+							"w-full flex justify-start",
 							{
-								"font-semibold bg-primary": pathname === "/feed",
+								"font-semibold bg-accent": pathname === "/feed",
 							},
 						)}
 					>
@@ -170,9 +170,9 @@ function MobileNavMenu(): React.JSX.Element {
 						href={"/settings"}
 						className={cn(
 							navigationMenuTriggerStyle(),
-							"w-full flex justify-start ",
+							"w-full flex justify-start",
 							{
-								"font-semibold bg-primary": pathname === "/settings",
+								"font-semibold bg-accent": pathname === "/settings",
 							},
 						)}
 					>
