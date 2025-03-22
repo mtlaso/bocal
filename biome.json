@@ -25,6 +25,7 @@
 		"enabled": true
 	},
 	"linter": {
+		"ignore": ["src/components/ui"],
 		"enabled": true,
 		"rules": {
 			"recommended": true,
