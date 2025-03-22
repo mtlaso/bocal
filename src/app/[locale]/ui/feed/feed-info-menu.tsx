@@ -54,7 +54,8 @@ export function FeedInfoMenu({ feeds }: Props): React.JSX.Element {
 							<p className="text-muted-foreground text-sm font-bold">
 								{t("textFeedsCount", { count: feeds.length })}
 							</p>
-							<ScrollArea className="max-h-svh overflow-auto">
+
+							<ScrollArea className="max-h-svh overflow-auto mt-2">
 								{feeds.map((feed) => (
 									<FeedMenuItem feed={feed} key={feed.id} />
 								))}
@@ -112,29 +113,18 @@ function FeedMenuItemAll({
 			}}
 			className={cn(
 				navigationMenuTriggerStyle(),
-				`w-full px-2 cursor-pointer
-							 flex justify-between items-center flex-wrap`,
+				`grid grid-cols-[5%_1fr_15%] gap-4
+				cursor-pointer w-full px6! py2! focus:bg-background`,
 				{
-					"bg-primary!": selectedFeed === SELECTED_FEED_DEFAULT,
+					"bg-accent!": selectedFeed === SELECTED_FEED_DEFAULT,
 				},
 			)}
 		>
-			<div className="flex gap-2">
-				<TbRadarFilled
-					size={20}
-					className={cn("text-primary", {
-						"text-secondary": selectedFeed === SELECTED_FEED_DEFAULT,
-					})}
-				/>
-				<p>{t("allFeeds")}</p>
-			</div>
-			<p
-				className={cn("text-primary", {
-					"text-secondary": selectedFeed === SELECTED_FEED_DEFAULT,
-				})}
-			>
-				{totalContent}
-			</p>
+			<TbRadarFilled size={20} className={"text-primary"} />
+
+			<p className="truncate text-left">{t("allFeeds")}</p>
+
+			<p className={"text-primary text-end truncate"}>{totalContent}</p>
 		</button>
 	);
 }
@@ -155,43 +145,23 @@ function FeedMenuItem({
 			}}
 			className={cn(
 				navigationMenuTriggerStyle(),
-				`grid gridcols-[80%_1fr_1fr] grid-cols-[80%_1fr] gap-4
-				cursor-pointer w-full px-2`,
+				`grid grid-cols-[5%_1fr_15%] gap-4
+				cursor-pointer w-full px6! py2! focus:bg-background`,
 				{
 					"text-muted-foreground": feed.errorType !== null,
-					"bg-primary!": selectedFeed === feed.id.toString(),
+					"bg-accent!": selectedFeed === feed.id.toString(),
 				},
 			)}
 		>
-			<div className="flex gap-2 items-center overflow-hidden">
-				{feed.errorType !== null ? (
-					<TbPlugConnectedX
-						size={20}
-						className={cn("text-destructive shrink-0", {
-							"text-secondary": selectedFeed === feed.id.toString(),
-						})}
-					/>
-				) : (
-					<TbRss
-						size={20}
-						className={cn("text-primary shrink-0", {
-							"text-secondary": selectedFeed === feed.id.toString(),
-						})}
-					/>
-				)}
-				<div>
-					<p className="truncate">{feed.title}</p>
-				</div>
-			</div>
-			<div className="flex gap-4 items-center justify-end ">
-				<p
-					className={cn("text-primary text-end", {
-						"text-secondary": selectedFeed === feed.id.toString(),
-					})}
-				>
-					{feed.content?.length}
-				</p>
-			</div>
+			{feed.errorType ? (
+				<TbPlugConnectedX size={20} className={"text-destructive"} />
+			) : (
+				<TbRss size={20} className={"text-primary"} />
+			)}
+
+			<p className="truncate text-left">{feed.title}</p>
+
+			<p className={"text-primary text-end truncate"}>{feed.content?.length}</p>
 		</button>
 	);
 }
