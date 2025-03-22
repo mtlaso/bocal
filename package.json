@@ -9,7 +9,7 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
-		"@auth/drizzle-adapter": "^1.7.4",
+		"@auth/drizzle-adapter": "^1.8.0",
 		"@mdx-js/loader": "^3.1.0",
 		"@mdx-js/react": "^3.1.0",
 		"@neondatabase/serverless": "^0.10.4",
@@ -42,7 +42,7 @@
 		"next-auth": "5.0.0-beta.25",
 		"next-intl": "^3.26.3",
 		"next-themes": "^0.4.4",
-		"nuqs": "^2.3.0",
+		"nuqs": "^2.4.1",
 		"open-graph-scraper": "^6.8.3",
 		"pg": "^8.13.1",
 		"react": "19.0.0",
@@ -54,7 +54,7 @@
 		"tailwind-merge": "^2.6.0",
 		"tailwindcss-animate": "^1.0.7",
 		"vaul": "^1.1.2",
-		"zod": "^3.24.1"
+		"zod": "^3.24.2"
 	},
 	"devDependencies": {
 		"@tailwindcss/typography": "^0.5.15",
