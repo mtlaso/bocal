@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 		getEntry("/archive"),
 		getEntry("/feed"),
 		getEntry("/login"),
+		getEntry("/settings"),
 	];
 }
 
