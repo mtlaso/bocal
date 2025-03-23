@@ -155,7 +155,7 @@ const FeaturesSection = (): React.JSX.Element => {
 					unifrakturMaguntia.className,
 				)}
 			>
-				Features
+				{t("features-text")}
 			</h1>
 
 			<div className="grid grid-cols-1 md:grid-cols-3 grid-rows1 md:grid-rows-2 gap-6">
