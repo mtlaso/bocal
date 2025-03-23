@@ -14,7 +14,7 @@ export default function NotFound(): React.JSX.Element {
 		<main
 			className={cn(
 				"min-h-screen flex flex-col justify-center items-center",
-				SPACING.MD,
+				SPACING.LG,
 			)}
 		>
 			<h2 className="text-xl text-center font-semibold">{t("title")}</h2>

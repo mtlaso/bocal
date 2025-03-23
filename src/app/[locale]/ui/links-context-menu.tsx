@@ -85,7 +85,7 @@ function UnArchiveLink({ id }: { id: string }): React.JSX.Element {
 			<button
 				type="button"
 				onClick={(e): void => handleUnArchiveLink(e)}
-				className="flex justify-start items-center grow text-sm gap-2 p-1"
+				className="flex justify-start items-center grow text-sm gap-2 p-1 cursor-pointer"
 				disabled={isPending}
 			>
 				<TbLinkPlus />
@@ -121,7 +121,7 @@ function ArchiveLink({ id }: { id: string }): React.JSX.Element {
 				onClick={(e): void => handleArchiveLink(e)}
 				type="button"
 				disabled={isPending}
-				className="flex justify-start items-center grow text-sm gap-2 p-1"
+				className="flex justify-start items-center grow text-sm gap-2 p-1 cursor-pointer"
 			>
 				<BsArchive />
 				{t("archive")}
@@ -153,12 +153,12 @@ function DeleteLink({ id }: { id: string }): React.JSX.Element {
 	return (
 		<>
 			<button
-				className="flex justify-start items-center grow text-sm gap-2 p-1"
+				className="flex justify-start items-center grow text-sm gap-2 p-1 cursor-pointer"
 				type="button"
 				onClick={(e): void => handleDeleteLink(e)}
 				disabled={isPending}
 			>
-				<Trash />
+				<Trash className="text-destructive" />
 				{t("delete")}
 			</button>
 		</>

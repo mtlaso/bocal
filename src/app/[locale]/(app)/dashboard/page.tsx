@@ -68,5 +68,5 @@ export default async function Page(): Promise<React.JSX.Element> {
 async function LinksWrapper(): Promise<React.JSX.Element> {
 	const links = await getLinks({});
 
-	return <Links links={links} view={"grid"} />;
+	return <Links links={links} />;
 }

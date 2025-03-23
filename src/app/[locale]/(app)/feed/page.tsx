@@ -30,14 +30,13 @@ export default async function Page(): Promise<React.JSX.Element> {
 	return (
 		<>
 			<section className={SPACING.SM}>
-				<div className="flex justify-between">
-					<div className="flex gap-2">
-						<h1 className="font-semibold tracking-tight text-3xl">
-							{t("rssFeed")}
-						</h1>
-						<AddFeedForm />
-					</div>
+				<div className="flex gap-2">
+					<h1 className="font-semibold tracking-tight text-3xl">
+						{t("rssFeed")}
+					</h1>
+					<AddFeedForm />
 				</div>
+
 				<Suspense fallback={<FeedInfoSkeleton />}>
 					<FeedInfoContainer />
 				</Suspense>

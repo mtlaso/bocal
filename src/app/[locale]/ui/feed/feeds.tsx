@@ -37,7 +37,7 @@ export function Feeds({ flattenedContent, limit }: Props): React.JSX.Element {
 		.slice(0, limitValue);
 
 	return (
-		<section className={cn("grid break-all", SPACING.MD)}>
+		<section className={cn("grid break-all", SPACING.LG)}>
 			{items.map((item) => (
 				<Item item={item} key={`${item.id}-${item.feedId}`} />
 			))}

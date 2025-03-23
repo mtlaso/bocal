@@ -4,6 +4,7 @@ import {
 	searchParamsParsers,
 } from "@/app/[locale]/lib/stores/search-params";
 import { FeedInfoContextMenu } from "@/app/[locale]/ui/feed/feed-info-context-menu";
+import { SPACING } from "@/app/[locale]/ui/spacing";
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -35,7 +36,7 @@ export function FeedInfoMenu({ feeds }: Props): React.JSX.Element {
 	);
 
 	return (
-		<>
+		<div className={SPACING.XS}>
 			<Sheet open={isOpen} onOpenChange={(status): void => setIsOpen(status)}>
 				<FeedInfoDetails
 					totalFeeds={feeds.length}
@@ -48,6 +49,7 @@ export function FeedInfoMenu({ feeds }: Props): React.JSX.Element {
 							{t("title")}
 						</SheetTitle>
 					</SheetHeader>
+
 					<div className="flex flex-col gap-4">
 						<FeedMenuItemAll totalContent={totalContent} />
 						<div>
@@ -57,7 +59,11 @@ export function FeedInfoMenu({ feeds }: Props): React.JSX.Element {
 
 							<ScrollArea className="max-h-svh overflow-auto mt-2">
 								{feeds.map((feed) => (
-									<FeedMenuItem feed={feed} key={feed.id} />
+									<FeedMenuItem
+										feed={feed}
+										key={feed.id}
+										onClick={(): void => setIsOpen(false)}
+									/>
 								))}
 							</ScrollArea>
 						</div>
@@ -66,7 +72,7 @@ export function FeedInfoMenu({ feeds }: Props): React.JSX.Element {
 			</Sheet>
 
 			<FeedInfoContextMenu feeds={feeds} />
-		</>
+		</div>
 	);
 }
 
@@ -83,11 +89,11 @@ function FeedInfoDetails({
 			<div>
 				<p className={"text-muted-foreground"}>
 					<span>{t("textPartOne")}&nbsp;</span>
-					<button type="button" className="underline">
+					<button type="button" className="underline cursor-pointer">
 						{t("textFeedsCount", { count: totalFeeds })}
 					</button>
 					<span>&nbsp;{t("textPartTwo")}&nbsp;</span>
-					<button type="button" className="underline">
+					<button type="button" className="underline cursor-pointer">
 						{t("textUnreachableCount", { count: totalUnreachableFeeds })}
 					</button>
 				</p>
@@ -131,8 +137,10 @@ function FeedMenuItemAll({
 
 function FeedMenuItem({
 	feed,
+	onClick,
 }: {
 	feed: Feed;
+	onClick?: () => void;
 }): React.JSX.Element {
 	const [{ selectedFeed }, setSelectedFeed] =
 		useQueryStates(searchParamsParsers);
@@ -142,6 +150,7 @@ function FeedMenuItem({
 			type="button"
 			onClick={(): void => {
 				setSelectedFeed({ selectedFeed: feed.id.toString() });
+				onClick?.();
 			}}
 			className={cn(
 				navigationMenuTriggerStyle(),
