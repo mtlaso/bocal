@@ -53,7 +53,7 @@
 			"title": "Conditions d'utilisation",
 			"description": "Consultez nos conditions d'utilisation."
 		},
-		"footerShortDescription": "Bocal — tout votre contenu au même endroit."
+		"footerShortDescription": "[bocal] — tout votre contenu au même endroit."
 	},
 	"errors": {
 		"notSignedIn": "Non connecté",
@@ -90,7 +90,7 @@
 		}
 	},
 	"login": {
-		"title": "Connectez-vous à Bocal pour continuer.",
+		"title": "Connectez-vous à pour continuer.",
 		"google": "Continuer avec Google",
 		"github": "Continuer avec GitHub",
 		"errors": {

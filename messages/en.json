@@ -53,7 +53,7 @@
 			"title": "Terms of Service",
 			"description": "Read our terms of service."
 		},
-		"footerShortDescription": "Bocal — all your content in one place."
+		"footerShortDescription": "[bocal] — all your content in one place."
 	},
 	"errors": {
 		"notSignedIn": "Not signed in",
@@ -89,7 +89,7 @@
 		}
 	},
 	"login": {
-		"title": "Log in to Bocal to continue.",
+		"title": "Log in to to continue.",
 		"google": "Continue with Google",
 		"github": "Continue with GitHub",
 		"errors": {
