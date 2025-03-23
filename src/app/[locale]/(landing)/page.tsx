@@ -1,3 +1,4 @@
+import { ScrollIndicator } from "@/app/[locale]/ui/landing/scroll-indicator";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import BlurFade from "@/components/ui/blur-fade";
 import { Button } from "@/components/ui/button";
@@ -42,36 +43,32 @@ export default function Home(): React.JSX.Element {
 
 	return (
 		<>
-			<NavigationMenu className="py-5 mb-6 max-w-6xl px-4 mx-auto justify-between">
-				<NavigationMenuList>
-					<NavigationMenuItem>
-						<NavigationMenuLink
-							href="/"
-							className={navigationMenuTriggerStyle()}
-						>
-							{t("title")}
-						</NavigationMenuLink>
-						<NavigationMenuLink
-							href="/login"
-							className={navigationMenuTriggerStyle()}
-						>
-							{t("login")}
-						</NavigationMenuLink>
-					</NavigationMenuItem>
-				</NavigationMenuList>
-			</NavigationMenu>
-
-			<main
-				className={cn(
-					"min-h-screen max-w-[75ch] mx-auto px-4 overflow-x-hidden mb-12",
-					SPACING.XL,
-				)}
-			>
+			<main className="min-h-screen px-4 overflow-x-hidden mb-12">
+				<NavigationMenu className="px-4 h-[10dvh]">
+					<NavigationMenuList>
+						<NavigationMenuItem>
+							<NavigationMenuLink
+								href="/"
+								className={navigationMenuTriggerStyle()}
+							>
+								{t("title")}
+							</NavigationMenuLink>
+							<NavigationMenuLink
+								href="/login"
+								className={navigationMenuTriggerStyle()}
+							>
+								{t("login")}
+							</NavigationMenuLink>
+						</NavigationMenuItem>
+					</NavigationMenuList>
+				</NavigationMenu>
 				{elements.map((el) => (
 					<BlurFade key={el.index} delay={0.25 + el.index * 0.05}>
 						{el.el()}
 					</BlurFade>
 				))}
+
+				<ScrollIndicator />
 			</main>
 
 			<footer className="bg-secondary p-10">
@@ -102,7 +99,12 @@ export default function Home(): React.JSX.Element {
 const HeroSection = (): React.JSX.Element => {
 	const t = useTranslations("metadata");
 	return (
-		<section className={cn("text-center", SPACING.LG)}>
+		<section
+			className={cn(
+				"max-w-[75ch] relative mx-auto text-center h-[90dvh] flex flex-col justify-center items-center",
+				SPACING.LG,
+			)}
+		>
 			<h1 className="text-4xl md:text-6xl font-extrabold leading-none tracking-tight">
 				{t("headline")}
 			</h1>
@@ -126,7 +128,7 @@ const FeaturesSection = (): React.JSX.Element => {
 	return (
 		<section
 			className={cn(
-				"grid grid-cols-1 md:grid-cols-3 grid-rows-1 md:grid-rows-2 gap-6 break-words",
+				"max-w-[75ch] mx-auto h-[50dvh] grid grid-cols-1 md:grid-cols-3 grid-rows-1 md:grid-rows-2 gap-6 break-words",
 			)}
 		>
 			{t.raw("features")?.map(
@@ -175,7 +177,12 @@ const FeaturesSection = (): React.JSX.Element => {
 const CtaSection = (): React.JSX.Element => {
 	const t = useTranslations("metadata");
 	return (
-		<section className={cn("text-center", SPACING.LG)}>
+		<section
+			className={cn(
+				"max-w-[75ch] mx-auto h-[50dvh] flex flex-col justify-center items-center text-center",
+				SPACING.LG,
+			)}
+		>
 			<h2 className="text-3xl md:text-4xl font-bold leading-none tracking-tight">
 				{t("lastCtaHeadline")}
 			</h2>
