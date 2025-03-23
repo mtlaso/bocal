@@ -45,12 +45,15 @@ export default function Home(): React.JSX.Element {
 	return (
 		<>
 			<main className="min-h-screen px-4 overflow-x-hidden mb-12">
-				<NavigationMenu className="px-4 h-[10dvh]">
+				<NavigationMenu className="px-4 h-[10dvh] flex justify-around">
 					<NavigationMenuList>
 						<NavigationMenuItem>
 							<NavigationMenuLink
 								href="/"
-								className={navigationMenuTriggerStyle()}
+								className={cn(
+									navigationMenuTriggerStyle(),
+									"font-bold text-2xl",
+								)}
 							>
 								{t("title")}
 							</NavigationMenuLink>
