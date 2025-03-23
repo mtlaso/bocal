@@ -48,6 +48,45 @@
     --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
     --animate-border-beam: border-beam calc(var(--duration) * 1s) infinite linear;
 
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+@layer utilities {
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .animate-shimmer-slide {
+        animation: shimmer-slide var(--speed) ease-in-out infinite alternate;
+    }
+
+    .animate-spin-around {
+        animation: spin-around calc(var(--speed) * 2) infinite linear;
+    }
+
+    .animate-border-beam {
+        animation: border-beam calc(var(--duration) * 1s) infinite linear;
+    }
+
+
     @keyframes shimmer-slide {
         to {
             transform: translate(calc(100cqw - 100%), 0);
@@ -78,31 +117,6 @@
         100% {
             offset-distance: 100%;
         }
-    }
-}
-
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
-
-    *,
-    ::after,
-    ::before,
-    ::backdrop,
-    ::file-selector-button {
-        border-color: var(--color-gray-200, currentColor);
-    }
-}
-
-@layer utilities {
-    body {
-        font-family: Arial, Helvetica, sans-serif;
     }
 }
 
