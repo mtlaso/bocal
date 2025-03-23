@@ -57,7 +57,11 @@ export function FeedInfoMenu({ feeds }: Props): React.JSX.Element {
 
 							<ScrollArea className="max-h-svh overflow-auto mt-2">
 								{feeds.map((feed) => (
-									<FeedMenuItem feed={feed} key={feed.id} />
+									<FeedMenuItem
+										feed={feed}
+										key={feed.id}
+										onClick={(): void => setIsOpen(false)}
+									/>
 								))}
 							</ScrollArea>
 						</div>
@@ -131,8 +135,10 @@ function FeedMenuItemAll({
 
 function FeedMenuItem({
 	feed,
+	onClick,
 }: {
 	feed: Feed;
+	onClick?: () => void;
 }): React.JSX.Element {
 	const [{ selectedFeed }, setSelectedFeed] =
 		useQueryStates(searchParamsParsers);
@@ -142,6 +148,7 @@ function FeedMenuItem({
 			type="button"
 			onClick={(): void => {
 				setSelectedFeed({ selectedFeed: feed.id.toString() });
+				onClick?.();
 			}}
 			className={cn(
 				navigationMenuTriggerStyle(),
