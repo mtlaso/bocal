@@ -1,10 +1,11 @@
 {
 	"metadata": {
-		"title": "Bocal",
+		"title": "[bocal]",
 		"login": "Log in",
+		"features-text": "Features",
 		"headline": "Things to read later and feeds in one place",
 		"ctaButton": "Get started",
-		"description": "The content you care is scattered around the internet. Bring together your RSS feeds, reading list and other web sources in one easy-to-browse place.",
+		"description": "The content you care is scattered around the internet. Bring together your RSS feeds, reading lists and other web sources in one easy-to-browse place.",
 		"lastCtaHeadline": "Ready to get started?",
 		"lastCtaDescription": "One place to keep and follow everything, it's that simple 🪄",
 		"features": [
@@ -52,7 +53,7 @@
 			"title": "Terms of Service",
 			"description": "Read our terms of service."
 		},
-		"footerShortDescription": "Bocal — all your content in one place."
+		"footerShortDescription": "[bocal] — all your content in one place."
 	},
 	"errors": {
 		"notSignedIn": "Not signed in",
@@ -88,7 +89,7 @@
 		}
 	},
 	"login": {
-		"title": "Log in to Bocal to continue.",
+		"title": "Log in to to continue.",
 		"google": "Continue with Google",
 		"github": "Continue with GitHub",
 		"errors": {

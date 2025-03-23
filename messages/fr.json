@@ -1,10 +1,11 @@
 {
 	"metadata": {
-		"title": "Bocal",
+		"title": "[bocal]",
 		"login": "Se connecter",
+		"features-text": "Fonctionnalités",
 		"headline": "Les choses à lire plus tard et à suivre, au même endroit",
 		"ctaButton": "Commencer",
-		"description": "Plus besoin de jongler entre différentes apps et onglets. Sauvegardez simplement vos lectures et suivez vos sources préférées en un seul endroit",
+		"description": "Plus besoin de jongler entre différentes apps et onglets. Sauvegardez simplement vos lectures et suivez vos sources préférées en un seul endroit.",
 		"lastCtaHeadline": "Prêt à commencer?",
 		"lastCtaDescription": "Un seul endroit pour tout sauvegarder et suivre, c'est aussi simple que ça 🪄",
 		"features": [
@@ -52,7 +53,7 @@
 			"title": "Conditions d'utilisation",
 			"description": "Consultez nos conditions d'utilisation."
 		},
-		"footerShortDescription": "Bocal — tout votre contenu au même endroit."
+		"footerShortDescription": "[bocal] — tout votre contenu au même endroit."
 	},
 	"errors": {
 		"notSignedIn": "Non connecté",
@@ -89,7 +90,7 @@
 		}
 	},
 	"login": {
-		"title": "Connectez-vous à Bocal pour continuer.",
+		"title": "Connectez-vous à pour continuer.",
 		"google": "Continuer avec Google",
 		"github": "Continuer avec GitHub",
 		"errors": {

@@ -35,7 +35,7 @@
 		"drizzle-zod": "^0.5.1",
 		"html-entities": "^2.5.2",
 		"isomorphic-dompurify": "^2.22.0",
-		"jsdom": "^25.0.1",
+		"jsdom": "^26.0.0",
 		"lucide-react": "^0.483.0",
 		"motion": "^11.18.2",
 		"next": "15.2.3",
