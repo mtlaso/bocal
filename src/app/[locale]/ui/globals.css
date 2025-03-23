@@ -179,6 +179,7 @@
 @layer base {
     * {
         @apply border-border;
+        scroll-behavior: smooth !important;
     }
 
     body {

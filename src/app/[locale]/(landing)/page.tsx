@@ -57,11 +57,23 @@ export default function Home(): React.JSX.Element {
 							>
 								{t("title")}
 							</NavigationMenuLink>
+						</NavigationMenuItem>
+
+						<NavigationMenuItem>
 							<NavigationMenuLink
 								href="/login"
 								className={navigationMenuTriggerStyle()}
 							>
 								{t("login")}
+							</NavigationMenuLink>
+						</NavigationMenuItem>
+
+						<NavigationMenuItem>
+							<NavigationMenuLink
+								href="#features"
+								className={navigationMenuTriggerStyle()}
+							>
+								{t("features-text")}
 							</NavigationMenuLink>
 						</NavigationMenuItem>
 					</NavigationMenuList>
@@ -131,7 +143,10 @@ const FeaturesSection = (): React.JSX.Element => {
 	const t = useTranslations("metadata");
 
 	return (
-		<section className={cn("max-w-[75ch] mx-auto relative")}>
+		<section
+			id="features"
+			className={cn("max-w-[75ch] mx-auto relative scroll-m-32")}
+		>
 			<h1
 				className={cn(
 					`-z-10 absolute -top-[5%] left-[50%] -translate-y-3/6 -translate-x-3/6
@@ -152,7 +167,7 @@ const FeaturesSection = (): React.JSX.Element => {
 					}) => (
 						<Card
 							className={cn(
-								"hover:shadow-md rounded-md border border-foreground transition-all duration-200 bg-background break-words",
+								"hover:shadow-md rounded-md border border-accent transition-all duration-200 bg-background break-words",
 								{
 									"md:row-start-1 md:col-span-2": feature.key === "0",
 									"md:row-start-1 md:row-span-2": feature.key === "1",
