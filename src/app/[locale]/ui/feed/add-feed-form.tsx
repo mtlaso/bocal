@@ -113,7 +113,7 @@ const FeedForm = ({
 
 	return (
 		<form
-			className={cn(SPACING.MD, "grid", className)}
+			className={cn(SPACING.LG, "grid", className)}
 			action={formAction}
 			id="form"
 		>

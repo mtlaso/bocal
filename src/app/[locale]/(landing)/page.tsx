@@ -64,7 +64,7 @@ export default function Home(): React.JSX.Element {
 			<main
 				className={cn(
 					"min-h-screen max-w-[75ch] mx-auto px-4 overflow-x-hidden mb-12",
-					SPACING.LG,
+					SPACING.XL,
 				)}
 			>
 				{elements.map((el) => (
@@ -102,7 +102,7 @@ export default function Home(): React.JSX.Element {
 const HeroSection = (): React.JSX.Element => {
 	const t = useTranslations("metadata");
 	return (
-		<section className={cn("text-center", SPACING.MD)}>
+		<section className={cn("text-center", SPACING.LG)}>
 			<h1 className="text-4xl md:text-6xl font-extrabold leading-none tracking-tight">
 				{t("headline")}
 			</h1>
@@ -175,7 +175,7 @@ const FeaturesSection = (): React.JSX.Element => {
 const CtaSection = (): React.JSX.Element => {
 	const t = useTranslations("metadata");
 	return (
-		<section className={cn("text-center", SPACING.MD)}>
+		<section className={cn("text-center", SPACING.LG)}>
 			<h2 className="text-3xl md:text-4xl font-bold leading-none tracking-tight">
 				{t("lastCtaHeadline")}
 			</h2>

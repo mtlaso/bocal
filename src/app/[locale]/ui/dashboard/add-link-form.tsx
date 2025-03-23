@@ -112,7 +112,7 @@ function LinkForm({
 	const [state, formAction, pending] = useActionState(addLink, initialState);
 	return (
 		<form
-			className={cn(SPACING.MD, "grid", className)}
+			className={cn(SPACING.LG, "grid", className)}
 			action={formAction}
 			id="form"
 		>

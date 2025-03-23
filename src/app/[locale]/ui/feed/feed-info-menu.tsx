@@ -4,6 +4,7 @@ import {
 	searchParamsParsers,
 } from "@/app/[locale]/lib/stores/search-params";
 import { FeedInfoContextMenu } from "@/app/[locale]/ui/feed/feed-info-context-menu";
+import { SPACING } from "@/app/[locale]/ui/spacing";
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -35,7 +36,7 @@ export function FeedInfoMenu({ feeds }: Props): React.JSX.Element {
 	);
 
 	return (
-		<>
+		<div className={SPACING.XS}>
 			<Sheet open={isOpen} onOpenChange={(status): void => setIsOpen(status)}>
 				<FeedInfoDetails
 					totalFeeds={feeds.length}
@@ -48,6 +49,7 @@ export function FeedInfoMenu({ feeds }: Props): React.JSX.Element {
 							{t("title")}
 						</SheetTitle>
 					</SheetHeader>
+
 					<div className="flex flex-col gap-4">
 						<FeedMenuItemAll totalContent={totalContent} />
 						<div>
@@ -70,7 +72,7 @@ export function FeedInfoMenu({ feeds }: Props): React.JSX.Element {
 			</Sheet>
 
 			<FeedInfoContextMenu feeds={feeds} />
-		</>
+		</div>
 	);
 }
 

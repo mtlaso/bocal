@@ -32,7 +32,7 @@ export function LoginForm(): React.JSX.Element {
 	};
 
 	return (
-		<form className={`${SPACING.MD} `}>
+		<form className={`${SPACING.LG} `}>
 			<h1 className="text-center">{t("title")}</h1>
 
 			<div className="flex flex-col gap-2">

@@ -36,11 +36,11 @@ const ProfileSection = ({
 	const t = useTranslations("settings.profileSection");
 
 	return (
-		<section className={cn("mb-12", SPACING.MD)}>
+		<section className={cn("mb-12", SPACING.LG)}>
 			<h1 className="text-xl font-medium">{t("title")}</h1>
 
-			<div className={SPACING.SM}>
-				<div>
+			<div className={SPACING.MD}>
+				<div className={SPACING.SM}>
 					<Label htmlFor="email" className="block text-sm font-medium">
 						{t("email")}
 					</Label>
@@ -58,7 +58,7 @@ const ProfileSection = ({
 					</div>
 				</div>
 
-				<div>
+				<div className={SPACING.SM}>
 					<Label htmlFor="name" className="block text-sm font-medium">
 						{t("name")}
 					</Label>
@@ -86,10 +86,10 @@ const ViewSection = ({
 	const t = useTranslations("settings.viewSection");
 
 	return (
-		<section className={cn("mb-12", SPACING.MD)}>
+		<section className={cn("mb-12", SPACING.LG)}>
 			<h1 className="text-xl font-medium">{t("title")}</h1>
 
-			<div className={SPACING.SM}>
+			<div>
 				<FeedContentLimitForm feedContentLimit={feedContentLimit} />
 			</div>
 		</section>
@@ -99,8 +99,8 @@ const ViewSection = ({
 const ExportDataSection = (): React.JSX.Element => {
 	const t = useTranslations("settings.exportDataSection");
 	return (
-		<section className={cn("mb-12", SPACING.MD)}>
-			<div className={SPACING.SM}>
+		<section className={cn("mb-12", SPACING.LG)}>
+			<div className={SPACING.XS}>
 				<h1 className="text-xl font-medium">{t("title")}</h1>
 				<p className="text-sm text-muted-foreground">{t("description")}</p>
 			</div>
@@ -118,8 +118,8 @@ const DeleteAccountSection = (): React.JSX.Element => {
 	const t = useTranslations("settings.deleteAccountSection");
 
 	return (
-		<section className={SPACING.MD}>
-			<div className={SPACING.SM}>
+		<section className={SPACING.LG}>
+			<div className={SPACING.XS}>
 				<h1 className="text-xl font-medium text-destructive">{t("title")}</h1>
 				<p className="text-sm text-muted-foreground">{t("description")}</p>
 			</div>

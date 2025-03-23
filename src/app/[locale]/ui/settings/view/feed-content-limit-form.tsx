@@ -37,9 +37,10 @@ export function FeedContentLimitForm({
 	};
 
 	const t = useTranslations("settings.viewSection");
+
 	return (
-		<div className="flex items-center justify-between gap-4 border rounded-md p-3">
-			<div className={SPACING.SM}>
+		<div className="flex items-center justify-between gap-4 border rounded-md p-4">
+			<div className={SPACING.XS}>
 				<Label className="font-bold text-base" htmlFor="feed-limit">
 					{t("feed.title")}
 				</Label>
