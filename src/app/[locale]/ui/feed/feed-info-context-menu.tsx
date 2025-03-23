@@ -32,7 +32,7 @@ export function FeedInfoContextMenu({
 			<DropdownMenuTrigger asChild>
 				<button
 					type="button"
-					className="flex items-center gap-1 text-muted-foreground underline"
+					className="flex items-center gap-1 text-muted-foreground underline cursor-pointer"
 					disabled={selectedFeed === SELECTED_FEED_DEFAULT}
 				>
 					<TbSettings />

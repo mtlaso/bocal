@@ -83,11 +83,11 @@ function FeedInfoDetails({
 			<div>
 				<p className={"text-muted-foreground"}>
 					<span>{t("textPartOne")}&nbsp;</span>
-					<button type="button" className="underline">
+					<button type="button" className="underline cursor-pointer">
 						{t("textFeedsCount", { count: totalFeeds })}
 					</button>
 					<span>&nbsp;{t("textPartTwo")}&nbsp;</span>
-					<button type="button" className="underline">
+					<button type="button" className="underline cursor-pointer">
 						{t("textUnreachableCount", { count: totalUnreachableFeeds })}
 					</button>
 				</p>
