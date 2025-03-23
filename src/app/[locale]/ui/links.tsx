@@ -24,10 +24,9 @@ type Props = {
 		ogTitle: string | null;
 		ogImageURL: string | null;
 	}[];
-	view: "grid" | "list";
 };
 
-export function Links({ links, view }: Props): React.JSX.Element {
+export function Links({ links }: Props): React.JSX.Element {
 	const [{ sortLinks, searchedLink }] = useQueryStates(searchParamsParsers);
 	const t = useTranslations("dashboard");
 
@@ -49,66 +48,43 @@ export function Links({ links, view }: Props): React.JSX.Element {
 	};
 
 	return (
-		<section
-			className={cn({
-				"grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4": view === "grid",
-				"grid grid-cols-3 grid-rows-2 gap-4": view === "list",
-			})}
-		>
+		<section className={"grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"}>
 			{items.map((item) => (
 				<Card
 					key={item.id}
-					className={cn(
-						{
-							"grid grid-rows-subgrid row-span-3 col-span-1": view === "grid",
-							"grid grid-cols-subgrid col-span-3 row-span-2 items-center":
-								view === "list",
-						},
-						"hover:shadow-md transition-all duration-200 break-all",
-					)}
+					className={
+						"grid grid-rows-subgrid row-span-3 col-span-1 pt-0 pl-0 hover:shadow-md transition-all duration-200 break-all"
+					}
 				>
-					<CardHeader
-						className={cn("p-0!", {
-							"row-start- row-span-2": view === "list",
-						})}
-					>
+					<CardHeader className={"p-0"}>
 						<Link href={item.url} target="_blank">
-							{item.ogImageURL ? (
+							{item.ogImageURL && (
 								<Image
-									className={cn("aspect-video h-auto w-full object-cover", {
-										"rounded-t-xl": view === "grid",
-										"rounded-bl-xl rounded-tl-xl": view === "list",
-									})}
+									className={
+										"aspect-video hauto wfull object-center rounded-top-xl"
+									}
 									src={item.ogImageURL}
 									width={500}
 									height={500}
 									priority={false}
 									alt={t("ogImageAlt")}
 								/>
-							) : (
+							)}
+
+							{!item.ogImageURL && (
 								<div
 									className={cn(
-										`aspect-video h-auto w-full object-cover
-										select-none text-9xl text-foreground font-semibold
-										bg-linear-to-br`,
+										"aspect-video bg-linear-to-br rounded-t-xl",
 										randomBackground(
 											item.ogTitle ?? parseURL(new URL(item.url).host),
 										),
-										{
-											"rounded-t-xl": view === "grid",
-											"rounded-bl-xl rounded-tl-xl": view === "list",
-										},
 									)}
 								/>
 							)}
 						</Link>
 					</CardHeader>
 
-					<CardContent
-						className={cn({
-							"row-start-1 col-start-2 col-span-2 p-0 ": view === "list",
-						})}
-					>
+					<CardContent>
 						<CardTitle>
 							<Link href={item.url} target="_blank" className="line-clamp-3">
 								{item.ogTitle ?? new URL(item.url).host}
@@ -116,11 +92,7 @@ export function Links({ links, view }: Props): React.JSX.Element {
 						</CardTitle>
 					</CardContent>
 
-					<CardFooter
-						className={cn("grid grid-cols2 grid-cols-[90%_1fr] gap-2", {
-							"row-start-2 col-start-2 col-span-2 pl-0": view === "list",
-						})}
-					>
+					<CardFooter className={"grid grid-cols2 grid-cols-[90%_1fr] gap-2"}>
 						<Link
 							href={item.url}
 							target="_blank"
