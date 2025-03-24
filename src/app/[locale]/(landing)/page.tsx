@@ -44,7 +44,7 @@ export default function Home(): React.JSX.Element {
 	return (
 		<>
 			<main className="min-h-screen px-4 overflow-x-hidden mb-12">
-				<NavigationMenu className="px-4 h-[10dvh] flex justify-around">
+				<NavigationMenu className="px-4 h-[10dvh] flex justif-around">
 					<NavigationMenuList>
 						<NavigationMenuItem>
 							<NavigationMenuLink
@@ -87,26 +87,25 @@ export default function Home(): React.JSX.Element {
 				<ScrollIndicator />
 			</main>
 
-			<footer className="bg-secondary p-10">
-				<div
-					className={cn(
-						"flex flex-col items-center justify-center",
-						SPACING.SM,
-					)}
-				>
-					<Link href="/legal/privacy">
-						<Button size={"sm"} variant={"link"}>
-							{t("privacyPolicy.title")}
-						</Button>
-					</Link>
-					<Link href="/legal/terms">
-						<Button size={"sm"} variant={"link"}>
-							{t("termsOfService.title")}
-						</Button>
-					</Link>
-					<p className="text-sm">{t("footerShortDescription")}</p>
-					<p className="text-xs">&copy; {new Date().getFullYear()} Bocal.</p>
-				</div>
+			<footer
+				className={cn(
+					"flex flex-col items-center justify-center bg-secondary p-10",
+					SPACING.SM,
+				)}
+			>
+				<Link href="/legal/privacy">
+					<Button size={"sm"} variant={"link"}>
+						{t("privacyPolicy.title")}
+					</Button>
+				</Link>
+
+				<Link href="/legal/terms">
+					<Button size={"sm"} variant={"link"}>
+						{t("termsOfService.title")}
+					</Button>
+				</Link>
+				<p className="text-sm text-center">{t("footerShortDescription")}</p>
+				<p className="text-xs">&copy; {new Date().getFullYear()} Bocal.</p>
 			</footer>
 		</>
 	);
@@ -156,7 +155,7 @@ const FeaturesSection = (): React.JSX.Element => {
 				}) => (
 					<Card
 						className={cn(
-							"hover:shadow-md rounded-md border border-accent transition-all duration-200 bg-background break-words",
+							"hover:shadow-md transition-all duration-200 break-words",
 							{
 								"md:row-start-1 md:col-span-2": feature.key === "0",
 								"md:row-start-1 md:row-span-2": feature.key === "1",
@@ -199,7 +198,7 @@ const CtaSection = (): React.JSX.Element => {
 	return (
 		<section
 			className={cn(
-				"max-w-[75ch] h-[50dvh] mt12 mx-auto flex flex-col justify-center items-center text-center",
+				"max-w-[75ch] h-[50dvh] mx-auto flex flex-col justify-center items-center text-center",
 				SPACING.LG,
 			)}
 		>
