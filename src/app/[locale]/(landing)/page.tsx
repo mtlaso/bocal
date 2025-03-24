@@ -1,4 +1,3 @@
-import { unifrakturMaguntia } from "@/app/[locale]/ui/fonts";
 import { ScrollIndicator } from "@/app/[locale]/ui/landing/scroll-indicator";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import BlurFade from "@/components/ui/blur-fade";
@@ -45,7 +44,7 @@ export default function Home(): React.JSX.Element {
 	return (
 		<>
 			<main className="min-h-screen px-4 overflow-x-hidden mb-12">
-				<NavigationMenu className="px-4 h-[10dvh] flex justify-around">
+				<NavigationMenu className="px-4 h-[10dvh] flex justif-around">
 					<NavigationMenuList>
 						<NavigationMenuItem>
 							<NavigationMenuLink
@@ -88,26 +87,25 @@ export default function Home(): React.JSX.Element {
 				<ScrollIndicator />
 			</main>
 
-			<footer className="bg-secondary p-10">
-				<div
-					className={cn(
-						"flex flex-col items-center justify-center",
-						SPACING.SM,
-					)}
-				>
-					<Link href="/legal/privacy">
-						<Button size={"sm"} variant={"link"}>
-							{t("privacyPolicy.title")}
-						</Button>
-					</Link>
-					<Link href="/legal/terms">
-						<Button size={"sm"} variant={"link"}>
-							{t("termsOfService.title")}
-						</Button>
-					</Link>
-					<p className="text-sm">{t("footerShortDescription")}</p>
-					<p className="text-xs">&copy; 2024 Bocal.</p>
-				</div>
+			<footer
+				className={cn(
+					"flex flex-col items-center justify-center bg-secondary p-10",
+					SPACING.SM,
+				)}
+			>
+				<Link href="/legal/privacy">
+					<Button size={"sm"} variant={"link"}>
+						{t("privacyPolicy.title")}
+					</Button>
+				</Link>
+
+				<Link href="/legal/terms">
+					<Button size={"sm"} variant={"link"}>
+						{t("termsOfService.title")}
+					</Button>
+				</Link>
+				<p className="text-sm text-center">{t("footerShortDescription")}</p>
+				<p className="text-xs">&copy; {new Date().getFullYear()} Bocal.</p>
 			</footer>
 		</>
 	);
@@ -145,63 +143,52 @@ const FeaturesSection = (): React.JSX.Element => {
 	return (
 		<section
 			id="features"
-			className={cn("max-w-[75ch] mx-auto relative scroll-m-32")}
+			className={cn(
+				"max-w-[75ch] mx-auto scroll-m-32 grid grid-cols-1 md:grid-cols-3 grid-rows1 md:grid-rows-2 gap-6",
+			)}
 		>
-			<h1
-				className={cn(
-					`-z-10 absolute -top-[5%] left-[50%] -translate-y-3/6 -translate-x-3/6
-          select-none text-4xl md:text-[16rem] lg:text-[20rem]
-          font-extrabold tracking-tight text-gray-800 dark:text-gray-200`,
-					unifrakturMaguntia.className,
-				)}
-			>
-				{t("features-text")}
-			</h1>
-
-			<div className="grid grid-cols-1 md:grid-cols-3 grid-rows1 md:grid-rows-2 gap-6">
-				{t.raw("features")?.map(
-					(feature: {
-						key: string;
-						title: string;
-						description: string;
-					}) => (
-						<Card
-							className={cn(
-								"hover:shadow-md rounded-md border border-accent transition-all duration-200 bg-background break-words",
-								{
-									"md:row-start-1 md:col-span-2": feature.key === "0",
-									"md:row-start-1 md:row-span-2": feature.key === "1",
-									"md:row-start-2 md:col-span-2": feature.key === "2",
-								},
-							)}
-							key={feature.key}
-						>
-							<CardHeader>
-								<CardTitle
-									className={cn(
-										"font-extrabold text-xl md:text-2xl font-old",
-										SPACING.SM,
+			{t.raw("features")?.map(
+				(feature: {
+					key: string;
+					title: string;
+					description: string;
+				}) => (
+					<Card
+						className={cn(
+							"hover:shadow-md transition-all duration-200 break-words",
+							{
+								"md:row-start-1 md:col-span-2": feature.key === "0",
+								"md:row-start-1 md:row-span-2": feature.key === "1",
+								"md:row-start-2 md:col-span-2": feature.key === "2",
+							},
+						)}
+						key={feature.key}
+					>
+						<CardHeader>
+							<CardTitle
+								className={cn(
+									"font-extrabold text-xl md:text-2xl font-old",
+									SPACING.SM,
+								)}
+							>
+								<div>
+									{feature.key === "0" && (
+										<TbArchive className="hover:text-primary transition-all duration-200" />
 									)}
-								>
-									<div>
-										{feature.key === "0" && (
-											<TbArchive className="hover:text-primary transition-all duration-200" />
-										)}
-										{feature.key === "1" && (
-											<TbRss className="hover:text-primary transition-all duration-200" />
-										)}
-										{feature.key === "2" && (
-											<TbMail className="hover:text-primary transition-all duration-200" />
-										)}
-									</div>
-									<div>{feature.title}</div>
-								</CardTitle>
-								<CardDescription>{feature.description}</CardDescription>
-							</CardHeader>
-						</Card>
-					),
-				)}
-			</div>
+									{feature.key === "1" && (
+										<TbRss className="hover:text-primary transition-all duration-200" />
+									)}
+									{feature.key === "2" && (
+										<TbMail className="hover:text-primary transition-all duration-200" />
+									)}
+								</div>
+								<div>{feature.title}</div>
+							</CardTitle>
+							<CardDescription>{feature.description}</CardDescription>
+						</CardHeader>
+					</Card>
+				),
+			)}
 		</section>
 	);
 };
@@ -211,7 +198,7 @@ const CtaSection = (): React.JSX.Element => {
 	return (
 		<section
 			className={cn(
-				"max-w-[75ch] h-[50dvh] mt12 mx-auto flex flex-col justify-center items-center text-center",
+				"max-w-[75ch] h-[50dvh] mx-auto flex flex-col justify-center items-center text-center",
 				SPACING.LG,
 			)}
 		>
