@@ -1,10 +1,13 @@
 "use client";
+import { useMediaQuery } from "@/app/[locale]/lib/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 import { ArrowDownUp } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function ScrollIndicator(): React.JSX.Element {
 	const [isVisible, setIsVisible] = useState(true);
+	const smallScreen = useMediaQuery("(max-width: 768px)");
+
 	useEffect(() => {
 		window.addEventListener("scroll", scrollListener);
 		return (): void => window.removeEventListener("scroll", scrollListener);
@@ -25,6 +28,7 @@ export function ScrollIndicator(): React.JSX.Element {
 					{
 						"opacity-0": !isVisible,
 						"opacity-100": isVisible,
+						"scale-0": smallScreen,
 					},
 				)}
 			/>

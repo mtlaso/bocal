@@ -106,7 +106,7 @@ export default function Home(): React.JSX.Element {
 						</Button>
 					</Link>
 					<p className="text-sm">{t("footerShortDescription")}</p>
-					<p className="text-xs">&copy; 2024 Bocal.</p>
+					<p className="text-xs">&copy; {new Date().getFullYear()} Bocal.</p>
 				</div>
 			</footer>
 		</>
@@ -150,7 +150,7 @@ const FeaturesSection = (): React.JSX.Element => {
 			<h1
 				className={cn(
 					`-z-10 absolute -top-[5%] left-[50%] -translate-y-3/6 -translate-x-3/6
-          select-none text-4xl md:text-[16rem] lg:text-[20rem]
+          select-none text-[14rem] sm:text-[12rem] md:text-[16rem] lg:text-[20rem]
           font-extrabold tracking-tight text-gray-800 dark:text-gray-200`,
 					unifrakturMaguntia.className,
 				)}
