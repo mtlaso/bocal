@@ -1,4 +1,3 @@
-import { unifrakturMaguntia } from "@/app/[locale]/ui/fonts";
 import { ScrollIndicator } from "@/app/[locale]/ui/landing/scroll-indicator";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import BlurFade from "@/components/ui/blur-fade";
@@ -145,63 +144,52 @@ const FeaturesSection = (): React.JSX.Element => {
 	return (
 		<section
 			id="features"
-			className={cn("max-w-[75ch] mx-auto relative scroll-m-32")}
+			className={cn(
+				"max-w-[75ch] mx-auto scroll-m-32 grid grid-cols-1 md:grid-cols-3 grid-rows1 md:grid-rows-2 gap-6",
+			)}
 		>
-			<h1
-				className={cn(
-					`-z-10 absolute -top-[5%] left-[50%] -translate-y-3/6 -translate-x-3/6
-          select-none text-[14rem] sm:text-[12rem] md:text-[16rem] lg:text-[20rem]
-          font-extrabold tracking-tight text-gray-800 dark:text-gray-200`,
-					unifrakturMaguntia.className,
-				)}
-			>
-				{t("features-text")}
-			</h1>
-
-			<div className="grid grid-cols-1 md:grid-cols-3 grid-rows1 md:grid-rows-2 gap-6">
-				{t.raw("features")?.map(
-					(feature: {
-						key: string;
-						title: string;
-						description: string;
-					}) => (
-						<Card
-							className={cn(
-								"hover:shadow-md rounded-md border border-accent transition-all duration-200 bg-background break-words",
-								{
-									"md:row-start-1 md:col-span-2": feature.key === "0",
-									"md:row-start-1 md:row-span-2": feature.key === "1",
-									"md:row-start-2 md:col-span-2": feature.key === "2",
-								},
-							)}
-							key={feature.key}
-						>
-							<CardHeader>
-								<CardTitle
-									className={cn(
-										"font-extrabold text-xl md:text-2xl font-old",
-										SPACING.SM,
+			{t.raw("features")?.map(
+				(feature: {
+					key: string;
+					title: string;
+					description: string;
+				}) => (
+					<Card
+						className={cn(
+							"hover:shadow-md rounded-md border border-accent transition-all duration-200 bg-background break-words",
+							{
+								"md:row-start-1 md:col-span-2": feature.key === "0",
+								"md:row-start-1 md:row-span-2": feature.key === "1",
+								"md:row-start-2 md:col-span-2": feature.key === "2",
+							},
+						)}
+						key={feature.key}
+					>
+						<CardHeader>
+							<CardTitle
+								className={cn(
+									"font-extrabold text-xl md:text-2xl font-old",
+									SPACING.SM,
+								)}
+							>
+								<div>
+									{feature.key === "0" && (
+										<TbArchive className="hover:text-primary transition-all duration-200" />
 									)}
-								>
-									<div>
-										{feature.key === "0" && (
-											<TbArchive className="hover:text-primary transition-all duration-200" />
-										)}
-										{feature.key === "1" && (
-											<TbRss className="hover:text-primary transition-all duration-200" />
-										)}
-										{feature.key === "2" && (
-											<TbMail className="hover:text-primary transition-all duration-200" />
-										)}
-									</div>
-									<div>{feature.title}</div>
-								</CardTitle>
-								<CardDescription>{feature.description}</CardDescription>
-							</CardHeader>
-						</Card>
-					),
-				)}
-			</div>
+									{feature.key === "1" && (
+										<TbRss className="hover:text-primary transition-all duration-200" />
+									)}
+									{feature.key === "2" && (
+										<TbMail className="hover:text-primary transition-all duration-200" />
+									)}
+								</div>
+								<div>{feature.title}</div>
+							</CardTitle>
+							<CardDescription>{feature.description}</CardDescription>
+						</CardHeader>
+					</Card>
+				),
+			)}
 		</section>
 	);
 };
