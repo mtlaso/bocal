@@ -60,9 +60,7 @@ export function Links({ links }: Props): React.JSX.Element {
 						<Link href={item.url} target="_blank">
 							{item.ogImageURL && (
 								<Image
-									className={
-										"aspect-video hauto wfull object-center rounded-top-xl"
-									}
+									className={"aspect-video w-full object-center rounded-t-xl"}
 									src={item.ogImageURL}
 									width={500}
 									height={500}
