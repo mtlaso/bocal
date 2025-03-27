@@ -1,13 +1,13 @@
-import { createHash } from "node:crypto";
 import { parseURL } from "@/app/[locale]/lib/parse-url";
 import { sanitizeHTML } from "@/app/[locale]/lib/sanitize-html";
-import {
-	type FeedContent,
-	FeedErrorType,
-	FeedStatusType,
-} from "@/app/[locale]/lib/types";
+import { FeedErrorType, FeedStatusType } from "@/app/[locale]/lib/types";
 import { db } from "@/db/db";
-import { type Feed, MAX_FEED_CONTENT_LIMIT, feeds } from "@/db/schema";
+import {
+	type Feed,
+	MAX_FEED_CONTENT_LIMIT,
+	feeds,
+	feedsContent,
+} from "@/db/schema";
 import { eq, sql } from "drizzle-orm";
 import { decode } from "html-entities";
 import Parser from "rss-parser";
@@ -35,7 +35,12 @@ class FeedTimeout extends Error {
 
 type ParseFeedResponse = {
 	title: string;
-	content: FeedContent[];
+	contents: {
+		title: string;
+		url: string;
+		content: string;
+		date: Date;
+	}[];
 };
 
 export async function parseFeed(url: string): Promise<ParseFeedResponse> {
@@ -48,24 +53,20 @@ export async function parseFeed(url: string): Promise<ParseFeedResponse> {
 
 		feed.items = feed.items.slice(0, MAX_FEED_CONTENT_LIMIT);
 
-		const content = feed.items.map((item) => {
+		const contents = feed.items.map((item) => {
 			return {
-				// TODO: should we use guid or always generate a stable id?
-				// guid could somehow be the same for different items if the feed is not well formed...
-				id: generateStableId(item),
 				title: decode(sanitizeHTML(item.title ?? parseURL(url))),
 				url: item.link ?? url,
 				content: decode(
 					sanitizeHTML(item.content ?? item.contentSnippet ?? ""),
 				),
-				// TODO: change to Date() type
-				date: item.isoDate ?? item.pubDate ?? new Date().toISOString(),
-			} satisfies FeedContent;
+				date: new Date(item.isoDate ?? item.pubDate ?? new Date()),
+			};
 		});
 
 		return {
 			title: feed.title ?? parseURL(url),
-			content,
+			contents,
 		};
 	} catch (err) {
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -78,26 +79,36 @@ export async function parseFeed(url: string): Promise<ParseFeedResponse> {
 	}
 }
 
-function generateStableId(item: Parser.Item): string {
-	const stableString = `${item.title}-${item.guid}-${item.link ?? ""}`;
-	return createHash("md5").update(stableString).digest("hex");
-}
-
 async function triggerBackgroundSync(outdatedFeeds: Feed[]): Promise<void> {
 	const sync = async (feed: Feed): Promise<void> => {
 		try {
-			const { content, title } = await feedService.parseFeed(feed.url);
-			await db
-				.update(feeds)
-				.set({
-					content,
-					title,
-					lastSyncAt: new Date(),
-					errorCount: 0,
-					lastError: null,
-					status: FeedStatusType.ACTIVE,
-				})
-				.where(eq(feeds.id, feed.id));
+			const { contents: content, title } = await feedService.parseFeed(
+				feed.url,
+			);
+			await db.transaction(async (tx) => {
+				await tx
+					.update(feeds)
+					.set({
+						title,
+						lastSyncAt: new Date(),
+						errorCount: 0,
+						lastError: null,
+						status: FeedStatusType.ACTIVE,
+					})
+					.where(eq(feeds.id, feed.id));
+
+				await tx.delete(feedsContent).where(eq(feedsContent.feedId, feed.id));
+
+				await tx.insert(feedsContent).values(
+					content.map((c) => ({
+						feedId: feed.id,
+						url: c.url,
+						title: c.title,
+						content: c.content,
+						date: c.date,
+					})),
+				);
+			});
 		} catch (err) {
 			let errMsg = "errors.unexpected";
 			let errType = FeedErrorType.UNKNOWN;

@@ -278,7 +278,7 @@ export async function addFeed(
 			// If the feed does not exist, add it.
 			// And fetch the feed content.
 			if (!feed) {
-				const { content, title } = await feedService.parseFeed(
+				const { contents: content, title } = await feedService.parseFeed(
 					validatedFields.data.url,
 				);
 
@@ -299,7 +299,6 @@ export async function addFeed(
 						url: c.url,
 						title: c.title,
 						content: c.content,
-						// TODO: use real date type
 						date: new Date(c.date),
 					})),
 				);
