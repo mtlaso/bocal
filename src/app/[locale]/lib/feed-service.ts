@@ -60,11 +60,7 @@ export async function parseFeed(url: string): Promise<ParseFeedResponse> {
 				content: decode(
 					sanitizeHTML(item.content ?? item.contentSnippet ?? ""),
 				),
-				// TODO: change to Date() type
-				date:
-					typeof item.isoDate === "string"
-						? new Date(item.isoDate)
-						: (new Date() ?? item.pubDate ?? new Date().toISOString()),
+				date: new Date(item.isoDate ?? item.pubDate ?? new Date()),
 			};
 		});
 
