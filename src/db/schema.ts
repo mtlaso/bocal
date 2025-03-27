@@ -92,7 +92,7 @@ export const feedsContent = pgTable("feeds_content", {
 	feedId: integer()
 		.notNull()
 		.references(() => feeds.id, { onDelete: "cascade" }),
-	date: timestamp().notNull(),
+	date: timestamp({ mode: "date" }).notNull(),
 	url: text().notNull(),
 	title: text().notNull(),
 	content: text().notNull(),

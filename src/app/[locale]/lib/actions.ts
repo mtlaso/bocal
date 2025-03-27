@@ -8,6 +8,7 @@ import {
 	deleteLinkSchema,
 	deleteUsersFeedsReadContentSchema,
 	feeds,
+	feedsContent,
 	insertFeedsSchema,
 	insertLinksSchema,
 	insertUsersFeedsReadContentSchema,
@@ -281,18 +282,40 @@ export async function addFeed(
 					validatedFields.data.url,
 				);
 
-				// TODO: remove
-				const newFeed = await tx
+				const newFeed2 = await tx
 					.insert(feeds)
 					.values({
 						url: validatedFields.data.url,
 						title,
 						lastSyncAt: new Date(),
-						content: content,
 					})
 					.returning();
 
-				feed = newFeed[0];
+				feed = newFeed2[0];
+
+				await tx.insert(feedsContent).values(
+					content.map((c) => ({
+						feedId: newFeed2[0].id,
+						url: c.url,
+						title: c.title,
+						content: c.content,
+						// TODO: use real date type
+						date: new Date(c.date),
+					})),
+				);
+
+				// 	// TODO: remove
+				// 	const newFeed = await tx
+				// 		.insert(feeds)
+				// 		.values({
+				// 			url: validatedFields.data.url,
+				// 			title,
+				// 			lastSyncAt: new Date(),
+				// 			content: content,
+				// 		})
+				// 		.returning();
+
+				// 	feed = newFeed[0];
 			}
 
 			const existingUserFeed = await tx
