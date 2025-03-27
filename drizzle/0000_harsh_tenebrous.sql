@@ -32,12 +32,21 @@ CREATE TABLE IF NOT EXISTS "feeds" (
 	"title" text NOT NULL,
 	"createdAt" timestamp DEFAULT now() NOT NULL,
 	"lastSyncAt" timestamp,
-	"content" json,
 	"status" text DEFAULT 'active' NOT NULL,
 	"lastError" text,
 	"errorCount" integer DEFAULT 0 NOT NULL,
 	"errorType" text,
 	CONSTRAINT "feeds_url_unique" UNIQUE("url")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "feeds_content" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "feeds_content_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"feedId" integer NOT NULL,
+	"date" timestamp NOT NULL,
+	"url" text NOT NULL,
+	"title" text NOT NULL,
+	"content" text NOT NULL,
+	"createdAt" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "links" (
@@ -64,9 +73,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"image" text,
 	"feedContentLimit" integer DEFAULT 10 NOT NULL,
 	CONSTRAINT "users_email_unique" UNIQUE("email"),
-	CONSTRAINT "feedContentLimit_check" CHECK (
-    ("users"."feedContentLimit" > $1 and "users"."feedContentLimit" <= $2)
-      )
+	CONSTRAINT "feedContentLimit_check" CHECK ("users"."feedContentLimit" > 0 AND "users"."feedContentLimit" <= 100)
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users_feeds" (
@@ -78,7 +85,7 @@ CREATE TABLE IF NOT EXISTS "users_feeds" (
 CREATE TABLE IF NOT EXISTS "users_feeds_read_content" (
 	"userId" text NOT NULL,
 	"feedId" integer NOT NULL,
-	"feedContentId" text NOT NULL,
+	"feedContentId" integer NOT NULL,
 	"readAt" timestamp DEFAULT now() NOT NULL,
 	CONSTRAINT "users_feeds_read_content_userId_feedId_feedContentId_pk" PRIMARY KEY("userId","feedId","feedContentId")
 );
@@ -98,6 +105,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "authenticators" ADD CONSTRAINT "authenticators_userId_users_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "feeds_content" ADD CONSTRAINT "feeds_content_feedId_feeds_id_fk" FOREIGN KEY ("feedId") REFERENCES "public"."feeds"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -134,6 +147,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "users_feeds_read_content" ADD CONSTRAINT "users_feeds_read_content_feedId_feeds_id_fk" FOREIGN KEY ("feedId") REFERENCES "public"."feeds"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "users_feeds_read_content" ADD CONSTRAINT "users_feeds_read_content_feedContentId_feeds_content_id_fk" FOREIGN KEY ("feedContentId") REFERENCES "public"."feeds_content"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

@@ -1,13 +1,12 @@
 import { db } from "@/db/db";
 import {
-	type Feed,
-	type UsersFeedsReadContent,
-	feeds,
+	type UserFeedReadContent,
+	type UserFeedWithContent,
 	links,
-	usersFeeds,
 	usersFeedsReadContent,
+	usersFeedsWithContentArr,
 } from "@/db/schema";
-import { type SQL, and, desc, eq } from "drizzle-orm";
+import { type SQL, and, desc, eq, sql } from "drizzle-orm";
 import "server-only";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 import { auth } from "@/auth";
@@ -54,10 +53,17 @@ export async function getLinks({
 	}
 }
 
-export async function getUserFeeds(): Promise<{
-	feeds: Feed[];
+// type FeedsWithContent = Feed[] &
+// 	{
+// 		contents: FeedsContent[];
+// 	}[];
+
+type GetUserFeedsProps = {
+	feeds: UserFeedWithContent[];
 	limit: number;
-}> {
+};
+
+export async function getUserFeeds(): Promise<GetUserFeedsProps> {
 	try {
 		const user = await auth();
 		if (!user) {
@@ -69,23 +75,40 @@ export async function getUserFeeds(): Promise<{
 		// Not ideal but it's a tradeoff for performance.
 		const limit = user.user.feedContentLimit;
 
-		const userFeedsRes = await db
-			.select({
-				id: feeds.id,
-				url: feeds.url,
-				title: feeds.title,
-				createdAt: feeds.createdAt,
-				lastSyncAt: feeds.lastSyncAt,
-				content: feeds.content,
-				status: feeds.status,
-				lastError: feeds.lastError,
-				errorCount: feeds.errorCount,
-				errorType: feeds.errorType,
-			})
-			.from(feeds)
-			.innerJoin(usersFeeds, eq(usersFeeds.feedId, feeds.id))
-			.where(eq(usersFeeds.userId, user.user.id))
-			.orderBy(desc(feeds.createdAt));
+		const req = await db.execute(sql`
+    		SELECT
+            f.id,
+            f.url,
+            f.title,
+            f."createdAt",
+            f."lastSyncAt",
+            array_to_json(array_agg(fc_row)) AS contents,
+            f.status,
+            f."lastError",
+            f."errorCount",
+            f."errorType"
+        FROM feeds AS f
+        JOIN users_feeds AS uf ON uf."feedId" = f.id
+        -- LEFT JOIN because we want to get the feeds event if there is no content.
+        --  LATERAL gives the subrequest to access tables outisde the FROM.
+        LEFT JOIN LATERAL (
+                SELECT fc.id, fc."feedId", fc.date, fc.url, fc.title, fc.content, fc."createdAt"
+                FROM feeds_content AS fc
+                WHERE fc."feedId" = f.id
+                ORDER BY fc.date DESC
+                LIMIT ${limit}
+            ) AS fc_row ON TRUE
+        WHERE uf."userId" = ${user.user.id}
+        GROUP BY f.id
+        ORDER BY f."createdAt" DESC;
+        `);
+
+		const data = usersFeedsWithContentArr.safeParse(req.rows);
+		if (!data.success) {
+			throw new Error("errors.unexpected");
+		}
+
+		const userFeedsRes = data.data;
 
 		const now = new Date();
 		const outdatedFeeds = userFeedsRes.filter(
@@ -96,7 +119,10 @@ export async function getUserFeeds(): Promise<{
 
 		void feedService.triggerBackgroundSync(outdatedFeeds);
 
-		return { feeds: userFeedsRes, limit };
+		return {
+			feeds: userFeedsRes,
+			limit,
+		};
 	} catch (_err) {
 		throw new Error("errors.unexpected");
 	}
@@ -104,8 +130,8 @@ export async function getUserFeeds(): Promise<{
 
 export async function isFeedContentRead(
 	feedId: number,
-	feedContentId: string,
-): Promise<UsersFeedsReadContent | null> {
+	feedContentId: number,
+): Promise<UserFeedReadContent | null> {
 	try {
 		const user = await auth();
 		if (!user) {

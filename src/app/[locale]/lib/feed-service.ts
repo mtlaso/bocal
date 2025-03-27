@@ -58,6 +58,7 @@ export async function parseFeed(url: string): Promise<ParseFeedResponse> {
 				content: decode(
 					sanitizeHTML(item.content ?? item.contentSnippet ?? ""),
 				),
+				// TODO: change to Date() type
 				date: item.isoDate ?? item.pubDate ?? new Date().toISOString(),
 			} satisfies FeedContent;
 		});

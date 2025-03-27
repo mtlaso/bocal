@@ -1,6 +1,6 @@
 {
-	"id": "56108c6c-0ccf-48db-bc3a-e3ab2a84ebce",
-	"prevId": "00000000-0000-0000-0000-000000000000",
+	"id": "c1924135-687e-4a79-8bef-ddf2a5658a85",
+	"prevId": "56108c6c-0ccf-48db-bc3a-e3ab2a84ebce",
 	"version": "7",
 	"dialect": "postgresql",
 	"tables": {
@@ -224,7 +224,8 @@
 					"name": "lastSyncAt",
 					"type": "timestamp",
 					"primaryKey": false,
-					"notNull": false
+					"notNull": true,
+					"default": "now()"
 				},
 				"status": {
 					"name": "status",

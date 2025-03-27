@@ -55,7 +55,7 @@ const Item = ({ item }: { item: FlattenedFeedsContent }): React.JSX.Element => {
 
 	const handleMarkAsRead = async (
 		feedId: number,
-		feedContentId: string,
+		feedContentId: number,
 	): Promise<void> => {
 		startTransition(async () => {
 			try {
@@ -74,7 +74,7 @@ const Item = ({ item }: { item: FlattenedFeedsContent }): React.JSX.Element => {
 
 	const handleMarkAsUnread = async (
 		feedId: number,
-		feedContentId: string,
+		feedContentId: number,
 	): Promise<void> => {
 		startTransition(async () => {
 			try {
@@ -94,7 +94,7 @@ const Item = ({ item }: { item: FlattenedFeedsContent }): React.JSX.Element => {
 	const handleToggleReadStatus = (
 		checkState: CheckedState,
 		feedId: number,
-		feedContentId: string,
+		feedContentId: number,
 	): void => {
 		if (checkState) {
 			handleMarkAsRead(feedId, feedContentId);
@@ -111,7 +111,7 @@ const Item = ({ item }: { item: FlattenedFeedsContent }): React.JSX.Element => {
 			>
 				<Checkbox
 					id={`readToggle-${item.id}`}
-					className="rounded-full border border-dashed border-primary"
+					className="rounded-full border border-dashed border-primary cursor-pointer"
 					checked={isReadOptimistic}
 					onCheckedChange={(e): void => {
 						handleToggleReadStatus(e, item.feedId, item.id);

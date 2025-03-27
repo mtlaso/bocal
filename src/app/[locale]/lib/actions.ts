@@ -8,6 +8,7 @@ import {
 	deleteLinkSchema,
 	deleteUsersFeedsReadContentSchema,
 	feeds,
+	feedsContent,
 	insertFeedsSchema,
 	insertLinksSchema,
 	insertUsersFeedsReadContentSchema,
@@ -261,7 +262,7 @@ export async function addFeed(
 				where: eq(usersFeeds.userId, user.user.id),
 			});
 
-			if (userFeeds.length >= MAX_FEEDS_FOLLOWED) {
+			if (userFeeds.length > MAX_FEEDS_FOLLOWED) {
 				isMaxFeedsReached = true;
 				return;
 			}
@@ -287,11 +288,21 @@ export async function addFeed(
 						url: validatedFields.data.url,
 						title,
 						lastSyncAt: new Date(),
-						content: content,
 					})
 					.returning();
 
 				feed = newFeed[0];
+
+				await tx.insert(feedsContent).values(
+					content.map((c) => ({
+						feedId: newFeed[0].id,
+						url: c.url,
+						title: c.title,
+						content: c.content,
+						// TODO: use real date type
+						date: new Date(c.date),
+					})),
+				);
 			}
 
 			const existingUserFeed = await tx
@@ -416,12 +427,12 @@ export async function unfollowFeed(id: string): Promise<UnfollowFeedState> {
 
 export type MarkFeedContentAsReadState = State<{
 	feedId?: number;
-	feedContentId?: string;
+	feedContentId?: number;
 }>;
 
 export async function markFeedContentAsRead(
 	feedId: number,
-	feedContentId: string,
+	feedContentId: number,
 ): Promise<MarkFeedContentAsReadState> {
 	const validatedFields = insertUsersFeedsReadContentSchema.safeParse({
 		feedId,
@@ -464,12 +475,12 @@ export async function markFeedContentAsRead(
 
 export type MarkFeedContentAsUnreadState = State<{
 	feedId?: number;
-	feedContentId?: string;
+	feedContentId?: number;
 }>;
 
 export async function markFeedContentAsUnread(
 	feedId: number,
-	feedContentId: string,
+	feedContentId: number,
 ): Promise<MarkFeedContentAsUnreadState> {
 	const validatedFields = deleteUsersFeedsReadContentSchema.safeParse({
 		feedId,

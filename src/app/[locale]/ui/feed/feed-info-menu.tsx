@@ -14,7 +14,7 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
-import type { Feed } from "@/db/schema";
+import type { UserFeedWithContent } from "@/db/schema";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useQueryStates } from "nuqs";
@@ -22,7 +22,7 @@ import { useState } from "react";
 import { TbPlugConnectedX, TbRadarFilled, TbRss } from "react-icons/tb";
 
 type Props = {
-	feeds: Feed[];
+	feeds: UserFeedWithContent[];
 };
 
 export function FeedInfoMenu({ feeds }: Props): React.JSX.Element {
@@ -31,7 +31,7 @@ export function FeedInfoMenu({ feeds }: Props): React.JSX.Element {
 
 	const unreachableFeeds = feeds.filter((feed) => feed.errorType !== null);
 	const totalContent = feeds.reduce(
-		(sum, feed) => sum + (feed.content?.length ?? 0),
+		(sum, feed) => sum + (feed.contents?.length ?? 0),
 		0,
 	);
 
@@ -139,7 +139,7 @@ function FeedMenuItem({
 	feed,
 	onClick,
 }: {
-	feed: Feed;
+	feed: UserFeedWithContent;
 	onClick?: () => void;
 }): React.JSX.Element {
 	const [{ selectedFeed }, setSelectedFeed] =
@@ -170,7 +170,7 @@ function FeedMenuItem({
 
 			<p className="truncate text-left">{feed.title}</p>
 
-			<p className={"text-primary text-end truncate"}>{feed.content?.length}</p>
+			<p className={"text-primary text-end truncate"}>{feed.title?.length}</p>
 		</button>
 	);
 }
