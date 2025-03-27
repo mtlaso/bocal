@@ -1,6 +1,6 @@
 {
-	"id": "47240940-c1c4-4226-a2a7-25e3e9633a05",
-	"prevId": "336b97ad-8bd5-439d-82f0-a1ce5beb0cfc",
+	"id": "c1924135-687e-4a79-8bef-ddf2a5658a85",
+	"prevId": "56108c6c-0ccf-48db-bc3a-e3ab2a84ebce",
 	"version": "7",
 	"dialect": "postgresql",
 	"tables": {
@@ -224,13 +224,8 @@
 					"name": "lastSyncAt",
 					"type": "timestamp",
 					"primaryKey": false,
-					"notNull": false
-				},
-				"content": {
-					"name": "content",
-					"type": "json",
-					"primaryKey": false,
-					"notNull": false
+					"notNull": true,
+					"default": "now()"
 				},
 				"status": {
 					"name": "status",
@@ -525,7 +520,7 @@
 			"checkConstraints": {
 				"feedContentLimit_check": {
 					"name": "feedContentLimit_check",
-					"value": "\n    (\"users\".\"feedContentLimit\" > $1 and \"users\".\"feedContentLimit\" <= $2)\n      "
+					"value": "\"users\".\"feedContentLimit\" > 0 AND \"users\".\"feedContentLimit\" <= 100"
 				}
 			},
 			"isRLSEnabled": false
@@ -597,7 +592,7 @@
 				},
 				"feedContentId": {
 					"name": "feedContentId",
-					"type": "text",
+					"type": "integer",
 					"primaryKey": false,
 					"notNull": true
 				},
@@ -625,6 +620,15 @@
 					"tableFrom": "users_feeds_read_content",
 					"tableTo": "feeds",
 					"columnsFrom": ["feedId"],
+					"columnsTo": ["id"],
+					"onDelete": "cascade",
+					"onUpdate": "no action"
+				},
+				"users_feeds_read_content_feedContentId_feeds_content_id_fk": {
+					"name": "users_feeds_read_content_feedContentId_feeds_content_id_fk",
+					"tableFrom": "users_feeds_read_content",
+					"tableTo": "feeds_content",
+					"columnsFrom": ["feedContentId"],
 					"columnsTo": ["id"],
 					"onDelete": "cascade",
 					"onUpdate": "no action"

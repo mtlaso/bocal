@@ -282,7 +282,7 @@ export async function addFeed(
 					validatedFields.data.url,
 				);
 
-				const newFeed2 = await tx
+				const newFeed = await tx
 					.insert(feeds)
 					.values({
 						url: validatedFields.data.url,
@@ -291,11 +291,11 @@ export async function addFeed(
 					})
 					.returning();
 
-				feed = newFeed2[0];
+				feed = newFeed[0];
 
 				await tx.insert(feedsContent).values(
 					content.map((c) => ({
-						feedId: newFeed2[0].id,
+						feedId: newFeed[0].id,
 						url: c.url,
 						title: c.title,
 						content: c.content,
@@ -303,19 +303,6 @@ export async function addFeed(
 						date: new Date(c.date),
 					})),
 				);
-
-				// 	// TODO: remove
-				// 	const newFeed = await tx
-				// 		.insert(feeds)
-				// 		.values({
-				// 			url: validatedFields.data.url,
-				// 			title,
-				// 			lastSyncAt: new Date(),
-				// 			content: content,
-				// 		})
-				// 		.returning();
-
-				// 	feed = newFeed[0];
 			}
 
 			const existingUserFeed = await tx

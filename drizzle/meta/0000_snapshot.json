@@ -1,5 +1,5 @@
 {
-	"id": "336b97ad-8bd5-439d-82f0-a1ce5beb0cfc",
+	"id": "56108c6c-0ccf-48db-bc3a-e3ab2a84ebce",
 	"prevId": "00000000-0000-0000-0000-000000000000",
 	"version": "7",
 	"dialect": "postgresql",
@@ -226,12 +226,6 @@
 					"primaryKey": false,
 					"notNull": false
 				},
-				"content": {
-					"name": "content",
-					"type": "json",
-					"primaryKey": false,
-					"notNull": false
-				},
 				"status": {
 					"name": "status",
 					"type": "text",
@@ -269,6 +263,83 @@
 					"columns": ["url"]
 				}
 			},
+			"policies": {},
+			"checkConstraints": {},
+			"isRLSEnabled": false
+		},
+		"public.feeds_content": {
+			"name": "feeds_content",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "integer",
+					"primaryKey": true,
+					"notNull": true,
+					"identity": {
+						"type": "always",
+						"name": "feeds_content_id_seq",
+						"schema": "public",
+						"increment": "1",
+						"startWith": "1",
+						"minValue": "1",
+						"maxValue": "2147483647",
+						"cache": "1",
+						"cycle": false
+					}
+				},
+				"feedId": {
+					"name": "feedId",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"date": {
+					"name": "date",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"url": {
+					"name": "url",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"title": {
+					"name": "title",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"content": {
+					"name": "content",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"createdAt": {
+					"name": "createdAt",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {
+				"feeds_content_feedId_feeds_id_fk": {
+					"name": "feeds_content_feedId_feeds_id_fk",
+					"tableFrom": "feeds_content",
+					"tableTo": "feeds",
+					"columnsFrom": ["feedId"],
+					"columnsTo": ["id"],
+					"onDelete": "cascade",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
 			"policies": {},
 			"checkConstraints": {},
 			"isRLSEnabled": false
@@ -448,7 +519,7 @@
 			"checkConstraints": {
 				"feedContentLimit_check": {
 					"name": "feedContentLimit_check",
-					"value": "\n    (\"users\".\"feedContentLimit\" > $1 and \"users\".\"feedContentLimit\" <= $2)\n      "
+					"value": "\"users\".\"feedContentLimit\" > 0 AND \"users\".\"feedContentLimit\" <= 100"
 				}
 			},
 			"isRLSEnabled": false
@@ -520,7 +591,7 @@
 				},
 				"feedContentId": {
 					"name": "feedContentId",
-					"type": "text",
+					"type": "integer",
 					"primaryKey": false,
 					"notNull": true
 				},
@@ -548,6 +619,15 @@
 					"tableFrom": "users_feeds_read_content",
 					"tableTo": "feeds",
 					"columnsFrom": ["feedId"],
+					"columnsTo": ["id"],
+					"onDelete": "cascade",
+					"onUpdate": "no action"
+				},
+				"users_feeds_read_content_feedContentId_feeds_content_id_fk": {
+					"name": "users_feeds_read_content_feedContentId_feeds_content_id_fk",
+					"tableFrom": "users_feeds_read_content",
+					"tableTo": "feeds_content",
+					"columnsFrom": ["feedContentId"],
 					"columnsTo": ["id"],
 					"onDelete": "cascade",
 					"onUpdate": "no action"

@@ -1,23 +1,21 @@
-import type { UsersFeedsReadContent } from "@/db/schema";
-
 export enum SortOptions {
 	BY_DATE_ASC = "byDateAsc",
 	BY_DATE_DESC = "byDateDesc",
 }
 
-export type FeedContent = {
-	id: string;
-	title: string;
-	url: string;
-	content: string;
-	date: string;
-};
+// export type FeedContent = {
+// 	id: string;
+// 	title: string;
+// 	url: string;
+// 	content: string;
+// 	date: string;
+// };
 
-export type FlattenedFeedsContent = FeedContent & {
-	feedTitle: string;
-	feedId: number;
-	isRead: UsersFeedsReadContent | null;
-};
+// export type FlattenedFeedsContent = FeedContent & {
+// 	feedTitle: string;
+// 	feedId: number;
+// 	isRead: UsersFeedsReadContent | null;
+// };
 
 export enum FeedStatusType {
 	ACTIVE = "active",

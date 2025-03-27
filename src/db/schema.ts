@@ -1,14 +1,9 @@
-import {
-	type FeedContent,
-	FeedErrorType,
-	FeedStatusType,
-} from "@/app/[locale]/lib/types";
-import { type InferSelectModel, and, gt, lte, sql } from "drizzle-orm";
+import { FeedErrorType, FeedStatusType } from "@/app/[locale]/lib/types";
+import { type InferSelectModel, sql } from "drizzle-orm";
 import {
 	boolean,
 	check,
 	integer,
-	json,
 	pgTable,
 	primaryKey,
 	text,
@@ -16,6 +11,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import type { AdapterAccountType } from "next-auth/adapters";
+import { z } from "zod";
 
 // biome-ignore lint/suspicious/noExplicitAny: locale exception.
 function enumToPgEnum<T extends Record<string, any>>(
@@ -41,9 +37,8 @@ export const users = pgTable(
 	(table) => [
 		check(
 			"feedContentLimit_check",
-			sql`
-    ${and(gt(table.feedContentLimit, 0), lte(table.feedContentLimit, MAX_FEED_CONTENT_LIMIT))}
-      `,
+			// TODO: Why ${MAX_FEED_CONTENT_LIMIT} is not working?
+			sql`${table.feedContentLimit} > 0 AND ${table.feedContentLimit} <= 100`,
 		),
 	],
 );
@@ -71,9 +66,7 @@ export const feeds = pgTable("feeds", {
 	url: text().notNull().unique(),
 	title: text().notNull(),
 	createdAt: timestamp().defaultNow().notNull(),
-	lastSyncAt: timestamp(),
-	// TODO: remove this content field and use feedsContent table.
-	content: json().$type<FeedContent[]>(),
+	lastSyncAt: timestamp({ mode: "date" }).defaultNow().notNull(),
 	status: text({ enum: enumToPgEnum(FeedStatusType) })
 		.notNull()
 		.default(FeedStatusType.ACTIVE),
@@ -127,8 +120,9 @@ export const usersFeedsReadContent = pgTable(
 		feedId: integer()
 			.notNull()
 			.references(() => feeds.id, { onDelete: "cascade" }),
-		// TODO: add reference to new content table.
-		feedContentId: text().notNull(),
+		feedContentId: integer()
+			.notNull()
+			.references(() => feedsContent.id, { onDelete: "cascade" }),
 		readAt: timestamp().defaultNow().notNull(),
 	},
 	(table) => [
@@ -249,8 +243,8 @@ export const insertUsersFeedsReadContentSchema = createSelectSchema(
 			schema.feedId.nonnegative({
 				message: "errors.idFieldInvalid",
 			}),
-		feedContentId: (schema): Zod.ZodString =>
-			schema.feedContentId.nonempty({
+		feedContentId: (schema): Zod.ZodNumber =>
+			schema.feedContentId.nonnegative({
 				message: "errors.feedContentIdFieldInvalid",
 			}),
 	},
@@ -263,15 +257,43 @@ export const deleteUsersFeedsReadContentSchema = createSelectSchema(
 			schema.feedId.nonnegative({
 				message: "errors.idFieldInvalid",
 			}),
-		feedContentId: (schema): Zod.ZodString =>
-			schema.feedContentId.nonempty({
+		feedContentId: (schema): Zod.ZodNumber =>
+			schema.feedContentId.nonnegative({
 				message: "errors.feedContentIdFieldInvalid",
 			}),
 	},
 ).pick({ feedId: true, feedContentId: true });
+
+export const userFeedsWithContent = z.object({
+	id: z.coerce.number(),
+	url: z.string(),
+	title: z.string(),
+	createdAt: z.coerce.date(),
+	lastSyncAt: z.coerce.date(),
+	contents: z.array(
+		z
+			.object({
+				id: z.coerce.number(),
+				feedId: z.coerce.number(),
+				date: z.coerce.date(),
+				url: z.string(),
+				title: z.string(),
+				content: z.string(),
+				createdAt: z.coerce.date(),
+			})
+			.nullable(),
+	),
+	status: z.nativeEnum(FeedStatusType),
+	lastError: z.string().nullable(),
+	errorCount: z.coerce.number(),
+	errorType: z.nativeEnum(FeedErrorType).nullable(),
+});
+
+export const usersFeedsWithContent = z.array(userFeedsWithContent);
 
 export type User = InferSelectModel<typeof users>;
 export type Feed = InferSelectModel<typeof feeds>;
 export type UsersFeedsReadContent = InferSelectModel<
 	typeof usersFeedsReadContent
 >;
+export type UserFeedsWithContent = z.infer<typeof userFeedsWithContent>;
