@@ -8,5 +8,8 @@ export const searchParamsParsers = {
 	sortLinks: parseAsStringEnum<SortOptions>(
 		Object.values(SortOptions),
 	).withDefault(SortOptions.BY_DATE_DESC),
+	/**
+	Could either be a feed ID (as string) or "all".
+	*/
 	selectedFeed: parseAsString.withDefault(SELECTED_FEED_DEFAULT),
 };
