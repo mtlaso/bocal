@@ -261,7 +261,7 @@ export async function addFeed(
 				where: eq(usersFeeds.userId, user.user.id),
 			});
 
-			if (userFeeds.length >= MAX_FEEDS_FOLLOWED) {
+			if (userFeeds.length > MAX_FEEDS_FOLLOWED) {
 				isMaxFeedsReached = true;
 				return;
 			}
@@ -281,6 +281,7 @@ export async function addFeed(
 					validatedFields.data.url,
 				);
 
+				// TODO: remove
 				const newFeed = await tx
 					.insert(feeds)
 					.values({

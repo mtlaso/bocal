@@ -48,6 +48,9 @@ export const users = pgTable(
 	],
 );
 
+/**
+ * links contains links that a user has saved.
+ */
 export const links = pgTable("links", {
 	id: integer().primaryKey().generatedAlwaysAsIdentity(),
 	url: text().notNull(),
@@ -60,12 +63,16 @@ export const links = pgTable("links", {
 	createdAt: timestamp().defaultNow().notNull(),
 });
 
+/**
+ * feeds contains the feeds present in the database.
+ */
 export const feeds = pgTable("feeds", {
 	id: integer().primaryKey().generatedAlwaysAsIdentity(),
 	url: text().notNull().unique(),
 	title: text().notNull(),
 	createdAt: timestamp().defaultNow().notNull(),
 	lastSyncAt: timestamp(),
+	// TODO: remove this content field and use feedsContent table.
 	content: json().$type<FeedContent[]>(),
 	status: text({ enum: enumToPgEnum(FeedStatusType) })
 		.notNull()
@@ -77,6 +84,24 @@ export const feeds = pgTable("feeds", {
 	}),
 });
 
+/**
+ * feedsContent contains the content of the feeds.
+ */
+export const feedsContent = pgTable("feeds_content", {
+	id: integer().primaryKey().generatedAlwaysAsIdentity(),
+	feedId: integer()
+		.notNull()
+		.references(() => feeds.id, { onDelete: "cascade" }),
+	date: timestamp().notNull(),
+	url: text().notNull(),
+	title: text().notNull(),
+	content: text().notNull(),
+	createdAt: timestamp().defaultNow().notNull(),
+});
+
+/**
+ * userFeeds contains the feeds that a user is following.
+ */
 export const usersFeeds = pgTable(
 	"users_feeds",
 	{
@@ -90,6 +115,9 @@ export const usersFeeds = pgTable(
 	(table) => [primaryKey({ columns: [table.userId, table.feedId] })],
 );
 
+/**
+ * userFeedsReadContent keep tracks of the feeds content read by a user.
+ */
 export const usersFeedsReadContent = pgTable(
 	"users_feeds_read_content",
 	{
@@ -99,6 +127,7 @@ export const usersFeedsReadContent = pgTable(
 		feedId: integer()
 			.notNull()
 			.references(() => feeds.id, { onDelete: "cascade" }),
+		// TODO: add reference to new content table.
 		feedContentId: text().notNull(),
 		readAt: timestamp().defaultNow().notNull(),
 	},
