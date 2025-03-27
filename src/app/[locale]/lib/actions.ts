@@ -427,12 +427,12 @@ export async function unfollowFeed(id: string): Promise<UnfollowFeedState> {
 
 export type MarkFeedContentAsReadState = State<{
 	feedId?: number;
-	feedContentId?: string;
+	feedContentId?: number;
 }>;
 
 export async function markFeedContentAsRead(
 	feedId: number,
-	feedContentId: string,
+	feedContentId: number,
 ): Promise<MarkFeedContentAsReadState> {
 	const validatedFields = insertUsersFeedsReadContentSchema.safeParse({
 		feedId,
@@ -475,12 +475,12 @@ export async function markFeedContentAsRead(
 
 export type MarkFeedContentAsUnreadState = State<{
 	feedId?: number;
-	feedContentId?: string;
+	feedContentId?: number;
 }>;
 
 export async function markFeedContentAsUnread(
 	feedId: number,
-	feedContentId: string,
+	feedContentId: number,
 ): Promise<MarkFeedContentAsUnreadState> {
 	const validatedFields = deleteUsersFeedsReadContentSchema.safeParse({
 		feedId,

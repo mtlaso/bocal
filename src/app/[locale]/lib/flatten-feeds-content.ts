@@ -1,7 +1,7 @@
 import { isFeedContentRead } from "@/app/[locale]/lib/data";
 import type { FlattenedFeedsContent } from "@/app/[locale]/lib/types";
 import "server-only";
-import type { Feed } from "@/db/schema";
+import type { UserFeedWithContent } from "@/db/schema";
 
 /**
  * Takes all feeds, removes feeds with no content,
@@ -9,13 +9,13 @@ import type { Feed } from "@/db/schema";
    and sorts them by date (recent to oldest).
  */
 export const flattenFeedsContent = async (
-	feeds: Feed[],
+	feeds: UserFeedWithContent[],
 ): Promise<FlattenedFeedsContent[]> => {
 	try {
 		const promiseAllItems = feeds.flatMap((feed) => {
-			if (!feed?.content) return [];
+			if (!feed?.contents) return [];
 
-			return feed.content.map(async (item) => {
+			return feed.contents.map(async (item) => {
 				const _isRead = await isFeedContentRead(feed.id, item.id);
 				return {
 					...item,

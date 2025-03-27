@@ -1,10 +1,10 @@
 import { db } from "@/db/db";
 import {
-	type UserFeedsWithContent as UserFeedWithContent,
-	type UsersFeedsReadContent,
+	type UserFeedReadContent,
+	type UserFeedWithContent,
 	links,
 	usersFeedsReadContent,
-	usersFeedsWithContent,
+	usersFeedsWithContentArr,
 } from "@/db/schema";
 import { type SQL, and, desc, eq, sql } from "drizzle-orm";
 import "server-only";
@@ -103,7 +103,7 @@ export async function getUserFeeds(): Promise<GetUserFeedsProps> {
         ORDER BY f."createdAt" DESC;
         `);
 
-		const data = usersFeedsWithContent.safeParse(req.rows);
+		const data = usersFeedsWithContentArr.safeParse(req.rows);
 		if (!data.success) {
 			throw new Error("errors.unexpected");
 		}
@@ -131,7 +131,7 @@ export async function getUserFeeds(): Promise<GetUserFeedsProps> {
 export async function isFeedContentRead(
 	feedId: number,
 	feedContentId: number,
-): Promise<UsersFeedsReadContent | null> {
+): Promise<UserFeedReadContent | null> {
 	try {
 		const user = await auth();
 		if (!user) {

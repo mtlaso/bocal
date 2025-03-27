@@ -1,6 +1,8 @@
 import { getUserFeeds } from "@/app/[locale]/lib/data";
+import { flattenFeedsContent } from "@/app/[locale]/lib/flatten-feeds-content";
 import { AddFeedForm } from "@/app/[locale]/ui/feed/add-feed-form";
 import { FeedInfoMenu } from "@/app/[locale]/ui/feed/feed-info-menu";
+import { Feeds } from "@/app/[locale]/ui/feed/feeds";
 import { FeedInfoSkeleton, LinksSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
@@ -55,12 +57,7 @@ async function FeedInfoContainer(): Promise<React.JSX.Element> {
 }
 
 async function FeedsContainer(): Promise<React.JSX.Element> {
-	// const { feeds, limit } = await getUserFeeds(); // Dedup
-	// const _flattenedFeeds = await flattenFeedsContent(feeds);
-	return (
-		<>
-			<p>hello</p>
-		</>
-	);
-	// return <Feeds flattenedContent={flattenedFeeds} limit={limit} />;
+	const { feeds, limit } = await getUserFeeds(); // Dedup
+	const flattenedFeeds = await flattenFeedsContent(feeds);
+	return <Feeds flattenedContent={flattenedFeeds} limit={limit} />;
 }

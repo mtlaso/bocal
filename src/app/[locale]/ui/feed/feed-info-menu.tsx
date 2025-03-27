@@ -14,7 +14,7 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
-import type { UserFeedsWithContent } from "@/db/schema";
+import type { UserFeedWithContent } from "@/db/schema";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useQueryStates } from "nuqs";
@@ -22,7 +22,7 @@ import { useState } from "react";
 import { TbPlugConnectedX, TbRadarFilled, TbRss } from "react-icons/tb";
 
 type Props = {
-	feeds: UserFeedsWithContent[];
+	feeds: UserFeedWithContent[];
 };
 
 export function FeedInfoMenu({ feeds }: Props): React.JSX.Element {
@@ -139,7 +139,7 @@ function FeedMenuItem({
 	feed,
 	onClick,
 }: {
-	feed: UserFeedsWithContent;
+	feed: UserFeedWithContent;
 	onClick?: () => void;
 }): React.JSX.Element {
 	const [{ selectedFeed }, setSelectedFeed] =
@@ -149,7 +149,7 @@ function FeedMenuItem({
 		<button
 			type="button"
 			onClick={(): void => {
-				setSelectedFeed({ selectedFeed: feed.toString() });
+				setSelectedFeed({ selectedFeed: feed.id.toString() });
 				onClick?.();
 			}}
 			className={cn(
