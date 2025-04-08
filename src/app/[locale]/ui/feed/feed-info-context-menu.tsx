@@ -78,7 +78,7 @@ function UnfollowFeed(): React.JSX.Element {
 				}
 
 				setSelectedFeed({ selectedFeed: SELECTED_FEED_DEFAULT });
-				toast.success(t(res.successMessage));
+				if (res.successMessage) toast.success(t(res.successMessage));
 			} catch (_err) {
 				toast.error(t("errors.unexpected"));
 			}
