@@ -26,6 +26,15 @@ export async function generateMetadata({
 	} satisfies Metadata;
 }
 
+/**
+ * Renders the Archive page.
+ *
+ * This asynchronous component fetches translations for the "archive" namespace and uses them to display the localized title.
+ * It includes desktop and mobile search components, a sorting control, a separator, and a Suspense wrapper that renders a skeleton loader
+ * while the archived links are being fetched.
+ *
+ * @returns A React element representing the rendered Archive page.
+ */
 export default async function Page(): Promise<React.JSX.Element> {
 	const t = await getTranslations("archive");
 

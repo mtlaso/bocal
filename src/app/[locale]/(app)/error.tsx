@@ -3,6 +3,15 @@
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 
+/**
+ * Renders a 404 error page with a retry option.
+ *
+ * This component displays an internationalized message indicating an unexpected error,
+ * along with a button that triggers the provided reset callback to recover from the error state.
+ *
+ * @param reset - A callback function that resets the error state.
+ * @returns A JSX element representing the full-screen error interface.
+ */
 export default function Error404({
 	reset,
 }: {

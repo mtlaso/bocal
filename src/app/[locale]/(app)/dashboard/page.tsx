@@ -27,6 +27,15 @@ export async function generateMetadata({
 	} satisfies Metadata;
 }
 
+/**
+ * Renders the dashboard page with link management features.
+ *
+ * Retrieves translations for the "dashboard" namespace to display a localized title,
+ * and presents UI components for adding, searching, and sorting links across desktop
+ * and mobile views. A suspense fallback handles the asynchronous loading of the links list.
+ *
+ * @returns A promise that resolves to a React JSX element representing the dashboard.
+ */
 export default async function Page(): Promise<React.JSX.Element> {
 	const t = await getTranslations("dashboard");
 

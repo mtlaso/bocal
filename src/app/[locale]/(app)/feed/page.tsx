@@ -23,6 +23,13 @@ export async function generateMetadata({
 	} satisfies Metadata;
 }
 
+/**
+ * Renders the RSS feeds page.
+ *
+ * This asynchronous component retrieves the translations for the "rssFeed" namespace and builds the page layout. It displays a header with the page title and an add feed form, as well as sections that asynchronously load and display feed information and feed content, each with an appropriate loading skeleton.
+ *
+ * @returns A promise that resolves to a React JSX element representing the rendered RSS feeds page.
+ */
 export default async function Page(): Promise<React.JSX.Element> {
 	const t = await getTranslations("rssFeed");
 
@@ -50,11 +57,27 @@ export default async function Page(): Promise<React.JSX.Element> {
 	);
 }
 
+/**
+ * Asynchronously retrieves the user's feeds and renders a feed information menu.
+ *
+ * This function fetches the user's feeds and returns a React component that displays the feeds
+ * using the FeedInfoMenu component.
+ *
+ * @returns A JSX element representing the feed information menu populated with user feeds.
+ */
 async function FeedsInfosWrapper(): Promise<React.JSX.Element> {
 	const feeds = await getUserFeeds(); // Dedup
 	return <FeedInfoMenu feeds={feeds} />;
 }
 
+/**
+ * Fetches user feeds and renders them within a Feeds component.
+ *
+ * This asynchronous function retrieves the user feeds via getUserFeeds and passes
+ * the fetched data as props to the Feeds component.
+ *
+ * @returns A JSX element containing the displayed user feeds.
+ */
 async function FeedsWrapper(): Promise<React.JSX.Element> {
 	const feeds = await getUserFeeds(); // Dedup
 	return <Feeds feeds={feeds} />;

@@ -24,6 +24,17 @@ type Props = {
 	feeds: UserFeedWithContent[];
 };
 
+/**
+ * Renders a section containing feed items filtered by the currently selected feed.
+ *
+ * The component retrieves the selected feed from query parameters and filters the provided feeds.
+ * If the default filter is active, all feeds are included. Otherwise, only feeds with an ID matching
+ * the selected feed are rendered. Each feed's contents are displayed as individual <Item> components.
+ *
+ * @param feeds - An array of feed objects, each with associated content items.
+ *
+ * @returns A section element with the rendered feed items.
+ */
 export function Feeds({ feeds }: Props): React.JSX.Element {
 	const [{ selectedFeed }] = useQueryStates(searchParamsParsers);
 

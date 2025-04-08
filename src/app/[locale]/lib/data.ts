@@ -23,6 +23,19 @@ type GetLinksResponse = {
 	ogImageURL: string | null;
 };
 
+/**
+ * Retrieves the authenticated user's links filtered by archive status.
+ *
+ * This function authenticates the current user and fetches their links from the database.
+ * It applies a filter to return either archived or non-archived links based on the value of
+ * the {@link archivedLinksOnly} flag. If the user is not authenticated, it throws an error with the
+ * message "errors.notSignedIn". Any other issues during execution result in an error with the
+ * message "errors.unexpected".
+ *
+ * @param archivedLinksOnly - If true, only archived links are returned; if false, only non-archived links are returned.
+ * @returns A promise that resolves to an array of link objects containing id, url, ogTitle, and ogImageURL.
+ * @throws {Error} If the user is not signed in or an unexpected error occurs during data retrieval.
+ */
 export async function getLinks({
 	archivedLinksOnly,
 }: GetLinksProps): Promise<GetLinksResponse[]> {
@@ -52,6 +65,19 @@ export async function getLinks({
 	}
 }
 
+/**
+ * Retrieves feeds and their associated content for the authenticated user.
+ *
+ * This asynchronous function authenticates the user and executes a database query to obtain feed details
+ * along with recent content entries. The content for each feed is aggregated in descending order by date,
+ * limited by the user's configured feed content limit. It also triggers background synchronization for any feed
+ * that has not been updated within the last hour.
+ *
+ * @returns A promise that resolves to an array of feed objects with their aggregated content.
+ *
+ * @throws {Error} Always throws an error with the message "errors.unexpected" if any error occurs during
+ * execution, including authentication failure or data parsing issues.
+ */
 export async function getUserFeeds(): Promise<UserFeedWithContent[]> {
 	try {
 		const user = await auth();
