@@ -54,6 +54,7 @@ export async function getLinks({
 
 export async function getUserFeeds(): Promise<UserFeedWithContent[]> {
 	try {
+		await new Promise((resolve) => setTimeout(resolve, 1000));
 		const user = await auth();
 		if (!user) {
 			throw new Error("errors.notSignedIn");

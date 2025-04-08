@@ -7,7 +7,11 @@ import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { Suspense } from "react";
+import { Suspense, cache } from "react";
+
+const getCachedUserFeeds = cache(async () => {
+	return await getUserFeeds();
+});
 
 export async function generateMetadata({
 	params,
@@ -51,11 +55,11 @@ export default async function Page(): Promise<React.JSX.Element> {
 }
 
 async function FeedsInfosWrapper(): Promise<React.JSX.Element> {
-	const feeds = await getUserFeeds(); // Dedup
+	const feeds = await getCachedUserFeeds();
 	return <FeedInfoMenu feeds={feeds} />;
 }
 
 async function FeedsWrapper(): Promise<React.JSX.Element> {
-	const feeds = await getUserFeeds(); // Dedup
+	const feeds = await getCachedUserFeeds();
 	return <Feeds feeds={feeds} />;
 }
