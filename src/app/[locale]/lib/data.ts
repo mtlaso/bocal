@@ -9,8 +9,14 @@ import z from "zod";
 import "server-only";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 import { auth } from "@/auth";
+import type { Session } from "next-auth";
+import { cache } from "react";
 
 const ONE_HOUR = 60 * 60 * 1000;
+
+export const verifySession = cache(async (): Promise<Session | null> => {
+	return await auth();
+});
 
 type GetLinksProps = {
 	archivedLinksOnly?: boolean;
@@ -23,39 +29,38 @@ type GetLinksResponse = {
 	ogImageURL: string | null;
 };
 
-export async function getLinks({
-	archivedLinksOnly,
-}: GetLinksProps): Promise<GetLinksResponse[]> {
-	try {
-		const user = await auth();
-		if (!user) {
-			throw new Error("errors.notSignedIn");
+export const getLinks = cache(
+	async ({ archivedLinksOnly }: GetLinksProps): Promise<GetLinksResponse[]> => {
+		try {
+			const user = await verifySession();
+			if (!user) {
+				throw new Error("errors.notSignedIn");
+			}
+
+			const archivedFilter: SQL[] = [];
+			if (archivedLinksOnly) archivedFilter.push(eq(links.isArchived, true));
+			else archivedFilter.push(eq(links.isArchived, false));
+
+			return await db
+				.select({
+					id: links.id,
+					url: links.url,
+					ogTitle: links.ogTitle,
+					ogImageURL: links.ogImageURL,
+				})
+				.from(links)
+				.where(and(eq(links.userId, user.user.id), ...archivedFilter))
+				.orderBy(desc(links.createdAt))
+				.execute();
+		} catch (_err) {
+			throw new Error("errors.unexpected");
 		}
+	},
+);
 
-		const archivedFilter: SQL[] = [];
-		if (archivedLinksOnly) archivedFilter.push(eq(links.isArchived, true));
-		else archivedFilter.push(eq(links.isArchived, false));
-
-		return await db
-			.select({
-				id: links.id,
-				url: links.url,
-				ogTitle: links.ogTitle,
-				ogImageURL: links.ogImageURL,
-			})
-			.from(links)
-			.where(and(eq(links.userId, user.user.id), ...archivedFilter))
-			.orderBy(desc(links.createdAt))
-			.execute();
-	} catch (_err) {
-		throw new Error("errors.unexpected");
-	}
-}
-
-export async function getUserFeeds(): Promise<UserFeedWithContent[]> {
+export const getUserFeeds = cache(async (): Promise<UserFeedWithContent[]> => {
 	try {
-		await new Promise((resolve) => setTimeout(resolve, 1000));
-		const user = await auth();
+		const user = await verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
@@ -113,4 +118,4 @@ export async function getUserFeeds(): Promise<UserFeedWithContent[]> {
 	} catch (_err) {
 		throw new Error("errors.unexpected");
 	}
-}
+});
