@@ -39,21 +39,13 @@ export default async function Page(): Promise<React.JSX.Element> {
 							{t("links")}
 						</h1>
 						<AddLinkForm />
-						<Suspense>
-							<SearchLinksDesktop />
-						</Suspense>
+						<SearchLinksDesktop />
 					</div>
 
-					<div>
-						<Suspense>
-							<SortLinks />
-						</Suspense>
-					</div>
+					<SortLinks />
 				</div>
 
-				<Suspense>
-					<SearchLinksMobile />
-				</Suspense>
+				<SearchLinksMobile />
 			</section>
 
 			<Separator className="my-4" />

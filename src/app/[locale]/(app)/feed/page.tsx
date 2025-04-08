@@ -1,5 +1,4 @@
 import { getUserFeeds } from "@/app/[locale]/lib/data";
-import { flattenFeedsContent } from "@/app/[locale]/lib/flatten-feeds-content";
 import { AddFeedForm } from "@/app/[locale]/ui/feed/add-feed-form";
 import { FeedInfoMenu } from "@/app/[locale]/ui/feed/feed-info-menu";
 import { Feeds } from "@/app/[locale]/ui/feed/feeds";
@@ -38,26 +37,25 @@ export default async function Page(): Promise<React.JSX.Element> {
 				</div>
 
 				<Suspense fallback={<FeedInfoSkeleton />}>
-					<FeedInfoContainer />
+					<FeedsInfosWrapper />
 				</Suspense>
 			</section>
 
 			<Separator className="my-4" />
 
 			<Suspense fallback={<LinksSkeleton />}>
-				<FeedsContainer />
+				<FeedsWrapper />
 			</Suspense>
 		</>
 	);
 }
 
-async function FeedInfoContainer(): Promise<React.JSX.Element> {
-	const { feeds } = await getUserFeeds(); // Dedup
+async function FeedsInfosWrapper(): Promise<React.JSX.Element> {
+	const feeds = await getUserFeeds();
 	return <FeedInfoMenu feeds={feeds} />;
 }
 
-async function FeedsContainer(): Promise<React.JSX.Element> {
-	const { feeds, limit } = await getUserFeeds(); // Dedup
-	const flattenedFeeds = await flattenFeedsContent(feeds);
-	return <Feeds flattenedContent={flattenedFeeds} limit={limit} />;
+async function FeedsWrapper(): Promise<React.JSX.Element> {
+	const feeds = await getUserFeeds();
+	return <Feeds feeds={feeds} />;
 }

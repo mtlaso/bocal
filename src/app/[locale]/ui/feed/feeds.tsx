@@ -8,10 +8,10 @@ import {
 	SELECTED_FEED_DEFAULT,
 	searchParamsParsers,
 } from "@/app/[locale]/lib/stores/search-params";
-import type { FlattenedFeedsContent } from "@/app/[locale]/lib/types";
 import { FeedsContextMenu } from "@/app/[locale]/ui/feed/feeds-context-menu";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Checkbox } from "@/components/ui/checkbox";
+import type { FeedContentWithReadAt, UserFeedWithContent } from "@/db/schema";
 import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import type { CheckedState } from "@radix-ui/react-checkbox";
@@ -21,36 +21,34 @@ import { startTransition, useOptimistic } from "react";
 import { toast } from "sonner";
 
 type Props = {
-	flattenedContent: FlattenedFeedsContent[];
-	limit?: number;
+	feeds: UserFeedWithContent[];
 };
 
-export function Feeds({ flattenedContent, limit }: Props): React.JSX.Element {
+export function Feeds({ feeds }: Props): React.JSX.Element {
 	const [{ selectedFeed }] = useQueryStates(searchParamsParsers);
-	const limitValue = limit ?? 10;
 
-	const items = flattenedContent
-		.filter((content) => {
-			if (selectedFeed === SELECTED_FEED_DEFAULT) return true;
-			return content.feedId.toString() === selectedFeed;
-		})
-		.slice(0, limitValue);
+	const items = feeds.filter((feed) => {
+		if (selectedFeed === SELECTED_FEED_DEFAULT) return true;
+		return feed.id.toString() === selectedFeed;
+	});
 
 	return (
 		<section className={cn("grid break-all", SPACING.LG)}>
-			{items.map((item) => (
-				<Item item={item} key={`${item.id}-${item.feedId}`} />
-			))}
+			{items.map((item) => {
+				return item.contents.map((content) => (
+					<Item item={content} key={`${content.id}`} />
+				));
+			})}
 		</section>
 	);
 }
 
-const Item = ({ item }: { item: FlattenedFeedsContent }): React.JSX.Element => {
+const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
 	const t = useTranslations("rssFeed");
 	const locale = useLocale();
 
 	const [isReadOptimistic, addIsReadOptimistic] = useOptimistic(
-		item.isRead !== null,
+		item.readAt !== null,
 	);
 
 	const handleMarkAsRead = async (

@@ -37,21 +37,13 @@ export default async function Page(): Promise<React.JSX.Element> {
 						<h1 className="font-semibold tracking-tight text-3xl">
 							{t("archive")}
 						</h1>
-						<Suspense>
-							<SearchLinksDesktop />
-						</Suspense>
+						<SearchLinksDesktop />
 					</div>
 
-					<div>
-						<Suspense>
-							<SortLinks />
-						</Suspense>
-					</div>
+					<SortLinks />
 				</div>
 
-				<Suspense>
-					<SearchLinksMobile />
-				</Suspense>
+				<SearchLinksMobile />
 			</section>
 
 			<Separator className="my-4" />
