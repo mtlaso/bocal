@@ -264,35 +264,33 @@ export const deleteUsersFeedsReadContentSchema = createSelectSchema(
 	},
 ).pick({ feedId: true, feedContentId: true });
 
-export const usersFeedsWithContent = z.object({
+const contentWithReadAt = z.object({
+	id: z.coerce.number(),
+	feedId: z.coerce.number(),
+	date: z.coerce.date(),
+	url: z.string(),
+	title: z.string(),
+	content: z.string(),
+	createdAt: z.coerce.date(),
+	readAt: z.coerce.date().nullable(),
+});
+
+export const feedsWithContent = z.object({
 	id: z.coerce.number(),
 	url: z.string(),
 	title: z.string(),
 	createdAt: z.coerce.date(),
 	lastSyncAt: z.coerce.date(),
-	contents: z.array(
-		z.object({
-			id: z.coerce.number(),
-			feedId: z.coerce.number(),
-			date: z.coerce.date(),
-			url: z.string(),
-			title: z.string(),
-			content: z.string(),
-			createdAt: z.coerce.date(),
-		}),
-	),
+	contents: z.array(contentWithReadAt),
 	status: z.nativeEnum(FeedStatusType),
 	lastError: z.string().nullable(),
 	errorCount: z.coerce.number(),
 	errorType: z.nativeEnum(FeedErrorType).nullable(),
 });
 
-export const usersFeedsWithContentArr = z.array(usersFeedsWithContent);
+export const feedsWithContentArray = z.array(feedsWithContent);
 
 export type User = InferSelectModel<typeof users>;
 export type Feed = InferSelectModel<typeof feeds>;
-export type FeedContent = InferSelectModel<typeof feedsContent>;
-export type UserFeedReadContent = InferSelectModel<
-	typeof usersFeedsReadContent
->;
-export type UserFeedWithContent = z.infer<typeof usersFeedsWithContent>;
+export type UserFeedWithContent = z.infer<typeof feedsWithContent>;
+export type FeedContentWithReadAt = z.infer<typeof contentWithReadAt>;

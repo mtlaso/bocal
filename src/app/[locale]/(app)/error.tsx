@@ -12,7 +12,7 @@ export default function Error404({
 
 	return (
 		<div className="min-h-screen flex flex-col justify-center items-center gap-4">
-			<h1 className="text-lg font-bold text-center">{t("unexpected")}</h1>
+			<h1 className="text-2xl text-center">{t("unexpected")}</h1>
 			<Button onClick={(): void => reset()} type="submit">
 				{t("retry")}
 			</Button>
