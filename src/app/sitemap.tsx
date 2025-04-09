@@ -10,6 +10,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
 		getEntry("/feed"),
 		getEntry("/login"),
 		getEntry("/settings"),
+		getEntry("/legal/terms"),
+		getEntry("/legal/privacy"),
 	];
 }
 
