@@ -2,6 +2,7 @@
 
 import { verifySession } from "@/app/[locale]/lib/data";
 import { feedService } from "@/app/[locale]/lib/feed-service";
+import { logger } from "@/app/[locale]/lib/logging";
 import { ogScrape } from "@/app/[locale]/lib/og-scrape";
 import { signIn, signOut } from "@/auth";
 import { db } from "@/db/db";
@@ -37,6 +38,7 @@ export async function authenticate(
 	try {
 		await signIn(provider, { redirectTo: "/dashboard" });
 	} catch (err) {
+		logger.error(err);
 		if (err instanceof AuthError) {
 			switch (err.type) {
 				case "CredentialsSignin":
@@ -96,7 +98,8 @@ export async function addLink(
 			ogTitle: ogTitle,
 			ogImageURL: ogImageURL,
 		});
-	} catch (_err) {
+	} catch (err) {
+		logger.error(err);
 		return {
 			message: "errors.unexpected",
 			errors: undefined,
@@ -139,7 +142,8 @@ export async function deleteLink(id: string): Promise<DeleteLinkState> {
 				),
 			)
 			.execute();
-	} catch (_err) {
+	} catch (err) {
+		logger.error(err);
 		return {
 			message: "errors.unexpected",
 		};
@@ -178,7 +182,8 @@ export async function archiveLink(id: string): Promise<DeleteLinkState> {
 				),
 			)
 			.execute();
-	} catch (_err) {
+	} catch (err) {
+		logger.error(err);
 		return {
 			message: "errors.unexpected",
 		};
@@ -217,7 +222,8 @@ export async function unarchiveLink(id: string): Promise<DeleteLinkState> {
 				),
 			)
 			.execute();
-	} catch (_err) {
+	} catch (err) {
+		logger.error(err);
 		return {
 			message: "errors.unexpected",
 		};
@@ -343,6 +349,7 @@ export async function addFeed(
 			};
 		}
 	} catch (err) {
+		logger.error(err);
 		if (err instanceof feedService.FeedUnreachable) {
 			return {
 				message: "errors.feedUnreachable",
@@ -413,7 +420,8 @@ export async function unfollowFeed(id: string): Promise<UnfollowFeedState> {
 				)
 				.execute();
 		});
-	} catch (_err) {
+	} catch (err) {
+		logger.error(err);
 		return {
 			message: "errors.unexpected",
 		};
@@ -463,7 +471,8 @@ export async function markFeedContentAsRead(
 			})
 			.onConflictDoNothing()
 			.execute();
-	} catch (_err) {
+	} catch (err) {
+		logger.error(err);
 		return {
 			message: "errors.unexpected",
 		};
@@ -514,7 +523,8 @@ export async function markFeedContentAsUnread(
 				),
 			)
 			.execute();
-	} catch (_err) {
+	} catch (err) {
+		logger.error(err);
 		return {
 			message: "errors.unexpected",
 		};
@@ -554,7 +564,8 @@ export async function setFeedContentLimit(
 			.set({ feedContentLimit: validatedFields.data.feedContentLimit })
 			.where(eq(users.id, user.user.id))
 			.execute();
-	} catch (_err) {
+	} catch (err) {
+		logger.error(err);
 		return {
 			message: "errors.unexpected",
 		};
@@ -601,7 +612,8 @@ export async function archiveFeedContent(
 			ogImageURL: ogImageURL,
 			isArchived: true,
 		});
-	} catch (_err) {
+	} catch (err) {
+		logger.error(err);
 		return {
 			message: "errors.unexpected",
 		};
