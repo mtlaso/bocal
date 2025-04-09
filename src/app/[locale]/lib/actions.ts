@@ -1,6 +1,6 @@
 "use server";
 
-import { verifySession } from "@/app/[locale]/lib/data";
+import { dal } from "@/app/[locale]/lib/dal";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 import { logger } from "@/app/[locale]/lib/logging";
 import { og } from "@/app/[locale]/lib/og";
@@ -86,7 +86,7 @@ export async function addLink(
 	}
 
 	try {
-		const user = await verifySession();
+		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
@@ -129,7 +129,7 @@ export async function deleteLink(id: string): Promise<DeleteLinkState> {
 	}
 
 	try {
-		const user = await verifySession();
+		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
@@ -168,7 +168,7 @@ export async function archiveLink(id: string): Promise<DeleteLinkState> {
 	}
 
 	try {
-		const user = await verifySession();
+		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
@@ -208,7 +208,7 @@ export async function unarchiveLink(id: string): Promise<DeleteLinkState> {
 	}
 
 	try {
-		const user = await verifySession();
+		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
@@ -255,7 +255,7 @@ export async function addFeed(
 	}
 
 	try {
-		const user = await verifySession();
+		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
@@ -398,7 +398,7 @@ export async function unfollowFeed(id: string): Promise<UnfollowFeedState> {
 	}
 
 	try {
-		const user = await verifySession();
+		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
@@ -460,7 +460,7 @@ export async function markFeedContentAsRead(
 	}
 
 	try {
-		const user = await verifySession();
+		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
@@ -509,7 +509,7 @@ export async function markFeedContentAsUnread(
 	}
 
 	try {
-		const user = await verifySession();
+		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
@@ -558,7 +558,7 @@ export async function setFeedContentLimit(
 	}
 
 	try {
-		const user = await verifySession();
+		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
@@ -602,7 +602,7 @@ export async function archiveFeedContent(
 	}
 
 	try {
-		const user = await verifySession();
+		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}

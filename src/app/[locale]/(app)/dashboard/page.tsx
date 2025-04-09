@@ -1,3 +1,4 @@
+import { dal } from "@/app/[locale]/lib/dal";
 import {
 	SearchLinksDesktop,
 	SearchLinksMobile,
@@ -9,7 +10,6 @@ import { Separator } from "@/components/ui/separator";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
-import { getLinks } from "../../lib/data";
 import { AddLinkForm } from "../../ui/dashboard/add-link-form";
 import { Links } from "../../ui/links";
 
@@ -58,7 +58,7 @@ export default async function Page(): Promise<React.JSX.Element> {
 }
 
 async function LinksWrapper(): Promise<React.JSX.Element> {
-	const links = await getLinks({});
+	const links = await dal.getLinks({});
 
 	return <Links links={links} />;
 }

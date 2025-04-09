@@ -1,4 +1,4 @@
-import { getUserFeeds } from "@/app/[locale]/lib/data";
+import { dal } from "@/app/[locale]/lib/dal";
 import { AddFeedForm } from "@/app/[locale]/ui/feed/add-feed-form";
 import { FeedInfoMenu } from "@/app/[locale]/ui/feed/feed-info-menu";
 import { Feeds } from "@/app/[locale]/ui/feed/feeds";
@@ -51,11 +51,11 @@ export default async function Page(): Promise<React.JSX.Element> {
 }
 
 async function FeedsInfosWrapper(): Promise<React.JSX.Element> {
-	const feeds = await getUserFeeds();
+	const feeds = await dal.getUserFeeds();
 	return <FeedInfoMenu feeds={feeds} />;
 }
 
 async function FeedsWrapper(): Promise<React.JSX.Element> {
-	const feeds = await getUserFeeds();
+	const feeds = await dal.getUserFeeds();
 	return <Feeds feeds={feeds} />;
 }

@@ -15,7 +15,10 @@ import { cache } from "react";
 
 const ONE_HOUR = 60 * 60 * 1000;
 
-export const verifySession = cache(async (): Promise<Session | null> => {
+/**
+ * verifySession vérifie la session actuelle.
+ */
+const verifySession = cache(async (): Promise<Session | null> => {
 	return await auth();
 });
 
@@ -30,7 +33,10 @@ type GetLinksResponse = {
 	ogImageURL: string | null;
 };
 
-export const getLinks = cache(
+/**
+ * getLinks retourne les liens de l'utilisateur.
+ */
+const getLinks = cache(
 	async ({ archivedLinksOnly }: GetLinksProps): Promise<GetLinksResponse[]> => {
 		try {
 			const user = await verifySession();
@@ -60,7 +66,10 @@ export const getLinks = cache(
 	},
 );
 
-export const getUserFeeds = cache(async (): Promise<UserFeedWithContent[]> => {
+/**
+ * getUserFeeds retourne les flux de l'utilisateur.
+ */
+const getUserFeeds = cache(async (): Promise<UserFeedWithContent[]> => {
 	try {
 		const user = await verifySession();
 		if (!user) {
@@ -122,3 +131,12 @@ export const getUserFeeds = cache(async (): Promise<UserFeedWithContent[]> => {
 		throw new Error("errors.unexpected");
 	}
 });
+
+/**
+ * dal contient les fonctions d'accés aux données.
+ */
+export const dal = {
+	verifySession,
+	getLinks,
+	getUserFeeds,
+};
