@@ -2,12 +2,7 @@ import { parseURL } from "@/app/[locale]/lib/parse-url";
 import { sanitizeHTML } from "@/app/[locale]/lib/sanitize-html";
 import { FeedErrorType, FeedStatusType } from "@/app/[locale]/lib/types";
 import { db } from "@/db/db";
-import {
-	type Feed,
-	MAX_FEED_CONTENT_LIMIT,
-	feeds,
-	feedsContent,
-} from "@/db/schema";
+import { type Feed, MAX_FEED_PER_USER, feeds, feedsContent } from "@/db/schema";
 import { eq, sql } from "drizzle-orm";
 import { decode } from "html-entities";
 import Parser from "rss-parser";
@@ -33,9 +28,9 @@ class FeedTimeout extends Error {
 	}
 }
 
-type ParseFeedResponse = {
+type ParseResponse = {
 	title: string;
-	contents: {
+	content: {
 		title: string;
 		url: string;
 		content: string;
@@ -43,7 +38,10 @@ type ParseFeedResponse = {
 	}[];
 };
 
-export async function parseFeed(url: string): Promise<ParseFeedResponse> {
+/**
+ * parse analyse un flux RSS.
+ */
+export async function parse(url: string): Promise<ParseResponse> {
 	try {
 		const feed = await new Parser({
 			headers: {
@@ -51,7 +49,7 @@ export async function parseFeed(url: string): Promise<ParseFeedResponse> {
 			},
 		}).parseURL(url);
 
-		feed.items = feed.items.slice(0, MAX_FEED_CONTENT_LIMIT);
+		feed.items = feed.items.slice(0, MAX_FEED_PER_USER);
 
 		const contents = feed.items.map((item) => {
 			return {
@@ -82,9 +80,7 @@ export async function parseFeed(url: string): Promise<ParseFeedResponse> {
 async function triggerBackgroundSync(outdatedFeeds: Feed[]): Promise<void> {
 	const sync = async (feed: Feed): Promise<void> => {
 		try {
-			const { contents: content, title } = await feedService.parseFeed(
-				feed.url,
-			);
+			const { contents: content, title } = await parse(feed.url);
 			await db.transaction(async (tx) => {
 				await tx
 					.update(feeds)
@@ -152,8 +148,11 @@ async function triggerBackgroundSync(outdatedFeeds: Feed[]): Promise<void> {
 	}
 }
 
+/**
+ * feedService contient les fonctions pour gérer les flux RSS.
+ */
 export const feedService = {
-	parseFeed,
+	parse,
 	FeedUnreachable,
 	FeedCannotBeProcessed,
 	FeedTimeout,
