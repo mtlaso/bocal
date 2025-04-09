@@ -8,6 +8,7 @@ import { type SQL, and, desc, eq, sql } from "drizzle-orm";
 import z from "zod";
 import "server-only";
 import { feedService } from "@/app/[locale]/lib/feed-service";
+import { logger } from "@/app/[locale]/lib/logging";
 import { auth } from "@/auth";
 import type { Session } from "next-auth";
 import { cache } from "react";
@@ -52,7 +53,8 @@ export const getLinks = cache(
 				.where(and(eq(links.userId, user.user.id), ...archivedFilter))
 				.orderBy(desc(links.createdAt))
 				.execute();
-		} catch (_err) {
+		} catch (err) {
+			logger.error(err);
 			throw new Error("errors.unexpected");
 		}
 	},
@@ -115,7 +117,8 @@ export const getUserFeeds = cache(async (): Promise<UserFeedWithContent[]> => {
 		void feedService.triggerBackgroundSync(outdatedFeeds);
 
 		return data;
-	} catch (_err) {
+	} catch (err) {
+		logger.error(err);
 		throw new Error("errors.unexpected");
 	}
 });
