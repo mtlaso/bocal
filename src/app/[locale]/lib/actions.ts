@@ -3,7 +3,7 @@
 import { verifySession } from "@/app/[locale]/lib/data";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 import { logger } from "@/app/[locale]/lib/logging";
-import { ogScrape } from "@/app/[locale]/lib/og-scrape";
+import { og } from "@/app/[locale]/lib/og-scrape";
 import { signIn, signOut } from "@/auth";
 import { db } from "@/db/db";
 import {
@@ -90,7 +90,7 @@ export async function addLink(
 			throw new Error("errors.notSignedIn");
 		}
 
-		const { ogTitle, ogImageURL } = await ogScrape(validatedFields.data.url);
+		const { ogTitle, ogImageURL } = await og.scrape(validatedFields.data.url);
 
 		await db.insert(links).values({
 			url: validatedFields.data.url,
@@ -603,7 +603,7 @@ export async function archiveFeedContent(
 			throw new Error("errors.notSignedIn");
 		}
 
-		const { ogTitle, ogImageURL } = await ogScrape(validatedFields.data.url);
+		const { ogTitle, ogImageURL } = await og.scrape(validatedFields.data.url);
 
 		await db.insert(links).values({
 			url: validatedFields.data.url,
