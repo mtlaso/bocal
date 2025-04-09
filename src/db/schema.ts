@@ -41,7 +41,6 @@ export const users = pgTable(
 	(table) => [
 		check(
 			"feedContentLimit_check",
-			// TODO: pourquoi ${MAX_FEED_CONTENT_LIMIT} ne fontionne pas ?
 			sql`${table.feedContentLimit} > 0 AND ${table.feedContentLimit} <= 100`,
 		),
 	],

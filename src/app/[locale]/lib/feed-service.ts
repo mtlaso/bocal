@@ -51,7 +51,7 @@ export async function parse(url: string): Promise<ParseResponse> {
 
 		feed.items = feed.items.slice(0, MAX_FEED_PER_USER);
 
-		const contents = feed.items.map((item) => {
+		const content = feed.items.map((item) => {
 			return {
 				title: decode(sanitizeHTML(item.title ?? parseURL(url))),
 				url: item.link ?? url,
@@ -64,7 +64,7 @@ export async function parse(url: string): Promise<ParseResponse> {
 
 		return {
 			title: feed.title ?? parseURL(url),
-			contents,
+			content,
 		};
 	} catch (err) {
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -80,7 +80,7 @@ export async function parse(url: string): Promise<ParseResponse> {
 async function triggerBackgroundSync(outdatedFeeds: Feed[]): Promise<void> {
 	const sync = async (feed: Feed): Promise<void> => {
 		try {
-			const { contents: content, title } = await parse(feed.url);
+			const { content, title } = await parse(feed.url);
 			await db.transaction(async (tx) => {
 				await tx
 					.update(feeds)
