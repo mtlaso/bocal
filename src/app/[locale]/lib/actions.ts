@@ -1,12 +1,13 @@
 "use server";
 
-import { verifySession } from "@/app/[locale]/lib/data";
+import { dal } from "@/app/[locale]/lib/dal";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 import { logger } from "@/app/[locale]/lib/logging";
-import { ogScrape } from "@/app/[locale]/lib/og-scrape";
+import { og } from "@/app/[locale]/lib/og";
 import { signIn, signOut } from "@/auth";
 import { db } from "@/db/db";
 import {
+	MAX_FEED_PER_USER,
 	deleteLinkSchema,
 	deleteUsersFeedsReadContentSchema,
 	feeds,
@@ -85,12 +86,12 @@ export async function addLink(
 	}
 
 	try {
-		const user = await verifySession();
+		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
 
-		const { ogTitle, ogImageURL } = await ogScrape(validatedFields.data.url);
+		const { ogTitle, ogImageURL } = await og.scrape(validatedFields.data.url);
 
 		await db.insert(links).values({
 			url: validatedFields.data.url,
@@ -128,7 +129,7 @@ export async function deleteLink(id: string): Promise<DeleteLinkState> {
 	}
 
 	try {
-		const user = await verifySession();
+		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
@@ -167,7 +168,7 @@ export async function archiveLink(id: string): Promise<DeleteLinkState> {
 	}
 
 	try {
-		const user = await verifySession();
+		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
@@ -207,7 +208,7 @@ export async function unarchiveLink(id: string): Promise<DeleteLinkState> {
 	}
 
 	try {
-		const user = await verifySession();
+		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
@@ -241,8 +242,6 @@ export async function addFeed(
 	_currState: AddFeedState,
 	formData: FormData,
 ): Promise<AddFeedState> {
-	const MAX_FEEDS_FOLLOWED = 100;
-
 	const validatedFields = insertFeedsSchema.safeParse({
 		url: formData.get("url"),
 	});
@@ -256,12 +255,12 @@ export async function addFeed(
 	}
 
 	try {
-		const user = await verifySession();
+		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
 
-		let isMaxFeedsReached = false;
+		let isMaxFeedsLimit = false;
 		let isFeedAlreadyFollowed = false;
 
 		await db.transaction(async (tx) => {
@@ -269,8 +268,8 @@ export async function addFeed(
 				where: eq(usersFeeds.userId, user.user.id),
 			});
 
-			if (userFeeds.length > MAX_FEEDS_FOLLOWED) {
-				isMaxFeedsReached = true;
+			if (userFeeds.length > MAX_FEED_PER_USER) {
+				isMaxFeedsLimit = true;
 				return;
 			}
 
@@ -278,14 +277,11 @@ export async function addFeed(
 				where: eq(feeds.url, validatedFields.data.url),
 			});
 
-			// TODO: Maybe remove some parameters from the URL before checking if the feed exists.
-			// So we could avoid duplicates like http://example.com/feed and http://example.com/feed?some_data=...
-			// But we need to be careful with this, because some feeds may have different content based on the parameters.
-			// to be continued...
-			// If the feed does not exist, add it.
-			// And fetch the feed content.
+			// IMPORTANT
+			// Ne pas retier les params des URL pour vérifier si des duplications existent comme 'example.com/feed et 'example.com/feed?some_data=...'.
+			// Certains flux peuvent avoir besoin des params et retourner du contenu qui changent le contenu du flux.
 			if (!feed) {
-				const { contents: content, title } = await feedService.parseFeed(
+				const { content, title } = await feedService.parse(
 					validatedFields.data.url,
 				);
 
@@ -309,8 +305,16 @@ export async function addFeed(
 						date: new Date(c.date),
 					})),
 				);
+
+				await tx.insert(usersFeeds).values({
+					userId: user.user.id,
+					feedId: feed.id,
+				});
+
+				return;
 			}
 
+			// Vérifier si l'utilisateur suit ce flux seulement si le flux existe déjà.
 			const existingUserFeed = await tx
 				.select({
 					userId: usersFeeds.userId,
@@ -342,7 +346,7 @@ export async function addFeed(
 			};
 		}
 
-		if (isMaxFeedsReached) {
+		if (isMaxFeedsLimit) {
 			return {
 				message: "errors.maxFeedsReached",
 				errors: undefined,
@@ -394,7 +398,7 @@ export async function unfollowFeed(id: string): Promise<UnfollowFeedState> {
 	}
 
 	try {
-		const user = await verifySession();
+		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
@@ -456,7 +460,7 @@ export async function markFeedContentAsRead(
 	}
 
 	try {
-		const user = await verifySession();
+		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
@@ -505,7 +509,7 @@ export async function markFeedContentAsUnread(
 	}
 
 	try {
-		const user = await verifySession();
+		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
@@ -554,7 +558,7 @@ export async function setFeedContentLimit(
 	}
 
 	try {
-		const user = await verifySession();
+		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
@@ -598,12 +602,12 @@ export async function archiveFeedContent(
 	}
 
 	try {
-		const user = await verifySession();
+		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
 
-		const { ogTitle, ogImageURL } = await ogScrape(validatedFields.data.url);
+		const { ogTitle, ogImageURL } = await og.scrape(validatedFields.data.url);
 
 		await db.insert(links).values({
 			url: validatedFields.data.url,

@@ -1,6 +1,6 @@
 "use client";
 
-import { parseURL } from "@/app/[locale]/lib/parse-url";
+import { parsing } from "@/app/[locale]/lib/parsing";
 import { searchParamsParsers } from "@/app/[locale]/lib/stores/search-params";
 import { SortOptions } from "@/app/[locale]/lib/types";
 import {
@@ -74,7 +74,8 @@ export function Links({ links }: Props): React.JSX.Element {
 									className={cn(
 										"aspect-video bg-linear-to-br rounded-t-xl",
 										randomBackground(
-											item.ogTitle ?? parseURL(new URL(item.url).host),
+											item.ogTitle ??
+												parsing.readableUrl(new URL(item.url).host),
 										),
 									)}
 								/>
@@ -96,7 +97,7 @@ export function Links({ links }: Props): React.JSX.Element {
 							target="_blank"
 							className=" text-sm text-muted-foreground truncate"
 						>
-							{parseURL(new URL(item.url).host)}
+							{parsing.readableUrl(new URL(item.url).host)}
 						</Link>
 
 						<LinksContextMenu id={item.id.toString()} />

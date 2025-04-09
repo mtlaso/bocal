@@ -1,12 +1,16 @@
 import ogs from "open-graph-scraper";
 import type { OpenGraphScraperOptions } from "open-graph-scraper/types";
+import "server-only";
 
 type ScrapeDataResponse = {
 	ogTitle: string | null;
 	ogImageURL: string | null;
 };
 
-export const ogScrape = async (url: string): Promise<ScrapeDataResponse> => {
+/**
+ * scrape récupère les données Open Graph d'une URL.
+ */
+const scrape = async (url: string): Promise<ScrapeDataResponse> => {
 	const ogOpts = {
 		url: url,
 	} satisfies OpenGraphScraperOptions;
@@ -28,4 +32,11 @@ export const ogScrape = async (url: string): Promise<ScrapeDataResponse> => {
 	} catch (_err) {}
 
 	return data;
+};
+
+/**
+ * og contient les fonctionnalités Open Graph.
+ */
+export const og = {
+	scrape,
 };
