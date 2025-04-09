@@ -7,7 +7,7 @@ import { decode } from "html-entities";
 import Parser from "rss-parser";
 import "server-only";
 
-const USER_AGENT = "RSS bocal.dnncry.dev/1.0";
+const USER_AGENT = "RSS https://bocal.fyi/1.0";
 const SYNC_BATCH_SIZE = 10;
 
 class FeedCannotBeProcessed extends Error {
