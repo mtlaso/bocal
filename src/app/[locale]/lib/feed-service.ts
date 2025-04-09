@@ -1,11 +1,11 @@
-import { parseURL } from "@/app/[locale]/lib/parse-url";
-import { sanitizeHTML } from "@/app/[locale]/lib/sanitize-html";
+import { parsing } from "@/app/[locale]/lib/parsing";
 import { FeedErrorType, FeedStatusType } from "@/app/[locale]/lib/types";
 import { db } from "@/db/db";
 import { type Feed, MAX_FEED_PER_USER, feeds, feedsContent } from "@/db/schema";
 import { eq, sql } from "drizzle-orm";
 import { decode } from "html-entities";
 import Parser from "rss-parser";
+import "server-only";
 
 const USER_AGENT = "RSS bocal.dnncry.dev/1.0";
 const SYNC_BATCH_SIZE = 10;
@@ -53,17 +53,19 @@ export async function parse(url: string): Promise<ParseResponse> {
 
 		const content = feed.items.map((item) => {
 			return {
-				title: decode(sanitizeHTML(item.title ?? parseURL(url))),
+				title: decode(
+					parsing.sanitizeHTML(item.title ?? parsing.readableUrl(url)),
+				),
 				url: item.link ?? url,
 				content: decode(
-					sanitizeHTML(item.content ?? item.contentSnippet ?? ""),
+					parsing.sanitizeHTML(item.content ?? item.contentSnippet ?? ""),
 				),
 				date: new Date(item.isoDate ?? item.pubDate ?? new Date()),
 			};
 		});
 
 		return {
-			title: feed.title ?? parseURL(url),
+			title: feed.title ?? parsing.readableUrl(url),
 			content,
 		};
 	} catch (err) {

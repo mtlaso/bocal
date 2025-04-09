@@ -3,7 +3,7 @@ import {
 	markFeedContentAsRead,
 	markFeedContentAsUnread,
 } from "@/app/[locale]/lib/actions";
-import { parseURL } from "@/app/[locale]/lib/parse-url";
+import { parsing } from "@/app/[locale]/lib/parsing";
 import {
 	SELECTED_FEED_DEFAULT,
 	searchParamsParsers,
@@ -131,8 +131,7 @@ const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
 				<h1 className="tracking-tight text-xl font-semibold">{item.title}</h1>
 				<div>
 					<p className="text-primary font-medium">
-						{/* {removeWWW(new URL(item.url).host)} */}
-						{parseURL(item.url)}
+						{parsing.readableUrl(item.url)}
 					</p>
 					<p className="text-muted-foreground">
 						{new Date(item.date).toLocaleDateString(locale)}
