@@ -29,11 +29,7 @@ export default async function BaseLayout({
 					</ThemeProvider>
 				</NextIntlClientProvider>
 			</body>
-			<Script
-				defer
-				data-site-id="bocal.dnncrye.dev"
-				src="https://assets.onedollarstats.com/tracker.js"
-			/>
+			<Script defer src="https://assets.onedollarstats.com/stonks.js" />
 		</html>
 	);
 }
