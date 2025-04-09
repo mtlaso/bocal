@@ -5,7 +5,7 @@ Bocal est une application qui combine un lecteur RSS et un gestionnaire de liens
 Elle permet aux utilisateurs de suivre leurs sites préférés et d'organiser leurs liens dans un seul endroit.
 
 # Demo
-Lien: [bocal.dnncrye.dev](https://bocal.dnncrye.dev)
+Lien: [bocal.fyi](https://bocal.fyi)
 
 # Stack
 
