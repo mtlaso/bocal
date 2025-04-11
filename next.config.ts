@@ -14,6 +14,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  experimental: {
+    ppr: "incremental"
+  }
 
 } satisfies NextConfig;
 

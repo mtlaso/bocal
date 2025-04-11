@@ -1,8 +1,11 @@
 import { Settings } from "@/app/[locale]/ui/settings/settings";
-import { auth } from "@/auth";
+import { SettingsSkeleton } from "@/app/[locale]/ui/skeletons";
 import { Separator } from "@/components/ui/separator";
 import type { Metadata } from "next";
+import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
+import { Suspense } from "react";
+export const experimental_ppr = true;
 
 export async function generateMetadata({
 	params,
@@ -18,12 +21,8 @@ export async function generateMetadata({
 	} satisfies Metadata;
 }
 
-export default async function Page(): Promise<React.JSX.Element> {
-	const t = await getTranslations("settings");
-	const user = await auth();
-	if (!user?.user) {
-		throw new Error("errors.notSignedIn");
-	}
+export default function Page(): React.JSX.Element {
+	const t = useTranslations("settings");
 
 	return (
 		<>
@@ -33,11 +32,9 @@ export default async function Page(): Promise<React.JSX.Element> {
 
 			<Separator className="my-4" />
 
-			<Settings
-				email={user.user.email ?? null}
-				name={user.user.name ?? null}
-				feedContentLimit={user.user.feedContentLimit}
-			/>
+			<Suspense fallback={<SettingsSkeleton />}>
+				<Settings />
+			</Suspense>
 		</>
 	);
 }
