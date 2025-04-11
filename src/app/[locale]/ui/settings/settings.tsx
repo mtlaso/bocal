@@ -1,28 +1,25 @@
-"use client";
-import { FeedContentLimitForm } from "@/app/[locale]/ui/settings/view/feed-content-limit-form";
+import { ViewSection } from "@/app/[locale]/ui/settings/view/view-section";
 import { SPACING } from "@/app/[locale]/ui/spacing";
+import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
+import { redirect } from "next/navigation";
 import { TbMail, TbUser } from "react-icons/tb";
 
-type Props = {
-	email: string | null;
-	name?: string | null;
-	feedContentLimit: number;
-};
+export async function Settings(): Promise<React.JSX.Element> {
+	const user = await auth();
+	if (!user) return redirect("/login");
 
-export function Settings({
-	email,
-	name,
-	feedContentLimit,
-}: Props): React.JSX.Element {
 	return (
 		<section>
-			<ProfileSection name={name ?? ""} email={email ?? ""} />
-			<ViewSection feedContentLimit={feedContentLimit} />
+			<ProfileSection
+				name={user.user.name ?? ""}
+				email={user.user.email ?? ""}
+			/>
+			<ViewSection feedContentLimit={user.user.feedContentLimit} />
 			<ExportDataSection />
 			<DeleteAccountSection />
 		</section>
@@ -75,22 +72,6 @@ const ProfileSection = ({
 						<TbUser className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
 					</div>
 				</div>
-			</div>
-		</section>
-	);
-};
-
-const ViewSection = ({
-	feedContentLimit,
-}: { feedContentLimit: number }): React.JSX.Element => {
-	const t = useTranslations("settings.viewSection");
-
-	return (
-		<section className={cn("mb-12", SPACING.LG)}>
-			<h1 className="text-xl font-medium">{t("title")}</h1>
-
-			<div>
-				<FeedContentLimitForm feedContentLimit={feedContentLimit} />
 			</div>
 		</section>
 	);

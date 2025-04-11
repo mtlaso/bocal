@@ -8,10 +8,12 @@ import { SortLinks } from "@/app/[locale]/ui/sort-links";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
 import type { Metadata } from "next";
+import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { AddLinkForm } from "../../ui/dashboard/add-link-form";
 import { Links } from "../../ui/links";
+export const experimental_ppr = true;
 
 export async function generateMetadata({
 	params,
@@ -27,8 +29,9 @@ export async function generateMetadata({
 	} satisfies Metadata;
 }
 
-export default async function Page(): Promise<React.JSX.Element> {
-	const t = await getTranslations("dashboard");
+export default function Page(): React.JSX.Element {
+	// await wait(10000);
+	const t = useTranslations("dashboard");
 
 	return (
 		<>

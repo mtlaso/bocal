@@ -2,12 +2,14 @@ import { dal } from "@/app/[locale]/lib/dal";
 import { AddFeedForm } from "@/app/[locale]/ui/feed/add-feed-form";
 import { FeedInfoMenu } from "@/app/[locale]/ui/feed/feed-info-menu";
 import { Feeds } from "@/app/[locale]/ui/feed/feeds";
-import { FeedInfoSkeleton, LinksSkeleton } from "@/app/[locale]/ui/skeletons";
+import { FeedInfoSkeleton, FeedsSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
 import type { Metadata } from "next";
+import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
+export const experimental_ppr = true;
 
 export async function generateMetadata({
 	params,
@@ -23,8 +25,8 @@ export async function generateMetadata({
 	} satisfies Metadata;
 }
 
-export default async function Page(): Promise<React.JSX.Element> {
-	const t = await getTranslations("rssFeed");
+export default function Page(): React.JSX.Element {
+	const t = useTranslations("rssFeed");
 
 	return (
 		<>
@@ -43,7 +45,7 @@ export default async function Page(): Promise<React.JSX.Element> {
 
 			<Separator className="my-4" />
 
-			<Suspense fallback={<LinksSkeleton />}>
+			<Suspense fallback={<FeedsSkeleton />}>
 				<FeedsWrapper />
 			</Suspense>
 		</>

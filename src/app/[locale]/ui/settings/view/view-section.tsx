@@ -1,3 +1,4 @@
+"use client";
 import { setFeedContentLimit } from "@/app/[locale]/lib/actions";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Label } from "@/components/ui/label";
@@ -8,9 +9,24 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { startTransition, useOptimistic } from "react";
 import { toast } from "sonner";
+
+export function ViewSection({
+	feedContentLimit,
+}: { feedContentLimit: number }): React.JSX.Element {
+	const t = useTranslations("settings.viewSection");
+
+	return (
+		<section className={cn("mb-12", SPACING.LG)}>
+			<h1 className="text-xl font-medium">{t("title")}</h1>
+
+			<FeedContentLimitForm feedContentLimit={feedContentLimit} />
+		</section>
+	);
+}
 
 export function FeedContentLimitForm({
 	feedContentLimit,
