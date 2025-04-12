@@ -1,6 +1,6 @@
 "use client";
 
-import { searchParamsParsers } from "@/app/[locale]/lib/stores/search-params";
+import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,8 +10,12 @@ import { useRef, useState } from "react";
 import { TbSearch, TbX } from "react-icons/tb";
 
 export function SearchLinksDesktop(): React.JSX.Element {
-	const [{ searchedLink }, setSearchedLink] =
-		useQueryStates(searchParamsParsers);
+	const [{ searchedLink }, setSearchParamsState] = useQueryStates(
+		searchParamsState.searchParams,
+		{
+			urlKeys: searchParamsState.urlKeys,
+		},
+	);
 
 	const t = useTranslations("navbar.search-links");
 	const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +29,7 @@ export function SearchLinksDesktop(): React.JSX.Element {
 	const handleClose = (): void => {
 		setIsOpen(false);
 		inputRef.current?.blur();
-		setSearchedLink({ searchedLink: "" });
+		setSearchParamsState({ searchedLink: "" });
 		if (inputRef.current?.value) {
 			inputRef.current.value = "";
 		}
@@ -67,7 +71,7 @@ export function SearchLinksDesktop(): React.JSX.Element {
 						onKeyDown={handleCloseWithEscape}
 						value={searchedLink}
 						onChange={(e): Promise<URLSearchParams> =>
-							setSearchedLink({ searchedLink: e.currentTarget.value })
+							setSearchParamsState({ searchedLink: e.currentTarget.value })
 						}
 					/>
 
@@ -77,7 +81,7 @@ export function SearchLinksDesktop(): React.JSX.Element {
 						type="button"
 						onClick={(): Promise<URLSearchParams> | undefined => {
 							if (inputRef.current?.value?.length)
-								return setSearchedLink({ searchedLink: "" });
+								return setSearchParamsState({ searchedLink: "" });
 							handleClose();
 						}}
 						className="absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500"
@@ -91,8 +95,12 @@ export function SearchLinksDesktop(): React.JSX.Element {
 }
 
 export function SearchLinksMobile(): React.JSX.Element {
-	const [{ searchedLink }, setSearchedLink] =
-		useQueryStates(searchParamsParsers);
+	const [{ searchedLink }, setSearchParamsState] = useQueryStates(
+		searchParamsState.searchParams,
+		{
+			urlKeys: searchParamsState.urlKeys,
+		},
+	);
 	const t = useTranslations("navbar.search-links");
 	return (
 		<div className="md:hidden">
@@ -107,7 +115,7 @@ export function SearchLinksMobile(): React.JSX.Element {
 					placeholder={t("search")}
 					value={searchedLink}
 					onChange={(e): Promise<URLSearchParams> =>
-						setSearchedLink({ searchedLink: e.currentTarget.value })
+						setSearchParamsState({ searchedLink: e.currentTarget.value })
 					}
 				/>
 
@@ -116,7 +124,7 @@ export function SearchLinksMobile(): React.JSX.Element {
 				<button
 					type="button"
 					onClick={(_e): Promise<URLSearchParams> =>
-						setSearchedLink({ searchedLink: "" })
+						setSearchParamsState({ searchedLink: "" })
 					}
 					className="absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500"
 				>

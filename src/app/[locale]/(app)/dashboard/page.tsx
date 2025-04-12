@@ -30,7 +30,6 @@ export async function generateMetadata({
 }
 
 export default function Page(): React.JSX.Element {
-	// await wait(10000);
 	const t = useTranslations("dashboard");
 
 	return (
