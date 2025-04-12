@@ -93,6 +93,7 @@
 		"title": "Connectez-vous à pour continuer.",
 		"google": "Continuer avec Google",
 		"github": "Continuer avec GitHub",
+		"redirecting": "Redirection en cours...",
 		"errors": {
 			"title": "Erreur d'authentification",
 			"CredentialsSignin": "Identifiants invalides",
@@ -105,8 +106,10 @@
 				"title": "Erreur inattendue",
 				"description": "Une erreur inattendue s'est produite. Veuillez réessayer plus tard."
 			}
-		},
-		"redirecting": "Redirection en cours..."
+		}
+	},
+	"logout": {
+		"loggingOut": "Déconnexion en cours..."
 	},
 	"dashboard": {
 		"links": "Liens",

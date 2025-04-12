@@ -92,6 +92,7 @@
 		"title": "Log in to to continue.",
 		"google": "Continue with Google",
 		"github": "Continue with GitHub",
+		"redirecting": "Redirecting...",
 		"errors": {
 			"title": "Authentication Error",
 			"CredentialsSignin": "Invalid credentials",
@@ -104,8 +105,10 @@
 				"title": "Unexpected Error",
 				"description": "An unexpected error occurred. Please try again later."
 			}
-		},
-		"redirecting": "Redirecting..."
+		}
+	},
+	"logout": {
+		"loggingOut": "Logging out..."
 	},
 	"dashboard": {
 		"links": "Links",
