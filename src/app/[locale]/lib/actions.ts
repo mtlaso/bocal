@@ -25,6 +25,7 @@ import {
 import { and, eq } from "drizzle-orm";
 import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 type State<T, E extends string = keyof T & string> = {
 	errors?: { [key in E]?: string[] };
@@ -36,8 +37,9 @@ type State<T, E extends string = keyof T & string> = {
 export async function authenticate(
 	provider: string,
 ): Promise<string | undefined> {
+	let redirectUrl: null | string = null;
 	try {
-		await signIn(provider, { redirectTo: "/dashboard" });
+		redirectUrl = await signIn(provider, { redirect: false });
 	} catch (err) {
 		logger.error(err);
 		if (err instanceof AuthError) {
@@ -58,6 +60,11 @@ export async function authenticate(
 		}
 
 		throw err;
+	}
+
+	if (redirectUrl) {
+		// 'redirect' ne peux pas être utilisé dans un try-catch.
+		redirect(redirectUrl);
 	}
 }
 

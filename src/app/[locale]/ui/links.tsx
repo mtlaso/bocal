@@ -69,7 +69,7 @@ export function Links({ links }: Props): React.JSX.Element {
 									src={item.ogImageURL}
 									width={500}
 									height={500}
-									priority={false}
+									priority={true}
 									alt={t("ogImageAlt")}
 								/>
 							)}
