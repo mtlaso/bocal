@@ -5,7 +5,7 @@ Bocal est une application qui combine un lecteur RSS et un gestionnaire de liens
 Elle permet aux utilisateurs de suivre leurs sites préférés et d'organiser leurs liens dans un seul endroit.
 
 # Demo
-Lien: [bocal.fyi](https://bocal.fyi)
+Lien : [bocal.fyi](https://bocal.fyi)
 
 # Stack
 
@@ -89,7 +89,7 @@ DATABASE_URL="postgres://.../bocal" (voir docker-compose.yml)
 Bocal is an application that combines an RSS reader with a bookmark manager. It allows users to follow their favorite websites and organize their links in one place.
 
 # Demo
-Link: [bocal.dnncrye.dev](https://bocal.dnncrye.dev)
+Link: [bocal.fyi](https://bocal.fyi)
 
 # Tech Stack
 
