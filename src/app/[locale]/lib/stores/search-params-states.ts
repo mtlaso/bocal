@@ -15,8 +15,8 @@ const searchParams = {
 		Object.values(SortOptions),
 	).withDefault(SortOptions.BY_DATE_DESC),
 	/**
-  Could either be a feed ID (as string) or "all".
-  */
+	 * Soit un ID de flux ou "all".
+	 */
 	selectedFeed: parseAsString.withDefault(DEFAULT_FEED),
 };
 
