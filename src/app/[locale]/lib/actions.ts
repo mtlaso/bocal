@@ -63,7 +63,7 @@ export async function authenticate(
 	}
 
 	if (redirectUrl) {
-		// 'redirect' ne peux pas être utilisé dans un try-catch.
+		// 'redirect' ne peut pas être utilisé dans un try-catch.
 		redirect(redirectUrl);
 	}
 }
