@@ -104,7 +104,8 @@
 				"title": "Unexpected Error",
 				"description": "An unexpected error occurred. Please try again later."
 			}
-		}
+		},
+		"redirecting": "Redirecting..."
 	},
 	"dashboard": {
 		"links": "Links",

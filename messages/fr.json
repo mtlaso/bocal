@@ -105,7 +105,8 @@
 				"title": "Erreur inattendue",
 				"description": "Une erreur inattendue s'est produite. Veuillez réessayer plus tard."
 			}
-		}
+		},
+		"redirecting": "Redirection en cours..."
 	},
 	"dashboard": {
 		"links": "Liens",
