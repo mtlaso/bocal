@@ -1,7 +1,7 @@
 "use client";
 
 import { parsing } from "@/app/[locale]/lib/parsing";
-import { searchParamsParsers } from "@/app/[locale]/lib/stores/search-params";
+import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
 import { SortOptions } from "@/app/[locale]/lib/types";
 import {
 	Card,
@@ -27,7 +27,12 @@ type Props = {
 };
 
 export function Links({ links }: Props): React.JSX.Element {
-	const [{ sortLinks, searchedLink }] = useQueryStates(searchParamsParsers);
+	const [{ sortLinks, searchedLink }] = useQueryStates(
+		searchParamsState.searchParams,
+		{
+			urlKeys: searchParamsState.urlKeys,
+		},
+	);
 	const t = useTranslations("dashboard");
 
 	const items = filter(links, sortLinks, searchedLink);
@@ -53,7 +58,7 @@ export function Links({ links }: Props): React.JSX.Element {
 				<Card
 					key={item.id}
 					className={
-						"grid grid-rows-subgrid row-span-3 col-span-1 pt-0 pl-0 hover:shadow-md transition-all duration-200 break-all"
+						"grid grid-rows-subgrid row-span-3 col-span-1 pt-0 pl-0 hover:shadow-md transition-all duration-200 break-words"
 					}
 				>
 					<CardHeader className={"p-0"}>

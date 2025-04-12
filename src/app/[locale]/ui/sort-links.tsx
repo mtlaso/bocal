@@ -1,5 +1,5 @@
 "use client";
-import { searchParamsParsers } from "@/app/[locale]/lib/stores/search-params";
+import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
 import { SortOptions } from "@/app/[locale]/lib/types";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Button } from "@/components/ui/button";
@@ -40,12 +40,17 @@ export function SortLinks(): React.JSX.Element {
 
 function SortDesktop(): React.JSX.Element {
 	const t = useTranslations("navbar");
-	const [{ sortLinks }, setSortLinks] = useQueryStates(searchParamsParsers);
+	const [{ sortLinks }, setSearchParamsState] = useQueryStates(
+		searchParamsState.searchParams,
+		{
+			urlKeys: searchParamsState.urlKeys,
+		},
+	);
 
 	return (
 		<Select
 			onValueChange={(e): void => {
-				setSortLinks({ sortLinks: e as SortOptions });
+				setSearchParamsState({ sortLinks: e as SortOptions });
 			}}
 			value={sortLinks}
 		>
@@ -66,7 +71,12 @@ function SortDesktop(): React.JSX.Element {
 
 function SortMobile(): React.JSX.Element {
 	const t = useTranslations("navbar");
-	const [{ sortLinks }, setSortLinks] = useQueryStates(searchParamsParsers);
+	const [{ sortLinks }, setSearchParamsState] = useQueryStates(
+		searchParamsState.searchParams,
+		{
+			urlKeys: searchParamsState.urlKeys,
+		},
+	);
 
 	return (
 		<Drawer>
@@ -87,7 +97,7 @@ function SortMobile(): React.JSX.Element {
 							className={`${SPACING.SM}`}
 							value={sortLinks}
 							onValueChange={(e): void => {
-								setSortLinks({ sortLinks: e as SortOptions });
+								setSearchParamsState({ sortLinks: e as SortOptions });
 							}}
 						>
 							<div className="flex items-center space-x-2">

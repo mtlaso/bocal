@@ -1,8 +1,5 @@
 "use client";
-import {
-	SELECTED_FEED_DEFAULT,
-	searchParamsParsers,
-} from "@/app/[locale]/lib/stores/search-params";
+import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
 import { FeedInfoContextMenu } from "@/app/[locale]/ui/feed/feed-info-context-menu";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
@@ -108,21 +105,23 @@ function FeedMenuItemAll({
 	totalContent: number;
 }): React.JSX.Element {
 	const t = useTranslations("rssFeed.info");
-	const [{ selectedFeed }, setSelectedFeed] =
-		useQueryStates(searchParamsParsers);
+	const [{ selectedFeed }, setSearchParamsState] = useQueryStates(
+		searchParamsState.searchParams,
+		{ urlKeys: searchParamsState.urlKeys },
+	);
 
 	return (
 		<button
 			type="button"
 			onClick={(): void => {
-				setSelectedFeed({ selectedFeed: SELECTED_FEED_DEFAULT });
+				setSearchParamsState({ selectedFeed: searchParamsState.DEFAULT_FEED });
 			}}
 			className={cn(
 				navigationMenuTriggerStyle(),
 				`grid grid-cols-[5%_1fr_15%] gap-4
 				cursor-pointer w-full px6! py2! focus:bg-background`,
 				{
-					"bg-accent!": selectedFeed === SELECTED_FEED_DEFAULT,
+					"bg-accent!": selectedFeed === searchParamsState.DEFAULT_FEED,
 				},
 			)}
 		>
@@ -142,14 +141,16 @@ function FeedMenuItem({
 	feed: UserFeedWithContent;
 	onClick?: () => void;
 }): React.JSX.Element {
-	const [{ selectedFeed }, setSelectedFeed] =
-		useQueryStates(searchParamsParsers);
+	const [{ selectedFeed }, setSearchParamsState] = useQueryStates(
+		searchParamsState.searchParams,
+		{ urlKeys: searchParamsState.urlKeys },
+	);
 
 	return (
 		<button
 			type="button"
 			onClick={(): void => {
-				setSelectedFeed({ selectedFeed: feed.id.toString() });
+				setSearchParamsState({ selectedFeed: feed.id.toString() });
 				onClick?.();
 			}}
 			className={cn(

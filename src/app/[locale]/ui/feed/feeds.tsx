@@ -4,10 +4,7 @@ import {
 	markFeedContentAsUnread,
 } from "@/app/[locale]/lib/actions";
 import { parsing } from "@/app/[locale]/lib/parsing";
-import {
-	SELECTED_FEED_DEFAULT,
-	searchParamsParsers,
-} from "@/app/[locale]/lib/stores/search-params";
+import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
 import { FeedsContextMenu } from "@/app/[locale]/ui/feed/feeds-context-menu";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -25,15 +22,17 @@ type Props = {
 };
 
 export function Feeds({ feeds }: Props): React.JSX.Element {
-	const [{ selectedFeed }] = useQueryStates(searchParamsParsers);
+	const [{ selectedFeed }] = useQueryStates(searchParamsState.searchParams, {
+		urlKeys: searchParamsState.urlKeys,
+	});
 
 	const items = feeds.filter((feed) => {
-		if (selectedFeed === SELECTED_FEED_DEFAULT) return true;
+		if (selectedFeed === searchParamsState.DEFAULT_FEED) return true;
 		return feed.id.toString() === selectedFeed;
 	});
 
 	return (
-		<section className={cn("grid break-all", SPACING.LG)}>
+		<section className={cn("grid break-words", SPACING.LG)}>
 			{items.map((item) => {
 				return item.contents.map((content) => (
 					<Item item={content} key={`${content.id}`} />
@@ -128,7 +127,9 @@ const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
 				href={item.url}
 				target="_blank"
 			>
-				<h1 className="tracking-tight text-xl font-semibold">{item.title}</h1>
+				<h1 className="tracking-tight text-xl font-semibold line-clamp-3">
+					{item.title}
+				</h1>
 				<div>
 					<p className="text-primary font-medium">
 						{parsing.readableUrl(item.url)}
