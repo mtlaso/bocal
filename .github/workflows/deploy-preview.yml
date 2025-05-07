@@ -114,7 +114,7 @@ jobs:
           echo "preview_url=$VERCEL_URL" >> $GITHUB_OUTPUT
 
       - name: Comment on PR
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@v3
         with:
           message: |
             Vercel Preview URL 🚀 : ${{ steps.deploy.outputs.preview_url }}
