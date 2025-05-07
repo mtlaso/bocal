@@ -1,3 +1,4 @@
+import { logger } from "@/app/[locale]/lib/logging";
 import { parsing } from "@/app/[locale]/lib/parsing";
 import { FeedErrorType, FeedStatusType } from "@/app/[locale]/lib/types";
 import { db } from "@/db/db";
@@ -95,17 +96,22 @@ async function triggerBackgroundSync(outdatedFeeds: Feed[]): Promise<void> {
 					})
 					.where(eq(feeds.id, feed.id));
 
-				await tx.delete(feedsContent).where(eq(feedsContent.feedId, feed.id));
+				// await tx.delete(feedsContent).where(eq(feedsContent.feedId, feed.id));
 
-				await tx.insert(feedsContent).values(
-					content.map((c) => ({
-						feedId: feed.id,
-						url: c.url,
-						title: c.title,
-						content: c.content,
-						date: c.date,
-					})),
-				);
+				await tx
+					.insert(feedsContent)
+					.values(
+						content.map((c) => ({
+							feedId: feed.id,
+							url: c.url,
+							title: c.title,
+							content: c.content,
+							date: c.date,
+						})),
+					)
+					.onConflictDoNothing();
+
+				logger.info(`Synced ${content.length} items for feed ${feed.id}`);
 			});
 		} catch (err) {
 			let errMsg = "errors.unexpected";

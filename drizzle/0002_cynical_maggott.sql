@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX IF NOT EXISTS "url_feedid" ON "feeds_content" USING btree ("url","feedId");

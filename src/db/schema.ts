@@ -8,6 +8,7 @@ import {
 	primaryKey,
 	text,
 	timestamp,
+	uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import type { AdapterAccountType } from "next-auth/adapters";
@@ -83,17 +84,21 @@ export const feeds = pgTable("feeds", {
 /**
  * feedsContent contains the content of the feeds.
  */
-export const feedsContent = pgTable("feeds_content", {
-	id: integer().primaryKey().generatedAlwaysAsIdentity(),
-	feedId: integer()
-		.notNull()
-		.references(() => feeds.id, { onDelete: "cascade" }),
-	date: timestamp({ mode: "date" }).notNull(),
-	url: text().notNull(),
-	title: text().notNull(),
-	content: text().notNull(),
-	createdAt: timestamp().defaultNow().notNull(),
-});
+export const feedsContent = pgTable(
+	"feeds_content",
+	{
+		id: integer().primaryKey().generatedAlwaysAsIdentity(),
+		feedId: integer()
+			.notNull()
+			.references(() => feeds.id, { onDelete: "cascade" }),
+		date: timestamp({ mode: "date" }).notNull(),
+		url: text().notNull(),
+		title: text().notNull(),
+		content: text().notNull(),
+		createdAt: timestamp().defaultNow().notNull(),
+	},
+	(table) => [uniqueIndex("url_feedid").on(table.url, table.feedId)],
+);
 
 /**
  * userFeeds contains the feeds that a user is following.
