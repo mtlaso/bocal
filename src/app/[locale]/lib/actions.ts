@@ -43,7 +43,7 @@ export async function authenticate(
 	} catch (err) {
 		logger.error(err);
 		if (err instanceof AuthError) {
-			switch (err.type) {
+			switch (err.message) {
 				case "CredentialsSignin":
 					return "errors.CredentialsSignin";
 				case "OAuthSignInError":
