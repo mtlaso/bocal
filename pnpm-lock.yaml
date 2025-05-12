@@ -103,8 +103,8 @@ importers:
         specifier: 15.3.1-canary.4
         version: 15.3.1-canary.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       next-auth:
-        specifier: 5.0.0-beta.25
-        version: 5.0.0-beta.25(next@15.3.1-canary.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
+        specifier: 5.0.0-beta.28
+        version: 5.0.0-beta.28(next@15.3.1-canary.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
       next-intl:
         specifier: ^4.1.0
         version: 4.1.0(next@15.3.1-canary.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(typescript@5.8.3)
@@ -194,8 +194,8 @@ packages:
   '@asamuzakjp/css-color@3.1.7':
     resolution: {integrity: sha512-Ok5fYhtwdyJQmU1PpEv6Si7Y+A4cYb8yNM9oiIJC9TzXPMuN9fvdonKJqcnz9TbFqV6bQ8z0giRq0iaOpGZV2g==}
 
-  '@auth/core@0.37.2':
-    resolution: {integrity: sha512-kUvzyvkcd6h1vpeMAojK2y7+PAV5H+0Cc9+ZlKYDFhDY31AlvsB+GW5vNO4qE3Y07KeQgvNO9U0QUx/fN62kBw==}
+  '@auth/core@0.39.0':
+    resolution: {integrity: sha512-jusviw/sUSfAh6S/wjY5tRmJOq0Itd3ImF+c/b4HB9DfmfChtcfVJTNJeqCeExeCG8oh4PBKRsMQJsn2W6NhFQ==}
     peerDependencies:
       '@simplewebauthn/browser': ^9.0.1
       '@simplewebauthn/server': ^9.0.2
@@ -208,8 +208,8 @@ packages:
       nodemailer:
         optional: true
 
-  '@auth/core@0.39.0':
-    resolution: {integrity: sha512-jusviw/sUSfAh6S/wjY5tRmJOq0Itd3ImF+c/b4HB9DfmfChtcfVJTNJeqCeExeCG8oh4PBKRsMQJsn2W6NhFQ==}
+  '@auth/core@0.39.1':
+    resolution: {integrity: sha512-McD8slui0oOA1pjR5sPjLPl5Zm//nLP/8T3kr8hxIsvNLvsiudYvPHhDFPjh1KcZ2nFxCkZmP6bRxaaPd/AnLA==}
     peerDependencies:
       '@simplewebauthn/browser': ^9.0.1
       '@simplewebauthn/server': ^9.0.2
@@ -1296,9 +1296,6 @@ packages:
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders || >=4.0.0-alpha.20 || >=4.0.0-beta.1'
 
-  '@types/cookie@0.6.0':
-    resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
-
   '@types/debug@4.1.12':
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
 
@@ -1447,10 +1444,6 @@ packages:
 
   comma-separated-tokens@2.0.3:
     resolution: {integrity: sha512-Fu4hJdvzeylCfQPp9SGWidpzrMs7tTrlu6Vb8XGaRGck8QSNZJJp538Wrb60Lax4fPwR64ViY468OIUTbRlGZg==}
-
-  cookie@0.7.1:
-    resolution: {integrity: sha512-6DnInpx7SJ2AK3+CTUE/ZM0vWTUboZCegxhC2xiIydHR9jNuTAASBrfEpHhiGOZw/nX51bHt6YQl8jsGo4y/0w==}
-    engines: {node: '>= 0.6'}
 
   css-select@5.1.0:
     resolution: {integrity: sha512-nwoRF1rvRRnnCqqY7updORDsuqKzqYJ28+oSMaJMMgOauh3fvwHqMS7EZpIPqK8GL+g9mKxF1vP/ZjSeNjEVHg==}
@@ -1776,9 +1769,6 @@ packages:
     resolution: {integrity: sha512-rg9zJN+G4n2nfJl5MW3BMygZX56zKPNVEYYqq7adpmMh4Jn2QNEwhvQlFy6jPVdcod7txZtKHWnyZiA3a0zP7A==}
     hasBin: true
 
-  jose@5.10.0:
-    resolution: {integrity: sha512-s+3Al/p9g32Iq+oqXxkW//7jk2Vig6FF1CFqzVXoTUXt2qz89YWbL+OwS17NFYEvxC35n0FKeGO2LGYSxeM2Gg==}
-
   jose@6.0.11:
     resolution: {integrity: sha512-QxG7EaliDARm1O1S8BGakqncGT9s25bKL1WSf6/oa17Tkqwi8D2ZNglqCF+DsYF88/rV66Q/Q2mFAy697E1DUg==}
 
@@ -2025,8 +2015,8 @@ packages:
     resolution: {integrity: sha512-8Ofs/AUQh8MaEcrlq5xOX0CQ9ypTF5dl78mjlMNfOK08fzpgTHQRQPBxcPlEtIw0yRpws+Zo/3r+5WRby7u3Gg==}
     engines: {node: '>= 0.6'}
 
-  next-auth@5.0.0-beta.25:
-    resolution: {integrity: sha512-2dJJw1sHQl2qxCrRk+KTQbeH+izFbGFPuJj5eGgBZFYyiYYtvlrBeUw1E/OJJxTRjuxbSYGnCTkUIRsIIW0bog==}
+  next-auth@5.0.0-beta.28:
+    resolution: {integrity: sha512-2RDR1h3DJb4nizcd5UBBwC2gtyP7j/jTvVLvEtDaFSKUWNfou3Gek2uTNHSga/Q4I/GF+OJobA4mFbRaWJgIDQ==}
     peerDependencies:
       '@simplewebauthn/browser': ^9.0.1
       '@simplewebauthn/server': ^9.0.2
@@ -2216,24 +2206,13 @@ packages:
   postgres-range@1.1.4:
     resolution: {integrity: sha512-i/hbxIE9803Alj/6ytL7UHQxRvZkI9O4Sy+J3HGc4F4oo/2eQAjTSNJ0bfxyse3bH0nuVesCk+3IRLaMtG3H6w==}
 
-  preact-render-to-string@5.2.3:
-    resolution: {integrity: sha512-aPDxUn5o3GhWdtJtW0svRC2SS/l8D9MAgo2+AWml+BhDImb27ALf04Q2d+AHqUUOc6RdSXFIBVa2gxzgMKgtZA==}
-    peerDependencies:
-      preact: '>=10'
-
   preact-render-to-string@6.5.11:
     resolution: {integrity: sha512-ubnauqoGczeGISiOh6RjX0/cdaF8v/oDXIjO85XALCQjwQP+SB4RDXXtvZ6yTYSjG+PC1QRP2AhPgCEsM2EvUw==}
     peerDependencies:
       preact: '>=10'
 
-  preact@10.11.3:
-    resolution: {integrity: sha512-eY93IVpod/zG3uMF22Unl8h9KkrcKIRs2EGar8hwLZZDU1lkjph303V9HZBwufh2s736U6VXuhD109LYqPoffg==}
-
   preact@10.24.3:
     resolution: {integrity: sha512-Z2dPnBnMUfyQfSQ+GBdsGa16hz35YmLmtTLhM169uW944hYL6xzTYkJjC07j+Wosz733pMWx0fgON3JNw1jJQA==}
-
-  pretty-format@3.8.0:
-    resolution: {integrity: sha512-WuxUnVtlWL1OfZFQFuqvnvs6MiAGk9UNsBostyBOB0Is9wb5uRESevA6rnl/rkksXaGX3GzZhPup5d6Vp1nFew==}
 
   property-information@7.0.0:
     resolution: {integrity: sha512-7D/qOz/+Y4X/rzSB6jKxKUsQnphO046ei8qxG59mtM3RG3DHgTK81HrxrmoDVINJb8NKT5ZsRbwHvQ6B68Iyhg==}
@@ -2585,17 +2564,15 @@ snapshots:
       '@csstools/css-tokenizer': 3.0.3
       lru-cache: 10.4.3
 
-  '@auth/core@0.37.2':
+  '@auth/core@0.39.0':
     dependencies:
       '@panva/hkdf': 1.2.1
-      '@types/cookie': 0.6.0
-      cookie: 0.7.1
-      jose: 5.10.0
+      jose: 6.0.11
       oauth4webapi: 3.5.1
-      preact: 10.11.3
-      preact-render-to-string: 5.2.3(preact@10.11.3)
+      preact: 10.24.3
+      preact-render-to-string: 6.5.11(preact@10.24.3)
 
-  '@auth/core@0.39.0':
+  '@auth/core@0.39.1':
     dependencies:
       '@panva/hkdf': 1.2.1
       jose: 6.0.11
@@ -3507,8 +3484,6 @@ snapshots:
       postcss-selector-parser: 6.0.10
       tailwindcss: 4.1.5
 
-  '@types/cookie@0.6.0': {}
-
   '@types/debug@4.1.12':
     dependencies:
       '@types/ms': 2.1.0
@@ -3664,8 +3639,6 @@ snapshots:
     optional: true
 
   comma-separated-tokens@2.0.3: {}
-
-  cookie@0.7.1: {}
 
   css-select@5.1.0:
     dependencies:
@@ -4009,8 +3982,6 @@ snapshots:
       - utf-8-validate
 
   jiti@2.4.2: {}
-
-  jose@5.10.0: {}
 
   jose@6.0.11: {}
 
@@ -4429,9 +4400,9 @@ snapshots:
 
   negotiator@1.0.0: {}
 
-  next-auth@5.0.0-beta.25(next@15.3.1-canary.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0):
+  next-auth@5.0.0-beta.28(next@15.3.1-canary.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0):
     dependencies:
-      '@auth/core': 0.37.2
+      '@auth/core': 0.39.1
       next: 15.3.1-canary.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
 
@@ -4610,20 +4581,11 @@ snapshots:
 
   postgres-range@1.1.4: {}
 
-  preact-render-to-string@5.2.3(preact@10.11.3):
-    dependencies:
-      preact: 10.11.3
-      pretty-format: 3.8.0
-
   preact-render-to-string@6.5.11(preact@10.24.3):
     dependencies:
       preact: 10.24.3
 
-  preact@10.11.3: {}
-
   preact@10.24.3: {}
-
-  pretty-format@3.8.0: {}
 
   property-information@7.0.0: {}
 
