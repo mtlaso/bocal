@@ -1,13 +1,12 @@
 import { logger } from "@/app/[locale]/lib/logging";
 import { parsing } from "@/app/[locale]/lib/parsing";
-import { FeedErrorType, FeedStatusType } from "@/app/[locale]/lib/types";
-import { db } from "@/db/db";
 import {
-	type Feed,
-	MAX_FEEDS_PER_USER,
-	feeds,
-	feedsContent,
-} from "@/db/schema";
+	FeedErrorType,
+	FeedStatusType,
+	LENGTHS,
+} from "@/app/[locale]/lib/types";
+import { db } from "@/db/db";
+import { type Feed, feeds, feedsContent } from "@/db/schema";
 import { eq, sql } from "drizzle-orm";
 import { decode } from "html-entities";
 import Parser from "rss-parser";
@@ -55,7 +54,7 @@ export async function parse(url: string): Promise<ParseResponse> {
 			},
 		}).parseURL(url);
 
-		feed.items = feed.items.slice(0, MAX_FEEDS_PER_USER);
+		feed.items = feed.items.slice(0, LENGTHS.feeds.maxPerUser);
 
 		const content = feed.items.map((item) => {
 			return {

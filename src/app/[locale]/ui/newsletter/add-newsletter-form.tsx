@@ -16,6 +16,7 @@ import {
 	addNewsletter,
 } from "@/app/[locale]/lib/actions";
 import { useMediaQuery } from "@/app/[locale]/lib/hooks/use-media-query";
+import { LENGTHS } from "@/app/[locale]/lib/types";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -84,13 +85,14 @@ function NewsletterForm({
 		message: undefined,
 		data: undefined,
 	};
-	const [_state, _formAction, pending] = useActionState(
-		addNewsletter,
-		initialState,
-	);
+	const [state, action, pending] = useActionState(addNewsletter, initialState);
 
 	return (
-		<form className={cn(SPACING.LG, "grid", className)} id="form">
+		<form
+			action={action}
+			className={cn(SPACING.LG, "grid", className)}
+			id="form"
+		>
 			<div className={SPACING.SM}>
 				<Label htmlFor="title" className="block text-sm font-medium">
 					{t("addNewsletterForm.feedTitle")}
@@ -98,15 +100,35 @@ function NewsletterForm({
 
 				<div className="relative">
 					<Input
+						required
+						minLength={LENGTHS.newsletters.title.min}
+						maxLength={LENGTHS.newsletters.title.max}
 						className="block w-full cursor-pointer rounded-md py-2 pl-10 outline-2 placeholder:text-gray-500"
 						name="title"
 						autoFocus
 						id="title"
 						placeholder={t("addNewsletterForm.feedTitle")}
+						defaultValue={state.data?.title}
 					/>
 
 					<TbMail className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
 				</div>
+
+				{state.errors?.title?.map((err) => (
+					<p className="mt-2 text-sm text-destructive" key={err}>
+						{t(err)}
+					</p>
+				))}
+
+				{state?.message && (
+					<p className="mt-2 text-sm text-destructive">{t(state.message)}</p>
+				)}
+
+				{state?.successMessage && (
+					<p className="mt-2 text-sm text-green-500">
+						{t(state.successMessage)}
+					</p>
+				)}
 			</div>
 
 			<Button disabled={pending} type="submit" form="form">

@@ -124,6 +124,7 @@ const FeedForm = ({
 
 				<div className="relative">
 					<Input
+						required
 						className="block w-full cursor-pointer rounded-md py-2 pl-10 outline-2 placeholder:text-gray-500"
 						name="url"
 						autoFocus
@@ -140,6 +141,7 @@ const FeedForm = ({
 						{t(err)}
 					</p>
 				))}
+
 				{state?.message && (
 					<p className="mt-2 text-sm text-destructive">{t(state.message)}</p>
 				)}

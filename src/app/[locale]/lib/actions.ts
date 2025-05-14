@@ -2,12 +2,14 @@
 
 import { dal } from "@/app/[locale]/lib/dal";
 import { feedService } from "@/app/[locale]/lib/feed-service";
+import { LINKS } from "@/app/[locale]/lib/links";
 import { logger } from "@/app/[locale]/lib/logging";
 import { og } from "@/app/[locale]/lib/og";
+import { LENGTHS } from "@/app/[locale]/lib/types";
 import { signIn, signOut } from "@/auth";
 import { db } from "@/db/db";
 import {
-	MAX_FEEDS_PER_USER,
+	addNewsletterSchema,
 	deleteLinkSchema,
 	deleteUsersFeedsReadContentSchema,
 	feeds,
@@ -24,6 +26,7 @@ import {
 } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 import { AuthError } from "next-auth";
+import { getTranslations } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -275,7 +278,7 @@ export async function addFeed(
 				where: eq(usersFeeds.userId, user.user.id),
 			});
 
-			if (userFeeds.length >= MAX_FEEDS_PER_USER) {
+			if (userFeeds.length >= LENGTHS.feeds.maxPerUser) {
 				isMaxFeedsLimit = true;
 				return;
 			}
@@ -635,13 +638,28 @@ export async function archiveFeedContent(
 }
 
 export type AddNewsletterState = State<{
-	title: string;
+	title?: string;
 }>;
 
 export async function addNewsletter(
 	_currState: AddNewsletterState,
-	_formData: FormData,
+	formData: FormData,
 ): Promise<AddNewsletterState> {
-	revalidatePath("/d/settings");
-	return {};
+	const _t = await getTranslations("newsletter");
+	const validatedFields = addNewsletterSchema.safeParse({
+		title: formData.get("title"),
+	});
+
+	if (!validatedFields.success) {
+		return {
+			errors: validatedFields.error.flatten().fieldErrors,
+			data: { title: formData.get("title")?.toString() },
+			message: "errors.missingFields",
+		};
+	}
+
+	revalidatePath(LINKS.newsletter);
+	return {
+		successMessage: "success",
+	};
 }

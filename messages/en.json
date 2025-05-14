@@ -189,7 +189,14 @@
 			"feedTitle": "Feed title",
 			"cancel": "Cancel"
 		},
-		"add": "Add"
+		"add": "Add",
+		"errors": {
+			"missingFields": "Missing fields.",
+			"titleFieldInvalid": "Title invalid.",
+			"titleFieldTooShort": "Title too short.",
+			"titleFieldTooLong": "Title too long."
+		},
+		"success": "Newsletter added successfully."
 	},
 	"settings": {
 		"title": "Settings",

@@ -190,7 +190,14 @@
 			"feedTitle": "Titre du flux",
 			"cancel": "Annuler"
 		},
-		"add": "Ajouter"
+		"add": "Ajouter",
+		"errors": {
+			"missingFields": "Champ(s) manquant(s).",
+			"titleFieldInvalid": "Titre invalide.",
+			"titleFieldTooShort": "Le titre est trop court.",
+			"titleFieldTooLong": "Le titre est trop long."
+		},
+		"success": "Infolettre ajoutée avec succès."
 	},
 	"settings": {
 		"title": "Paramètres",
