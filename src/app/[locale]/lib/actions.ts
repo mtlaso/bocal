@@ -275,7 +275,7 @@ export async function addFeed(
 				where: eq(usersFeeds.userId, user.user.id),
 			});
 
-			if (userFeeds.length > MAX_FEEDS_PER_USER) {
+			if (userFeeds.length >= MAX_FEEDS_PER_USER) {
 				isMaxFeedsLimit = true;
 				return;
 			}
