@@ -41,10 +41,6 @@
 			"title": "Settings",
 			"description": "Manage your settings here."
 		},
-		"legal": {
-			"title": "Legal",
-			"description": "Legal information."
-		},
 		"privacyPolicy": {
 			"title": "Privacy Policy",
 			"description": "Read our privacy policy."

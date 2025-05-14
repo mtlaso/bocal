@@ -7,7 +7,7 @@ import { og } from "@/app/[locale]/lib/og";
 import { signIn, signOut } from "@/auth";
 import { db } from "@/db/db";
 import {
-	MAX_FEED_PER_USER,
+	MAX_FEEDS_PER_USER,
 	deleteLinkSchema,
 	deleteUsersFeedsReadContentSchema,
 	feeds,
@@ -275,7 +275,7 @@ export async function addFeed(
 				where: eq(usersFeeds.userId, user.user.id),
 			});
 
-			if (userFeeds.length > MAX_FEED_PER_USER) {
+			if (userFeeds.length >= MAX_FEEDS_PER_USER) {
 				isMaxFeedsLimit = true;
 				return;
 			}
