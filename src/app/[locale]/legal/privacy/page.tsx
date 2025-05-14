@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
+export const experimental_ppr = true;
 
 export async function generateMetadata({
 	params,

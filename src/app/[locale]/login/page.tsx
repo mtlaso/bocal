@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import { LoginForm } from "../ui/auth/login-form";
+export const experimental_ppr = true;
 
 export default function Page(): React.JSX.Element {
 	const t = useTranslations("metadata");
