@@ -39,7 +39,7 @@ export default function Page(): React.JSX.Element {
 				</div>
 
 				<Suspense fallback={<FeedInfoSkeleton />}>
-					<FeedsInfosWrapper />
+					<FeedInfoWrapper />
 				</Suspense>
 			</section>
 
@@ -52,7 +52,7 @@ export default function Page(): React.JSX.Element {
 	);
 }
 
-async function FeedsInfosWrapper(): Promise<React.JSX.Element> {
+async function FeedInfoWrapper(): Promise<React.JSX.Element> {
 	const feeds = await dal.getUserFeeds();
 	return <FeedInfoMenu feeds={feeds} />;
 }

@@ -37,6 +37,10 @@
 			"title": "Flux RSS/Atom",
 			"description": "Suivez vos flux RSS/Atom ici."
 		},
+		"newsletter": {
+			"title": "Infolettre",
+			"description": "Gérez vos abonnements à des newsletters."
+		},
 		"settings": {
 			"title": "Paramètres",
 			"description": "Gérez vos paramètres ici."
@@ -68,6 +72,7 @@
 		"links": "Liens",
 		"archive": "Archive",
 		"rssFeed": "Flux",
+		"newsletters": "Infolettres",
 		"settings": "Paramètres",
 		"close": "Fermer",
 		"sort": {
@@ -176,6 +181,15 @@
 			"feedContentIdFieldInvalid": "ID de contenu invalide.",
 			"cannotCopyFeedURL": "Impossible de copier l'URL du flux."
 		}
+	},
+	"newsletter": {
+		"newsletters": "Infolettres",
+		"description": "Convertissez vos infolettres en flux",
+		"addNewsletterForm": {
+			"title": "Ajouter une infolettre",
+			"cancel": "Annuler"
+		},
+		"add": "Ajouter"
 	},
 	"settings": {
 		"title": "Paramètres",

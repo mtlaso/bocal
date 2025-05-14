@@ -37,6 +37,10 @@
 			"title": "RSS/Atom feeds",
 			"description": "Follow your RSS/Atom feeds here."
 		},
+		"newsletter": {
+			"title": "Newsletter",
+			"description": "Manage your newsletters here."
+		},
 		"settings": {
 			"title": "Settings",
 			"description": "Manage your settings here."
@@ -67,6 +71,7 @@
 		"links": "Links",
 		"archive": "Archive",
 		"rssFeed": "Feeds",
+		"newsletters": "Newsletters",
 		"settings": "Settings",
 		"close": "Close",
 		"sort": {
@@ -175,6 +180,15 @@
 			"feedContentIdFieldInvalid": "Content ID invalid.",
 			"cannotCopyFeedURL": "Cannot copy feed URL."
 		}
+	},
+	"newsletter": {
+		"newsletters": "Newsletters",
+		"description": "Convert your newsletters into feeds",
+		"addNewsletterForm": {
+			"title": "Add a newsletter",
+			"cancel": "Cancel"
+		},
+		"add": "Add"
 	},
 	"settings": {
 		"title": "Settings",

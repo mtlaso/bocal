@@ -79,6 +79,17 @@ function DesktopNavMenu(): React.JSX.Element {
 
 				<NavigationMenuItem>
 					<NavigationMenuLink
+						href={"/d/newsletter"}
+						className={cn(navigationMenuTriggerStyle(), {
+							"font-semibold bg-accent": pathname === "/d/newsletter",
+						})}
+					>
+						{t("newsletters")}
+					</NavigationMenuLink>
+				</NavigationMenuItem>
+
+				<NavigationMenuItem>
+					<NavigationMenuLink
 						href="/settings"
 						className={cn(navigationMenuTriggerStyle(), {
 							"font-semibold bg-accent": pathname === "/settings",
@@ -159,6 +170,20 @@ function MobileNavMenu(): React.JSX.Element {
 						)}
 					>
 						<span className="">{t("rssFeed")}</span>
+					</Link>
+
+					<Link
+						onClick={(): void => setIsOpen(false)}
+						href={"/d/newsletter"}
+						className={cn(
+							navigationMenuTriggerStyle(),
+							"w-full flex justify-start",
+							{
+								"font-semibold bg-accent": pathname === "/d/newsletter",
+							},
+						)}
+					>
+						<span className="">{t("newsletters")}</span>
 					</Link>
 
 					<Link

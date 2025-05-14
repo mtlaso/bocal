@@ -3,7 +3,7 @@ import "@/app/[locale]/ui/globals.css";
 import BaseLayout from "@/components/ui/base-layout";
 import { routing } from "@/i18n/routing";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({
@@ -47,6 +47,8 @@ export default async function RootLayout({
 	if (!routing.locales.includes(locale as any)) {
 		notFound();
 	}
+
+	setRequestLocale(locale);
 
 	return <BaseLayout locale={locale}>{children}</BaseLayout>;
 }
