@@ -1,5 +1,6 @@
 "use server";
 
+import { randomUUID } from "node:crypto";
 import { dal } from "@/app/[locale]/lib/dal";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 import { LINKS } from "@/app/[locale]/lib/links";
@@ -655,6 +656,35 @@ export async function addNewsletter(
 			errors: validatedFields.error.flatten().fieldErrors,
 			data: { title: formData.get("title")?.toString() },
 			message: "errors.missingFields",
+		};
+	}
+
+	try {
+		const user = await dal.verifySession();
+		if (!user) {
+			throw new Error("errors.notSignedIn");
+		}
+
+		const eid = randomUUID();
+
+		const feed = await db
+			.insert(feeds)
+			.values({
+				eid,
+				url: `https://bocal.fyi/userfeeds/${eid}`,
+				title: validatedFields.data.title,
+				lastSyncAt: new Date(),
+			})
+			.returning();
+
+		await db.insert(usersFeeds).values({
+			userId: user.user.id,
+			feedId: feed[0].id,
+		});
+	} catch (err) {
+		logger.error(err);
+		return {
+			message: "errors.unexpected",
 		};
 	}
 

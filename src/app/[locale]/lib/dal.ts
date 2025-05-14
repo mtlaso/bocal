@@ -79,37 +79,45 @@ const getUserFeeds = cache(async (): Promise<UserFeedWithContent[]> => {
 		const limit = user.user.feedContentLimit;
 
 		const req = await db.execute(sql`
-    		SELECT
-            f.id,
-            f.url,
-            f.title,
-            f."createdAt",
-            f."lastSyncAt",
-            json_agg(fc_row ORDER BY fc_row.date DESC) AS contents,
-            f.status,
-            f."lastError",
-            f."errorCount",
-            f."errorType"
-        FROM feeds AS f
-        JOIN users_feeds AS uf ON uf."feedId" = f.id
-        -- LEFT JOIN because we want to get the feeds event if there is no content.
-        --  LATERAL gives the subrequest to access tables outisde the FROM.
-        LEFT JOIN LATERAL (
-                SELECT fc.id, fc."feedId", fc.date, fc.url, fc.title, fc.content, fc."createdAt", rc."readAt"
-                FROM feeds_content AS fc
+  		SELECT
+        f.id,
+        f.url,
+        f.title,
+        f."createdAt",
+        f."lastSyncAt",
+        CASE
+            -- Check if the json_agg result is an array containing a single null
+            WHEN json_typeof(json_agg(fc_row ORDER BY fc_row.date DESC)) = 'array'
+                    AND json_array_length(json_agg(fc_row ORDER BY fc_row.date DESC)) = 1
+                    AND json_extract_path_text(json_agg(fc_row ORDER BY fc_row.date DESC)::json, '0') IS NULL
+            THEN '[]'::json -- Replace with an empty array
+            ELSE json_agg(fc_row ORDER BY fc_row.date DESC) -- Otherwise, keep the original result
+        END AS contents,
+        f.status,
+        f."lastError",
+        f."errorCount",
+        f."errorType"
+    FROM feeds AS f
+    JOIN users_feeds AS uf ON uf."feedId" = f.id
+    -- LEFT JOIN because we want to get the feeds event if there is no content.
+    --  LATERAL gives the subrequest to access tables outisde the FROM.
+    LEFT JOIN LATERAL (
+            SELECT fc.id, fc."feedId", fc.date, fc.url, fc.title, fc.content, fc."createdAt", rc."readAt"
+            FROM feeds_content AS fc
 
-                -- Join on read_content
-                LEFT JOIN users_feeds_read_content AS rc ON rc."feedId" = f.id
-                      AND rc."feedContentId" = fc.id
+            -- Join on read_content
+            LEFT JOIN users_feeds_read_content AS rc ON rc."feedId" = f.id
+                    AND rc."feedContentId" = fc.id
 
-                WHERE fc."feedId" = f.id
-                ORDER BY fc.date DESC
-                LIMIT ${limit}
-            ) AS fc_row ON TRUE
-        WHERE uf."userId" = ${user.user.id}
-        GROUP BY f.id
+            WHERE fc."feedId" = f.id
+            ORDER BY fc.date DESC
+            LIMIT ${limit}
+        ) AS fc_row ON TRUE
+    WHERE uf."userId" = ${user.user.id}
+    GROUP BY f.id
         ORDER BY f."createdAt" DESC;
         `);
+		logger.info(req.rows);
 
 		const { data, error } = feedsWithContentArray.safeParse(req.rows);
 		if (error) {

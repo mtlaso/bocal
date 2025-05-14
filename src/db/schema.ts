@@ -305,6 +305,7 @@ const contentWithReadAt = z.object({
 
 export const feedsWithContent = z.object({
 	id: z.coerce.number(),
+	eid: z.coerce.string(),
 	url: z.string(),
 	title: z.string(),
 	createdAt: z.coerce.date(),

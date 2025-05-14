@@ -171,7 +171,7 @@ function FeedMenuItem({
 
 			<p className="truncate text-left">{feed.title}</p>
 
-			<p className={"text-primary text-end truncate"}>{feed.title?.length}</p>
+			<p className={"text-primary text-end truncate"}>{feed.contents.length}</p>
 		</button>
 	);
 }
