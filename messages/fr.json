@@ -187,7 +187,7 @@
 		"description": "Convertissez vos infolettres en flux.",
 		"addNewsletterForm": {
 			"title": "Ajouter une infolettre",
-			"feedTitle": "Titre de ce flux",
+			"feedTitle": "Titre du flux",
 			"cancel": "Annuler"
 		},
 		"add": "Ajouter"
