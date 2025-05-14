@@ -1,3 +1,3 @@
 export function Newsletters(): React.JSX.Element {
-	return <section></section>;
+	return <section>nada</section>;
 }

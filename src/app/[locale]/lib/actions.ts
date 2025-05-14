@@ -633,3 +633,15 @@ export async function archiveFeedContent(
 	revalidatePath("/archive");
 	return { successMessage: "success" };
 }
+
+export type AddNewsletterState = State<{
+	title: string;
+}>;
+
+export async function addNewsletter(
+	_currState: AddNewsletterState,
+	_formData: FormData,
+): Promise<AddNewsletterState> {
+	revalidatePath("/d/settings");
+	return {};
+}

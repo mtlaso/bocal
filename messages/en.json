@@ -183,9 +183,10 @@
 	},
 	"newsletter": {
 		"newsletters": "Newsletters",
-		"description": "Convert your newsletters into feeds",
+		"description": "Convert your newsletters into feeds.",
 		"addNewsletterForm": {
 			"title": "Add a newsletter",
+			"feedTitle": "Feed title",
 			"cancel": "Cancel"
 		},
 		"add": "Add"

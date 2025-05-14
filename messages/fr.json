@@ -184,9 +184,10 @@
 	},
 	"newsletter": {
 		"newsletters": "Infolettres",
-		"description": "Convertissez vos infolettres en flux",
+		"description": "Convertissez vos infolettres en flux.",
 		"addNewsletterForm": {
 			"title": "Ajouter une infolettre",
+			"feedTitle": "Titre de ce flux",
 			"cancel": "Annuler"
 		},
 		"add": "Ajouter"
