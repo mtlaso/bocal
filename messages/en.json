@@ -188,7 +188,7 @@
 		"descUsermail": "Subscribe to a newsletter with this email.",
 		"addNewsletterForm": {
 			"title": "Add a newsletter",
-			"feedTitle": "Feed title",
+			"feedTitle": "Title",
 			"cancel": "Cancel"
 		},
 		"add": "Add",
@@ -199,7 +199,7 @@
 			"titleFieldTooLong": "Title too long.",
 			"maxFeedsReached": "Maximum number of feeds reached."
 		},
-		"explaination": {
+		"explanation": {
 			"title": "How it works",
 			"part1": "After creating a new newsletter, use the provided email address to subscribe to newsletters.",
 			"part2": "Do not share this address with third parties: anyone with access to it will be able to send you emails.",

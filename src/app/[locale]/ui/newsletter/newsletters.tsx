@@ -14,13 +14,12 @@ export function Newsletters({ newsletters }: Props): React.JSX.Element {
 		<section className={cn("break-words", SPACING.LG)}>
 			<details className={SPACING.MD}>
 				<summary className="tracking-tight text-xl font-semibold">
-					{t("explaination.title")}
+					{t("explanation.title")}
 				</summary>
 				<div>
-					<p>{t("explaination.part1")}</p>
-					<p>{t("explaination.part2")}</p>
-					<br />
-					<p>{t("explaination.part3")}</p>
+					<p>{t("explanation.part1")}</p>
+					<p className="mb-4">{t("explanation.part2")}</p>
+					<p>{t("explanation.part3")}</p>
 				</div>
 			</details>
 
