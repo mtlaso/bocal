@@ -9,6 +9,7 @@ import z from "zod";
 import "server-only";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 import { logger } from "@/app/[locale]/lib/logging";
+import { usermailfuncs } from "@/app/[locale]/lib/usermail-funcs";
 import { auth } from "@/auth";
 import type { Session } from "next-auth";
 import { cache } from "react";
@@ -128,7 +129,7 @@ const getUserFeeds = cache(
 
 			if (onlyNewsletters) {
 				query.append(sql`
-            AND f.URL LIKE 'https://bocal.fyi/userfeeds/%'
+            AND f.URL LIKE '${sql.raw(usermailfuncs.NEWSLETTER_URL_PREFIX)}%'
           `);
 			}
 

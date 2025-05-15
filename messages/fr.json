@@ -200,7 +200,15 @@
 			"titleFieldTooLong": "Le titre est trop long.",
 			"maxFeedsReached": "Nombre maximum de flux atteint."
 		},
-		"success": "Infolettre ajoutée avec succès."
+		"explaination": {
+			"title": "Fonctionnement",
+			"part1": "Après avoir créé une nouvelle infolettre, utilisez l’adresse courriel fournie pour vous abonner à des infolettres.",
+			"part2": "Ne partagez pas cette adresse avec des tiers : toute personne y ayant accès pourra vous envoyer des courriels.",
+			"part3": "Si l'infolettre à laquelle vous vous abonnez envoie un courriel de confirmation, celui-ci apparaîtra comme une nouvelle entrée dans le flux de l'infolettre"
+		},
+		"success": "Infolettre ajoutée avec succès.",
+		"copiedToClipboard": "Copié dans le presse-papiers.",
+		"failedToCopyToClipboard": "Échec de la copie dans le presse-papiers."
 	},
 	"settings": {
 		"title": "Paramètres",

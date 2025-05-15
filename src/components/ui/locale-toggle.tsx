@@ -30,10 +30,16 @@ export function LocaleToggle(): React.JSX.Element {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
-				<DropdownMenuItem onClick={(): void => handleToggleLanguage("en")}>
+				<DropdownMenuItem
+					className="text-sm"
+					onClick={(): void => handleToggleLanguage("en")}
+				>
 					English
 				</DropdownMenuItem>
-				<DropdownMenuItem onClick={(): void => handleToggleLanguage("fr")}>
+				<DropdownMenuItem
+					className="text-sm"
+					onClick={(): void => handleToggleLanguage("fr")}
+				>
 					Français
 				</DropdownMenuItem>
 			</DropdownMenuContent>

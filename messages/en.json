@@ -184,8 +184,8 @@
 	"newsletter": {
 		"newsletters": "Newsletters",
 		"description": "Follow your newsletters with an RSS feed.",
-		"descFeedUrl": "Feed URL to follow the newsletter. Automatically added to Feed section.",
-		"descUsermail": "Use this email to subscribe to the newsletter.",
+		"descFeedUrl": "Feed URL to follow the newsletter. Automatically added to Feeds section.",
+		"descUsermail": "Subscribe to a newsletter with this email.",
 		"addNewsletterForm": {
 			"title": "Add a newsletter",
 			"feedTitle": "Feed title",
@@ -199,7 +199,15 @@
 			"titleFieldTooLong": "Title too long.",
 			"maxFeedsReached": "Maximum number of feeds reached."
 		},
-		"success": "Newsletter added successfully."
+		"explaination": {
+			"title": "How it works",
+			"part1": "After creating a new newsletter, use the provided email address to subscribe to newsletters.",
+			"part2": "Do not share this address with third parties: anyone with access to it will be able to send you emails.",
+			"part3": "If the newsletter you subscribe to sends a confirmation email, it will appear as a new entry in the newsletter feed."
+		},
+		"success": "Newsletter added successfully.",
+		"copiedToClipboard": "Copied to clipboard.",
+		"failedToCopyToClipboard": "Failed to copy to clipboard."
 	},
 	"settings": {
 		"title": "Settings",

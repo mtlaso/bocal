@@ -110,7 +110,7 @@ const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
 					}}
 				/>
 				<label htmlFor={`readToggle-${item.id}`} className="sr-only">
-					{isRead !== null ? t("markAsUnread") : t("markAsRead")}
+					{isRead ? t("markAsUnread") : t("markAsRead")}
 				</label>
 			</div>
 

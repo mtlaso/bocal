@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { FeedWithContent } from "@/db/schema";
 import { useTranslations } from "next-intl";
-import { TbCopy } from "react-icons/tb";
+import { TbCopy, TbNews } from "react-icons/tb";
 import { toast } from "sonner";
 
 export function NewsletterItem({
@@ -17,16 +17,20 @@ export function NewsletterItem({
 		navigator.clipboard
 			.writeText(text)
 			.then(() => {
-				toast.success("Copied to clipboard");
+				toast.success(t("copiedToClipboard"));
 			})
-			.catch((_error) => {
-				toast.error("Failed to copy");
+			.catch(() => {
+				toast.error(t("failedToCopyToClipboard"));
 			});
 	}
 
 	return (
 		<div className={SPACING.MD}>
-			<h2 className="tracking-tight text-xl font-semibold line-clamp-3">
+			<h2
+				className="tracking-tight text-xl font-semibold line-clamp-3
+        flex items-center gap-2"
+			>
+				<TbNews />
 				{item.title}
 			</h2>
 
@@ -43,7 +47,7 @@ export function NewsletterItem({
 						<Input
 							value={item.url}
 							disabled
-							className="block w-full rounded-md py-2 pl10"
+							className="block w-full rounded-md py-2"
 							id={`url-${item.id}`}
 						/>
 
@@ -69,7 +73,7 @@ export function NewsletterItem({
 						<Input
 							value={usermailfuncs.format(item.eid)}
 							disabled
-							className="block w-full rounded-md py-2 pl10"
+							className="block w-full rounded-md py-2"
 							id={`email-${item.id}`}
 						/>
 						<Button

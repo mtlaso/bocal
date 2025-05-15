@@ -56,7 +56,7 @@ function ArchiveFeedContent({ url }: Props): React.JSX.Element {
 
 	return (
 		<button
-			className="flex items-center row text-sm gap-2 p-1 cursor-pointer"
+			className="flex items-center grow text-sm gap-2 p-1 cursor-pointer"
 			onClick={handleArchiveFeed}
 			disabled={isPending}
 			type="submit"

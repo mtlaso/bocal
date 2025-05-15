@@ -26,13 +26,22 @@ export function ThemeToggle(): React.JSX.Element {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
-				<DropdownMenuItem onClick={(): void => setTheme("light")}>
+				<DropdownMenuItem
+					className="text-sm"
+					onClick={(): void => setTheme("light")}
+				>
 					{t("light")}
 				</DropdownMenuItem>
-				<DropdownMenuItem onClick={(): void => setTheme("dark")}>
+				<DropdownMenuItem
+					className="text-sm"
+					onClick={(): void => setTheme("dark")}
+				>
 					{t("dark")}
 				</DropdownMenuItem>
-				<DropdownMenuItem onClick={(): void => setTheme("system")}>
+				<DropdownMenuItem
+					className="text-sm"
+					onClick={(): void => setTheme("system")}
+				>
 					{t("system")}
 				</DropdownMenuItem>
 			</DropdownMenuContent>
