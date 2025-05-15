@@ -106,7 +106,7 @@ const FeedForm = ({
 	const t = useTranslations("rssFeed");
 	const initialState: AddFeedState = {
 		errors: undefined,
-		message: null,
+		errMessage: null,
 		data: undefined,
 	};
 	const [state, formAction, pending] = useActionState(addFeed, initialState);
@@ -142,8 +142,8 @@ const FeedForm = ({
 					</p>
 				))}
 
-				{state?.message && (
-					<p className="mt-2 text-sm text-destructive">{t(state.message)}</p>
+				{state?.errMessage && (
+					<p className="mt-2 text-sm text-destructive">{t(state.errMessage)}</p>
 				)}
 
 				{state?.successMessage && (

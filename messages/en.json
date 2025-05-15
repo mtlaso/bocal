@@ -183,7 +183,9 @@
 	},
 	"newsletter": {
 		"newsletters": "Newsletters",
-		"description": "Convert your newsletters into feeds.",
+		"description": "Follow your newsletters with an RSS feed.",
+		"descFeedUrl": "Feed URL to follow the newsletter. Automatically added to Feed section.",
+		"descUsermail": "Use this email to subscribe to the newsletter.",
 		"addNewsletterForm": {
 			"title": "Add a newsletter",
 			"feedTitle": "Feed title",
@@ -194,7 +196,8 @@
 			"missingFields": "Missing fields.",
 			"titleFieldInvalid": "Title invalid.",
 			"titleFieldTooShort": "Title too short.",
-			"titleFieldTooLong": "Title too long."
+			"titleFieldTooLong": "Title too long.",
+			"maxFeedsReached": "Maximum number of feeds reached."
 		},
 		"success": "Newsletter added successfully."
 	},

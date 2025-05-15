@@ -44,6 +44,16 @@ export function FeedsSkeleton(): React.JSX.Element {
 	);
 }
 
+export function NewsletterSkeleton(): React.JSX.Element {
+	return (
+		<div className={SPACING.MD}>
+			<Skeleton className="h-4 w-[270px]" />
+			<Skeleton className="h-4 w-[270px]" />
+			<Skeleton className="h-4 w-[270px]" />
+		</div>
+	);
+}
+
 export function SettingsSkeleton(): React.JSX.Element {
 	return (
 		<div className={cn("flex flex-col", SPACING.LG)}>

@@ -16,7 +16,7 @@ type Props = {
 	url: string;
 };
 
-export function FeedsContextMenu({ url }: Props): React.JSX.Element {
+export function FeedContextMenu({ url }: Props): React.JSX.Element {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -44,8 +44,8 @@ function ArchiveFeedContent({ url }: Props): React.JSX.Element {
 		startTransition(async () => {
 			try {
 				const res = await archiveFeedContent(url);
-				if (res.message) {
-					toast.error(t(res.message));
+				if (res.errMessage) {
+					toast.error(t(res.errMessage));
 					return;
 				}
 			} catch (_err) {
@@ -56,12 +56,12 @@ function ArchiveFeedContent({ url }: Props): React.JSX.Element {
 
 	return (
 		<button
-			className="flex justify-start items-center grow text-sm gap-2 p-1 cursor-pointer"
+			className="flex items-center row text-sm gap-2 p-1 cursor-pointer"
 			onClick={handleArchiveFeed}
 			disabled={isPending}
 			type="submit"
 		>
-			<TbArchive />
+			<TbArchive aria-hidden />
 			{t("archive")}
 		</button>
 	);

@@ -5,10 +5,10 @@ import {
 } from "@/app/[locale]/lib/actions";
 import { parsing } from "@/app/[locale]/lib/parsing";
 import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
-import { FeedsContextMenu } from "@/app/[locale]/ui/feed/feeds-context-menu";
+import { FeedContextMenu } from "@/app/[locale]/ui/feed/feed-context-menu";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Checkbox } from "@/components/ui/checkbox";
-import type { FeedContentWithReadAt, UserFeedWithContent } from "@/db/schema";
+import type { FeedContentWithReadAt, FeedWithContent } from "@/db/schema";
 import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import type { CheckedState } from "@radix-ui/react-checkbox";
@@ -18,7 +18,7 @@ import { startTransition, useOptimistic } from "react";
 import { toast } from "sonner";
 
 type Props = {
-	feeds: UserFeedWithContent[];
+	feeds: FeedWithContent[];
 };
 
 export function Feeds({ feeds }: Props): React.JSX.Element {
@@ -32,7 +32,7 @@ export function Feeds({ feeds }: Props): React.JSX.Element {
 	});
 
 	return (
-		<section className={cn("grid break-words", SPACING.LG)}>
+		<section className={cn("break-words", SPACING.LG)}>
 			{items.map((item) => {
 				return item.contents.map((content) => (
 					<Item item={content} key={`${content.id}`} />
@@ -46,9 +46,7 @@ const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
 	const t = useTranslations("rssFeed");
 	const locale = useLocale();
 
-	const [isReadOptimistic, addIsReadOptimistic] = useOptimistic(
-		item.readAt !== null,
-	);
+	const [isRead, setIsRead] = useOptimistic(item.readAt !== null);
 
 	const handleMarkAsRead = async (
 		feedId: number,
@@ -56,14 +54,14 @@ const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
 	): Promise<void> => {
 		startTransition(async () => {
 			try {
-				addIsReadOptimistic(true);
+				setIsRead(true);
 				const res = await markFeedContentAsRead(feedId, feedContentId);
 
-				if (res.message) {
-					toast.error(t(res.message));
+				if (res.errMessage) {
+					toast.error(t(res.errMessage));
 				}
 			} catch (_err) {
-				addIsReadOptimistic(false);
+				setIsRead(false);
 				toast.error(t("errors.unexpected"));
 			}
 		});
@@ -75,14 +73,14 @@ const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
 	): Promise<void> => {
 		startTransition(async () => {
 			try {
-				addIsReadOptimistic(false);
+				setIsRead(false);
 				const res = await markFeedContentAsUnread(feedId, feedContentId);
 
-				if (res.message) {
-					toast.error(t(res.message));
+				if (res.errMessage) {
+					toast.error(t(res.errMessage));
 				}
 			} catch (_err) {
-				addIsReadOptimistic(true);
+				setIsRead(true);
 				toast.error(t("errors.unexpected"));
 			}
 		});
@@ -102,34 +100,31 @@ const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
 
 	return (
 		<div className="flex items-start justify-start">
-			<div
-				className="pt-1 pr-2
-        flex flex-col justify-between h-full"
-			>
+			<div className="pt-1 pr-2 h-full">
 				<Checkbox
 					id={`readToggle-${item.id}`}
 					className="rounded-full border border-dashed border-primary cursor-pointer"
-					checked={isReadOptimistic}
+					checked={isRead}
 					onCheckedChange={(e): void => {
 						handleToggleReadStatus(e, item.feedId, item.id);
 					}}
 				/>
 				<label htmlFor={`readToggle-${item.id}`} className="sr-only">
-					{isReadOptimistic !== null ? t("markAsUnread") : t("markAsRead")}
+					{isRead !== null ? t("markAsUnread") : t("markAsRead")}
 				</label>
 			</div>
 
 			<Link
 				className={cn(SPACING.SM, "grow", {
-					"bg-primary-oreground opacity-50": isReadOptimistic,
+					"opacity-50": isRead,
 				})}
 				onClick={(): Promise<void> => handleMarkAsRead(item.feedId, item.id)}
 				href={item.url}
 				target="_blank"
 			>
-				<h1 className="tracking-tight text-xl font-semibold line-clamp-3">
+				<h2 className="tracking-tight text-xl font-semibold line-clamp-3">
 					{item.title}
-				</h1>
+				</h2>
 				<div>
 					<p className="text-primary font-medium">
 						{parsing.readableUrl(item.url)}
@@ -141,7 +136,7 @@ const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
 			</Link>
 
 			<div className="pt-1 pl-2">
-				<FeedsContextMenu url={item.url} />
+				<FeedContextMenu url={item.url} />
 			</div>
 		</div>
 	);

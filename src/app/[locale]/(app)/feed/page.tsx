@@ -53,11 +53,11 @@ export default function Page(): React.JSX.Element {
 }
 
 async function FeedInfoWrapper(): Promise<React.JSX.Element> {
-	const feeds = await dal.getUserFeeds();
+	const feeds = await dal.getUserFeeds({});
 	return <FeedInfoMenu feeds={feeds} />;
 }
 
 async function FeedsWrapper(): Promise<React.JSX.Element> {
-	const feeds = await dal.getUserFeeds();
+	const feeds = await dal.getUserFeeds({});
 	return <Feeds feeds={feeds} />;
 }

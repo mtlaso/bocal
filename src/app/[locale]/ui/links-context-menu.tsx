@@ -70,8 +70,8 @@ function UnArchiveLink({ id }: { id: string }): React.JSX.Element {
 				e.preventDefault();
 				const res = await unarchiveLink(id);
 
-				if (res.message) {
-					toast.error(t(res.message));
+				if (res.errMessage) {
+					toast.error(t(res.errMessage));
 					return;
 				}
 			} catch (_err) {
@@ -105,8 +105,8 @@ function ArchiveLink({ id }: { id: string }): React.JSX.Element {
 				e.preventDefault();
 				const res = await archiveLink(id);
 
-				if (res.message) {
-					toast.error(t(res.message));
+				if (res.errMessage) {
+					toast.error(t(res.errMessage));
 					return;
 				}
 			} catch (_err) {
@@ -140,8 +140,8 @@ function DeleteLink({ id }: { id: string }): React.JSX.Element {
 				e.preventDefault();
 				const res = await deleteLink(id);
 
-				if (res.message) {
-					toast.error(t(res.message));
+				if (res.errMessage) {
+					toast.error(t(res.errMessage));
 					return;
 				}
 			} catch (_err) {

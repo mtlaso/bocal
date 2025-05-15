@@ -11,7 +11,7 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
-import type { UserFeedWithContent } from "@/db/schema";
+import type { FeedWithContent } from "@/db/schema";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useQueryStates } from "nuqs";
@@ -19,7 +19,7 @@ import { useState } from "react";
 import { TbPlugConnectedX, TbRadarFilled, TbRss } from "react-icons/tb";
 
 type Props = {
-	feeds: UserFeedWithContent[];
+	feeds: FeedWithContent[];
 };
 
 export function FeedInfoMenu({ feeds }: Props): React.JSX.Element {
@@ -138,7 +138,7 @@ function FeedMenuItem({
 	feed,
 	onClick,
 }: {
-	feed: UserFeedWithContent;
+	feed: FeedWithContent;
 	onClick?: () => void;
 }): React.JSX.Element {
 	const [{ selectedFeed }, setSearchParamsState] = useQueryStates(

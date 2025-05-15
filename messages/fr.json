@@ -184,7 +184,9 @@
 	},
 	"newsletter": {
 		"newsletters": "Infolettres",
-		"description": "Convertissez vos infolettres en flux.",
+		"description": "Suivez vos infolettres un flux RSS.",
+		"descFeedUrl": "URL du flux pour suivre votre newsletter. Il a été automatiquement ajouté à la section Flux.",
+		"descUsermail": "Utilisez ce courriel pour vous abonner à la newsletter.",
 		"addNewsletterForm": {
 			"title": "Ajouter une infolettre",
 			"feedTitle": "Titre du flux",
@@ -195,7 +197,8 @@
 			"missingFields": "Champ(s) manquant(s).",
 			"titleFieldInvalid": "Titre invalide.",
 			"titleFieldTooShort": "Le titre est trop court.",
-			"titleFieldTooLong": "Le titre est trop long."
+			"titleFieldTooLong": "Le titre est trop long.",
+			"maxFeedsReached": "Nombre maximum de flux atteint."
 		},
 		"success": "Infolettre ajoutée avec succès."
 	},

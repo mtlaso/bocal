@@ -321,5 +321,5 @@ export const feedsWithContentArray = z.array(feedsWithContent);
 
 export type User = InferSelectModel<typeof users>;
 export type Feed = InferSelectModel<typeof feeds>;
-export type UserFeedWithContent = z.infer<typeof feedsWithContent>;
+export type FeedWithContent = z.infer<typeof feedsWithContent>;
 export type FeedContentWithReadAt = z.infer<typeof contentWithReadAt>;

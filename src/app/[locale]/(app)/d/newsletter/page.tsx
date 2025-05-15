@@ -1,5 +1,7 @@
+import { dal } from "@/app/[locale]/lib/dal";
 import { AddNewsletterForm } from "@/app/[locale]/ui/newsletter/add-newsletter-form";
-import { Newsletters } from "@/app/[locale]/ui/newsletter/news-letters";
+import { Newsletters } from "@/app/[locale]/ui/newsletter/newsletters";
+import { NewsletterSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
 import type { Metadata } from "next";
@@ -39,15 +41,7 @@ export default function Page(): React.JSX.Element {
 
 			<Separator className="my-4" />
 
-			<Suspense
-				fallback={
-					<div className="animate-pulse p-4 space-y-4">
-						<div className="h-4 bg-gray-200 rounded w-3/4" />
-						<div className="h-4 bg-gray-200 rounded w-1/2" />
-						<div className="h-4 bg-gray-200 rounded w-2/3" />
-					</div>
-				}
-			>
+			<Suspense fallback={<NewsletterSkeleton />}>
 				<NewsLetterWrapper />
 			</Suspense>
 		</>
@@ -55,5 +49,6 @@ export default function Page(): React.JSX.Element {
 }
 
 async function NewsLetterWrapper(): Promise<React.JSX.Element> {
-	return <Newsletters />;
+	const newsletters = await dal.getUserFeeds({ onlyNewsletters: true });
+	return <Newsletters newsletters={newsletters} />;
 }
