@@ -117,7 +117,6 @@ const getUserFeeds = cache(async (): Promise<UserFeedWithContent[]> => {
     GROUP BY f.id
         ORDER BY f."createdAt" DESC;
         `);
-		logger.info(req.rows);
 
 		const { data, error } = feedsWithContentArray.safeParse(req.rows);
 		if (error) {

@@ -18,7 +18,7 @@ export enum FeedErrorType {
 }
 
 /**
- * LENGTHS contient les longueurs de champs.
+ * LENGTHS contains the lengths of fields.
  */
 export const LENGTHS = {
 	feeds: {

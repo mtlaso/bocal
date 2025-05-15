@@ -27,7 +27,6 @@ import {
 } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 import { AuthError } from "next-auth";
-import { getTranslations } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -646,7 +645,6 @@ export async function addNewsletter(
 	_currState: AddNewsletterState,
 	formData: FormData,
 ): Promise<AddNewsletterState> {
-	const _t = await getTranslations("newsletter");
 	const validatedFields = addNewsletterSchema.safeParse({
 		title: formData.get("title"),
 	});
@@ -663,6 +661,17 @@ export async function addNewsletter(
 		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
+		}
+
+		const userFeeds = await db.query.usersFeeds.findMany({
+			where: eq(usersFeeds.userId, user.user.id),
+		});
+
+		if (userFeeds.length >= LENGTHS.feeds.maxPerUser) {
+			return {
+				message: "errors.maxFeedsReached",
+				errors: undefined,
+			};
 		}
 
 		const eid = randomUUID();

@@ -39,7 +39,15 @@ export default function Page(): React.JSX.Element {
 
 			<Separator className="my-4" />
 
-			<Suspense fallback={<div>Loading...</div>}>
+			<Suspense
+				fallback={
+					<div className="animate-pulse p-4 space-y-4">
+						<div className="h-4 bg-gray-200 rounded w-3/4" />
+						<div className="h-4 bg-gray-200 rounded w-1/2" />
+						<div className="h-4 bg-gray-200 rounded w-2/3" />
+					</div>
+				}
+			>
 				<NewsLetterWrapper />
 			</Suspense>
 		</>

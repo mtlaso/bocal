@@ -1,6 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { DialogTitle } from "@/components/ui/dialog";
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
 import {
 	Drawer,
 	DrawerClose,
@@ -29,16 +35,41 @@ export function AddNewsletterForm(): React.JSX.Element {
 	const isDesktop = useMediaQuery("(min-width: 768px)");
 
 	return isDesktop ? (
-		// <AddFeedFormDesktop
-		//   isOpen={isOpen}
-		//   onOpen={(status: boolean): void => setIsOpen(status)}
-		// />
-		<p>en cours...</p>
+		<AddNewsletterFormDesktop
+			isOpen={isOpen}
+			onOpen={(status: boolean): void => setIsOpen(status)}
+		/>
 	) : (
 		<AddNewsletterFormMobile
 			isOpen={isOpen}
 			onOpen={(status: boolean): void => setIsOpen(status)}
 		/>
+	);
+}
+
+function AddNewsletterFormDesktop({
+	isOpen,
+	onOpen,
+}: {
+	isOpen: boolean;
+	onOpen: (status: boolean) => void;
+}): React.JSX.Element {
+	const t = useTranslations("newsletter");
+
+	return (
+		<Dialog open={isOpen} onOpenChange={(status): void => onOpen(status)}>
+			<DialogTrigger asChild>
+				<Button variant="outline" size="icon">
+					<TbLinkPlus />
+				</Button>
+			</DialogTrigger>
+			<DialogContent className="w-11/12 sm:max-w-md">
+				<DialogHeader>
+					<DialogTitle>{t("addNewsletterForm.title")}</DialogTitle>
+				</DialogHeader>
+				<NewsletterForm />
+			</DialogContent>
+		</Dialog>
 	);
 }
 
@@ -111,7 +142,10 @@ function NewsletterForm({
 						defaultValue={state.data?.title}
 					/>
 
-					<TbMail className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+					<TbMail
+						aria-hidden
+						className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500"
+					/>
 				</div>
 
 				{state.errors?.title?.map((err) => (
