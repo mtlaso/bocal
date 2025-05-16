@@ -107,7 +107,8 @@ const getUserFeeds = cache(
             f.status,
             f."lastError",
             f."errorCount",
-            f."errorType"
+            f."errorType",
+            f."newsletterOwnerId"
         FROM feeds AS f
         JOIN users_feeds AS uf ON uf."feedId" = f.id
         -- LEFT JOIN because we want to get the feeds event if there is no content.

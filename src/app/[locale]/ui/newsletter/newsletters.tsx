@@ -23,8 +23,6 @@ export function Newsletters({ newsletters }: Props): React.JSX.Element {
 				</div>
 			</details>
 
-			{/* 2. TODO: ajouter un index de recherche sur url des feeds */}
-
 			{newsletters.map((newsletter) => (
 				<NewsletterItem key={newsletter.id} item={newsletter} />
 			))}

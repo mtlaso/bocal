@@ -43,6 +43,13 @@
 			"when": 1747377391093,
 			"tag": "0005_sudden_hobgoblin",
 			"breakpoints": true
+		},
+		{
+			"idx": 6,
+			"version": "7",
+			"when": 1747378163303,
+			"tag": "0006_spotty_imperial_guard",
+			"breakpoints": true
 		}
 	]
 }

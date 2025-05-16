@@ -72,6 +72,13 @@ export const feeds = pgTable(
 		id: integer().primaryKey().generatedAlwaysAsIdentity(),
 		// external id.
 		eid: uuid().notNull().defaultRandom(),
+		// This is the of the feed (used as a newsleletter).
+		// It has a value only when the current feed is a newsletter.
+		// This is needed when deleting a newsletter, to make sure that the user deleting a newsletter is the owner of the feed.
+		// Otherwise we would have a security vulnerability where anyone who guesses the id can delete the feed.
+		newsletterOwnerId: text().references(() => users.id, {
+			onDelete: "cascade",
+		}),
 		url: text().notNull().unique(),
 		title: text().notNull(),
 		createdAt: timestamp().defaultNow().notNull(),
@@ -325,6 +332,7 @@ export const feedsWithContent = z.object({
 	lastError: z.string().nullable(),
 	errorCount: z.coerce.number(),
 	errorType: z.nativeEnum(FeedErrorType).nullable(),
+	newsletterOwnerId: z.string().nullable(),
 });
 
 export const feedsWithContentArray = z.array(feedsWithContent);

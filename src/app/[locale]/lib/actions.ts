@@ -681,6 +681,7 @@ export async function addNewsletter(
 			.insert(feeds)
 			.values({
 				eid,
+				newsletterOwnerId: user.user.id,
 				url: `https://bocal.fyi/userfeeds/${eid}`,
 				title: validatedFields.data.title,
 				lastSyncAt: new Date(),
@@ -731,7 +732,9 @@ export async function deleteNewsletter(
 		// We don't check if there is a relationship in users_feeds because
 		// a user could have unfollowed the feed but still have access to it
 		// though the newsletter page.
-		await db.delete(feeds).where(eq(feeds.id, id));
+		await db
+			.delete(feeds)
+			.where(and(eq(feeds.id, id), eq(feeds.newsletterOwnerId, user.user.id)));
 	} catch (err) {
 		logger.error(err);
 		return {

@@ -1,0 +1,2 @@
+ALTER TABLE "feeds" ADD COLUMN "newsletterOwnerId" text;--> statement-breakpoint
+ALTER TABLE "feeds" ADD CONSTRAINT "feeds_newsletterOwnerId_users_id_fk" FOREIGN KEY ("newsletterOwnerId") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
