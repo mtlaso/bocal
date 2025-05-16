@@ -198,7 +198,14 @@
 			"titleFieldInvalid": "Titre invalide.",
 			"titleFieldTooShort": "Le titre est trop court.",
 			"titleFieldTooLong": "Le titre est trop long.",
-			"maxFeedsReached": "Nombre maximum de flux atteint."
+			"maxFeedsReached": "Nombre maximum de flux atteint.",
+			"idFieldInvalid": "ID invalide."
+		},
+		"deleteNewsletterContextMenu": {
+			"title": "Êtes-vous sûr de vouloir supprimer cette infolettre ? Toutes les entrées seront supprimées.",
+			"desc": "Nous vous recommandons de vous désabonner avant de supprimer cette infolettre.",
+			"cancel": "Annuler",
+			"delete": "Supprimer"
 		},
 		"explanation": {
 			"title": "Fonctionnement",

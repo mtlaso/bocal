@@ -23,6 +23,9 @@ export function Newsletters({ newsletters }: Props): React.JSX.Element {
 				</div>
 			</details>
 
+			{/* 1.1 TODO: Pouvoir supprimer des newsletters
+      2. TODO: ajouter un index de recherche sur url des feeds */}
+
 			{newsletters.map((newsletter) => (
 				<NewsletterItem key={newsletter.id} item={newsletter} />
 			))}

@@ -292,6 +292,16 @@ export const addNewsletterSchema = z.object({
 		}),
 });
 
+export const deleteNewsletterSchema = z.object({
+	id: z
+		.number({
+			message: "errors.idFieldInvalid",
+		})
+		.nonnegative({
+			message: "errors.idFieldInvalid",
+		}),
+});
+
 const contentWithReadAt = z.object({
 	id: z.coerce.number(),
 	feedId: z.coerce.number(),

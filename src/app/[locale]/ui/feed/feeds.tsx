@@ -99,8 +99,8 @@ const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
 	};
 
 	return (
-		<div className="flex items-start justify-start">
-			<div className="pt-1 pr-2 h-full">
+		<div className="flex gap-2">
+			<div className="pt-1 h-full">
 				<Checkbox
 					id={`readToggle-${item.id}`}
 					className="rounded-full border border-dashed border-primary cursor-pointer"
@@ -135,9 +135,7 @@ const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
 				</div>
 			</Link>
 
-			<div className="pt-1 pl-2">
-				<FeedContextMenu url={item.url} />
-			</div>
+			<FeedContextMenu url={item.url} />
 		</div>
 	);
 };

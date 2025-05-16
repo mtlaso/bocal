@@ -1,4 +1,5 @@
 import { archiveFeedContent } from "@/app/[locale]/lib/actions";
+import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -20,9 +21,9 @@ export function FeedContextMenu({ url }: Props): React.JSX.Element {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<button type="button" className="flex text-muted-foreground">
+				<Button variant="ghost" className="text-muted-foreground">
 					<BsThreeDots />
-				</button>
+				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56">
 				<DropdownMenuGroup>

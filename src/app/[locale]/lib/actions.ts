@@ -12,6 +12,7 @@ import { db } from "@/db/db";
 import {
 	addNewsletterSchema,
 	deleteLinkSchema,
+	deleteNewsletterSchema,
 	deleteUsersFeedsReadContentSchema,
 	feeds,
 	feedsContent,
@@ -701,4 +702,40 @@ export async function addNewsletter(
 	return {
 		successMessage: "success",
 	};
+}
+
+export type DeleteNewsletterState = State<{
+	id: number;
+}>;
+
+export async function deleteNewsletter(
+	id: number,
+): Promise<DeleteNewsletterState> {
+	const validatedFields = deleteNewsletterSchema.safeParse({
+		id,
+	});
+
+	if (!validatedFields.success) {
+		return {
+			errMessage: "errors.missingFields",
+			errors: validatedFields.error.flatten().fieldErrors,
+		};
+	}
+
+	try {
+		const user = await dal.verifySession();
+		if (!user) {
+			throw new Error("errors.notSignedIn");
+		}
+
+		await db.delete(feeds).where(eq(feeds.id, id));
+	} catch (err) {
+		logger.error(err);
+		return {
+			errMessage: "errors.unexpected",
+		};
+	}
+
+	revalidatePath(LINKS.newsletter);
+	return {};
 }

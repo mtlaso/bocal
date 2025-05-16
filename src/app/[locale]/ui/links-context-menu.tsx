@@ -151,16 +151,14 @@ function DeleteLink({ id }: { id: string }): React.JSX.Element {
 	};
 
 	return (
-		<>
-			<button
-				className="flex justify-start items-center grow text-sm gap-2 p-1 cursor-pointer"
-				type="button"
-				onClick={(e): void => handleDeleteLink(e)}
-				disabled={isPending}
-			>
-				<Trash className="text-destructive" />
-				{t("delete")}
-			</button>
-		</>
+		<button
+			className="flex justify-start items-center grow text-sm gap-2 p-1 cursor-pointer"
+			type="button"
+			onClick={(e): void => handleDeleteLink(e)}
+			disabled={isPending}
+		>
+			<Trash className="text-destructive" />
+			{t("delete")}
+		</button>
 	);
 }

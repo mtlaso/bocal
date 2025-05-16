@@ -197,7 +197,14 @@
 			"titleFieldInvalid": "Title invalid.",
 			"titleFieldTooShort": "Title too short.",
 			"titleFieldTooLong": "Title too long.",
+			"idFieldInvalid": "ID invalid.",
 			"maxFeedsReached": "Maximum number of feeds reached."
+		},
+		"deleteNewsletterContextMenu": {
+			"title": "Are you sure you want to delete this newsletter? All entries will be removed.",
+			"desc": "We recommend unsubscribing before deleting this newsletter.",
+			"cancel": "Cancel",
+			"delete": "Delete"
 		},
 		"explanation": {
 			"title": "How it works",
