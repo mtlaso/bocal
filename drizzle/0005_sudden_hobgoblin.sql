@@ -1,0 +1,1 @@
+CREATE INDEX "url" ON "feeds" USING btree ("url");

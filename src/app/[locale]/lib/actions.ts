@@ -728,6 +728,9 @@ export async function deleteNewsletter(
 			throw new Error("errors.notSignedIn");
 		}
 
+		// We don't check if there is a relationship in users_feeds because
+		// a user could have unfollowed the feed but still have access to it
+		// though the newsletter page.
 		await db.delete(feeds).where(eq(feeds.id, id));
 	} catch (err) {
 		logger.error(err);

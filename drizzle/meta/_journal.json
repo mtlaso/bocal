@@ -36,6 +36,13 @@
 			"when": 1747204728316,
 			"tag": "0004_careless_rage",
 			"breakpoints": true
+		},
+		{
+			"idx": 5,
+			"version": "7",
+			"when": 1747377391093,
+			"tag": "0005_sudden_hobgoblin",
+			"breakpoints": true
 		}
 	]
 }

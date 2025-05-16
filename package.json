@@ -6,7 +6,9 @@
 		"dev": "next dev --turbopack",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint"
+		"lint": "next lint",
+		"migration:generate": "pnpm drizzle-kit generate",
+		"migration:migrate": "pnpm drizzle-kit migrate"
 	},
 	"dependencies": {
 		"@auth/drizzle-adapter": "^1.9.1",
