@@ -1,4 +1,6 @@
 # Bocal
+[![Production Deployment](https://github.com/mtlaso/bocal/actions/workflows/deploy-production.yml/badge.svg)](https://github.com/mtlaso/bocal/actions/workflows/deploy-production.yml)
+
 [*english*](#En)
 
 Bocal est une application qui combine un lecteur RSS et un gestionnaire de liens.
