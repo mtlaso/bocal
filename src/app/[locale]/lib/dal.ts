@@ -1,6 +1,6 @@
 import { db } from "@/db/db";
 import {
-	type UserFeedWithContent,
+	type FeedWithContent,
 	feedsWithContentArray,
 	links,
 } from "@/db/schema";
@@ -9,6 +9,7 @@ import z from "zod";
 import "server-only";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 import { logger } from "@/app/[locale]/lib/logging";
+import { usermailfuncs } from "@/app/[locale]/lib/usermail-funcs";
 import { auth } from "@/auth";
 import type { Session } from "next-auth";
 import { cache } from "react";
@@ -67,29 +68,47 @@ const getLinks = cache(
 );
 
 /**
- * getUserFeeds retourne les flux de l'utilisateur.
+ * getUserFeeds returns the feeds of current user.
+ *
  */
-const getUserFeeds = cache(async (): Promise<UserFeedWithContent[]> => {
-	try {
-		const user = await verifySession();
-		if (!user) {
-			throw new Error("errors.notSignedIn");
-		}
+const getUserFeeds = cache(
+	async ({
+		/**
+		 * Whether to only return newsletters.
+		 * Newsletters are stored in the 'feeds' table.
+		 * Their url start with 'https://bocal.fyi/userfeeds/xxxx'.
+		 */
+		onlyNewsletters = false,
+	}): Promise<FeedWithContent[]> => {
+		try {
+			const user = await verifySession();
+			if (!user) {
+				throw new Error("errors.notSignedIn");
+			}
 
-		const limit = user.user.feedContentLimit;
+			const limit = user.user.feedContentLimit;
 
-		const req = await db.execute(sql`
-    		SELECT
+			const query = sql`
+      		SELECT
             f.id,
+            f.eid,
             f.url,
             f.title,
             f."createdAt",
             f."lastSyncAt",
-            json_agg(fc_row ORDER BY fc_row.date DESC) AS contents,
+            CASE
+                -- Check if the json_agg result is an array containing a single null
+                WHEN json_typeof(json_agg(fc_row ORDER BY fc_row.date DESC)) = 'array'
+                        AND json_array_length(json_agg(fc_row ORDER BY fc_row.date DESC)) = 1
+                        AND json_extract_path_text(json_agg(fc_row ORDER BY fc_row.date DESC)::json, '0') IS NULL
+                THEN '[]'::json -- Replace with an empty array
+                ELSE json_agg(fc_row ORDER BY fc_row.date DESC) -- Otherwise, keep the original result
+            END AS contents,
             f.status,
             f."lastError",
             f."errorCount",
-            f."errorType"
+            f."errorType",
+            f."newsletterOwnerId"
         FROM feeds AS f
         JOIN users_feeds AS uf ON uf."feedId" = f.id
         -- LEFT JOIN because we want to get the feeds event if there is no content.
@@ -100,37 +119,49 @@ const getUserFeeds = cache(async (): Promise<UserFeedWithContent[]> => {
 
                 -- Join on read_content
                 LEFT JOIN users_feeds_read_content AS rc ON rc."feedId" = f.id
-                      AND rc."feedContentId" = fc.id
+                        AND rc."feedContentId" = fc.id
 
                 WHERE fc."feedId" = f.id
                 ORDER BY fc.date DESC
                 LIMIT ${limit}
             ) AS fc_row ON TRUE
         WHERE uf."userId" = ${user.user.id}
-        GROUP BY f.id
-        ORDER BY f."createdAt" DESC;
+        `;
+
+			if (onlyNewsletters) {
+				query.append(sql`
+            AND f.URL LIKE '${sql.raw(usermailfuncs.NEWSLETTER_URL_PREFIX)}%'
+          `);
+			}
+
+			query.append(sql`
+          GROUP BY f.id
+              ORDER BY f."createdAt" DESC;
         `);
 
-		const { data, error } = feedsWithContentArray.safeParse(req.rows);
-		if (error) {
-			throw new z.ZodError(error.issues);
+			const req = await db.execute(query);
+
+			const { data, error } = feedsWithContentArray.safeParse(req.rows);
+			if (error) {
+				throw new z.ZodError(error.issues);
+			}
+
+			const now = new Date();
+			const outdatedFeeds = data.filter(
+				(feed) =>
+					!feed.lastSyncAt ||
+					now.getTime() - feed.lastSyncAt.getTime() > ONE_HOUR,
+			);
+
+			void feedService.triggerBackgroundSync(outdatedFeeds);
+
+			return data;
+		} catch (err) {
+			logger.error(err);
+			throw new Error("errors.unexpected");
 		}
-
-		const now = new Date();
-		const outdatedFeeds = data.filter(
-			(feed) =>
-				!feed.lastSyncAt ||
-				now.getTime() - feed.lastSyncAt.getTime() > ONE_HOUR,
-		);
-
-		void feedService.triggerBackgroundSync(outdatedFeeds);
-
-		return data;
-	} catch (err) {
-		logger.error(err);
-		throw new Error("errors.unexpected");
-	}
-});
+	},
+);
 
 /**
  * dal contient les fonctions d'accés aux données.

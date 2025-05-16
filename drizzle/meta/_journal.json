@@ -22,6 +22,34 @@
 			"when": 1746590224162,
 			"tag": "0002_cynical_maggott",
 			"breakpoints": true
+		},
+		{
+			"idx": 3,
+			"version": "7",
+			"when": 1747204503174,
+			"tag": "0003_tired_oracle",
+			"breakpoints": true
+		},
+		{
+			"idx": 4,
+			"version": "7",
+			"when": 1747204728316,
+			"tag": "0004_careless_rage",
+			"breakpoints": true
+		},
+		{
+			"idx": 5,
+			"version": "7",
+			"when": 1747377391093,
+			"tag": "0005_sudden_hobgoblin",
+			"breakpoints": true
+		},
+		{
+			"idx": 6,
+			"version": "7",
+			"when": 1747378163303,
+			"tag": "0006_spotty_imperial_guard",
+			"breakpoints": true
 		}
 	]
 }

@@ -1,14 +1,18 @@
 "use server";
 
+import { randomUUID } from "node:crypto";
 import { dal } from "@/app/[locale]/lib/dal";
 import { feedService } from "@/app/[locale]/lib/feed-service";
+import { LINKS } from "@/app/[locale]/lib/links";
 import { logger } from "@/app/[locale]/lib/logging";
 import { og } from "@/app/[locale]/lib/og";
+import { LENGTHS } from "@/app/[locale]/lib/types";
 import { signIn, signOut } from "@/auth";
 import { db } from "@/db/db";
 import {
-	MAX_FEEDS_PER_USER,
+	addNewsletterSchema,
 	deleteLinkSchema,
+	deleteNewsletterSchema,
 	deleteUsersFeedsReadContentSchema,
 	feeds,
 	feedsContent,
@@ -30,7 +34,7 @@ import { redirect } from "next/navigation";
 type State<T, E extends string = keyof T & string> = {
 	errors?: { [key in E]?: string[] };
 	data?: T;
-	message?: string | null;
+	errMessage?: string | null;
 	successMessage?: string | null;
 };
 
@@ -88,7 +92,7 @@ export async function addLink(
 		return {
 			errors: validatedFields.error.flatten().fieldErrors,
 			data: { url: formData.get("url")?.toString() },
-			message: "errors.missingFields",
+			errMessage: "errors.missingFields",
 		};
 	}
 
@@ -109,7 +113,7 @@ export async function addLink(
 	} catch (err) {
 		logger.error(err);
 		return {
-			message: "errors.unexpected",
+			errMessage: "errors.unexpected",
 			errors: undefined,
 		};
 	}
@@ -131,7 +135,7 @@ export async function deleteLink(id: string): Promise<DeleteLinkState> {
 		return {
 			errors: validatedFields.error.flatten().fieldErrors,
 			data: { id: Number.parseInt(id) },
-			message: "errors.missingFields",
+			errMessage: "errors.missingFields",
 		};
 	}
 
@@ -153,7 +157,7 @@ export async function deleteLink(id: string): Promise<DeleteLinkState> {
 	} catch (err) {
 		logger.error(err);
 		return {
-			message: "errors.unexpected",
+			errMessage: "errors.unexpected",
 		};
 	}
 
@@ -170,7 +174,7 @@ export async function archiveLink(id: string): Promise<DeleteLinkState> {
 		return {
 			errors: validatedFields.error.flatten().fieldErrors,
 			data: { id: Number.parseInt(id) },
-			message: "errors.missingFields",
+			errMessage: "errors.missingFields",
 		};
 	}
 
@@ -193,7 +197,7 @@ export async function archiveLink(id: string): Promise<DeleteLinkState> {
 	} catch (err) {
 		logger.error(err);
 		return {
-			message: "errors.unexpected",
+			errMessage: "errors.unexpected",
 		};
 	}
 
@@ -210,7 +214,7 @@ export async function unarchiveLink(id: string): Promise<DeleteLinkState> {
 		return {
 			errors: validatedFields.error.flatten().fieldErrors,
 			data: { id: Number.parseInt(id) },
-			message: "errors.missingFields",
+			errMessage: "errors.missingFields",
 		};
 	}
 
@@ -233,7 +237,7 @@ export async function unarchiveLink(id: string): Promise<DeleteLinkState> {
 	} catch (err) {
 		logger.error(err);
 		return {
-			message: "errors.unexpected",
+			errMessage: "errors.unexpected",
 		};
 	}
 
@@ -257,7 +261,7 @@ export async function addFeed(
 		return {
 			errors: validatedFields.error.flatten().fieldErrors,
 			data: { url: formData.get("url")?.toString() },
-			message: "errors.missingFields",
+			errMessage: "errors.missingFields",
 		};
 	}
 
@@ -275,7 +279,7 @@ export async function addFeed(
 				where: eq(usersFeeds.userId, user.user.id),
 			});
 
-			if (userFeeds.length >= MAX_FEEDS_PER_USER) {
+			if (userFeeds.length >= LENGTHS.feeds.maxPerUser) {
 				isMaxFeedsLimit = true;
 				return;
 			}
@@ -348,14 +352,14 @@ export async function addFeed(
 
 		if (isFeedAlreadyFollowed) {
 			return {
-				message: "errors.feedAlreadyFollowed",
+				errMessage: "errors.feedAlreadyFollowed",
 				errors: undefined,
 			};
 		}
 
 		if (isMaxFeedsLimit) {
 			return {
-				message: "errors.maxFeedsReached",
+				errMessage: "errors.maxFeedsReached",
 				errors: undefined,
 			};
 		}
@@ -363,20 +367,20 @@ export async function addFeed(
 		logger.error(err);
 		if (err instanceof feedService.FeedUnreachable) {
 			return {
-				message: "errors.feedUnreachable",
+				errMessage: "errors.feedUnreachable",
 				errors: undefined,
 			};
 		}
 
 		if (err instanceof feedService.FeedCannotBeProcessed) {
 			return {
-				message: "errors.feedCannotBeProcessed",
+				errMessage: "errors.feedCannotBeProcessed",
 				errors: undefined,
 			};
 		}
 
 		return {
-			message: "errors.unexpected",
+			errMessage: "errors.unexpected",
 			errors: undefined,
 		};
 	}
@@ -400,7 +404,7 @@ export async function unfollowFeed(id: string): Promise<UnfollowFeedState> {
 		return {
 			errors: validatedFields.error.flatten().fieldErrors,
 			data: { feedId: Number.parseInt(id) },
-			message: "errors.missingFields",
+			errMessage: "errors.missingFields",
 		};
 	}
 
@@ -434,7 +438,7 @@ export async function unfollowFeed(id: string): Promise<UnfollowFeedState> {
 	} catch (err) {
 		logger.error(err);
 		return {
-			message: "errors.unexpected",
+			errMessage: "errors.unexpected",
 		};
 	}
 
@@ -462,7 +466,7 @@ export async function markFeedContentAsRead(
 		return {
 			errors: validatedFields.error.flatten().fieldErrors,
 			data: { feedId, feedContentId },
-			message: "errors.missingFields",
+			errMessage: "errors.missingFields",
 		};
 	}
 
@@ -485,7 +489,7 @@ export async function markFeedContentAsRead(
 	} catch (err) {
 		logger.error(err);
 		return {
-			message: "errors.unexpected",
+			errMessage: "errors.unexpected",
 		};
 	}
 
@@ -511,7 +515,7 @@ export async function markFeedContentAsUnread(
 		return {
 			errors: validatedFields.error.flatten().fieldErrors,
 			data: { feedId, feedContentId },
-			message: "errors.missingFields",
+			errMessage: "errors.missingFields",
 		};
 	}
 
@@ -537,7 +541,7 @@ export async function markFeedContentAsUnread(
 	} catch (err) {
 		logger.error(err);
 		return {
-			message: "errors.unexpected",
+			errMessage: "errors.unexpected",
 		};
 	}
 
@@ -560,7 +564,7 @@ export async function setFeedContentLimit(
 		return {
 			errors: validatedFields.error.flatten().fieldErrors,
 			data: { feedContentLimit },
-			message: "errors.missingFields",
+			errMessage: "errors.missingFields",
 		};
 	}
 
@@ -578,7 +582,7 @@ export async function setFeedContentLimit(
 	} catch (err) {
 		logger.error(err);
 		return {
-			message: "errors.unexpected",
+			errMessage: "errors.unexpected",
 		};
 	}
 
@@ -604,7 +608,7 @@ export async function archiveFeedContent(
 		return {
 			errors: validatedFields.error.flatten().fieldErrors,
 			data: { url: url },
-			message: "errors.missingFields",
+			errMessage: "errors.missingFields",
 		};
 	}
 
@@ -626,10 +630,118 @@ export async function archiveFeedContent(
 	} catch (err) {
 		logger.error(err);
 		return {
-			message: "errors.unexpected",
+			errMessage: "errors.unexpected",
 		};
 	}
 
 	revalidatePath("/archive");
 	return { successMessage: "success" };
+}
+
+export type AddNewsletterState = State<{
+	title?: string;
+}>;
+
+export async function addNewsletter(
+	_currState: AddNewsletterState,
+	formData: FormData,
+): Promise<AddNewsletterState> {
+	const validatedFields = addNewsletterSchema.safeParse({
+		title: formData.get("title"),
+	});
+
+	if (!validatedFields.success) {
+		return {
+			errors: validatedFields.error.flatten().fieldErrors,
+			data: { title: formData.get("title")?.toString() },
+			errMessage: "errors.missingFields",
+		};
+	}
+
+	try {
+		const user = await dal.verifySession();
+		if (!user) {
+			throw new Error("errors.notSignedIn");
+		}
+
+		const userFeeds = await db.query.usersFeeds.findMany({
+			where: eq(usersFeeds.userId, user.user.id),
+		});
+
+		if (userFeeds.length >= LENGTHS.feeds.maxPerUser) {
+			return {
+				errMessage: "errors.maxFeedsReached",
+				errors: undefined,
+			};
+		}
+
+		const eid = randomUUID();
+
+		const feed = await db
+			.insert(feeds)
+			.values({
+				eid,
+				newsletterOwnerId: user.user.id,
+				url: `https://bocal.fyi/userfeeds/${eid}`,
+				title: validatedFields.data.title,
+				lastSyncAt: new Date(),
+			})
+			.returning();
+
+		await db.insert(usersFeeds).values({
+			userId: user.user.id,
+			feedId: feed[0].id,
+		});
+	} catch (err) {
+		logger.error(err);
+		return {
+			errMessage: "errors.unexpected",
+		};
+	}
+
+	revalidatePath(LINKS.newsletter);
+	return {
+		successMessage: "success",
+	};
+}
+
+export type DeleteNewsletterState = State<{
+	id: number;
+}>;
+
+export async function deleteNewsletter(
+	id: number,
+): Promise<DeleteNewsletterState> {
+	const validatedFields = deleteNewsletterSchema.safeParse({
+		id,
+	});
+
+	if (!validatedFields.success) {
+		return {
+			errMessage: "errors.missingFields",
+			errors: validatedFields.error.flatten().fieldErrors,
+		};
+	}
+
+	try {
+		const user = await dal.verifySession();
+		if (!user) {
+			throw new Error("errors.notSignedIn");
+		}
+
+		// We don't check if there is a relationship in users_feeds because
+		// a user could have unfollowed the feed but still have access to it
+		// though the newsletter page.
+		await db
+			.delete(feeds)
+			.where(and(eq(feeds.id, id), eq(feeds.newsletterOwnerId, user.user.id)));
+	} catch (err) {
+		logger.error(err);
+		return {
+			errMessage: "errors.unexpected",
+		};
+	}
+
+	revalidatePath(LINKS.newsletter);
+	return {};
 }

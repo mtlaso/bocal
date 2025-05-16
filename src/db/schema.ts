@@ -1,14 +1,20 @@
-import { FeedErrorType, FeedStatusType } from "@/app/[locale]/lib/types";
+import {
+	FeedErrorType,
+	FeedStatusType,
+	LENGTHS,
+} from "@/app/[locale]/lib/types";
 import { type InferSelectModel, sql } from "drizzle-orm";
 import {
 	boolean,
 	check,
+	index,
 	integer,
 	pgTable,
 	primaryKey,
 	text,
 	timestamp,
 	uniqueIndex,
+	uuid,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import type { AdapterAccountType } from "next-auth/adapters";
@@ -21,11 +27,6 @@ function enumToPgEnum<T extends Record<string, any>>(
 	// biome-ignore lint/suspicious/noExplicitAny: locale exception.
 	return Object.values(myEnum).map((value: any) => `${value}`) as any;
 }
-
-/**
- * MAX_FEEDS_PER_USER nombre de flux autorisés par utilisateur.
- */
-export const MAX_FEEDS_PER_USER = 100;
 
 export const users = pgTable(
 	"users",
@@ -65,21 +66,34 @@ export const links = pgTable("links", {
 /**
  * feeds contains the feeds present in the database.
  */
-export const feeds = pgTable("feeds", {
-	id: integer().primaryKey().generatedAlwaysAsIdentity(),
-	url: text().notNull().unique(),
-	title: text().notNull(),
-	createdAt: timestamp().defaultNow().notNull(),
-	lastSyncAt: timestamp({ mode: "date" }).defaultNow().notNull(),
-	status: text({ enum: enumToPgEnum(FeedStatusType) })
-		.notNull()
-		.default(FeedStatusType.ACTIVE),
-	lastError: text(),
-	errorCount: integer().default(0).notNull(),
-	errorType: text({
-		enum: enumToPgEnum(FeedErrorType),
-	}),
-});
+export const feeds = pgTable(
+	"feeds",
+	{
+		id: integer().primaryKey().generatedAlwaysAsIdentity(),
+		// external id.
+		eid: uuid().notNull().defaultRandom(),
+		// This is the of the feed (used as a newsleletter).
+		// It has a value only when the current feed is a newsletter.
+		// This is needed when deleting a newsletter, to make sure that the user deleting a newsletter is the owner of the feed.
+		// Otherwise we would have a security vulnerability where anyone who guesses the id can delete the feed.
+		newsletterOwnerId: text().references(() => users.id, {
+			onDelete: "cascade",
+		}),
+		url: text().notNull().unique(),
+		title: text().notNull(),
+		createdAt: timestamp().defaultNow().notNull(),
+		lastSyncAt: timestamp({ mode: "date" }).defaultNow().notNull(),
+		status: text({ enum: enumToPgEnum(FeedStatusType) })
+			.notNull()
+			.default(FeedStatusType.ACTIVE),
+		lastError: text(),
+		errorCount: integer().default(0).notNull(),
+		errorType: text({
+			enum: enumToPgEnum(FeedErrorType),
+		}),
+	},
+	(table) => [index("eid_user_id").on(table.eid), index("url").on(table.url)],
+);
 
 /**
  * feedsContent contains the content of the feeds.
@@ -211,7 +225,7 @@ export const insertUsersSchema = createInsertSchema(users, {
 			.gt(0, {
 				message: "errors.feedContentLimitFieldInvalid",
 			})
-			.lte(MAX_FEEDS_PER_USER, {
+			.lte(LENGTHS.feeds.maxPerUser, {
 				message: "errors.feedContentLimitFieldInvalid",
 			}),
 }).pick({ feedContentLimit: true });
@@ -272,6 +286,29 @@ export const deleteUsersFeedsReadContentSchema = createSelectSchema(
 	},
 ).pick({ feedId: true, feedContentId: true });
 
+export const addNewsletterSchema = z.object({
+	title: z
+		.string({
+			message: "errors.titleFieldInvalid",
+		})
+		.min(2, {
+			message: "errors.titleFieldTooShort",
+		})
+		.max(100, {
+			message: "errors.titleFieldTooLong",
+		}),
+});
+
+export const deleteNewsletterSchema = z.object({
+	id: z
+		.number({
+			message: "errors.idFieldInvalid",
+		})
+		.nonnegative({
+			message: "errors.idFieldInvalid",
+		}),
+});
+
 const contentWithReadAt = z.object({
 	id: z.coerce.number(),
 	feedId: z.coerce.number(),
@@ -285,6 +322,7 @@ const contentWithReadAt = z.object({
 
 export const feedsWithContent = z.object({
 	id: z.coerce.number(),
+	eid: z.coerce.string(),
 	url: z.string(),
 	title: z.string(),
 	createdAt: z.coerce.date(),
@@ -294,11 +332,12 @@ export const feedsWithContent = z.object({
 	lastError: z.string().nullable(),
 	errorCount: z.coerce.number(),
 	errorType: z.nativeEnum(FeedErrorType).nullable(),
+	newsletterOwnerId: z.string().nullable(),
 });
 
 export const feedsWithContentArray = z.array(feedsWithContent);
 
 export type User = InferSelectModel<typeof users>;
 export type Feed = InferSelectModel<typeof feeds>;
-export type UserFeedWithContent = z.infer<typeof feedsWithContent>;
+export type FeedWithContent = z.infer<typeof feedsWithContent>;
 export type FeedContentWithReadAt = z.infer<typeof contentWithReadAt>;

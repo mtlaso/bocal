@@ -1,7 +1,4 @@
 "use client";
-import { type AddFeedState, addFeed } from "@/app/[locale]/lib/actions";
-import { useMediaQuery } from "@/app/[locale]/lib/hooks/use-media-query";
-import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -18,38 +15,46 @@ import {
 	DrawerHeader,
 	DrawerTrigger,
 } from "@/components/ui/drawer";
+import { TbLinkPlus, TbMail } from "react-icons/tb";
+
+import {
+	type AddNewsletterState,
+	addNewsletter,
+} from "@/app/[locale]/lib/actions";
+import { useMediaQuery } from "@/app/[locale]/lib/hooks/use-media-query";
+import { LENGTHS } from "@/app/[locale]/lib/types";
+import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useActionState, useState } from "react";
-import { TbLinkPlus } from "react-icons/tb";
 
-export function AddFeedForm(): React.JSX.Element {
+export function AddNewsletterForm(): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 	const isDesktop = useMediaQuery("(min-width: 768px)");
 
 	return isDesktop ? (
-		<AddFeedFormDesktop
+		<AddNewsletterFormDesktop
 			isOpen={isOpen}
 			onOpen={(status: boolean): void => setIsOpen(status)}
 		/>
 	) : (
-		<AddFeedFormMobile
+		<AddNewsletterFormMobile
 			isOpen={isOpen}
 			onOpen={(status: boolean): void => setIsOpen(status)}
 		/>
 	);
 }
 
-function AddFeedFormDesktop({
+function AddNewsletterFormDesktop({
 	isOpen,
 	onOpen,
 }: {
 	isOpen: boolean;
 	onOpen: (status: boolean) => void;
 }): React.JSX.Element {
-	const t = useTranslations("rssFeed");
+	const t = useTranslations("newsletter");
 
 	return (
 		<Dialog open={isOpen} onOpenChange={(status): void => onOpen(status)}>
@@ -60,22 +65,22 @@ function AddFeedFormDesktop({
 			</DialogTrigger>
 			<DialogContent className="w-11/12 sm:max-w-md">
 				<DialogHeader>
-					<DialogTitle>{t("addFeedForm.title")}</DialogTitle>
+					<DialogTitle>{t("addNewsletterForm.title")}</DialogTitle>
 				</DialogHeader>
-				<FeedForm />
+				<NewsletterForm />
 			</DialogContent>
 		</Dialog>
 	);
 }
 
-function AddFeedFormMobile({
+function AddNewsletterFormMobile({
 	isOpen,
 	onOpen,
 }: {
 	isOpen: boolean;
 	onOpen: (status: boolean) => void;
 }): React.JSX.Element {
-	const t = useTranslations("rssFeed");
+	const t = useTranslations("newsletter");
 	return (
 		<Drawer open={isOpen} onOpenChange={onOpen}>
 			<DrawerTrigger asChild>
@@ -86,13 +91,13 @@ function AddFeedFormMobile({
 			<DrawerContent>
 				<DrawerHeader>
 					<DialogTitle className="text-left">
-						{t("addFeedForm.title")}
+						{t("addNewsletterForm.title")}
 					</DialogTitle>
 				</DrawerHeader>
-				<FeedForm className="px-4" />
+				<NewsletterForm className="px-4" />
 				<DrawerFooter className="pt-2">
 					<DrawerClose asChild>
-						<Button variant="outline">{t("addFeedForm.cancel")}</Button>
+						<Button variant="outline">{t("addNewsletterForm.cancel")}</Button>
 					</DrawerClose>
 				</DrawerFooter>
 			</DrawerContent>
@@ -100,43 +105,50 @@ function AddFeedFormMobile({
 	);
 }
 
-const FeedForm = ({
+function NewsletterForm({
 	className,
-}: React.ComponentProps<"form">): React.JSX.Element => {
-	const t = useTranslations("rssFeed");
-	const initialState: AddFeedState = {
+}: {
+	className?: string;
+}): React.JSX.Element {
+	const t = useTranslations("newsletter");
+	const initialState: AddNewsletterState = {
 		errors: undefined,
-		errMessage: null,
+		errMessage: undefined,
 		data: undefined,
 	};
-	const [state, formAction, pending] = useActionState(addFeed, initialState);
+	const [state, action, pending] = useActionState(addNewsletter, initialState);
 
 	return (
 		<form
+			action={action}
 			className={cn(SPACING.LG, "grid", className)}
-			action={formAction}
 			id="form"
 		>
 			<div className={SPACING.SM}>
-				<Label htmlFor="url" className="block text-sm font-medium">
-					{t("addFeedForm.link")}
+				<Label htmlFor="title" className="block text-sm font-medium">
+					{t("addNewsletterForm.feedTitle")}
 				</Label>
 
 				<div className="relative">
 					<Input
 						required
+						minLength={LENGTHS.newsletters.title.min}
+						maxLength={LENGTHS.newsletters.title.max}
 						className="block w-full cursor-pointer rounded-md py-2 pl-10 outline-2 placeholder:text-gray-500"
-						name="url"
+						name="title"
 						autoFocus
-						id="url"
-						placeholder="https://..."
-						defaultValue={state.data?.url}
+						id="title"
+						placeholder={t("addNewsletterForm.feedTitle")}
+						defaultValue={state.data?.title}
 					/>
 
-					<TbLinkPlus className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+					<TbMail
+						aria-hidden
+						className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500"
+					/>
 				</div>
 
-				{state.errors?.url?.map((err) => (
+				{state.errors?.title?.map((err) => (
 					<p className="mt-2 text-sm text-destructive" key={err}>
 						{t(err)}
 					</p>
@@ -158,4 +170,4 @@ const FeedForm = ({
 			</Button>
 		</form>
 	);
-};
+}

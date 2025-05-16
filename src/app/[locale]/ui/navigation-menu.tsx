@@ -1,4 +1,5 @@
 "use client";
+import { LINKS } from "@/app/[locale]/lib/links";
 import { Button } from "@/components/ui/button";
 import { LocaleToggle } from "@/components/ui/locale-toggle";
 import {
@@ -74,6 +75,17 @@ function DesktopNavMenu(): React.JSX.Element {
 						})}
 					>
 						{t("rssFeed")}
+					</NavigationMenuLink>
+				</NavigationMenuItem>
+
+				<NavigationMenuItem>
+					<NavigationMenuLink
+						href={LINKS.newsletter}
+						className={cn(navigationMenuTriggerStyle(), {
+							"font-semibold bg-accent": pathname === LINKS.newsletter,
+						})}
+					>
+						{t("newsletters")}
 					</NavigationMenuLink>
 				</NavigationMenuItem>
 
@@ -159,6 +171,20 @@ function MobileNavMenu(): React.JSX.Element {
 						)}
 					>
 						<span className="">{t("rssFeed")}</span>
+					</Link>
+
+					<Link
+						onClick={(): void => setIsOpen(false)}
+						href={LINKS.newsletter}
+						className={cn(
+							navigationMenuTriggerStyle(),
+							"w-full flex justify-start",
+							{
+								"font-semibold bg-accent": pathname === LINKS.newsletter,
+							},
+						)}
+					>
+						<span className="">{t("newsletters")}</span>
 					</Link>
 
 					<Link

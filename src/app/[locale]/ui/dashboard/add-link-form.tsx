@@ -105,7 +105,7 @@ function LinkForm({
 }: React.ComponentProps<"form">): React.JSX.Element {
 	const initialState: AddLinkState = {
 		errors: undefined,
-		message: null,
+		errMessage: null,
 		data: undefined,
 	};
 	const t = useTranslations("dashboard");
@@ -139,8 +139,8 @@ function LinkForm({
 						{t(err)}
 					</p>
 				))}
-				{state?.message && (
-					<p className="mt-2 text-sm text-destructive">{t(state.message)}</p>
+				{state?.errMessage && (
+					<p className="mt-2 text-sm text-destructive">{t(state.errMessage)}</p>
 				)}
 			</div>
 

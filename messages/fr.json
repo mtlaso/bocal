@@ -37,6 +37,10 @@
 			"title": "Flux RSS/Atom",
 			"description": "Suivez vos flux RSS/Atom ici."
 		},
+		"newsletter": {
+			"title": "Infolettre",
+			"description": "Gérez vos abonnements à des newsletters."
+		},
 		"settings": {
 			"title": "Paramètres",
 			"description": "Gérez vos paramètres ici."
@@ -68,6 +72,7 @@
 		"links": "Liens",
 		"archive": "Archive",
 		"rssFeed": "Flux",
+		"newsletters": "Infolettres",
 		"settings": "Paramètres",
 		"close": "Fermer",
 		"sort": {
@@ -176,6 +181,41 @@
 			"feedContentIdFieldInvalid": "ID de contenu invalide.",
 			"cannotCopyFeedURL": "Impossible de copier l'URL du flux."
 		}
+	},
+	"newsletter": {
+		"newsletters": "Infolettres",
+		"description": "Suivez vos infolettres un flux RSS.",
+		"descFeedUrl": "URL du flux pour suivre votre newsletter. Il a été automatiquement ajouté à la section Flux.",
+		"descUsermail": "Utilisez ce courriel pour vous abonner à la newsletter.",
+		"addNewsletterForm": {
+			"title": "Ajouter une infolettre",
+			"feedTitle": "Titre",
+			"cancel": "Annuler"
+		},
+		"add": "Ajouter",
+		"errors": {
+			"missingFields": "Champ(s) manquant(s).",
+			"titleFieldInvalid": "Titre invalide.",
+			"titleFieldTooShort": "Le titre est trop court.",
+			"titleFieldTooLong": "Le titre est trop long.",
+			"maxFeedsReached": "Nombre maximum de flux atteint.",
+			"idFieldInvalid": "ID invalide."
+		},
+		"deleteNewsletterContextMenu": {
+			"title": "Êtes-vous sûr de vouloir supprimer cette infolettre ? Toutes les entrées seront supprimées.",
+			"desc": "Nous vous recommandons de vous désabonner avant de supprimer cette infolettre.",
+			"cancel": "Annuler",
+			"delete": "Supprimer"
+		},
+		"explanation": {
+			"title": "Fonctionnement",
+			"part1": "Après avoir créé une nouvelle infolettre, utilisez l’adresse courriel fournie pour vous abonner à des infolettres.",
+			"part2": "Ne partagez pas cette adresse avec des tiers : toute personne y ayant accès pourra vous envoyer des courriels.",
+			"part3": "Si l'infolettre à laquelle vous vous abonnez envoie un courriel de confirmation, celui-ci apparaîtra comme une nouvelle entrée dans le flux de l'infolettre"
+		},
+		"success": "Infolettre ajoutée avec succès.",
+		"copiedToClipboard": "Copié dans le presse-papiers.",
+		"failedToCopyToClipboard": "Échec de la copie dans le presse-papiers."
 	},
 	"settings": {
 		"title": "Paramètres",

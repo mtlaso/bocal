@@ -39,8 +39,8 @@ export function FeedContentLimitForm({
 				setValue(Number.parseInt(e));
 				const res = await setFeedContentLimit(e);
 
-				if (res.message) {
-					toast.error(t(res.message));
+				if (res.errMessage) {
+					toast.error(t(res.errMessage));
 					return;
 				}
 

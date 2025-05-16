@@ -16,3 +16,18 @@ export enum FeedErrorType {
 	INVALID_URL = "invalid_url",
 	UNKNOWN = "unknown_error",
 }
+
+/**
+ * LENGTHS contains the lengths of fields.
+ */
+export const LENGTHS = {
+	feeds: {
+		maxPerUser: 99,
+	},
+	newsletters: {
+		title: {
+			min: 2,
+			max: 100,
+		},
+	},
+} as const;
