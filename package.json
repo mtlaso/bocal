@@ -39,7 +39,7 @@
 		"html-entities": "^2.6.0",
 		"isomorphic-dompurify": "^2.24.0",
 		"jsdom": "^26.1.0",
-		"lucide-react": "^0.483.0",
+		"lucide-react": "^0.511.0",
 		"motion": "^11.18.2",
 		"next": "15.4.0-canary.34",
 		"next-auth": "5.0.0-beta.28",
