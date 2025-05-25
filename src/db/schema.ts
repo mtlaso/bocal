@@ -309,7 +309,7 @@ export const deleteNewsletterSchema = z.object({
 		}),
 });
 
-const contentWithReadAt = z.object({
+const feedContentWithReadAt = z.object({
 	id: z.coerce.number(),
 	feedId: z.coerce.number(),
 	date: z.coerce.date(),
@@ -320,14 +320,14 @@ const contentWithReadAt = z.object({
 	readAt: z.coerce.date().nullable(),
 });
 
-export const feedsWithContent = z.object({
+export const feedWithContent = z.object({
 	id: z.coerce.number(),
 	eid: z.coerce.string(),
 	url: z.string(),
 	title: z.string(),
 	createdAt: z.coerce.date(),
 	lastSyncAt: z.coerce.date(),
-	contents: z.array(contentWithReadAt),
+	contents: z.array(feedContentWithReadAt),
 	status: z.nativeEnum(FeedStatusType),
 	lastError: z.string().nullable(),
 	errorCount: z.coerce.number(),
@@ -335,9 +335,9 @@ export const feedsWithContent = z.object({
 	newsletterOwnerId: z.string().nullable(),
 });
 
-export const feedsWithContentArray = z.array(feedsWithContent);
+export const feedsWithContent = z.array(feedWithContent);
 
 export type User = InferSelectModel<typeof users>;
 export type Feed = InferSelectModel<typeof feeds>;
-export type FeedWithContent = z.infer<typeof feedsWithContent>;
-export type FeedContentWithReadAt = z.infer<typeof contentWithReadAt>;
+export type FeedWithContent = z.infer<typeof feedWithContent>;
+export type FeedContentWithReadAt = z.infer<typeof feedContentWithReadAt>;
