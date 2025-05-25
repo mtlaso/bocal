@@ -1,5 +1,5 @@
 import { db } from "@/db/db";
-import { type FeedWithContent, feedWithContentArray, links } from "@/db/schema";
+import { type FeedWithContent, feedsWithContent, links } from "@/db/schema";
 import { type SQL, and, desc, eq, sql } from "drizzle-orm";
 import z from "zod";
 import "server-only";
@@ -137,7 +137,7 @@ const getUserFeeds = cache(
 
 			const req = await db.execute(query);
 
-			const { data, error } = feedWithContentArray.safeParse(req.rows);
+			const { data, error } = feedsWithContent.safeParse(req.rows);
 			if (error) {
 				throw new z.ZodError(error.issues);
 			}
