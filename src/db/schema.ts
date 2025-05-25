@@ -320,7 +320,7 @@ const contentWithReadAt = z.object({
 	readAt: z.coerce.date().nullable(),
 });
 
-export const feedsWithContent = z.object({
+export const feedWithContent = z.object({
 	id: z.coerce.number(),
 	eid: z.coerce.string(),
 	url: z.string(),
@@ -335,9 +335,9 @@ export const feedsWithContent = z.object({
 	newsletterOwnerId: z.string().nullable(),
 });
 
-export const feedsWithContentArray = z.array(feedsWithContent);
+export const feedWithContentArray = z.array(feedWithContent);
 
 export type User = InferSelectModel<typeof users>;
 export type Feed = InferSelectModel<typeof feeds>;
-export type FeedWithContent = z.infer<typeof feedsWithContent>;
+export type FeedWithContent = z.infer<typeof feedWithContent>;
 export type FeedContentWithReadAt = z.infer<typeof contentWithReadAt>;
