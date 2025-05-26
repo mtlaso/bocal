@@ -37,7 +37,7 @@
 		"drizzle-orm": "^0.43.1",
 		"drizzle-zod": "^0.7.1",
 		"html-entities": "^2.6.0",
-		"isomorphic-dompurify": "^2.24.0",
+		"isomorphic-dompurify": "^2.25.0",
 		"jsdom": "^26.1.0",
 		"lucide-react": "^0.511.0",
 		"motion": "^11.18.2",
