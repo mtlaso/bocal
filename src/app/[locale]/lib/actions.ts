@@ -7,6 +7,7 @@ import { LINKS } from "@/app/[locale]/lib/links";
 import { logger } from "@/app/[locale]/lib/logging";
 import { og } from "@/app/[locale]/lib/og";
 import { LENGTHS } from "@/app/[locale]/lib/types";
+import { usermailfuncs } from "@/app/[locale]/lib/usermail-funcs";
 import { signIn, signOut } from "@/auth";
 import { db } from "@/db/db";
 import {
@@ -682,7 +683,7 @@ export async function addNewsletter(
 			.values({
 				eid,
 				newsletterOwnerId: user.user.id,
-				url: `https://bocal.fyi/userfeeds/${eid}`,
+				url: `${usermailfuncs.NEWSLETTER_URL_PREFIX}${eid}`,
 				title: validatedFields.data.title,
 				lastSyncAt: new Date(),
 			})
