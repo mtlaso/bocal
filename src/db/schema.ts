@@ -220,7 +220,7 @@ export const authenticators = pgTable(
 );
 
 export const insertUsersSchema = createInsertSchema(users, {
-	feedContentLimit: (schema): Zod.ZodNumber =>
+	feedContentLimit: (schema): z.ZodNumber =>
 		schema
 			.gt(0, {
 				message: "errors.feedContentLimitFieldInvalid",
@@ -231,28 +231,28 @@ export const insertUsersSchema = createInsertSchema(users, {
 }).pick({ feedContentLimit: true });
 
 export const insertLinksSchema = createInsertSchema(links, {
-	url: (schema): Zod.ZodString =>
+	url: (schema): z.ZodString =>
 		schema.url({
 			message: "errors.urlFieldInvalid",
 		}),
 }).pick({ url: true });
 
 export const deleteLinkSchema = createSelectSchema(links, {
-	id: (schema): Zod.ZodNumber =>
+	id: (schema): z.ZodNumber =>
 		schema.nonnegative({
 			message: "errors.idFieldInvalid",
 		}),
 }).pick({ id: true });
 
 export const insertFeedsSchema = createInsertSchema(feeds, {
-	url: (schema): Zod.ZodString =>
+	url: (schema): z.ZodString =>
 		schema.url({
 			message: "errors.urlFieldInvalid",
 		}),
 }).pick({ url: true });
 
 export const unfollowFeedSchema = createSelectSchema(usersFeeds, {
-	feedId: (schema): Zod.ZodNumber =>
+	feedId: (schema): z.ZodNumber =>
 		schema.nonnegative({
 			message: "errors.idFieldInvalid",
 		}),
@@ -261,11 +261,11 @@ export const unfollowFeedSchema = createSelectSchema(usersFeeds, {
 export const insertUsersFeedsReadContentSchema = createSelectSchema(
 	usersFeedsReadContent,
 	{
-		feedId: (schema): Zod.ZodNumber =>
+		feedId: (schema): z.ZodNumber =>
 			schema.nonnegative({
 				message: "errors.idFieldInvalid",
 			}),
-		feedContentId: (schema): Zod.ZodNumber =>
+		feedContentId: (schema): z.ZodNumber =>
 			schema.nonnegative({
 				message: "errors.feedContentIdFieldInvalid",
 			}),
@@ -275,11 +275,11 @@ export const insertUsersFeedsReadContentSchema = createSelectSchema(
 export const deleteUsersFeedsReadContentSchema = createSelectSchema(
 	usersFeedsReadContent,
 	{
-		feedId: (schema): Zod.ZodNumber =>
+		feedId: (schema): z.ZodNumber =>
 			schema.nonnegative({
 				message: "errors.idFieldInvalid",
 			}),
-		feedContentId: (schema): Zod.ZodNumber =>
+		feedContentId: (schema): z.ZodNumber =>
 			schema.nonnegative({
 				message: "errors.feedContentIdFieldInvalid",
 			}),
