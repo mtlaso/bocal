@@ -18,7 +18,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import type { AdapterAccountType } from "next-auth/adapters";
-import { z } from "zod";
+import { z } from "zod/v4";
 
 // biome-ignore lint/suspicious/noExplicitAny: locale exception.
 function enumToPgEnum<T extends Record<string, any>>(
@@ -220,41 +220,41 @@ export const authenticators = pgTable(
 );
 
 export const insertUsersSchema = createInsertSchema(users, {
-	feedContentLimit: (schema): z.ZodNumber =>
+	feedContentLimit: (schema): z.ZodInt =>
 		schema
 			.gt(0, {
-				message: "errors.feedContentLimitFieldInvalid",
+				error: "errors.feedContentLimitFieldInvalid",
 			})
 			.lte(LENGTHS.feeds.maxPerUser, {
-				message: "errors.feedContentLimitFieldInvalid",
+				error: "errors.feedContentLimitFieldInvalid",
 			}),
 }).pick({ feedContentLimit: true });
 
 export const insertLinksSchema = createInsertSchema(links, {
 	url: (schema): z.ZodString =>
 		schema.url({
-			message: "errors.urlFieldInvalid",
+			error: "errors.urlFieldInvalid",
 		}),
 }).pick({ url: true });
 
 export const deleteLinkSchema = createSelectSchema(links, {
 	id: (schema): z.ZodNumber =>
 		schema.nonnegative({
-			message: "errors.idFieldInvalid",
+			error: "errors.idFieldInvalid",
 		}),
 }).pick({ id: true });
 
 export const insertFeedsSchema = createInsertSchema(feeds, {
 	url: (schema): z.ZodString =>
 		schema.url({
-			message: "errors.urlFieldInvalid",
+			error: "errors.urlFieldInvalid",
 		}),
 }).pick({ url: true });
 
 export const unfollowFeedSchema = createSelectSchema(usersFeeds, {
 	feedId: (schema): z.ZodNumber =>
 		schema.nonnegative({
-			message: "errors.idFieldInvalid",
+			error: "errors.idFieldInvalid",
 		}),
 }).pick({ feedId: true });
 
@@ -263,11 +263,11 @@ export const insertUsersFeedsReadContentSchema = createSelectSchema(
 	{
 		feedId: (schema): z.ZodNumber =>
 			schema.nonnegative({
-				message: "errors.idFieldInvalid",
+				error: "errors.idFieldInvalid",
 			}),
 		feedContentId: (schema): z.ZodNumber =>
 			schema.nonnegative({
-				message: "errors.feedContentIdFieldInvalid",
+				error: "errors.feedContentIdFieldInvalid",
 			}),
 	},
 ).pick({ feedId: true, feedContentId: true });
@@ -277,11 +277,11 @@ export const deleteUsersFeedsReadContentSchema = createSelectSchema(
 	{
 		feedId: (schema): z.ZodNumber =>
 			schema.nonnegative({
-				message: "errors.idFieldInvalid",
+				error: "errors.idFieldInvalid",
 			}),
 		feedContentId: (schema): z.ZodNumber =>
 			schema.nonnegative({
-				message: "errors.feedContentIdFieldInvalid",
+				error: "errors.feedContentIdFieldInvalid",
 			}),
 	},
 ).pick({ feedId: true, feedContentId: true });
@@ -289,23 +289,23 @@ export const deleteUsersFeedsReadContentSchema = createSelectSchema(
 export const addNewsletterSchema = z.object({
 	title: z
 		.string({
-			message: "errors.titleFieldInvalid",
+			error: "errors.titleFieldInvalid",
 		})
 		.min(2, {
-			message: "errors.titleFieldTooShort",
+			error: "errors.titleFieldTooShort",
 		})
 		.max(100, {
-			message: "errors.titleFieldTooLong",
+			error: "errors.titleFieldTooLong",
 		}),
 });
 
 export const deleteNewsletterSchema = z.object({
 	id: z
 		.number({
-			message: "errors.idFieldInvalid",
+			error: "errors.idFieldInvalid",
 		})
 		.nonnegative({
-			message: "errors.idFieldInvalid",
+			error: "errors.idFieldInvalid",
 		}),
 });
 
@@ -328,10 +328,10 @@ export const feedWithContent = z.object({
 	createdAt: z.coerce.date(),
 	lastSyncAt: z.coerce.date(),
 	contents: z.array(feedContentWithReadAt),
-	status: z.nativeEnum(FeedStatusType),
+	status: z.enum(FeedStatusType),
 	lastError: z.string().nullable(),
 	errorCount: z.coerce.number(),
-	errorType: z.nativeEnum(FeedErrorType).nullable(),
+	errorType: z.enum(FeedErrorType).nullable(),
 	newsletterOwnerId: z.string().nullable(),
 });
 

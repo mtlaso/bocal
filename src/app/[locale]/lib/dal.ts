@@ -1,7 +1,7 @@
 import { db } from "@/db/db";
 import { type FeedWithContent, feedsWithContent, links } from "@/db/schema";
 import { type SQL, and, desc, eq, sql } from "drizzle-orm";
-import z from "zod";
+import { z } from "zod/v4";
 import "server-only";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 import { logger } from "@/app/[locale]/lib/logging";
