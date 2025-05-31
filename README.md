@@ -3,6 +3,9 @@
 
 [*english*](#En)
 
+certs config: https://github.com/mtlaso/bocal-smtpd-certs-configuration
+---
+
 Bocal est une application qui combine un lecteur RSS et un gestionnaire de liens.
 Elle permet aux utilisateurs de suivre leurs sites préférés et d'organiser leurs liens dans un seul endroit.
 
