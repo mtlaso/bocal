@@ -3,7 +3,9 @@
 
 [*english*](#En)
 
-certs config: https://github.com/mtlaso/bocal-smtpd-certs-configuration
+🔗 bocal-smtpd (newsletters): https://github.com/mtlaso/bocal-smtpd
+🔗 bocal-smtpd certs config: https://github.com/mtlaso/bocal-smtpd-certs-configuration
+
 ---
 
 Bocal est une application qui combine un lecteur RSS et un gestionnaire de liens.
