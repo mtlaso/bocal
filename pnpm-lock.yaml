@@ -86,7 +86,7 @@ importers:
         version: 0.44.1(@neondatabase/serverless@1.0.0)(@types/pg@8.15.4)(pg@8.16.0)
       drizzle-zod:
         specifier: ^0.8.2
-        version: 0.8.2(drizzle-orm@0.44.1(@neondatabase/serverless@1.0.0)(@types/pg@8.15.4)(pg@8.16.0))(zod@3.25.48)
+        version: 0.8.2(drizzle-orm@0.44.1(@neondatabase/serverless@1.0.0)(@types/pg@8.15.4)(pg@8.16.0))(zod@3.25.49)
       html-entities:
         specifier: ^2.6.0
         version: 2.6.0
@@ -151,8 +151,8 @@ importers:
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@19.0.4(@types/react@19.0.12))(@types/react@19.0.12)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       zod:
-        specifier: ^3.25.42
-        version: 3.25.48
+        specifier: ^3.25.49
+        version: 3.25.49
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4.1.8
@@ -2577,8 +2577,8 @@ packages:
     resolution: {integrity: sha512-YgvUTfwqyc7UXVMrB+SImsVYSmTS8X/tSrtdNZMImM+n7+QTriRXyXim0mBrTXNeqzVF0KWGgHPeiyViFFrNDw==}
     engines: {node: '>=18'}
 
-  zod@3.25.48:
-    resolution: {integrity: sha512-0X1mz8FtgEIvaxGjdIImYpZEaZMrund9pGXm3M6vM7Reba0e2eI71KPjSCGXBfwKDPwPoywf6waUKc3/tFvX2Q==}
+  zod@3.25.49:
+    resolution: {integrity: sha512-JMMPMy9ZBk3XFEdbM3iL1brx4NUSejd6xr3ELrrGEfGb355gjhiAWtG3K5o+AViV/3ZfkIrCzXsZn6SbLwTR8Q==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -3790,10 +3790,10 @@ snapshots:
       '@types/pg': 8.15.4
       pg: 8.16.0
 
-  drizzle-zod@0.8.2(drizzle-orm@0.44.1(@neondatabase/serverless@1.0.0)(@types/pg@8.15.4)(pg@8.16.0))(zod@3.25.48):
+  drizzle-zod@0.8.2(drizzle-orm@0.44.1(@neondatabase/serverless@1.0.0)(@types/pg@8.15.4)(pg@8.16.0))(zod@3.25.49):
     dependencies:
       drizzle-orm: 0.44.1(@neondatabase/serverless@1.0.0)(@types/pg@8.15.4)(pg@8.16.0)
-      zod: 3.25.48
+      zod: 3.25.49
 
   encoding-sniffer@0.2.0:
     dependencies:
@@ -5001,6 +5001,6 @@ snapshots:
 
   yallist@5.0.0: {}
 
-  zod@3.25.48: {}
+  zod@3.25.49: {}
 
   zwitch@2.0.4: {}
