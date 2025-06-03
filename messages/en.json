@@ -208,7 +208,7 @@
 		},
 		"explanation": {
 			"title": "How it works",
-			"part1": "After creating a new newsletter, use the provided email address to subscribe to newsletters.",
+			"part1": "Use the provided email address to subscribe to newsletters.",
 			"part2": "Do not share this address with third parties: anyone with access to it will be able to send you emails.",
 			"part3": "If the newsletter you subscribe to sends a confirmation email, it will appear as a new entry in the newsletter feed."
 		},
