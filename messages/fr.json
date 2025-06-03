@@ -185,8 +185,8 @@
 	"newsletter": {
 		"newsletters": "Infolettres",
 		"description": "Suivez vos infolettres un flux RSS.",
-		"descFeedUrl": "URL du flux pour suivre votre newsletter. Il a été automatiquement ajouté à la section Flux.",
-		"descUsermail": "Utilisez ce courriel pour vous abonner à la newsletter.",
+		"descFeedUrl": "URL du flux pour suivre votre infolottre. Il a été automatiquement ajouté à la section Flux.",
+		"descUsermail": "Utilisez ce courriel pour vous abonner à l'infolettre.",
 		"addNewsletterForm": {
 			"title": "Ajouter une infolettre",
 			"feedTitle": "Titre",
