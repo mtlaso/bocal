@@ -8,8 +8,11 @@ import {
 import { db } from "@/db/db";
 import { type Feed, feeds, feedsContent } from "@/db/schema";
 import { eq, sql } from "drizzle-orm";
+import { Feed as FeedCreator } from "feed";
 import { decode } from "html-entities";
+import { cache } from "react";
 import Parser from "rss-parser";
+import { z } from "zod/v4";
 import "server-only";
 
 const USER_AGENT = "RSS https://bocal.fyi/1.0";
@@ -160,6 +163,111 @@ async function triggerBackgroundSync(outdatedFeeds: Feed[]): Promise<void> {
 	}
 }
 
+type GenerateUserAtomFeedResponse = {
+	error:
+		| "feed-not-found"
+		| "multiple-feeds-with-same-eid"
+		| "invalid-eid"
+		| null;
+	atom: string | null;
+};
+
+/**
+ * generateUserAtomFeed returns the contents in a feed.
+ * This is not checking if the user is authenticated
+ * because this is used in `bocal.fyi/userfeeds/<feed-eid>`,
+ * where the feed needs to be accessible without authentication.
+ * E.g. A user could add the feed to an other feed reader (e.g. Feedly, NewsBlur, etc.).
+ *
+ * This also makes sure that the user owning the feed has an active
+ * subscription or is in trial.
+ * As long as the user owning this user feed has an active subscription or is in trial,
+ *  the feed content is accessible.
+ * We don't care how it is accessed.
+ * We only want that the user is paying.
+ *
+ * @param eid - External id of the feed.
+ */
+const generateUserAtomFeed = cache(
+	async (eid: string): Promise<GenerateUserAtomFeedResponse> => {
+		try {
+			// Todo: make sure the user is paying or is in trial
+			// E.g
+			// Ex: “eid → feed → newsletterOwnerId → user → check payment/free trial status”
+			logger.warn("TODO: make sure the user is paying or is in trial");
+
+			// Check if eid is a valid uuid
+			if (!z.uuid().safeParse(eid).success) {
+				return { error: "invalid-eid", atom: null };
+			}
+
+			const feed = await db
+				.select({
+					id: feeds.id,
+					url: feeds.url,
+					eid: feeds.eid,
+					title: feeds.title,
+					createdAt: feeds.createdAt,
+					lastSyncAt: feeds.lastSyncAt,
+				})
+				.from(feeds)
+				.where(eq(feeds.eid, eid));
+
+			if (!feed || feed.length === 0) {
+				return { error: "feed-not-found", atom: null };
+			}
+
+			if (feed.length > 1) {
+				logger.error("Multiple feeds found for the given eid", eid);
+				return { error: "multiple-feeds-with-same-eid", atom: null };
+			}
+
+			const contents = await db
+				.select({
+					url: feedsContent.url,
+					title: feedsContent.title,
+					createdAt: feedsContent.createdAt,
+					content: feedsContent.content,
+				})
+				.from(feedsContent)
+				.where(eq(feedsContent.feedId, feed[0].id));
+
+			// https://validator.w3.org/feed/docs/atom.html
+			const atom = new FeedCreator({
+				id: feed[0].eid,
+				title: feed[0].title,
+				copyright: "",
+				updated: feed[0].lastSyncAt,
+				link: feed[0].url,
+				// TODO: create an endpoint to generate beautiful images
+				// E.g. /api/atom/image?text=<title>
+				image: "https://bocal.fyi/api/og",
+				author: {
+					name: "bocal.fyi",
+					avatar: "https://bocal.fyi/api/og",
+					email: "contact@bocal.fyi",
+					link: "https://bocal.fyi",
+				},
+			});
+
+			contents.map((content) => {
+				// https://validator.w3.org/feed/docs/atom.html
+				atom.addItem({
+					title: content.title,
+					link: content.url,
+					date: content.createdAt,
+					content: content.content,
+				});
+			});
+
+			return { error: null, atom: atom.atom1() };
+		} catch (err) {
+			logger.error(err);
+			throw new Error("errors.unexpected");
+		}
+	},
+);
+
 /**
  * feedService contient les fonctions pour gérer les flux RSS.
  */
@@ -169,4 +277,5 @@ export const feedService = {
 	FeedCannotBeProcessed,
 	FeedTimeout,
 	triggerBackgroundSync,
+	generateUserAtomFeed,
 };
