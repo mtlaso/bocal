@@ -36,6 +36,7 @@
 		"clsx": "^2.1.1",
 		"drizzle-orm": "^0.44.0",
 		"drizzle-zod": "^0.8.2",
+		"feed": "^5.1.0",
 		"html-entities": "^2.6.0",
 		"isomorphic-dompurify": "^2.25.0",
 		"jsdom": "^26.1.0",

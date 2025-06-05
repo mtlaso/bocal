@@ -1,4 +1,5 @@
 import { getAppBaseURL } from "@/app/[locale]/lib/get-app-base-url";
+import { LINKS } from "@/app/[locale]/lib/links";
 import { type Locale, getPathname, routing } from "@/i18n/routing";
 import type { MetadataRoute } from "next";
 
@@ -7,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 		getEntry("/"),
 		getEntry("/dashboard"),
 		getEntry("/archive"),
+		getEntry(LINKS.newsletter),
 		getEntry("/feed"),
 		getEntry("/login"),
 		getEntry("/settings"),

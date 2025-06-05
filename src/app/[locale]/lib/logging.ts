@@ -19,9 +19,20 @@ function info(...msg: unknown[]): void {
 }
 
 /**
+ * warn logs at level WARN.
+ * @param msg message to show.
+ */
+function warn(...msg: unknown[]): void {
+	const now = new Date();
+	// biome-ignore lint/suspicious/noConsole: logging.
+	console.warn(`[${now.toISOString()}] [WARN]`, ...msg);
+}
+
+/**
  * logger contient les fonctions de log de différents niveaux.
  */
 export const logger = {
 	error,
 	info,
+	warn,
 };

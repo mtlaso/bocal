@@ -119,6 +119,8 @@ const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
 					"opacity-50": isRead,
 				})}
 				onClick={(): Promise<void> => handleMarkAsRead(item.feedId, item.id)}
+				// Todo:
+				// In localhost, redirect to http://localhost:<port>:<url>
 				href={item.url}
 				target="_blank"
 			>
