@@ -1,6 +1,6 @@
 /**
- * error log de niveau ERROR.
- * @param err erreur à affcher.
+ * error log of level ERROR.
+ * @param err error to show.
  */
 function error(...err: unknown[]): void {
 	const now = new Date();
@@ -9,8 +9,8 @@ function error(...err: unknown[]): void {
 }
 
 /**
- * info log de niveau INFO.
- * @param msg message à afficher.
+ * info log of level INFO.
+ * @param msg message to show.
  */
 function info(...msg: unknown[]): void {
 	const now = new Date();
@@ -19,7 +19,7 @@ function info(...msg: unknown[]): void {
 }
 
 /**
- * warn logs at level WARN.
+ * warn log of level WARN.
  * @param msg message to show.
  */
 function warn(...msg: unknown[]): void {
@@ -29,7 +29,7 @@ function warn(...msg: unknown[]): void {
 }
 
 /**
- * logger contient les fonctions de log de différents niveaux.
+ * logger contains log functions of different levels.
  */
 export const logger = {
 	error,

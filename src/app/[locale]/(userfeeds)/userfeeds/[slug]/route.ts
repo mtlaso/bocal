@@ -1,4 +1,4 @@
-import { feedService } from "@/app/[locale]/lib/feed-service"; // Adjust path if needed
+import { feedService } from "@/app/[locale]/lib/feed-service";
 import { notFound } from "next/navigation";
 import { type NextRequest, NextResponse } from "next/server";
 
