@@ -1,10 +1,11 @@
 import { feedService } from "@/app/[locale]/lib/feed-service";
 import { notFound } from "next/navigation";
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
-export async function GET({
-	params,
-}: { params: Promise<{ slug: string }> }): Promise<NextResponse> {
+export async function GET(
+	_request: NextRequest,
+	{ params }: { params: Promise<{ slug: string }> },
+): Promise<NextResponse> {
 	const { slug: feedEid } = await params;
 
 	if (!feedEid) {
