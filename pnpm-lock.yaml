@@ -22,8 +22,8 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0(@types/react@19.0.12)(react@19.0.0)
       '@neondatabase/serverless':
-        specifier: ^1.0.0
-        version: 1.0.0
+        specifier: ^1.0.1
+        version: 1.0.1
       '@next/env':
         specifier: 15.2.3
         version: 15.2.3
@@ -83,10 +83,10 @@ importers:
         version: 2.1.1
       drizzle-orm:
         specifier: ^0.44.0
-        version: 0.44.1(@neondatabase/serverless@1.0.0)(@types/pg@8.15.4)(pg@8.16.0)
+        version: 0.44.1(@neondatabase/serverless@1.0.1)(@types/pg@8.15.4)(pg@8.16.0)
       drizzle-zod:
         specifier: ^0.8.2
-        version: 0.8.2(drizzle-orm@0.44.1(@neondatabase/serverless@1.0.0)(@types/pg@8.15.4)(pg@8.16.0))(zod@3.25.49)
+        version: 0.8.2(drizzle-orm@0.44.1(@neondatabase/serverless@1.0.1)(@types/pg@8.15.4)(pg@8.16.0))(zod@3.25.49)
       feed:
         specifier: ^5.1.0
         version: 5.1.0
@@ -733,8 +733,8 @@ packages:
       '@types/react': 19.0.12
       react: '>=16'
 
-  '@neondatabase/serverless@1.0.0':
-    resolution: {integrity: sha512-XWmEeWpBXIoksZSDN74kftfTnXFEGZ3iX8jbANWBc+ag6dsiQuvuR4LgB0WdCOKMb5AQgjqgufc0TgAsZubUYw==}
+  '@neondatabase/serverless@1.0.1':
+    resolution: {integrity: sha512-O6yC5TT0jbw86VZVkmnzCZJB0hfxBl0JJz6f+3KHoZabjb/X08r9eFA+vuY06z1/qaovykvdkrXYq3SPUuvogA==}
     engines: {node: '>=19.0.0'}
 
   '@next/env@15.2.3':
@@ -1369,6 +1369,9 @@ packages:
 
   '@types/node@22.15.29':
     resolution: {integrity: sha512-LNdjOkUDlU1RZb8e1kOIUpN1qQUlzGkEtbVNo53vbrwDg5om6oduhm4SiUaPW5ASTXhAiP0jInWG8Qx9fVlOeQ==}
+
+  '@types/node@22.15.30':
+    resolution: {integrity: sha512-6Q7lr06bEHdlfplU6YRbgG1SFBdlsfNC4/lX+SkhiTs0cpJkOElmWls8PxDFv4yY/xKb8Y6SO0OmSX4wgqTZbA==}
 
   '@types/pg@8.15.4':
     resolution: {integrity: sha512-I6UNVBAoYbvuWkkU3oosC8yxqH21f4/Jc4DK71JLG3dT2mdlGe1z+ep/LQGXaKaOgcvUrsQoPRqfgtMcvZiJhg==}
@@ -2998,9 +3001,9 @@ snapshots:
       '@types/react': 19.0.12
       react: 19.0.0
 
-  '@neondatabase/serverless@1.0.0':
+  '@neondatabase/serverless@1.0.1':
     dependencies:
-      '@types/node': 22.15.29
+      '@types/node': 22.15.30
       '@types/pg': 8.15.4
 
   '@next/env@15.2.3': {}
@@ -3604,6 +3607,10 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
+  '@types/node@22.15.30':
+    dependencies:
+      undici-types: 6.21.0
+
   '@types/pg@8.15.4':
     dependencies:
       '@types/node': 22.15.29
@@ -3795,15 +3802,15 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.44.1(@neondatabase/serverless@1.0.0)(@types/pg@8.15.4)(pg@8.16.0):
+  drizzle-orm@0.44.1(@neondatabase/serverless@1.0.1)(@types/pg@8.15.4)(pg@8.16.0):
     optionalDependencies:
-      '@neondatabase/serverless': 1.0.0
+      '@neondatabase/serverless': 1.0.1
       '@types/pg': 8.15.4
       pg: 8.16.0
 
-  drizzle-zod@0.8.2(drizzle-orm@0.44.1(@neondatabase/serverless@1.0.0)(@types/pg@8.15.4)(pg@8.16.0))(zod@3.25.49):
+  drizzle-zod@0.8.2(drizzle-orm@0.44.1(@neondatabase/serverless@1.0.1)(@types/pg@8.15.4)(pg@8.16.0))(zod@3.25.49):
     dependencies:
-      drizzle-orm: 0.44.1(@neondatabase/serverless@1.0.0)(@types/pg@8.15.4)(pg@8.16.0)
+      drizzle-orm: 0.44.1(@neondatabase/serverless@1.0.1)(@types/pg@8.15.4)(pg@8.16.0)
       zod: 3.25.49
 
   encoding-sniffer@0.2.0:
