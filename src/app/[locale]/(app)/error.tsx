@@ -29,7 +29,6 @@ export default function Error404({
 				type="submit"
 			>
 				{t("retry")}
-				{JSON.stringify(err)}
 			</Button>
 		</div>
 	);
