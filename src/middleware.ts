@@ -1,3 +1,4 @@
+import { LINKS } from "@/app/[locale]/lib/links";
 import createMiddleware from "next-intl/middleware";
 import { cookies } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
@@ -7,6 +8,7 @@ const PROTECTED_ROUTES = new Set([
 	"/dashboard",
 	"/archive",
 	"/feed",
+	LINKS.newsletter,
 	"/settings",
 ]);
 const PUBLIC_ROUTES = new Set(["/", "/login"]);
