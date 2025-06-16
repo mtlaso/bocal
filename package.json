@@ -61,7 +61,7 @@
 		"zod": "^3.25.49"
 	},
 	"devDependencies": {
-		"@tailwindcss/postcss": "^4.1.8",
+		"@tailwindcss/postcss": "^4.1.10",
 		"@tailwindcss/typography": "^0.5.16",
 		"@types/jsdom": "^21.1.7",
 		"@types/node": "^24.0.1",
