@@ -41,7 +41,7 @@
 		"isomorphic-dompurify": "^2.25.0",
 		"jsdom": "^26.1.0",
 		"lucide-react": "^0.511.0",
-		"motion": "^12.15.0",
+		"motion": "^12.18.1",
 		"next": "15.4.0-canary.51",
 		"next-auth": "5.0.0-beta.28",
 		"next-intl": "^4.1.0",
@@ -55,7 +55,7 @@
 		"rss-parser": "^3.13.0",
 		"server-only": "^0.0.1",
 		"sonner": "^2.0.5",
-		"tailwind-merge": "^3.3.0",
+		"tailwind-merge": "^3.3.1",
 		"tailwindcss-animate": "^1.0.7",
 		"vaul": "^1.1.2",
 		"zod": "^3.25.49"
@@ -69,7 +69,7 @@
 		"@types/react": "19.0.12",
 		"@types/react-dom": "19.0.4",
 		"drizzle-kit": "^0.31.1",
-		"postcss": "^8.5.4",
+		"postcss": "^8.5.5",
 		"tailwindcss": "^4.1.8",
 		"typescript": "^5.8.3"
 	},
