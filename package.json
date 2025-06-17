@@ -41,7 +41,7 @@
 		"isomorphic-dompurify": "^2.25.0",
 		"jsdom": "^26.1.0",
 		"lucide-react": "^0.511.0",
-		"motion": "^12.15.0",
+		"motion": "^12.18.1",
 		"next": "15.4.0-canary.51",
 		"next-auth": "5.0.0-beta.28",
 		"next-intl": "^4.1.0",
