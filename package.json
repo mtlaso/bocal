@@ -58,19 +58,19 @@
 		"tailwind-merge": "^3.3.1",
 		"tailwindcss-animate": "^1.0.7",
 		"vaul": "^1.1.2",
-		"zod": "^3.25.49"
+		"zod": "^3.25.67"
 	},
 	"devDependencies": {
-		"@tailwindcss/postcss": "^4.1.8",
+		"@tailwindcss/postcss": "^4.1.10",
 		"@tailwindcss/typography": "^0.5.16",
 		"@types/jsdom": "^21.1.7",
-		"@types/node": "^24.0.1",
-		"@types/pg": "^8.15.2",
+		"@types/node": "^24.0.3",
+		"@types/pg": "^8.15.4",
 		"@types/react": "19.0.12",
 		"@types/react-dom": "19.0.4",
 		"drizzle-kit": "^0.31.1",
-		"postcss": "^8.5.5",
-		"tailwindcss": "^4.1.8",
+		"postcss": "^8.5.6",
+		"tailwindcss": "^4.1.10",
 		"typescript": "^5.8.3"
 	},
 	"pnpm": {
