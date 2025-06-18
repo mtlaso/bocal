@@ -6,7 +6,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { TbAlertCircle, TbCopy, TbNews } from "react-icons/tb";
 import { toast } from "sonner";
 import { deleteNewsletter } from "@/app/[locale]/lib/actions";
-import { usermailfuncs } from "@/app/[locale]/lib/usermail-funcs";
+import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import {
 	AlertDialog,
@@ -98,14 +98,14 @@ export function NewsletterItem({
 
 					<div className="flex items-center gap-2">
 						<Input
-							value={usermailfuncs.format(item.eid)}
+							value={userfeedsfuncs.format(item.eid)}
 							disabled
 							className="block w-full rounded-md py-2"
 							id={`email-${item.id}`}
 						/>
 						<Button
 							onClick={(): void =>
-								copyToClipboard(usermailfuncs.format(item.eid))
+								copyToClipboard(userfeedsfuncs.format(item.eid))
 							}
 							variant="outline"
 							size="icon"

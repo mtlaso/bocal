@@ -7,7 +7,7 @@ import type { Session } from "next-auth";
 import { cache } from "react";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 import { logger } from "@/app/[locale]/lib/logging";
-import { usermailfuncs } from "@/app/[locale]/lib/usermail-funcs";
+import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
 import { auth } from "@/auth";
 
 const ONE_HOUR = 60 * 60 * 1000;
@@ -108,7 +108,7 @@ const getUserFeeds = cache(
         FROM feeds AS f
         JOIN users_feeds AS uf ON uf."feedId" = f.id
         -- LEFT JOIN because we want to get the feeds event if there is no content.
-        --  LATERAL gives the subrequest to access tables outisde the FROM.
+        -- LATERAL gives the subrequest to access tables outisde the FROM.
         LEFT JOIN LATERAL (
                 SELECT fc.id, fc."feedId", fc.date, fc.url, fc.title, fc.content, fc."createdAt", rc."readAt"
                 FROM feeds_content AS fc
@@ -126,7 +126,7 @@ const getUserFeeds = cache(
 
 			if (onlyNewsletters) {
 				query.append(sql`
-            AND f.URL LIKE '${sql.raw(usermailfuncs.NEWSLETTER_URL_PREFIX)}%'
+            AND f.URL LIKE '${sql.raw(userfeedsfuncs.NEWSLETTER_URL_PREFIX)}%'
           `);
 			}
 

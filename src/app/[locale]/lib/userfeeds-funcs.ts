@@ -19,9 +19,9 @@ function format(feedEid: string): string {
 }
 
 /**
- * usermailfuncs contains functions related to newsletter usermail handling.
+ * userfeedsfuncs contains functions related to newsletters handling.
  */
-export const usermailfuncs = {
+export const userfeedsfuncs = {
 	format,
 	NEWSLETTER_URL_PREFIX,
 } as const;

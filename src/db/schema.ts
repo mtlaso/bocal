@@ -11,7 +11,11 @@ import {
 	uniqueIndex,
 	uuid,
 } from "drizzle-orm/pg-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import {
+	createInsertSchema,
+	createSchemaFactory,
+	createSelectSchema,
+} from "drizzle-zod";
 import type { AdapterAccountType } from "next-auth/adapters";
 import { z } from "zod/v4";
 import {
@@ -72,7 +76,6 @@ export const feeds = pgTable(
 		id: integer().primaryKey().generatedAlwaysAsIdentity(),
 		// external id.
 		eid: uuid().notNull().defaultRandom(),
-		// This is the of the feed (used as a newsleletter).
 		// It has a value only when the current feed is a newsletter.
 		// This is needed when deleting a newsletter, to make sure that the user deleting a newsletter is the owner of the feed.
 		// Otherwise we would have a security vulnerability where anyone who guesses the id can delete the feed.
@@ -309,30 +312,18 @@ export const deleteNewsletterSchema = z.object({
 		}),
 });
 
+const { createSelectSchema: createSelectSchemaFactory } = createSchemaFactory({
+	coerce: true,
+});
+
 const feedContentWithReadAt = z.object({
-	id: z.coerce.number(),
-	feedId: z.coerce.number(),
-	date: z.coerce.date(),
-	url: z.string(),
-	title: z.string(),
-	content: z.string(),
-	createdAt: z.coerce.date(),
+	...createSelectSchemaFactory(feedsContent).shape,
 	readAt: z.coerce.date().nullable(),
 });
 
-export const feedWithContent = z.object({
-	id: z.coerce.number(),
-	eid: z.coerce.string(),
-	url: z.string(),
-	title: z.string(),
-	createdAt: z.coerce.date(),
-	lastSyncAt: z.coerce.date(),
+const feedWithContent = z.object({
+	...createSelectSchemaFactory(feeds).shape,
 	contents: z.array(feedContentWithReadAt),
-	status: z.enum(FeedStatusType),
-	lastError: z.string().nullable(),
-	errorCount: z.coerce.number(),
-	errorType: z.enum(FeedErrorType).nullable(),
-	newsletterOwnerId: z.string().nullable(),
 });
 
 export const feedsWithContent = z.array(feedWithContent);
