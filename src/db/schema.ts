@@ -8,7 +8,6 @@ import {
 	primaryKey,
 	text,
 	timestamp,
-	unique,
 	uniqueIndex,
 	uuid,
 } from "drizzle-orm/pg-core";
@@ -93,11 +92,7 @@ export const feeds = pgTable(
 			enum: enumToPgEnum(FeedErrorType),
 		}),
 	},
-	(table) => [
-		index("eid_user_id").on(table.eid),
-		index("url").on(table.url),
-		unique().on(table.eid),
-	],
+	(table) => [index("eid_user_id").on(table.eid)],
 );
 
 /**

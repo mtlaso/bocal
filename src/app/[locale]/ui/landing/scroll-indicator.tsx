@@ -8,18 +8,17 @@ export function ScrollIndicator(): React.JSX.Element {
 	const [isVisible, setIsVisible] = useState(true);
 	const smallScreen = useMediaQuery("(max-width: 768px)");
 
-	const scrollListener = (): void => {
-		if (window.scrollY > 100) {
-			setIsVisible(false);
-		} else {
-			setIsVisible(true);
-		}
-	};
-
 	useEffect(() => {
+		const scrollListener = (): void => {
+			if (window.scrollY > 100) {
+				setIsVisible(false);
+			} else {
+				setIsVisible(true);
+			}
+		};
 		window.addEventListener("scroll", scrollListener);
 		return (): void => window.removeEventListener("scroll", scrollListener);
-	});
+	}, []);
 
 	return (
 		<>
