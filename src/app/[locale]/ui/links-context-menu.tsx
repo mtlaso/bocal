@@ -1,4 +1,10 @@
 "use client";
+import { Trash } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useTransition } from "react";
+import { BsArchive, BsThreeDots } from "react-icons/bs";
+import { TbLinkPlus } from "react-icons/tb";
+import { toast } from "sonner";
 import {
 	archiveLink,
 	deleteLink,
@@ -13,12 +19,6 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { usePathname } from "@/i18n/routing";
-import { Trash } from "lucide-react";
-import { useTranslations } from "next-intl";
-import { useTransition } from "react";
-import { BsArchive, BsThreeDots } from "react-icons/bs";
-import { TbLinkPlus } from "react-icons/tb";
-import { toast } from "sonner";
 
 export function LinksContextMenu({ id }: { id: string }): React.JSX.Element {
 	const pathname = usePathname();

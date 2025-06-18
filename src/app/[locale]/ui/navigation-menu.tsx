@@ -1,4 +1,7 @@
 "use client";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { TbMenu2 } from "react-icons/tb";
 import { LINKS } from "@/app/[locale]/lib/links";
 import { Button } from "@/components/ui/button";
 import { LocaleToggle } from "@/components/ui/locale-toggle";
@@ -20,9 +23,6 @@ import {
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Link, usePathname } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
-import { useTranslations } from "next-intl";
-import { useState } from "react";
-import { TbMenu2 } from "react-icons/tb";
 import { LogoutForm } from "./auth/logout-form";
 
 export function NavMenu(): React.JSX.Element {

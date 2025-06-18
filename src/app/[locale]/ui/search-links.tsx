@@ -1,13 +1,13 @@
 "use client";
 
-import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useTranslations } from "next-intl";
 import { useQueryStates } from "nuqs";
 import { useRef, useState } from "react";
 import { TbSearch, TbX } from "react-icons/tb";
+import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export function SearchLinksDesktop(): React.JSX.Element {
 	const [{ searchedLink }, setSearchParamsState] = useQueryStates(

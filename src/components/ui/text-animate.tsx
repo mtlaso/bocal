@@ -1,13 +1,13 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import {
 	AnimatePresence,
 	type MotionProps,
-	type Variants,
 	motion,
+	type Variants,
 } from "motion/react";
 import type { ElementType } from "react";
+import { cn } from "@/lib/utils";
 
 type AnimationType = "text" | "word" | "character" | "line";
 type AnimationVariant =

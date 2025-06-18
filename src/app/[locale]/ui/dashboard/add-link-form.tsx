@@ -1,5 +1,8 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+import { useActionState, useState } from "react";
+import { TbLinkPlus } from "react-icons/tb";
 import { useMediaQuery } from "@/app/[locale]/lib/hooks/use-media-query";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,9 +24,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { useTranslations } from "next-intl";
-import { useActionState, useState } from "react";
-import { TbLinkPlus } from "react-icons/tb";
 import { type AddLinkState, addLink } from "../../lib/actions";
 import { SPACING } from "../spacing";
 

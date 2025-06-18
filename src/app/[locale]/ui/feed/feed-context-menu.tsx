@@ -1,3 +1,8 @@
+import { useTranslations } from "next-intl";
+import { useTransition } from "react";
+import { BsThreeDots } from "react-icons/bs";
+import { TbArchive } from "react-icons/tb";
+import { toast } from "sonner";
 import { archiveFeedContent } from "@/app/[locale]/lib/actions";
 import { Button } from "@/components/ui/button";
 import {
@@ -7,11 +12,6 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useTranslations } from "next-intl";
-import { useTransition } from "react";
-import { BsThreeDots } from "react-icons/bs";
-import { TbArchive } from "react-icons/tb";
-import { toast } from "sonner";
 
 type Props = {
 	url: string;

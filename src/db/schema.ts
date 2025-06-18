@@ -1,8 +1,3 @@
-import {
-	FeedErrorType,
-	FeedStatusType,
-	LENGTHS,
-} from "@/app/[locale]/lib/types";
 import { type InferSelectModel, sql } from "drizzle-orm";
 import {
 	boolean,
@@ -20,6 +15,11 @@ import {
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import type { AdapterAccountType } from "next-auth/adapters";
 import { z } from "zod/v4";
+import {
+	FeedErrorType,
+	FeedStatusType,
+	LENGTHS,
+} from "@/app/[locale]/lib/types";
 
 // biome-ignore lint/suspicious/noExplicitAny: locale exception.
 function enumToPgEnum<T extends Record<string, any>>(

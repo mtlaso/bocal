@@ -1,3 +1,5 @@
+import { useTranslations } from "next-intl";
+import { TbArchive, TbMail, TbRss } from "react-icons/tb";
 import { ScrollIndicator } from "@/app/[locale]/ui/landing/scroll-indicator";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import BlurFade from "@/components/ui/blur-fade";
@@ -18,8 +20,6 @@ import {
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
-import { useTranslations } from "next-intl";
-import { TbArchive, TbMail, TbRss } from "react-icons/tb";
 
 export default function Home(): React.JSX.Element {
 	const t = useTranslations("metadata");
@@ -147,48 +147,46 @@ const FeaturesSection = (): React.JSX.Element => {
 				"max-w-[75ch] mx-auto scroll-m-32 grid grid-cols-1 md:grid-cols-3 grid-rows1 md:grid-rows-2 gap-6",
 			)}
 		>
-			{t.raw("features")?.map(
-				(feature: {
-					key: string;
-					title: string;
-					description: string;
-				}) => (
-					<Card
-						className={cn(
-							"hover:shadow-md transition-all duration-200 break-words",
-							{
-								"md:row-start-1 md:col-span-2": feature.key === "0",
-								"md:row-start-1 md:row-span-2": feature.key === "1",
-								"md:row-start-2 md:col-span-2": feature.key === "2",
-							},
-						)}
-						key={feature.key}
-					>
-						<CardHeader>
-							<CardTitle
-								className={cn(
-									"font-extrabold text-xl md:text-2xl font-old",
-									SPACING.SM,
-								)}
-							>
-								<div>
-									{feature.key === "0" && (
-										<TbArchive className="hover:text-primary transition-all duration-200" />
+			{t
+				.raw("features")
+				?.map(
+					(feature: { key: string; title: string; description: string }) => (
+						<Card
+							className={cn(
+								"hover:shadow-md transition-all duration-200 break-words",
+								{
+									"md:row-start-1 md:col-span-2": feature.key === "0",
+									"md:row-start-1 md:row-span-2": feature.key === "1",
+									"md:row-start-2 md:col-span-2": feature.key === "2",
+								},
+							)}
+							key={feature.key}
+						>
+							<CardHeader>
+								<CardTitle
+									className={cn(
+										"font-extrabold text-xl md:text-2xl font-old",
+										SPACING.SM,
 									)}
-									{feature.key === "1" && (
-										<TbRss className="hover:text-primary transition-all duration-200" />
-									)}
-									{feature.key === "2" && (
-										<TbMail className="hover:text-primary transition-all duration-200" />
-									)}
-								</div>
-								<div>{feature.title}</div>
-							</CardTitle>
-							<CardDescription>{feature.description}</CardDescription>
-						</CardHeader>
-					</Card>
-				),
-			)}
+								>
+									<div>
+										{feature.key === "0" && (
+											<TbArchive className="hover:text-primary transition-all duration-200" />
+										)}
+										{feature.key === "1" && (
+											<TbRss className="hover:text-primary transition-all duration-200" />
+										)}
+										{feature.key === "2" && (
+											<TbMail className="hover:text-primary transition-all duration-200" />
+										)}
+									</div>
+									<div>{feature.title}</div>
+								</CardTitle>
+								<CardDescription>{feature.description}</CardDescription>
+							</CardHeader>
+						</Card>
+					),
+				)}
 		</section>
 	);
 };

@@ -1,3 +1,9 @@
+import { eq, sql } from "drizzle-orm";
+import { Feed as FeedCreator } from "feed";
+import { decode } from "html-entities";
+import { cache } from "react";
+import Parser from "rss-parser";
+import { z } from "zod/v4";
 import { logger } from "@/app/[locale]/lib/logging";
 import { parsing } from "@/app/[locale]/lib/parsing";
 import {
@@ -7,12 +13,6 @@ import {
 } from "@/app/[locale]/lib/types";
 import { db } from "@/db/db";
 import { type Feed, feeds, feedsContent } from "@/db/schema";
-import { eq, sql } from "drizzle-orm";
-import { Feed as FeedCreator } from "feed";
-import { decode } from "html-entities";
-import { cache } from "react";
-import Parser from "rss-parser";
-import { z } from "zod/v4";
 import "server-only";
 
 const USER_AGENT = "RSS https://bocal.fyi/1.0";
@@ -77,7 +77,7 @@ export async function parse(url: string): Promise<ParseResponse> {
 			content,
 		};
 	} catch (err) {
-		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		// biome-ignore lint/suspicious/noExplicitAny: no choice.
 		if ((err as any)?.errno === -3008) throw new FeedUnreachable();
 
 		if (err instanceof Error && err.message.includes("timeout"))

@@ -1,9 +1,9 @@
 "use client"; // Error boundaries must be Client Components
 
-import { logger } from "@/app/[locale]/lib/logging";
-import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
+import { logger } from "@/app/[locale]/lib/logging";
+import { Button } from "@/components/ui/button";
 
 export default function Error404({
 	err,

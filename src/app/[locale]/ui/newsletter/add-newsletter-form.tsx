@@ -1,4 +1,14 @@
 "use client";
+import { useTranslations } from "next-intl";
+import { useActionState, useState } from "react";
+import { TbLinkPlus, TbMail } from "react-icons/tb";
+import {
+	type AddNewsletterState,
+	addNewsletter,
+} from "@/app/[locale]/lib/actions";
+import { useMediaQuery } from "@/app/[locale]/lib/hooks/use-media-query";
+import { LENGTHS } from "@/app/[locale]/lib/types";
+import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -15,20 +25,9 @@ import {
 	DrawerHeader,
 	DrawerTrigger,
 } from "@/components/ui/drawer";
-import { TbLinkPlus, TbMail } from "react-icons/tb";
-
-import {
-	type AddNewsletterState,
-	addNewsletter,
-} from "@/app/[locale]/lib/actions";
-import { useMediaQuery } from "@/app/[locale]/lib/hooks/use-media-query";
-import { LENGTHS } from "@/app/[locale]/lib/types";
-import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { useTranslations } from "next-intl";
-import { useActionState, useState } from "react";
 
 export function AddNewsletterForm(): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);

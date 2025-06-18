@@ -1,3 +1,9 @@
+import { Trash } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useQueryStates } from "nuqs";
+import { useTransition } from "react";
+import { TbClipboard, TbSettings } from "react-icons/tb";
+import { toast } from "sonner";
 import { unfollowFeed } from "@/app/[locale]/lib/actions";
 import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
 import {
@@ -8,12 +14,6 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { Feed } from "@/db/schema";
-import { Trash } from "lucide-react";
-import { useTranslations } from "next-intl";
-import { useQueryStates } from "nuqs";
-import { useTransition } from "react";
-import { TbClipboard, TbSettings } from "react-icons/tb";
-import { toast } from "sonner";
 
 export function FeedInfoContextMenu({
 	feeds,
