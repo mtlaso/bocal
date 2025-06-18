@@ -11,11 +11,7 @@ import {
 	uniqueIndex,
 	uuid,
 } from "drizzle-orm/pg-core";
-import {
-	createInsertSchema,
-	createSchemaFactory,
-	createSelectSchema,
-} from "drizzle-zod";
+import { createSchemaFactory } from "drizzle-zod";
 import type { AdapterAccountType } from "next-auth/adapters";
 import { z } from "zod/v4";
 import {
@@ -31,6 +27,10 @@ function enumToPgEnum<T extends Record<string, any>>(
 	// biome-ignore lint/suspicious/noExplicitAny: locale exception.
 	return Object.values(myEnum).map((value: any) => `${value}`) as any;
 }
+
+const { createSelectSchema, createInsertSchema } = createSchemaFactory({
+	coerce: true,
+});
 
 export const users = pgTable(
 	"users",
@@ -223,7 +223,7 @@ export const authenticators = pgTable(
 );
 
 export const insertUsersSchema = createInsertSchema(users, {
-	feedContentLimit: (schema): z.ZodInt =>
+	feedContentLimit: (schema): z.ZodCoercedNumber =>
 		schema
 			.gt(0, {
 				error: "errors.feedContentLimitFieldInvalid",
@@ -234,28 +234,32 @@ export const insertUsersSchema = createInsertSchema(users, {
 }).pick({ feedContentLimit: true });
 
 export const insertLinksSchema = createInsertSchema(links, {
-	url: (schema): z.ZodString =>
-		schema.url({
+	url: (): z.ZodCoercedString =>
+		z.url({
+			protocol: /^https?$/,
+			hostname: z.regexes.domain,
 			error: "errors.urlFieldInvalid",
 		}),
 }).pick({ url: true });
 
 export const deleteLinkSchema = createSelectSchema(links, {
-	id: (schema): z.ZodNumber =>
+	id: (schema): z.ZodCoercedNumber =>
 		schema.nonnegative({
 			error: "errors.idFieldInvalid",
 		}),
 }).pick({ id: true });
 
 export const insertFeedsSchema = createInsertSchema(feeds, {
-	url: (schema): z.ZodString =>
-		schema.url({
+	url: (): z.ZodCoercedString =>
+		z.url({
+			protocol: /^https?$/,
+			hostname: z.regexes.domain,
 			error: "errors.urlFieldInvalid",
 		}),
 }).pick({ url: true });
 
 export const unfollowFeedSchema = createSelectSchema(usersFeeds, {
-	feedId: (schema): z.ZodNumber =>
+	feedId: (schema): z.ZodCoercedNumber =>
 		schema.nonnegative({
 			error: "errors.idFieldInvalid",
 		}),
@@ -264,11 +268,11 @@ export const unfollowFeedSchema = createSelectSchema(usersFeeds, {
 export const insertUsersFeedsReadContentSchema = createSelectSchema(
 	usersFeedsReadContent,
 	{
-		feedId: (schema): z.ZodNumber =>
+		feedId: (schema): z.ZodCoercedNumber =>
 			schema.nonnegative({
 				error: "errors.idFieldInvalid",
 			}),
-		feedContentId: (schema): z.ZodNumber =>
+		feedContentId: (schema): z.ZodCoercedNumber =>
 			schema.nonnegative({
 				error: "errors.feedContentIdFieldInvalid",
 			}),
@@ -278,11 +282,11 @@ export const insertUsersFeedsReadContentSchema = createSelectSchema(
 export const deleteUsersFeedsReadContentSchema = createSelectSchema(
 	usersFeedsReadContent,
 	{
-		feedId: (schema): z.ZodNumber =>
+		feedId: (schema): z.ZodCoercedNumber =>
 			schema.nonnegative({
 				error: "errors.idFieldInvalid",
 			}),
-		feedContentId: (schema): z.ZodNumber =>
+		feedContentId: (schema): z.ZodCoercedNumber =>
 			schema.nonnegative({
 				error: "errors.feedContentIdFieldInvalid",
 			}),
@@ -312,17 +316,13 @@ export const deleteNewsletterSchema = z.object({
 		}),
 });
 
-const { createSelectSchema: createSelectSchemaFactory } = createSchemaFactory({
-	coerce: true,
-});
-
 const feedContentWithReadAt = z.object({
-	...createSelectSchemaFactory(feedsContent).shape,
+	...createSelectSchema(feedsContent).shape,
 	readAt: z.coerce.date().nullable(),
 });
 
 const feedWithContent = z.object({
-	...createSelectSchemaFactory(feeds).shape,
+	...createSelectSchema(feeds).shape,
 	contents: z.array(feedContentWithReadAt),
 });
 

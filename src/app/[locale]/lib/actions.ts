@@ -5,6 +5,7 @@ import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
+import { z } from "zod/v4";
 import { dal } from "@/app/[locale]/lib/dal";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 import { LINKS } from "@/app/[locale]/lib/links";
@@ -90,8 +91,9 @@ export async function addLink(
 	});
 
 	if (!validatedFields.success) {
+		logger.info("Validation failed", validatedFields.error);
 		return {
-			errors: validatedFields.error.flatten().fieldErrors,
+			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { url: formData.get("url")?.toString() },
 			errMessage: "errors.missingFields",
 		};
@@ -134,7 +136,7 @@ export async function deleteLink(id: string): Promise<DeleteLinkState> {
 
 	if (!validatedFields.success) {
 		return {
-			errors: validatedFields.error.flatten().fieldErrors,
+			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { id: Number.parseInt(id) },
 			errMessage: "errors.missingFields",
 		};
@@ -173,7 +175,7 @@ export async function archiveLink(id: string): Promise<DeleteLinkState> {
 
 	if (!validatedFields.success) {
 		return {
-			errors: validatedFields.error.flatten().fieldErrors,
+			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { id: Number.parseInt(id) },
 			errMessage: "errors.missingFields",
 		};
@@ -213,7 +215,7 @@ export async function unarchiveLink(id: string): Promise<DeleteLinkState> {
 
 	if (!validatedFields.success) {
 		return {
-			errors: validatedFields.error.flatten().fieldErrors,
+			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { id: Number.parseInt(id) },
 			errMessage: "errors.missingFields",
 		};
@@ -260,7 +262,7 @@ export async function addFeed(
 
 	if (!validatedFields.success) {
 		return {
-			errors: validatedFields.error.flatten().fieldErrors,
+			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { url: formData.get("url")?.toString() },
 			errMessage: "errors.missingFields",
 		};
@@ -403,7 +405,7 @@ export async function unfollowFeed(id: string): Promise<UnfollowFeedState> {
 
 	if (!validatedFields.success) {
 		return {
-			errors: validatedFields.error.flatten().fieldErrors,
+			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { feedId: Number.parseInt(id) },
 			errMessage: "errors.missingFields",
 		};
@@ -465,7 +467,7 @@ export async function markFeedContentAsRead(
 
 	if (!validatedFields.success) {
 		return {
-			errors: validatedFields.error.flatten().fieldErrors,
+			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { feedId, feedContentId },
 			errMessage: "errors.missingFields",
 		};
@@ -514,7 +516,7 @@ export async function markFeedContentAsUnread(
 
 	if (!validatedFields.success) {
 		return {
-			errors: validatedFields.error.flatten().fieldErrors,
+			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { feedId, feedContentId },
 			errMessage: "errors.missingFields",
 		};
@@ -563,7 +565,7 @@ export async function setFeedContentLimit(
 
 	if (!validatedFields.success) {
 		return {
-			errors: validatedFields.error.flatten().fieldErrors,
+			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { feedContentLimit },
 			errMessage: "errors.missingFields",
 		};
@@ -607,7 +609,7 @@ export async function archiveFeedContent(
 
 	if (!validatedFields.success) {
 		return {
-			errors: validatedFields.error.flatten().fieldErrors,
+			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { url: url },
 			errMessage: "errors.missingFields",
 		};
@@ -653,7 +655,7 @@ export async function addNewsletter(
 
 	if (!validatedFields.success) {
 		return {
-			errors: validatedFields.error.flatten().fieldErrors,
+			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { title: formData.get("title")?.toString() },
 			errMessage: "errors.missingFields",
 		};
@@ -720,7 +722,7 @@ export async function deleteNewsletter(
 	if (!validatedFields.success) {
 		return {
 			errMessage: "errors.missingFields",
-			errors: validatedFields.error.flatten().fieldErrors,
+			errors: z.flattenError(validatedFields.error).fieldErrors,
 		};
 	}
 
@@ -735,7 +737,12 @@ export async function deleteNewsletter(
 		// though the newsletter page.
 		await db
 			.delete(feeds)
-			.where(and(eq(feeds.id, id), eq(feeds.newsletterOwnerId, user.user.id)));
+			.where(
+				and(
+					eq(feeds.id, validatedFields.data.id),
+					eq(feeds.newsletterOwnerId, user.user.id),
+				),
+			);
 	} catch (err) {
 		logger.error(err);
 		return {
