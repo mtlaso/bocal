@@ -1,5 +1,5 @@
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import NextAuth, { type NextAuthConfig, type DefaultSession } from "next-auth";
+import NextAuth, { type DefaultSession, type NextAuthConfig } from "next-auth";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 import { db } from "./db/db";
@@ -38,7 +38,6 @@ const config = {
 	}),
 
 	callbacks: {
-		// biome-ignore lint/nursery/useExplicitType: auth.ts
 		session({ session }) {
 			return {
 				...session,

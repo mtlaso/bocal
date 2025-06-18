@@ -1,4 +1,6 @@
 "use client";
+import { Languages } from "lucide-react";
+import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -7,8 +9,6 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { usePathname, useRouter } from "@/i18n/routing";
-import { Languages } from "lucide-react";
-import { useParams } from "next/navigation";
 
 export function LocaleToggle(): React.JSX.Element {
 	const router = useRouter();

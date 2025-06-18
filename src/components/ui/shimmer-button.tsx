@@ -1,6 +1,6 @@
 import React, {
-	type CSSProperties,
 	type ComponentPropsWithoutRef,
+	type CSSProperties,
 } from "react";
 
 import { cn } from "@/lib/utils";

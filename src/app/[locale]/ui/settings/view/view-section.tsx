@@ -1,4 +1,7 @@
 "use client";
+import { useTranslations } from "next-intl";
+import { startTransition, useOptimistic } from "react";
+import { toast } from "sonner";
 import { setFeedContentLimit } from "@/app/[locale]/lib/actions";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Label } from "@/components/ui/label";
@@ -10,13 +13,12 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { useTranslations } from "next-intl";
-import { startTransition, useOptimistic } from "react";
-import { toast } from "sonner";
 
 export function ViewSection({
 	feedContentLimit,
-}: { feedContentLimit: number }): React.JSX.Element {
+}: {
+	feedContentLimit: number;
+}): React.JSX.Element {
 	const t = useTranslations("settings.viewSection");
 
 	return (
@@ -30,7 +32,9 @@ export function ViewSection({
 
 export function FeedContentLimitForm({
 	feedContentLimit,
-}: { feedContentLimit: number }): React.JSX.Element {
+}: {
+	feedContentLimit: number;
+}): React.JSX.Element {
 	const [value, setValue] = useOptimistic(feedContentLimit);
 
 	const handleFeedLimit = (e: string): void => {

@@ -1,0 +1,1 @@
+ALTER TABLE "feeds" ADD CONSTRAINT "feeds_eid_unique" UNIQUE("eid");

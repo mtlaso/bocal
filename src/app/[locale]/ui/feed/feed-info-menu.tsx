@@ -1,4 +1,8 @@
 "use client";
+import { useTranslations } from "next-intl";
+import { useQueryStates } from "nuqs";
+import { useState } from "react";
+import { TbPlugConnectedX, TbRadarFilled, TbRss } from "react-icons/tb";
 import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
 import { FeedInfoContextMenu } from "@/app/[locale]/ui/feed/feed-info-context-menu";
 import { SPACING } from "@/app/[locale]/ui/spacing";
@@ -13,10 +17,6 @@ import {
 } from "@/components/ui/sheet";
 import type { FeedWithContent } from "@/db/schema";
 import { cn } from "@/lib/utils";
-import { useTranslations } from "next-intl";
-import { useQueryStates } from "nuqs";
-import { useState } from "react";
-import { TbPlugConnectedX, TbRadarFilled, TbRss } from "react-icons/tb";
 
 type Props = {
 	feeds: FeedWithContent[];

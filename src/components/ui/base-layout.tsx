@@ -1,9 +1,9 @@
+import Script from "next/script";
+import { NextIntlClientProvider } from "next-intl";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { inter } from "@/app/[locale]/ui/fonts";
 import ThemeProvider from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { NextIntlClientProvider } from "next-intl";
-import Script from "next/script";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 type Props = {
 	children: React.ReactNode;

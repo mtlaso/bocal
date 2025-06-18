@@ -1,10 +1,10 @@
-import { Settings } from "@/app/[locale]/ui/settings/settings";
-import { SettingsSkeleton } from "@/app/[locale]/ui/skeletons";
-import { Separator } from "@/components/ui/separator";
 import type { Metadata } from "next";
 import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
+import { Settings } from "@/app/[locale]/ui/settings/settings";
+import { SettingsSkeleton } from "@/app/[locale]/ui/skeletons";
+import { Separator } from "@/components/ui/separator";
 export const experimental_ppr = true;
 
 export async function generateMetadata({

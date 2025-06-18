@@ -1,8 +1,8 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import { TbLogout } from "react-icons/tb";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import { logout } from "../../lib/actions";
 
 export function LogoutForm(): React.JSX.Element {

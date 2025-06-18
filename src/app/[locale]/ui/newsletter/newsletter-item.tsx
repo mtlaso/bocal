@@ -1,4 +1,10 @@
 "use client";
+import { Trash } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useState, useTransition } from "react";
+import { BsThreeDots } from "react-icons/bs";
+import { TbAlertCircle, TbCopy, TbNews } from "react-icons/tb";
+import { toast } from "sonner";
 import { deleteNewsletter } from "@/app/[locale]/lib/actions";
 import { usermailfuncs } from "@/app/[locale]/lib/usermail-funcs";
 import { SPACING } from "@/app/[locale]/ui/spacing";
@@ -23,16 +29,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { FeedWithContent } from "@/db/schema";
-import { Trash } from "lucide-react";
-import { useTranslations } from "next-intl";
-import { useState, useTransition } from "react";
-import { BsThreeDots } from "react-icons/bs";
-import { TbAlertCircle, TbCopy, TbNews } from "react-icons/tb";
-import { toast } from "sonner";
 
 export function NewsletterItem({
 	item,
-}: { item: FeedWithContent }): React.JSX.Element {
+}: {
+	item: FeedWithContent;
+}): React.JSX.Element {
 	const t = useTranslations("newsletter");
 	function copyToClipboard(text: string): void {
 		navigator.clipboard

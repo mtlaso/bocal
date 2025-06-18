@@ -1,4 +1,9 @@
 "use client";
+import type { CheckedState } from "@radix-ui/react-checkbox";
+import { useLocale, useTranslations } from "next-intl";
+import { useQueryStates } from "nuqs";
+import { startTransition, useOptimistic } from "react";
+import { toast } from "sonner";
 import {
 	markFeedContentAsRead,
 	markFeedContentAsUnread,
@@ -11,11 +16,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import type { FeedContentWithReadAt, FeedWithContent } from "@/db/schema";
 import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
-import type { CheckedState } from "@radix-ui/react-checkbox";
-import { useLocale, useTranslations } from "next-intl";
-import { useQueryStates } from "nuqs";
-import { startTransition, useOptimistic } from "react";
-import { toast } from "sonner";
 
 type Props = {
 	feeds: FeedWithContent[];

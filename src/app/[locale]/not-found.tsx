@@ -1,8 +1,8 @@
+import { useTranslations } from "next-intl";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
-import { useTranslations } from "next-intl";
 
 // Note that `app/[locale]/[...rest]/page.tsx`
 // is necessary for this page to render.

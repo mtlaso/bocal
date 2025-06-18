@@ -1,3 +1,6 @@
+import { redirect } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { TbMail, TbUser } from "react-icons/tb";
 import { ViewSection } from "@/app/[locale]/ui/settings/view/view-section";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { auth } from "@/auth";
@@ -5,9 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { useTranslations } from "next-intl";
-import { redirect } from "next/navigation";
-import { TbMail, TbUser } from "react-icons/tb";
 
 export async function Settings(): Promise<React.JSX.Element> {
 	const user = await auth();
@@ -29,7 +29,10 @@ export async function Settings(): Promise<React.JSX.Element> {
 const ProfileSection = ({
 	email,
 	name,
-}: { email: string; name: string }): React.JSX.Element => {
+}: {
+	email: string;
+	name: string;
+}): React.JSX.Element => {
 	const t = useTranslations("settings.profileSection");
 
 	return (

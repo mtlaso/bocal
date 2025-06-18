@@ -1,10 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import { authenticate } from "../../lib/actions";
 import { SPACING } from "../spacing";
 

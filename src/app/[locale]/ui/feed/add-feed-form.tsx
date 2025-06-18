@@ -1,4 +1,7 @@
 "use client";
+import { useTranslations } from "next-intl";
+import { useActionState, useState } from "react";
+import { TbLinkPlus } from "react-icons/tb";
 import { type AddFeedState, addFeed } from "@/app/[locale]/lib/actions";
 import { useMediaQuery } from "@/app/[locale]/lib/hooks/use-media-query";
 import { SPACING } from "@/app/[locale]/ui/spacing";
@@ -21,9 +24,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { useTranslations } from "next-intl";
-import { useActionState, useState } from "react";
-import { TbLinkPlus } from "react-icons/tb";
 
 export function AddFeedForm(): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
