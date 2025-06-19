@@ -64,6 +64,13 @@
 			"when": 1750239110520,
 			"tag": "0008_numerous_karnak",
 			"breakpoints": true
+		},
+		{
+			"idx": 9,
+			"version": "7",
+			"when": 1750296309382,
+			"tag": "0009_mysterious_betty_ross",
+			"breakpoints": true
 		}
 	]
 }

@@ -95,7 +95,7 @@ export const feeds = pgTable(
 			enum: enumToPgEnum(FeedErrorType),
 		}),
 	},
-	(table) => [index("eid_user_id").on(table.eid)],
+	(table) => [index("eid_user_id").on(table.eid), uniqueIndex().on(table.eid)],
 );
 
 /**

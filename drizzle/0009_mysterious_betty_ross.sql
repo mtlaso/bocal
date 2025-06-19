@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "feeds_eid_index" ON "feeds" USING btree ("eid");
