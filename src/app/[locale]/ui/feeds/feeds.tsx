@@ -32,7 +32,7 @@ export function Feeds({ feeds }: Props): React.JSX.Element {
 	});
 
 	return (
-		<section className={cn("break-words", SPACING.LG)}>
+		<section className={cn("wrap-anywhere", SPACING.LG)}>
 			{items.map((item) => {
 				return item.contents.map((content) => (
 					<Item item={content} key={`${content.id}`} />
