@@ -305,12 +305,6 @@ const getFeedContent = cache(
 				return { error: "invalid-eid", content: null };
 			}
 
-			/*
-  		select content
-  		from feeds_content
-  		where url LIKE 'https://bocal.fyi/userfeeds/%/content/b2b3ada4-b5b3-438b-9e25-f775022f9331'
-		*/
-
 			const feedContent = await db
 				.select({
 					content: feedsContent.content,
