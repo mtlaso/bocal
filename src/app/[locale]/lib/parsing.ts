@@ -22,6 +22,31 @@ const readableUrl = (url: string): string => {
 function sanitizeHTML(html: string): string {
 	return DOMPurify.sanitize(html, {
 		ALLOWED_TAGS: [
+			"html",
+			"head",
+			"body",
+			"div",
+			"span",
+			"section",
+			"article",
+			"header",
+			"footer",
+			"nav",
+			"main",
+			"aside",
+			"ul",
+			"ol",
+			"li",
+			"dl",
+			"dt",
+			"dd",
+			"table",
+			"thead",
+			"tbody",
+			"tfoot",
+			"tr",
+			"th",
+			"td",
 			"p",
 			"a",
 			"b",
@@ -35,7 +60,19 @@ function sanitizeHTML(html: string): string {
 			"video",
 			"audio",
 		],
-		ALLOWED_ATTR: ["href", "src", "alt", "width", "height"],
+		ALLOWED_ATTR: [
+			"href",
+			"src",
+			"alt",
+			"width",
+			"height",
+			"colspan",
+			"rowspan",
+			"scope", // for tables
+			"type",
+			"start",
+			"reversed", // for lists
+		],
 	});
 }
 
