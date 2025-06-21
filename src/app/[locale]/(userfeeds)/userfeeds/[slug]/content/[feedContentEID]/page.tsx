@@ -23,7 +23,10 @@ export default async function Page({
 	return (
 		<>
 			{/* biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized html */}
-			<span dangerouslySetInnerHTML={{ __html: content }} />
+			<span
+				className="prose prose-invert mx-auto"
+				dangerouslySetInnerHTML={{ __html: content }}
+			/>
 		</>
 	);
 }
