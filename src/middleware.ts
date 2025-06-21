@@ -4,7 +4,7 @@ import createMiddleware from "next-intl/middleware";
 import { LINKS } from "@/app/[locale]/lib/links";
 import { routing } from "./i18n/routing";
 
-const PROTECTED_ROUTES = new Set([
+const PROTECTED_ROUTES: ReadonlySet<string> = new Set([
 	LINKS.dashboard,
 	LINKS.archive,
 	LINKS.feed,
