@@ -1,4 +1,4 @@
-import { NavMenu } from "../ui/navigation-menu";
+import { AppNavigationMenu } from "../ui/app-navigation-menu";
 
 export default function DashboardLayout({
 	children,
@@ -7,7 +7,7 @@ export default function DashboardLayout({
 }): React.JSX.Element {
 	return (
 		<div className="min-h-screen max-w-6xl mx-auto px-4 mb-12">
-			<NavMenu />
+			<AppNavigationMenu />
 			<main>{children}</main>
 		</div>
 	);

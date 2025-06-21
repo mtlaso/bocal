@@ -25,10 +25,10 @@ import { Link, usePathname } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { LogoutForm } from "./auth/logout-form";
 
-export function NavMenu(): React.JSX.Element {
+export function AppNavigationMenu(): React.JSX.Element {
 	return (
 		<>
-			<div className="md:hidden">
+			<div className="md:hidden flex justify-end">
 				<MobileNavMenu />
 			</div>
 			<div className="hidden md:block">
@@ -125,7 +125,7 @@ function MobileNavMenu(): React.JSX.Element {
 
 			<SheetContent className="w-full">
 				<SheetHeader>
-					<SheetTitle className="mb-6 text-left text-4xl leading-tight">
+					<SheetTitle className="mb-6 text-left text-2xl leading-tight">
 						{t("menu")}
 					</SheetTitle>
 				</SheetHeader>
@@ -135,10 +135,10 @@ function MobileNavMenu(): React.JSX.Element {
 						onClick={(): void => setIsOpen(false)}
 						href={APP_ROUTES.links}
 						className={cn(
-							navigationMenuTriggerStyle(),
-							"w-full flex justify-start",
+							"w-full flex justify-start text-6xl text-muted-foreground hover:cursor-pointer hover:text-secondary-foreground transition-colors duration-200",
 							{
-								"font-semibold bg-accent": pathname === APP_ROUTES.links,
+								"font-semibold text-secondary-foreground":
+									pathname === APP_ROUTES.links,
 							},
 						)}
 					>
@@ -149,60 +149,60 @@ function MobileNavMenu(): React.JSX.Element {
 						onClick={(): void => setIsOpen(false)}
 						href={APP_ROUTES.archive}
 						className={cn(
-							navigationMenuTriggerStyle(),
-							"w-full flex justify-start",
+							"w-full flex justify-start text-6xl text-muted-foreground hover:cursor-pointer hover:text-secondary-foreground transition-colors duration-200",
 							{
-								"font-semibold bg-accent": pathname === APP_ROUTES.archive,
+								"font-semibold text-secondary-foreground":
+									pathname === APP_ROUTES.archive,
 							},
 						)}
 					>
-						<span className="">{t("archive")}</span>
+						<span>{t("archive")}</span>
 					</Link>
 
 					<Link
 						onClick={(): void => setIsOpen(false)}
 						href={APP_ROUTES.feeds}
 						className={cn(
-							navigationMenuTriggerStyle(),
-							"w-full flex justify-start",
+							"w-full flex justify-start text-6xl text-muted-foreground hover:cursor-pointer hover:text-secondary-foreground transition-colors duration-200",
 							{
-								"font-semibold bg-accent": pathname === APP_ROUTES.feeds,
+								"font-semibold text-secondary-foreground":
+									pathname === APP_ROUTES.feeds,
 							},
 						)}
 					>
-						<span className="">{t("rssFeed")}</span>
+						<span>{t("rssFeed")}</span>
 					</Link>
 
 					<Link
 						onClick={(): void => setIsOpen(false)}
 						href={APP_ROUTES.newsletters}
 						className={cn(
-							navigationMenuTriggerStyle(),
-							"w-full flex justify-start",
+							"w-full flex justify-start text-6xl text-muted-foreground hover:cursor-pointer hover:text-secondary-foreground transition-colors duration-200",
 							{
-								"font-semibold bg-accent": pathname === APP_ROUTES.newsletters,
+								"font-semibold text-secondary-foreground":
+									pathname === APP_ROUTES.newsletters,
 							},
 						)}
 					>
-						<span className="">{t("newsletters")}</span>
+						<span>{t("newsletters")}</span>
 					</Link>
 
 					<Link
 						onClick={(): void => setIsOpen(false)}
 						href={APP_ROUTES.settings}
 						className={cn(
-							navigationMenuTriggerStyle(),
-							"w-full flex justify-start",
+							"w-full flex justify-start text-6xl text-muted-foreground hover:cursor-pointer hover:text-secondary-foreground transition-colors duration-200",
 							{
-								"font-semibold bg-accent": pathname === APP_ROUTES.settings,
+								"font-semibold text-secondary-foreground":
+									pathname === APP_ROUTES.settings,
 							},
 						)}
 					>
-						<span className="">{t("settings")}</span>
+						<span>{t("settings")}</span>
 					</Link>
 				</div>
 
-				<SheetFooter className="mt-6 justify-start! flex-row flex-wrap gap-2">
+				<SheetFooter className="flex-row flex-wrap gap-2">
 					<ThemeToggle />
 					<LocaleToggle />
 					<LogoutForm />
