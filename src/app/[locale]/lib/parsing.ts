@@ -60,7 +60,19 @@ function sanitizeHTML(html: string): string {
 			"video",
 			"audio",
 		],
-		ALLOWED_ATTR: ["href", "src", "alt", "width", "height"],
+		ALLOWED_ATTR: [
+			"href",
+			"src",
+			"alt",
+			"width",
+			"height",
+			"colspan",
+			"rowspan",
+			"scope", // for tables
+			"type",
+			"start",
+			"reversed", // for lists
+		],
 	});
 }
 
