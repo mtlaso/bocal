@@ -202,7 +202,7 @@ function MobileNavMenu(): React.JSX.Element {
 					</Link>
 				</div>
 
-				<SheetFooter className="justify-stat! flex-row flex-wrap gap-2">
+				<SheetFooter className="flex-row flex-wrap gap-2">
 					<ThemeToggle />
 					<LocaleToggle />
 					<LogoutForm />
