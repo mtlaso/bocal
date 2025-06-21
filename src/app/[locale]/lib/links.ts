@@ -8,4 +8,6 @@ export const LINKS = {
   feed: "/feed",
   settings: "/settings",
   newsletter: "/d/newsletter",
+  legalPrivacy: "/legal/privacy",
+  legalTerms: "/legal/terms",
 } as const;

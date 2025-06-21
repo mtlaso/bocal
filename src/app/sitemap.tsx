@@ -12,8 +12,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     getEntry(LINKS.feed),
     getEntry(LINKS.login),
     getEntry(LINKS.settings),
-    getEntry("/legal/terms"),
-    getEntry("/legal/privacy"),
+    getEntry(LINKS.legalPrivacy),
+    getEntry(LINKS.legalTerms),
   ];
 }
 

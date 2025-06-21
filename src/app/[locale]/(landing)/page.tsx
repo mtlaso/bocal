@@ -94,13 +94,13 @@ export default function Home(): React.JSX.Element {
           SPACING.SM,
         )}
       >
-        <Link href="/legal/privacy">
+        <Link href={LINKS.legalPrivacy}>
           <Button size={"sm"} variant={"link"}>
             {t("privacyPolicy.title")}
           </Button>
         </Link>
 
-        <Link href="/legal/terms">
+        <Link href={LINKS.legalTerms}>
           <Button size={"sm"} variant={"link"}>
             {t("termsOfService.title")}
           </Button>
