@@ -51,15 +51,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Setup Biome
         uses: biomejs/setup-biome@v2
-        with:
-          version: latest
 
       - name: Run Biome
         run: biome ci .
