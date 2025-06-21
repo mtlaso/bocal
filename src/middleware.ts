@@ -9,7 +9,7 @@ const PROTECTED_ROUTES = new Set([
   LINKS.archive,
   LINKS.feed,
   LINKS.newsletter,
-  "/settings",
+  LINKS.settings,
 ]);
 const PUBLIC_ROUTES = new Set(["/", LINKS.login]);
 const LANG_PREFIX_REGEX = /^\/(?:en|fr)\//;

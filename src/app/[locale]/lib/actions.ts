@@ -589,7 +589,7 @@ export async function setFeedContentLimit(
     };
   }
 
-  revalidatePath("/settings");
+  revalidatePath(LINKS.settings);
   return {};
 }
 

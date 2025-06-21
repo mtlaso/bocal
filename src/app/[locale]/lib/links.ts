@@ -6,5 +6,6 @@ export const LINKS = {
   dashboard: "/dashboard",
   archive: "/archive",
   feed: "/feed",
+  settings: "/settings",
   newsletter: "/d/newsletter",
 } as const;

@@ -91,9 +91,9 @@ function DesktopNavMenu(): React.JSX.Element {
 
         <NavigationMenuItem>
           <NavigationMenuLink
-            href="/settings"
+            href={LINKS.settings}
             className={cn(navigationMenuTriggerStyle(), {
-              "font-semibold bg-accent": pathname === "/settings",
+              "font-semibold bg-accent": pathname === LINKS.settings,
             })}
           >
             {t("settings")}
@@ -189,12 +189,12 @@ function MobileNavMenu(): React.JSX.Element {
 
           <Link
             onClick={(): void => setIsOpen(false)}
-            href={"/settings"}
+            href={LINKS.settings}
             className={cn(
               navigationMenuTriggerStyle(),
               "w-full flex justify-start",
               {
-                "font-semibold bg-accent": pathname === "/settings",
+                "font-semibold bg-accent": pathname === LINKS.settings,
               },
             )}
           >
