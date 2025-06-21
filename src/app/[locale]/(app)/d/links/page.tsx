@@ -3,16 +3,16 @@ import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { dal } from "@/app/[locale]/lib/dal";
+import { AddLinkForm } from "@/app/[locale]/ui/links/add-link-form";
+import { Links } from "@/app/[locale]/ui/links/links";
 import {
 	SearchLinksDesktop,
 	SearchLinksMobile,
-} from "@/app/[locale]/ui/search-links";
+} from "@/app/[locale]/ui/links/search-links";
+import { SortLinks } from "@/app/[locale]/ui/links/sort-links";
 import { LinksSkeleton } from "@/app/[locale]/ui/skeletons";
-import { SortLinks } from "@/app/[locale]/ui/sort-links";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
-import { AddLinkForm } from "../../ui/dashboard/add-link-form";
-import { Links } from "../../ui/links";
 export const experimental_ppr = true;
 
 export async function generateMetadata({

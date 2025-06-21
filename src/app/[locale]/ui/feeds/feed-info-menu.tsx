@@ -4,7 +4,7 @@ import { useQueryStates } from "nuqs";
 import { useState } from "react";
 import { TbPlugConnectedX, TbRadarFilled, TbRss } from "react-icons/tb";
 import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
-import { FeedInfoContextMenu } from "@/app/[locale]/ui/feed/feed-info-context-menu";
+import { FeedInfoContextMenu } from "@/app/[locale]/ui/feeds/feed-info-context-menu";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";

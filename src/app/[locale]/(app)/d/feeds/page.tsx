@@ -3,12 +3,12 @@ import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { dal } from "@/app/[locale]/lib/dal";
-import { AddNewsletterForm } from "@/app/[locale]/ui/newsletter/add-newsletter-form";
-import { Newsletters } from "@/app/[locale]/ui/newsletter/newsletters";
-import { NewsletterSkeleton } from "@/app/[locale]/ui/skeletons";
+import { AddFeedForm } from "@/app/[locale]/ui/feeds/add-feed-form";
+import { FeedInfoMenu } from "@/app/[locale]/ui/feeds/feed-info-menu";
+import { Feeds } from "@/app/[locale]/ui/feeds/feeds";
+import { FeedInfoSkeleton, FeedsSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
-
 export const experimental_ppr = true;
 
 export async function generateMetadata({
@@ -17,7 +17,8 @@ export async function generateMetadata({
 	params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
 	const { locale } = await params;
-	const t = await getTranslations({ locale, namespace: "metadata.newsletter" });
+	const t = await getTranslations({ locale, namespace: "metadata.rssFeed" });
+
 	return {
 		title: t("title"),
 		description: t("description"),
@@ -25,30 +26,38 @@ export async function generateMetadata({
 }
 
 export default function Page(): React.JSX.Element {
-	const t = useTranslations("newsletter");
+	const t = useTranslations("rssFeed");
+
 	return (
 		<>
 			<section className={SPACING.SM}>
 				<div className="flex gap-2">
 					<h1 className="font-semibold tracking-tight text-3xl">
-						{t("newsletters")}
+						{t("rssFeed")}
 					</h1>
-					<AddNewsletterForm />
+					<AddFeedForm />
 				</div>
 
-				<p className="text-sm text-muted-foreground">{t("description")}</p>
+				<Suspense fallback={<FeedInfoSkeleton />}>
+					<FeedInfoWrapper />
+				</Suspense>
 			</section>
 
 			<Separator className="my-4" />
 
-			<Suspense fallback={<NewsletterSkeleton />}>
-				<NewsLetterWrapper />
+			<Suspense fallback={<FeedsSkeleton />}>
+				<FeedsWrapper />
 			</Suspense>
 		</>
 	);
 }
 
-async function NewsLetterWrapper(): Promise<React.JSX.Element> {
-	const newsletters = await dal.getUserFeeds({ onlyNewsletters: true });
-	return <Newsletters newsletters={newsletters} />;
+async function FeedInfoWrapper(): Promise<React.JSX.Element> {
+	const feeds = await dal.getUserFeeds({});
+	return <FeedInfoMenu feeds={feeds} />;
+}
+
+async function FeedsWrapper(): Promise<React.JSX.Element> {
+	const feeds = await dal.getUserFeeds({});
+	return <Feeds feeds={feeds} />;
 }

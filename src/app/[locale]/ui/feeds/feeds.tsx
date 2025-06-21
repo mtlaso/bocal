@@ -10,7 +10,7 @@ import {
 } from "@/app/[locale]/lib/actions";
 import { parsing } from "@/app/[locale]/lib/parsing";
 import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
-import { FeedContextMenu } from "@/app/[locale]/ui/feed/feed-context-menu";
+import { FeedContextMenu } from "@/app/[locale]/ui/feeds/feed-context-menu";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { FeedContentWithReadAt, FeedWithContent } from "@/db/schema";

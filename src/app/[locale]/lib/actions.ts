@@ -6,9 +6,9 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
 import { z } from "zod/v4";
+import { APP_ROUTES } from "@/app/[locale]/lib/app-routes";
 import { dal } from "@/app/[locale]/lib/dal";
 import { feedService } from "@/app/[locale]/lib/feed-service";
-import { LINKS } from "@/app/[locale]/lib/links";
 import { logger } from "@/app/[locale]/lib/logging";
 import { og } from "@/app/[locale]/lib/og";
 import { LENGTHS } from "@/app/[locale]/lib/types";
@@ -121,7 +121,7 @@ export async function addLink(
 		};
 	}
 
-	revalidatePath("/dashboard");
+	revalidatePath(APP_ROUTES.links);
 	return {};
 }
 
@@ -164,7 +164,7 @@ export async function deleteLink(id: string): Promise<DeleteLinkState> {
 		};
 	}
 
-	revalidatePath("/dashboard");
+	revalidatePath(APP_ROUTES.links);
 	return {};
 }
 
@@ -204,7 +204,7 @@ export async function archiveLink(id: string): Promise<DeleteLinkState> {
 		};
 	}
 
-	revalidatePath("/dashboard");
+	revalidatePath(APP_ROUTES.links);
 	return {};
 }
 
@@ -244,7 +244,7 @@ export async function unarchiveLink(id: string): Promise<DeleteLinkState> {
 		};
 	}
 
-	revalidatePath("/archive");
+	revalidatePath(APP_ROUTES.archive);
 	return {};
 }
 
@@ -388,7 +388,7 @@ export async function addFeed(
 		};
 	}
 
-	revalidatePath("/feed");
+	revalidatePath(APP_ROUTES.feeds);
 	return {
 		successMessage: "success",
 	};
@@ -445,7 +445,7 @@ export async function unfollowFeed(id: string): Promise<UnfollowFeedState> {
 		};
 	}
 
-	revalidatePath("/feed");
+	revalidatePath(APP_ROUTES.feeds);
 	return {
 		successMessage: "successUnfollow",
 	};
@@ -496,7 +496,7 @@ export async function markFeedContentAsRead(
 		};
 	}
 
-	revalidatePath("/feed");
+	revalidatePath(APP_ROUTES.feeds);
 	return {};
 }
 
@@ -548,7 +548,7 @@ export async function markFeedContentAsUnread(
 		};
 	}
 
-	revalidatePath("/feed");
+	revalidatePath(APP_ROUTES.feeds);
 	return {};
 }
 
@@ -589,7 +589,7 @@ export async function setFeedContentLimit(
 		};
 	}
 
-	revalidatePath("/settings");
+	revalidatePath(APP_ROUTES.settings);
 	return {};
 }
 
@@ -637,7 +637,7 @@ export async function archiveFeedContent(
 		};
 	}
 
-	revalidatePath("/archive");
+	revalidatePath(APP_ROUTES.archive);
 	return { successMessage: "success" };
 }
 
@@ -702,7 +702,7 @@ export async function addNewsletter(
 		};
 	}
 
-	revalidatePath(LINKS.newsletter);
+	revalidatePath(APP_ROUTES.newsletters);
 	return {
 		successMessage: "success",
 	};
@@ -750,6 +750,6 @@ export async function deleteNewsletter(
 		};
 	}
 
-	revalidatePath(LINKS.newsletter);
+	revalidatePath(APP_ROUTES.newsletters);
 	return {};
 }

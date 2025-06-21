@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import { TbArchive, TbMail, TbRss } from "react-icons/tb";
+import { APP_ROUTES } from "@/app/[locale]/lib/app-routes";
 import { ScrollIndicator } from "@/app/[locale]/ui/landing/scroll-indicator";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import BlurFade from "@/components/ui/blur-fade";
@@ -60,7 +61,7 @@ export default function Home(): React.JSX.Element {
 
 						<NavigationMenuItem>
 							<NavigationMenuLink
-								href="/login"
+								href={APP_ROUTES.login}
 								className={navigationMenuTriggerStyle()}
 							>
 								{t("login")}
@@ -93,13 +94,13 @@ export default function Home(): React.JSX.Element {
 					SPACING.SM,
 				)}
 			>
-				<Link href="/legal/privacy">
+				<Link href={APP_ROUTES.legalPrivacy}>
 					<Button size={"sm"} variant={"link"}>
 						{t("privacyPolicy.title")}
 					</Button>
 				</Link>
 
-				<Link href="/legal/terms">
+				<Link href={APP_ROUTES.legalTerms}>
 					<Button size={"sm"} variant={"link"}>
 						{t("termsOfService.title")}
 					</Button>
@@ -127,7 +128,7 @@ const HeroSection = (): React.JSX.Element => {
 			<p className="text-xl">{t("description")}</p>
 
 			<div className="flex justify-center">
-				<Link href="/login">
+				<Link href={APP_ROUTES.login}>
 					<ShimmerButton className="shadow-2xl dark:shadow-none h-12 px-12">
 						<span className="dark:text-white">{t("ctaButton")}</span>
 					</ShimmerButton>
@@ -206,7 +207,7 @@ const CtaSection = (): React.JSX.Element => {
 
 			<p className="text-lg">{t("lastCtaDescription")}</p>
 			<div>
-				<Link href="/login">
+				<Link href={APP_ROUTES.login}>
 					<Button size={"lg"}>{t("ctaButton")}</Button>
 				</Link>
 			</div>

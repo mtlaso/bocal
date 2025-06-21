@@ -109,7 +109,7 @@ function CopyFeedURL({ url }: { url: string }): React.JSX.Element {
 				duration: 2000,
 			});
 		} catch (_err) {
-			toast.error(t("errors.cannotCopuFeedURL"));
+			toast.error(t("errors.cannotCopyFeedURL"));
 		}
 	};
 

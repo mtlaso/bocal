@@ -10,6 +10,7 @@ import {
 	deleteLink,
 	unarchiveLink,
 } from "@/app/[locale]/lib/actions";
+import { APP_ROUTES } from "@/app/[locale]/lib/app-routes";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -23,8 +24,8 @@ import { usePathname } from "@/i18n/routing";
 export function LinksContextMenu({ id }: { id: string }): React.JSX.Element {
 	const pathname = usePathname();
 
-	const isDashboardPage = pathname === "/dashboard";
-	const isArchivePage = pathname === "/archive";
+	const isDashboardPage = pathname === APP_ROUTES.links;
+	const isArchivePage = pathname === APP_ROUTES.archive;
 
 	return (
 		<DropdownMenu>

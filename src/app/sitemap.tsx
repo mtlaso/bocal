@@ -1,20 +1,11 @@
 import type { MetadataRoute } from "next";
+import { APP_ROUTES } from "@/app/[locale]/lib/app-routes";
 import { getAppBaseURL } from "@/app/[locale]/lib/get-app-base-url";
-import { LINKS } from "@/app/[locale]/lib/links";
 import { getPathname, type Locale, routing } from "@/i18n/routing";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-	return [
-		getEntry("/"),
-		getEntry("/dashboard"),
-		getEntry("/archive"),
-		getEntry(LINKS.newsletter),
-		getEntry("/feed"),
-		getEntry("/login"),
-		getEntry("/settings"),
-		getEntry("/legal/terms"),
-		getEntry("/legal/privacy"),
-	];
+	const routes = Object.values(APP_ROUTES);
+	return routes.map((link) => getEntry(link));
 }
 
 type Href = Parameters<typeof getPathname>[0]["href"];
