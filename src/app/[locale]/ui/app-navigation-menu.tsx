@@ -1,4 +1,5 @@
 "use client";
+import { XIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { TbMenu2 } from "react-icons/tb";
@@ -123,11 +124,16 @@ function MobileNavMenu(): React.JSX.Element {
 				</Button>
 			</SheetTrigger>
 
-			<SheetContent className="w-full">
-				<SheetHeader>
-					<SheetTitle className="mb-6 text-left text-2xl leading-tight">
+			<SheetContent className="w-full [&>button:first-of-type]:hidden">
+				<SheetHeader className="flex-row! justify-between items-start">
+					<SheetTitle className="text-2xl leading-tight">
 						{t("menu")}
 					</SheetTitle>
+
+					<Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
+						<XIcon className="size-6" />
+						<span className="sr-only">Close</span>
+					</Button>
 				</SheetHeader>
 
 				<div className="flex flex-col gap-4">
