@@ -24,7 +24,7 @@ import { usePathname } from "@/i18n/routing";
 export function LinksContextMenu({ id }: { id: string }): React.JSX.Element {
 	const pathname = usePathname();
 
-	const isDashboardPage = pathname === APP_ROUTES.dashboard;
+	const isDashboardPage = pathname === APP_ROUTES.links;
 	const isArchivePage = pathname === APP_ROUTES.archive;
 
 	return (

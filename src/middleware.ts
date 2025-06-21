@@ -5,10 +5,10 @@ import { APP_ROUTES } from "@/app/[locale]/lib/app-routes";
 import { routing } from "./i18n/routing";
 
 const PROTECTED_ROUTES: ReadonlySet<string> = new Set([
-	APP_ROUTES.dashboard,
+	APP_ROUTES.links,
 	APP_ROUTES.archive,
-	APP_ROUTES.feed,
-	APP_ROUTES.newsletter,
+	APP_ROUTES.feeds,
+	APP_ROUTES.newsletters,
 	APP_ROUTES.settings,
 ]);
 const PUBLIC_ROUTES = new Set(["/", APP_ROUTES.login]);
@@ -63,7 +63,7 @@ export default async function middleware(
 
 	if (isPublicRoute && sessionCookie) {
 		return NextResponse.redirect(
-			new URL(`${langPrefix}${APP_ROUTES.dashboard}`, req.nextUrl.origin),
+			new URL(`${langPrefix}${APP_ROUTES.links}`, req.nextUrl.origin),
 		);
 	}
 

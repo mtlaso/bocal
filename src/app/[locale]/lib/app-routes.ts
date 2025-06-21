@@ -1,13 +1,13 @@
 /**
- * LINKS centralizes the app routes.
+ * APP_ROUTES centralizes the app routes.
  */
 export const APP_ROUTES = {
 	login: "/login",
-	dashboard: "/d/dashboard",
+	links: "/d/links",
 	archive: "/d/archive",
-	feed: "/d/feed",
+	feeds: "/d/feeds",
 	settings: "/d/settings",
-	newsletter: "/d/newsletter",
+	newsletters: "/d/newsletters",
 	legalPrivacy: "/legal/privacy",
 	legalTerms: "/legal/terms",
 } as const;

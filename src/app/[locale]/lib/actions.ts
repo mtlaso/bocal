@@ -121,7 +121,7 @@ export async function addLink(
 		};
 	}
 
-	revalidatePath(APP_ROUTES.dashboard);
+	revalidatePath(APP_ROUTES.links);
 	return {};
 }
 
@@ -164,7 +164,7 @@ export async function deleteLink(id: string): Promise<DeleteLinkState> {
 		};
 	}
 
-	revalidatePath(APP_ROUTES.dashboard);
+	revalidatePath(APP_ROUTES.links);
 	return {};
 }
 
@@ -204,7 +204,7 @@ export async function archiveLink(id: string): Promise<DeleteLinkState> {
 		};
 	}
 
-	revalidatePath(APP_ROUTES.dashboard);
+	revalidatePath(APP_ROUTES.links);
 	return {};
 }
 
@@ -388,7 +388,7 @@ export async function addFeed(
 		};
 	}
 
-	revalidatePath(APP_ROUTES.feed);
+	revalidatePath(APP_ROUTES.feeds);
 	return {
 		successMessage: "success",
 	};
@@ -445,7 +445,7 @@ export async function unfollowFeed(id: string): Promise<UnfollowFeedState> {
 		};
 	}
 
-	revalidatePath(APP_ROUTES.feed);
+	revalidatePath(APP_ROUTES.feeds);
 	return {
 		successMessage: "successUnfollow",
 	};
@@ -496,7 +496,7 @@ export async function markFeedContentAsRead(
 		};
 	}
 
-	revalidatePath(APP_ROUTES.feed);
+	revalidatePath(APP_ROUTES.feeds);
 	return {};
 }
 
@@ -548,7 +548,7 @@ export async function markFeedContentAsUnread(
 		};
 	}
 
-	revalidatePath(APP_ROUTES.feed);
+	revalidatePath(APP_ROUTES.feeds);
 	return {};
 }
 
@@ -702,7 +702,7 @@ export async function addNewsletter(
 		};
 	}
 
-	revalidatePath(APP_ROUTES.newsletter);
+	revalidatePath(APP_ROUTES.newsletters);
 	return {
 		successMessage: "success",
 	};
@@ -750,6 +750,6 @@ export async function deleteNewsletter(
 		};
 	}
 
-	revalidatePath(APP_ROUTES.newsletter);
+	revalidatePath(APP_ROUTES.newsletters);
 	return {};
 }
