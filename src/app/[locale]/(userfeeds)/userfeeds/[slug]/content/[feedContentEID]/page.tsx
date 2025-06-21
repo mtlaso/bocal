@@ -22,8 +22,8 @@ export default async function Page({
 
 	return (
 		<>
-			<span
-				className="prose prose-invert mx-auto"
+			<div
+				className="py-5 mb-6 mx-auto px-4"
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized html
 				dangerouslySetInnerHTML={{ __html: content }}
 			/>
