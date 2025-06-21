@@ -3,10 +3,10 @@
  */
 export const LINKS = {
 	login: "/login",
-	dashboard: "/dashboard",
-	archive: "/archive",
-	feed: "/feed",
-	settings: "/settings",
+	dashboard: "/d/dashboard",
+	archive: "/d/archive",
+	feed: "/d/feed",
+	settings: "/d/settings",
 	newsletter: "/d/newsletter",
 	legalPrivacy: "/legal/privacy",
 	legalTerms: "/legal/terms",
