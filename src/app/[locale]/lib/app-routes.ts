@@ -1,7 +1,7 @@
 /**
  * LINKS centralizes the app routes.
  */
-export const LINKS = {
+export const APP_ROUTES = {
 	login: "/login",
 	dashboard: "/d/dashboard",
 	archive: "/d/archive",

@@ -1,19 +1,19 @@
 import { cookies } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
-import { LINKS } from "@/app/[locale]/lib/links";
+import { APP_ROUTES } from "@/app/[locale]/lib/app-routes";
 import { routing } from "./i18n/routing";
 
 const PROTECTED_ROUTES: ReadonlySet<string> = new Set([
-	LINKS.dashboard,
-	LINKS.archive,
-	LINKS.feed,
-	LINKS.newsletter,
-	LINKS.settings,
+	APP_ROUTES.dashboard,
+	APP_ROUTES.archive,
+	APP_ROUTES.feed,
+	APP_ROUTES.newsletter,
+	APP_ROUTES.settings,
 ]);
-const PUBLIC_ROUTES = new Set(["/", LINKS.login]);
+const PUBLIC_ROUTES = new Set(["/", APP_ROUTES.login]);
 const LANG_PREFIX_REGEX = /^\/(?:en|fr)\//;
-const LOGIN_PATH = LINKS.login;
+const LOGIN_PATH = APP_ROUTES.login;
 
 function removeLanguagePrefix(path: string): string {
 	return path.replace(LANG_PREFIX_REGEX, "/");
@@ -63,7 +63,7 @@ export default async function middleware(
 
 	if (isPublicRoute && sessionCookie) {
 		return NextResponse.redirect(
-			new URL(`${langPrefix}${LINKS.dashboard}`, req.nextUrl.origin),
+			new URL(`${langPrefix}${APP_ROUTES.dashboard}`, req.nextUrl.origin),
 		);
 	}
 

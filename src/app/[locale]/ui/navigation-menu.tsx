@@ -2,7 +2,7 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { TbMenu2 } from "react-icons/tb";
-import { LINKS } from "@/app/[locale]/lib/links";
+import { APP_ROUTES } from "@/app/[locale]/lib/app-routes";
 import { Button } from "@/components/ui/button";
 import { LocaleToggle } from "@/components/ui/locale-toggle";
 import {
@@ -47,9 +47,9 @@ function DesktopNavMenu(): React.JSX.Element {
 			<NavigationMenuList>
 				<NavigationMenuItem>
 					<NavigationMenuLink
-						href={LINKS.dashboard}
+						href={APP_ROUTES.dashboard}
 						className={cn(navigationMenuTriggerStyle(), {
-							"font-semibold bg-accent": pathname === LINKS.dashboard,
+							"font-semibold bg-accent": pathname === APP_ROUTES.dashboard,
 						})}
 					>
 						{t("links")}
@@ -58,9 +58,9 @@ function DesktopNavMenu(): React.JSX.Element {
 
 				<NavigationMenuItem>
 					<NavigationMenuLink
-						href={LINKS.archive}
+						href={APP_ROUTES.archive}
 						className={cn(navigationMenuTriggerStyle(), {
-							"font-semibold bg-accent": pathname === LINKS.archive,
+							"font-semibold bg-accent": pathname === APP_ROUTES.archive,
 						})}
 					>
 						{t("archive")}
@@ -69,9 +69,9 @@ function DesktopNavMenu(): React.JSX.Element {
 
 				<NavigationMenuItem>
 					<NavigationMenuLink
-						href={LINKS.feed}
+						href={APP_ROUTES.feed}
 						className={cn(navigationMenuTriggerStyle(), {
-							"font-semibold bg-accent": pathname === LINKS.feed,
+							"font-semibold bg-accent": pathname === APP_ROUTES.feed,
 						})}
 					>
 						{t("rssFeed")}
@@ -80,9 +80,9 @@ function DesktopNavMenu(): React.JSX.Element {
 
 				<NavigationMenuItem>
 					<NavigationMenuLink
-						href={LINKS.newsletter}
+						href={APP_ROUTES.newsletter}
 						className={cn(navigationMenuTriggerStyle(), {
-							"font-semibold bg-accent": pathname === LINKS.newsletter,
+							"font-semibold bg-accent": pathname === APP_ROUTES.newsletter,
 						})}
 					>
 						{t("newsletters")}
@@ -91,9 +91,9 @@ function DesktopNavMenu(): React.JSX.Element {
 
 				<NavigationMenuItem>
 					<NavigationMenuLink
-						href={LINKS.settings}
+						href={APP_ROUTES.settings}
 						className={cn(navigationMenuTriggerStyle(), {
-							"font-semibold bg-accent": pathname === LINKS.settings,
+							"font-semibold bg-accent": pathname === APP_ROUTES.settings,
 						})}
 					>
 						{t("settings")}
@@ -133,12 +133,12 @@ function MobileNavMenu(): React.JSX.Element {
 				<div className="flex flex-col gap-4">
 					<Link
 						onClick={(): void => setIsOpen(false)}
-						href={LINKS.dashboard}
+						href={APP_ROUTES.dashboard}
 						className={cn(
 							navigationMenuTriggerStyle(),
 							"w-full flex justify-start",
 							{
-								"font-semibold bg-accent": pathname === LINKS.dashboard,
+								"font-semibold bg-accent": pathname === APP_ROUTES.dashboard,
 							},
 						)}
 					>
@@ -147,12 +147,12 @@ function MobileNavMenu(): React.JSX.Element {
 
 					<Link
 						onClick={(): void => setIsOpen(false)}
-						href={LINKS.archive}
+						href={APP_ROUTES.archive}
 						className={cn(
 							navigationMenuTriggerStyle(),
 							"w-full flex justify-start",
 							{
-								"font-semibold bg-accent": pathname === LINKS.archive,
+								"font-semibold bg-accent": pathname === APP_ROUTES.archive,
 							},
 						)}
 					>
@@ -161,12 +161,12 @@ function MobileNavMenu(): React.JSX.Element {
 
 					<Link
 						onClick={(): void => setIsOpen(false)}
-						href={LINKS.feed}
+						href={APP_ROUTES.feed}
 						className={cn(
 							navigationMenuTriggerStyle(),
 							"w-full flex justify-start",
 							{
-								"font-semibold bg-accent": pathname === LINKS.feed,
+								"font-semibold bg-accent": pathname === APP_ROUTES.feed,
 							},
 						)}
 					>
@@ -175,12 +175,12 @@ function MobileNavMenu(): React.JSX.Element {
 
 					<Link
 						onClick={(): void => setIsOpen(false)}
-						href={LINKS.newsletter}
+						href={APP_ROUTES.newsletter}
 						className={cn(
 							navigationMenuTriggerStyle(),
 							"w-full flex justify-start",
 							{
-								"font-semibold bg-accent": pathname === LINKS.newsletter,
+								"font-semibold bg-accent": pathname === APP_ROUTES.newsletter,
 							},
 						)}
 					>
@@ -189,12 +189,12 @@ function MobileNavMenu(): React.JSX.Element {
 
 					<Link
 						onClick={(): void => setIsOpen(false)}
-						href={LINKS.settings}
+						href={APP_ROUTES.settings}
 						className={cn(
 							navigationMenuTriggerStyle(),
 							"w-full flex justify-start",
 							{
-								"font-semibold bg-accent": pathname === LINKS.settings,
+								"font-semibold bg-accent": pathname === APP_ROUTES.settings,
 							},
 						)}
 					>
