@@ -1,5 +1,5 @@
 /**
- * LINKS defines as the links in the app.
+ * LINKS centralizes the app routes.
  */
 export const LINKS = {
 	login: "/login",
