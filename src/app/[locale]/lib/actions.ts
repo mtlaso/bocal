@@ -244,7 +244,7 @@ export async function unarchiveLink(id: string): Promise<DeleteLinkState> {
     };
   }
 
-  revalidatePath("/archive");
+  revalidatePath(LINKS.archive);
   return {};
 }
 
@@ -637,7 +637,7 @@ export async function archiveFeedContent(
     };
   }
 
-  revalidatePath("/archive");
+  revalidatePath(LINKS.archive);
   return { successMessage: "success" };
 }
 

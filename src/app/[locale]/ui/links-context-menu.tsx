@@ -25,7 +25,7 @@ export function LinksContextMenu({ id }: { id: string }): React.JSX.Element {
   const pathname = usePathname();
 
   const isDashboardPage = pathname === LINKS.dashboard;
-  const isArchivePage = pathname === "/archive";
+  const isArchivePage = pathname === LINKS.archive;
 
   return (
     <DropdownMenu>

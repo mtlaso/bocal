@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     getEntry("/"),
     getEntry(LINKS.dashboard),
-    getEntry("/archive"),
+    getEntry(LINKS.archive),
     getEntry(LINKS.newsletter),
     getEntry("/feed"),
     getEntry(LINKS.login),

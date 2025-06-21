@@ -58,9 +58,9 @@ function DesktopNavMenu(): React.JSX.Element {
 
         <NavigationMenuItem>
           <NavigationMenuLink
-            href="/archive"
+            href={LINKS.archive}
             className={cn(navigationMenuTriggerStyle(), {
-              "font-semibold bg-accent": pathname === "/archive",
+              "font-semibold bg-accent": pathname === LINKS.archive,
             })}
           >
             {t("archive")}
@@ -147,12 +147,12 @@ function MobileNavMenu(): React.JSX.Element {
 
           <Link
             onClick={(): void => setIsOpen(false)}
-            href={"/archive"}
+            href={LINKS.archive}
             className={cn(
               navigationMenuTriggerStyle(),
               "w-full flex justify-start",
               {
-                "font-semibold bg-accent": pathname === "/archive",
+                "font-semibold bg-accent": pathname === LINKS.archive,
               },
             )}
           >
