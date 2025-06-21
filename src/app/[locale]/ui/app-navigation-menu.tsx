@@ -130,7 +130,7 @@ function MobileNavMenu(): React.JSX.Element {
 						{t("menu")}
 					</SheetTitle>
 
-					<Button variant="ghost" size="icon">
+					<Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
 						<XIcon className="size-6" />
 						<span className="sr-only">Close</span>
 					</Button>
