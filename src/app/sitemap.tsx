@@ -4,17 +4,20 @@ import { LINKS } from "@/app/[locale]/lib/links";
 import { getPathname, type Locale, routing } from "@/i18n/routing";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    getEntry("/"),
-    getEntry(LINKS.dashboard),
-    getEntry(LINKS.archive),
-    getEntry(LINKS.newsletter),
-    getEntry(LINKS.feed),
-    getEntry(LINKS.login),
-    getEntry(LINKS.settings),
-    getEntry(LINKS.legalPrivacy),
-    getEntry(LINKS.legalTerms),
-  ];
+  const links = Object.values(LINKS)
+  return links.map(link => getEntry(link))
+  // return LINKS.map(x)
+  // return [
+  //   getEntry("/"),
+  //   getEntry(LINKS.dashboard),
+  //   getEntry(LINKS.archive),
+  //   getEntry(LINKS.newsletter),
+  //   getEntry(LINKS.feed),
+  //   getEntry(LINKS.login),
+  //   getEntry(LINKS.settings),
+  //   getEntry(LINKS.legalPrivacy),
+  //   getEntry(LINKS.legalTerms),
+  // ];
 }
 
 type Href = Parameters<typeof getPathname>[0]["href"];
