@@ -8,8 +8,8 @@ import {
 	SearchLinksDesktop,
 	SearchLinksMobile,
 } from "@/app/[locale]/ui/links/search-links";
-import { LinksSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SortLinks } from "@/app/[locale]/ui/links/sort-links";
+import { LinksSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
 export const experimental_ppr = true;
