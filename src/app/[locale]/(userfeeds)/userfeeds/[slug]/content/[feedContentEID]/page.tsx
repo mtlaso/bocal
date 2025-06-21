@@ -8,7 +8,7 @@ export default async function Page({
 }) {
 	const { feedContentEID } = await params;
 	if (!feedContentEID) {
-		return notFound();
+		notFound();
 	}
 
 	const { content, error } = await feedService.getFeedContent(feedContentEID);
