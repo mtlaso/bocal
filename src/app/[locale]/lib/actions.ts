@@ -388,7 +388,7 @@ export async function addFeed(
     };
   }
 
-  revalidatePath("/feed");
+  revalidatePath(LINKS.feed);
   return {
     successMessage: "success",
   };
@@ -445,7 +445,7 @@ export async function unfollowFeed(id: string): Promise<UnfollowFeedState> {
     };
   }
 
-  revalidatePath("/feed");
+  revalidatePath(LINKS.feed);
   return {
     successMessage: "successUnfollow",
   };
@@ -496,7 +496,7 @@ export async function markFeedContentAsRead(
     };
   }
 
-  revalidatePath("/feed");
+  revalidatePath(LINKS.feed);
   return {};
 }
 
@@ -548,7 +548,7 @@ export async function markFeedContentAsUnread(
     };
   }
 
-  revalidatePath("/feed");
+  revalidatePath(LINKS.feed);
   return {};
 }
 

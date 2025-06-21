@@ -69,9 +69,9 @@ function DesktopNavMenu(): React.JSX.Element {
 
         <NavigationMenuItem>
           <NavigationMenuLink
-            href={"/feed"}
+            href={LINKS.feed}
             className={cn(navigationMenuTriggerStyle(), {
-              "font-semibold bg-accent": pathname === "/feed",
+              "font-semibold bg-accent": pathname === LINKS.feed,
             })}
           >
             {t("rssFeed")}
@@ -161,12 +161,12 @@ function MobileNavMenu(): React.JSX.Element {
 
           <Link
             onClick={(): void => setIsOpen(false)}
-            href={"/feed"}
+            href={LINKS.feed}
             className={cn(
               navigationMenuTriggerStyle(),
               "w-full flex justify-start",
               {
-                "font-semibold bg-accent": pathname === "/feed",
+                "font-semibold bg-accent": pathname === LINKS.feed,
               },
             )}
           >

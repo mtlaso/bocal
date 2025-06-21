@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     getEntry(LINKS.dashboard),
     getEntry(LINKS.archive),
     getEntry(LINKS.newsletter),
-    getEntry("/feed"),
+    getEntry(LINKS.feed),
     getEntry(LINKS.login),
     getEntry("/settings"),
     getEntry("/legal/terms"),
