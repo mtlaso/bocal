@@ -156,7 +156,7 @@ function MobileNavMenu(): React.JSX.Element {
 							},
 						)}
 					>
-						<span className="">{t("archive")}</span>
+						<span>{t("archive")}</span>
 					</Link>
 
 					<Link
@@ -170,7 +170,7 @@ function MobileNavMenu(): React.JSX.Element {
 							},
 						)}
 					>
-						<span className="">{t("rssFeed")}</span>
+						<span>{t("rssFeed")}</span>
 					</Link>
 
 					<Link
@@ -184,7 +184,7 @@ function MobileNavMenu(): React.JSX.Element {
 							},
 						)}
 					>
-						<span className="">{t("newsletters")}</span>
+						<span>{t("newsletters")}</span>
 					</Link>
 
 					<Link
@@ -198,7 +198,7 @@ function MobileNavMenu(): React.JSX.Element {
 							},
 						)}
 					>
-						<span className="">{t("settings")}</span>
+						<span>{t("settings")}</span>
 					</Link>
 				</div>
 
