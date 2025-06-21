@@ -21,8 +21,21 @@ const readableUrl = (url: string): string => {
  */
 function sanitizeHTML(html: string): string {
 	return DOMPurify.sanitize(html, {
-		ALLOWED_TAGS: ["p", "a", "b", "i", "em", "strong", "br"],
-		ALLOWED_ATTR: ["href"],
+		ALLOWED_TAGS: [
+			"p",
+			"a",
+			"b",
+			"i",
+			"em",
+			"strong",
+			"br",
+			"img",
+			"figure",
+			"figcaption",
+			"video",
+			"audio",
+		],
+		ALLOWED_ATTR: ["href", "src", "alt", "width", "height"],
 	});
 }
 
