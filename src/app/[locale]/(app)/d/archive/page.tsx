@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { dal } from "@/app/[locale]/lib/dal";
+import { Links } from "@/app/[locale]/ui/links";
 import {
 	SearchLinksDesktop,
 	SearchLinksMobile,
@@ -11,7 +12,6 @@ import { LinksSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SortLinks } from "@/app/[locale]/ui/sort-links";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
-import { Links } from "../../ui/links";
 export const experimental_ppr = true;
 
 export async function generateMetadata({
