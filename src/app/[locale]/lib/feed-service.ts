@@ -1,4 +1,4 @@
-import { eq, sql } from "drizzle-orm";
+import { eq, like, sql } from "drizzle-orm";
 import { Feed as FeedCreator } from "feed";
 import { decode } from "html-entities";
 import { cache } from "react";
@@ -14,6 +14,7 @@ import {
 import { db } from "@/db/db";
 import { type Feed, feeds, feedsContent } from "@/db/schema";
 import "server-only";
+import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
 
 const USER_AGENT = "RSS https://bocal.fyi/1.0";
 const SYNC_BATCH_SIZE = 10;
@@ -196,7 +197,7 @@ const generateUserAtomFeed = cache(
 			// Ex: “eid → feed → newsletterOwnerId → user → check payment/free trial status”
 			logger.warn("TODO: make sure the user is paying or is in trial");
 
-			// Check if eid is a valid uuid
+			// Check if eid is a valid uuid.
 			if (!z.uuid().safeParse(eid).success) {
 				return { error: "invalid-eid", atom: null };
 			}
@@ -211,7 +212,8 @@ const generateUserAtomFeed = cache(
 					lastSyncAt: feeds.lastSyncAt,
 				})
 				.from(feeds)
-				.where(eq(feeds.eid, eid));
+				.where(eq(feeds.eid, eid))
+				.limit(1);
 
 			if (!feed || feed.length === 0) {
 				return { error: "feed-not-found", atom: null };
@@ -268,6 +270,68 @@ const generateUserAtomFeed = cache(
 	},
 );
 
+type GetFeedContentResponse = {
+	error: "not-found" | "invalid-eid" | null;
+	content: string | null;
+};
+
+/**
+ * getFeedContent returns a specific content inside a feed.
+ * This is not checking if the user is authenticated
+ * because this is used in `bocal.fyi/userfeeds/<feed-eid>/content/<feed-content-eid>`,
+ * where the feed needs to be accessible without authentication.
+ * E.g. A user could look at the content using another feed reader (e.g. Feedly, NewsBlur, etc.).
+ *
+ * This also makes sure that the user owning the feed has an active
+ * subscription or is in trial.
+ * As long as the user owning this user feed has an active subscription or is in trial,
+ *  the feed content is accessible.
+ * We don't care how it is accessed.
+ * We only want that the user is paying.
+ *
+ * @param eid - External id of the feed_content.
+ *
+ */
+const getFeedContent = cache(
+	async (eid: string): Promise<GetFeedContentResponse> => {
+		try {
+			// Todo: make sure the user is paying or is in trial
+			// E.g
+			// Ex: “eid → feed → newsletterOwnerId → user → check payment/free trial status”
+			logger.warn("TODO: make sure the user is paying or is in trial");
+
+			// Check if eid is a valid uuid.
+			if (!z.uuid().safeParse(eid).success) {
+				return { error: "invalid-eid", content: null };
+			}
+
+			const feedContent = await db
+				.select({
+					content: feedsContent.content,
+				})
+				.from(feedsContent)
+				.where(
+					like(
+						feedsContent.url,
+						`${userfeedsfuncs.NEWSLETTER_URL_PREFIX}%/content/${eid}`,
+					),
+				)
+				.limit(1);
+
+			if (!feedContent.length) {
+				return { error: "not-found", content: null };
+			}
+
+			const sanitized = parsing.sanitizeHTML(feedContent[0].content);
+
+			return { error: null, content: sanitized };
+		} catch (err) {
+			logger.error(err);
+			throw new Error("errors.unexpected");
+		}
+	},
+);
+
 /**
  * feedService contient les fonctions pour gérer les flux RSS.
  */
@@ -278,4 +342,5 @@ export const feedService = {
 	FeedTimeout,
 	triggerBackgroundSync,
 	generateUserAtomFeed,
+	getFeedContent,
 };
