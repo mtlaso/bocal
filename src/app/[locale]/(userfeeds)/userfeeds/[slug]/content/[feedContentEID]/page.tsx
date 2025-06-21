@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { NextResponse } from "next/server";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 
 export default async function Page({
@@ -18,7 +17,7 @@ export default async function Page({
 	}
 
 	if (!content) {
-		return new NextResponse("Error generating feed", { status: 500 });
+		notFound();
 	}
 
 	return (
