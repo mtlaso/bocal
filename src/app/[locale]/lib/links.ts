@@ -2,5 +2,6 @@
  * LINKS defines as the links in the app.
  */
 export const LINKS = {
-	newsletter: "/d/newsletter",
+  login: "/login",
+  newsletter: "/d/newsletter",
 } as const;
