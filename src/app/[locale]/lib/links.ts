@@ -3,5 +3,6 @@
  */
 export const LINKS = {
   login: "/login",
+  dashboard: "/dashboard",
   newsletter: "/d/newsletter",
 } as const;

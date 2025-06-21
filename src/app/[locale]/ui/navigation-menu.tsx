@@ -6,19 +6,19 @@ import { LINKS } from "@/app/[locale]/lib/links";
 import { Button } from "@/components/ui/button";
 import { LocaleToggle } from "@/components/ui/locale-toggle";
 import {
-	NavigationMenu,
-	NavigationMenuItem,
-	NavigationMenuLink,
-	NavigationMenuList,
-	navigationMenuTriggerStyle,
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import {
-	Sheet,
-	SheetContent,
-	SheetFooter,
-	SheetHeader,
-	SheetTitle,
-	SheetTrigger,
+  Sheet,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
 } from "@/components/ui/sheet";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Link, usePathname } from "@/i18n/routing";
@@ -26,188 +26,188 @@ import { cn } from "@/lib/utils";
 import { LogoutForm } from "./auth/logout-form";
 
 export function NavMenu(): React.JSX.Element {
-	return (
-		<>
-			<div className="md:hidden">
-				<MobileNavMenu />
-			</div>
-			<div className="hidden md:block">
-				<DesktopNavMenu />
-			</div>
-		</>
-	);
+  return (
+    <>
+      <div className="md:hidden">
+        <MobileNavMenu />
+      </div>
+      <div className="hidden md:block">
+        <DesktopNavMenu />
+      </div>
+    </>
+  );
 }
 
 function DesktopNavMenu(): React.JSX.Element {
-	const t = useTranslations("navbar");
-	const pathname = usePathname();
+  const t = useTranslations("navbar");
+  const pathname = usePathname();
 
-	return (
-		<NavigationMenu className="py-5 mb-6 max-w-full! justify-between">
-			<NavigationMenuList>
-				<NavigationMenuItem>
-					<NavigationMenuLink
-						href="/dashboard"
-						className={cn(navigationMenuTriggerStyle(), {
-							"font-semibold bg-accent": pathname === "/dashboard",
-						})}
-					>
-						{t("links")}
-					</NavigationMenuLink>
-				</NavigationMenuItem>
+  return (
+    <NavigationMenu className="py-5 mb-6 max-w-full! justify-between">
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuLink
+            href={LINKS.dashboard}
+            className={cn(navigationMenuTriggerStyle(), {
+              "font-semibold bg-accent": pathname === LINKS.dashboard,
+            })}
+          >
+            {t("links")}
+          </NavigationMenuLink>
+        </NavigationMenuItem>
 
-				<NavigationMenuItem>
-					<NavigationMenuLink
-						href="/archive"
-						className={cn(navigationMenuTriggerStyle(), {
-							"font-semibold bg-accent": pathname === "/archive",
-						})}
-					>
-						{t("archive")}
-					</NavigationMenuLink>
-				</NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink
+            href="/archive"
+            className={cn(navigationMenuTriggerStyle(), {
+              "font-semibold bg-accent": pathname === "/archive",
+            })}
+          >
+            {t("archive")}
+          </NavigationMenuLink>
+        </NavigationMenuItem>
 
-				<NavigationMenuItem>
-					<NavigationMenuLink
-						href={"/feed"}
-						className={cn(navigationMenuTriggerStyle(), {
-							"font-semibold bg-accent": pathname === "/feed",
-						})}
-					>
-						{t("rssFeed")}
-					</NavigationMenuLink>
-				</NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink
+            href={"/feed"}
+            className={cn(navigationMenuTriggerStyle(), {
+              "font-semibold bg-accent": pathname === "/feed",
+            })}
+          >
+            {t("rssFeed")}
+          </NavigationMenuLink>
+        </NavigationMenuItem>
 
-				<NavigationMenuItem>
-					<NavigationMenuLink
-						href={LINKS.newsletter}
-						className={cn(navigationMenuTriggerStyle(), {
-							"font-semibold bg-accent": pathname === LINKS.newsletter,
-						})}
-					>
-						{t("newsletters")}
-					</NavigationMenuLink>
-				</NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink
+            href={LINKS.newsletter}
+            className={cn(navigationMenuTriggerStyle(), {
+              "font-semibold bg-accent": pathname === LINKS.newsletter,
+            })}
+          >
+            {t("newsletters")}
+          </NavigationMenuLink>
+        </NavigationMenuItem>
 
-				<NavigationMenuItem>
-					<NavigationMenuLink
-						href="/settings"
-						className={cn(navigationMenuTriggerStyle(), {
-							"font-semibold bg-accent": pathname === "/settings",
-						})}
-					>
-						{t("settings")}
-					</NavigationMenuLink>
-				</NavigationMenuItem>
-			</NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuLink
+            href="/settings"
+            className={cn(navigationMenuTriggerStyle(), {
+              "font-semibold bg-accent": pathname === "/settings",
+            })}
+          >
+            {t("settings")}
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+      </NavigationMenuList>
 
-			<span className="flex flex-wrap gap-2">
-				<ThemeToggle />
-				<LocaleToggle />
-				<LogoutForm />
-			</span>
-		</NavigationMenu>
-	);
+      <span className="flex flex-wrap gap-2">
+        <ThemeToggle />
+        <LocaleToggle />
+        <LogoutForm />
+      </span>
+    </NavigationMenu>
+  );
 }
 
 function MobileNavMenu(): React.JSX.Element {
-	const t = useTranslations("navbar");
-	const pathname = usePathname();
-	const [isOpen, setIsOpen] = useState(false);
+  const t = useTranslations("navbar");
+  const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
 
-	return (
-		<Sheet open={isOpen} onOpenChange={(status): void => setIsOpen(status)}>
-			<SheetTrigger asChild>
-				<Button className="py-5 mb-6" variant="outline" size="icon">
-					<TbMenu2 />
-				</Button>
-			</SheetTrigger>
+  return (
+    <Sheet open={isOpen} onOpenChange={(status): void => setIsOpen(status)}>
+      <SheetTrigger asChild>
+        <Button className="py-5 mb-6" variant="outline" size="icon">
+          <TbMenu2 />
+        </Button>
+      </SheetTrigger>
 
-			<SheetContent className="w-full">
-				<SheetHeader>
-					<SheetTitle className="mb-6 text-left text-4xl leading-tight">
-						{t("menu")}
-					</SheetTitle>
-				</SheetHeader>
+      <SheetContent className="w-full">
+        <SheetHeader>
+          <SheetTitle className="mb-6 text-left text-4xl leading-tight">
+            {t("menu")}
+          </SheetTitle>
+        </SheetHeader>
 
-				<div className="flex flex-col gap-4">
-					<Link
-						onClick={(): void => setIsOpen(false)}
-						href={"/dashboard"}
-						className={cn(
-							navigationMenuTriggerStyle(),
-							"w-full flex justify-start",
-							{
-								"font-semibold bg-accent": pathname === "/dashboard",
-							},
-						)}
-					>
-						<span>{t("links")}</span>
-					</Link>
+        <div className="flex flex-col gap-4">
+          <Link
+            onClick={(): void => setIsOpen(false)}
+            href={LINKS.dashboard}
+            className={cn(
+              navigationMenuTriggerStyle(),
+              "w-full flex justify-start",
+              {
+                "font-semibold bg-accent": pathname === LINKS.dashboard,
+              },
+            )}
+          >
+            <span>{t("links")}</span>
+          </Link>
 
-					<Link
-						onClick={(): void => setIsOpen(false)}
-						href={"/archive"}
-						className={cn(
-							navigationMenuTriggerStyle(),
-							"w-full flex justify-start",
-							{
-								"font-semibold bg-accent": pathname === "/archive",
-							},
-						)}
-					>
-						<span className="">{t("archive")}</span>
-					</Link>
+          <Link
+            onClick={(): void => setIsOpen(false)}
+            href={"/archive"}
+            className={cn(
+              navigationMenuTriggerStyle(),
+              "w-full flex justify-start",
+              {
+                "font-semibold bg-accent": pathname === "/archive",
+              },
+            )}
+          >
+            <span className="">{t("archive")}</span>
+          </Link>
 
-					<Link
-						onClick={(): void => setIsOpen(false)}
-						href={"/feed"}
-						className={cn(
-							navigationMenuTriggerStyle(),
-							"w-full flex justify-start",
-							{
-								"font-semibold bg-accent": pathname === "/feed",
-							},
-						)}
-					>
-						<span className="">{t("rssFeed")}</span>
-					</Link>
+          <Link
+            onClick={(): void => setIsOpen(false)}
+            href={"/feed"}
+            className={cn(
+              navigationMenuTriggerStyle(),
+              "w-full flex justify-start",
+              {
+                "font-semibold bg-accent": pathname === "/feed",
+              },
+            )}
+          >
+            <span className="">{t("rssFeed")}</span>
+          </Link>
 
-					<Link
-						onClick={(): void => setIsOpen(false)}
-						href={LINKS.newsletter}
-						className={cn(
-							navigationMenuTriggerStyle(),
-							"w-full flex justify-start",
-							{
-								"font-semibold bg-accent": pathname === LINKS.newsletter,
-							},
-						)}
-					>
-						<span className="">{t("newsletters")}</span>
-					</Link>
+          <Link
+            onClick={(): void => setIsOpen(false)}
+            href={LINKS.newsletter}
+            className={cn(
+              navigationMenuTriggerStyle(),
+              "w-full flex justify-start",
+              {
+                "font-semibold bg-accent": pathname === LINKS.newsletter,
+              },
+            )}
+          >
+            <span className="">{t("newsletters")}</span>
+          </Link>
 
-					<Link
-						onClick={(): void => setIsOpen(false)}
-						href={"/settings"}
-						className={cn(
-							navigationMenuTriggerStyle(),
-							"w-full flex justify-start",
-							{
-								"font-semibold bg-accent": pathname === "/settings",
-							},
-						)}
-					>
-						<span className="">{t("settings")}</span>
-					</Link>
-				</div>
+          <Link
+            onClick={(): void => setIsOpen(false)}
+            href={"/settings"}
+            className={cn(
+              navigationMenuTriggerStyle(),
+              "w-full flex justify-start",
+              {
+                "font-semibold bg-accent": pathname === "/settings",
+              },
+            )}
+          >
+            <span className="">{t("settings")}</span>
+          </Link>
+        </div>
 
-				<SheetFooter className="mt-6 justify-start! flex-row flex-wrap gap-2">
-					<ThemeToggle />
-					<LocaleToggle />
-					<LogoutForm />
-				</SheetFooter>
-			</SheetContent>
-		</Sheet>
-	);
+        <SheetFooter className="mt-6 justify-start! flex-row flex-wrap gap-2">
+          <ThemeToggle />
+          <LocaleToggle />
+          <LogoutForm />
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  );
 }

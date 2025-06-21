@@ -6,7 +6,7 @@ import { getPathname, type Locale, routing } from "@/i18n/routing";
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     getEntry("/"),
-    getEntry("/dashboard"),
+    getEntry(LINKS.dashboard),
     getEntry("/archive"),
     getEntry(LINKS.newsletter),
     getEntry("/feed"),

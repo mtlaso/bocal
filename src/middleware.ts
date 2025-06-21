@@ -5,7 +5,7 @@ import { LINKS } from "@/app/[locale]/lib/links";
 import { routing } from "./i18n/routing";
 
 const PROTECTED_ROUTES = new Set([
-  "/dashboard",
+  LINKS.dashboard,
   "/archive",
   "/feed",
   LINKS.newsletter,
@@ -63,7 +63,7 @@ export default async function middleware(
 
   if (isPublicRoute && sessionCookie) {
     return NextResponse.redirect(
-      new URL(`${langPrefix}/dashboard`, req.nextUrl.origin),
+      new URL(`${langPrefix}${LINKS.dashboard}`, req.nextUrl.origin),
     );
   }
 

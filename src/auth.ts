@@ -28,7 +28,7 @@ const config = {
   providers: [GitHub, Google],
   pages: {
     signIn: LINKS.login,
-    newUser: "/dashboard",
+    newUser: LINKS.dashboard,
   },
   adapter: DrizzleAdapter(db, {
     usersTable: users,
