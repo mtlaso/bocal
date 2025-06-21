@@ -58,7 +58,7 @@ export function Links({ links }: Props): React.JSX.Element {
 				<Card
 					key={item.id}
 					className={
-						"grid grid-rows-subgrid row-span-3 col-span-1 pt-0 pl-0 hover:shadow-md transition-all duration-200 break-words"
+						"grid grid-rows-subgrid row-span-3 col-span-1 pt-0 pl-0 hover:shadow-md transition-all duration-200 wrap-anywhere"
 					}
 				>
 					<CardHeader className={"p-0"}>
