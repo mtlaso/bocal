@@ -15,7 +15,8 @@
 			"!**/node_modules/**",
 			"!**/*.config.*",
 			"!**/*.d.*",
-			"!**/*.css"
+			"!**/*.css",
+			"!drizzle/*"
 		]
 	},
 	"formatter": {
