@@ -47,6 +47,30 @@ export function NewsletterItem({
 			});
 	}
 
+	function _getURL(url: string) {
+		const secondPart = url.split(userfeedsfuncs.NEWSLETTER_URL_PREFIX);
+		let finalurl = url;
+
+		switch (process.env.NEXT_PUBLIC_VERCEL_ENV) {
+			case "development":
+				if (secondPart.length > 1) {
+					finalurl = `http://localhost:3000/userfeeds/${secondPart[1]}`;
+				}
+				break;
+
+			case "preview":
+				if (secondPart.length > 1) {
+					finalurl = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/${secondPart[1]}`;
+				}
+				break;
+
+			default:
+				finalurl = url;
+		}
+
+		return finalurl;
+	}
+
 	return (
 		<div className={SPACING.MD}>
 			<div className="flex justify-between">
@@ -70,9 +94,9 @@ export function NewsletterItem({
 						{t("descFeedUrl")}
 					</Label>
 
-					<div className="flex items-center gap-2">
+					<div className="flex gap-2">
 						<Input
-							value={item.url}
+							value={userfeedsfuncs.formatFeedURL(item.url)}
 							disabled
 							className="block w-full rounded-md py-2"
 							id={`url-${item.id}`}
@@ -98,14 +122,14 @@ export function NewsletterItem({
 
 					<div className="flex items-center gap-2">
 						<Input
-							value={userfeedsfuncs.format(item.eid)}
+							value={userfeedsfuncs.formatUsermail(item.eid)}
 							disabled
 							className="block w-full rounded-md py-2"
 							id={`email-${item.id}`}
 						/>
 						<Button
 							onClick={(): void =>
-								copyToClipboard(userfeedsfuncs.format(item.eid))
+								copyToClipboard(userfeedsfuncs.formatUsermail(item.eid))
 							}
 							variant="outline"
 							size="icon"

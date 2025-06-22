@@ -99,30 +99,6 @@ const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
 		}
 	};
 
-	function getURL(url: string) {
-		const secondPart = url.split(userfeedsfuncs.NEWSLETTER_URL_PREFIX);
-		let finalurl = url;
-
-		switch (process.env.NEXT_PUBLIC_VERCEL_ENV) {
-			case "development":
-				if (secondPart.length > 1) {
-					finalurl = `http://localhost:3000/userfeeds/${secondPart[1]}`;
-				}
-				break;
-
-			case "preview":
-				if (secondPart.length > 1) {
-					finalurl = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/${secondPart[1]}`;
-				}
-				break;
-
-			default:
-				finalurl = url;
-		}
-
-		return finalurl;
-	}
-
 	return (
 		<div className="flex gap-2">
 			<div className="pt-1 h-full">
@@ -144,7 +120,7 @@ const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
 					"opacity-50": isRead,
 				})}
 				onClick={(): Promise<void> => handleMarkAsRead(item.feedId, item.id)}
-				href={getURL(item.url)}
+				href={userfeedsfuncs.formatFeedURL(item.url)}
 				target="_blank"
 			>
 				<h2 className="tracking-tight text-xl font-semibold line-clamp-3">
