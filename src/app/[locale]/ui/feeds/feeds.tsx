@@ -105,16 +105,14 @@ const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
 
 		switch (process.env.NEXT_PUBLIC_VERCEL_ENV) {
 			case "development":
-				if (secondPart.length > 0) {
+				if (secondPart.length > 1) {
 					return `http://localhost:3000/userfeeds/${secondPart[1]}`;
 				}
-				return "";
+				return url;
 			case "preview":
-				if (secondPart.length > 0) {
+				if (secondPart.length > 1) {
 					return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/${secondPart[1]}`;
 				}
-				return "";
-			case "production":
 				return url;
 			default:
 				return url;
