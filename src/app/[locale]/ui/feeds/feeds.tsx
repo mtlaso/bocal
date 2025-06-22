@@ -8,7 +8,6 @@ import {
 	markFeedContentAsRead,
 	markFeedContentAsUnread,
 } from "@/app/[locale]/lib/actions";
-import { getAppBaseURL } from "@/app/[locale]/lib/get-app-base-url";
 import { parsing } from "@/app/[locale]/lib/parsing";
 import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
 import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
@@ -158,8 +157,6 @@ const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
 					<p className="text-muted-foreground">
 						{new Date(item.date).toLocaleDateString(locale)}
 					</p>
-					base url:
-					{getAppBaseURL()}
 				</div>
 			</Link>
 
