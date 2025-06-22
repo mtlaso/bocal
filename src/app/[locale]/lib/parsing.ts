@@ -22,9 +22,6 @@ const readableUrl = (url: string): string => {
 function sanitizeHTML(html: string): string {
 	return DOMPurify.sanitize(html, {
 		ALLOWED_TAGS: [
-			"html",
-			"head",
-			"body",
 			"h1",
 			"h2",
 			"h3",
@@ -35,11 +32,6 @@ function sanitizeHTML(html: string): string {
 			"span",
 			"section",
 			"article",
-			"header",
-			"footer",
-			"nav",
-			"main",
-			"aside",
 			"ul",
 			"ol",
 			"li",
@@ -67,6 +59,7 @@ function sanitizeHTML(html: string): string {
 			"audio",
 		],
 		ALLOWED_ATTR: [
+			"style",
 			"href",
 			"src",
 			"alt",
