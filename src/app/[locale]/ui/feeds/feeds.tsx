@@ -102,21 +102,26 @@ const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
 
 	function getURL(url: string) {
 		const secondPart = url.split(userfeedsfuncs.NEWSLETTER_URL_PREFIX);
+		let finalurl = "";
 
 		switch (process.env.NEXT_PUBLIC_VERCEL_ENV) {
 			case "development":
 				if (secondPart.length > 1) {
-					return `http://localhost:3000/userfeeds/${secondPart[1]}`;
+					finalurl = `http://localhost:3000/userfeeds/${secondPart[1]}`;
 				}
-				return url;
+				break;
+
 			case "preview":
 				if (secondPart.length > 1) {
-					return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/${secondPart[1]}`;
+					finalurl = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/${secondPart[1]}`;
 				}
-				return url;
+				break;
+
 			default:
-				return url;
+				finalurl = url;
 		}
+
+		return finalurl;
 	}
 
 	return (
