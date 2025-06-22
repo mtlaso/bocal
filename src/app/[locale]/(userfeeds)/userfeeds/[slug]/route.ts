@@ -1,4 +1,3 @@
-import { notFound } from "next/navigation";
 import { type NextRequest, NextResponse } from "next/server";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 
@@ -9,7 +8,9 @@ export async function GET(
 	const { slug: feedEid } = await params;
 
 	if (!feedEid) {
-		notFound();
+		return new NextResponse("Feed ID is required", {
+			status: 400,
+		});
 	}
 
 	const { atom, error } = await feedService.generateUserAtomFeed(feedEid);

@@ -1,4 +1,3 @@
-import { notFound } from "next/navigation";
 import { type NextRequest, NextResponse } from "next/server";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 import { logger } from "@/app/[locale]/lib/logging";
@@ -12,7 +11,9 @@ export async function GET(
 ) {
 	const { feedContentEID } = await params;
 	if (!feedContentEID) {
-		notFound();
+		return new NextResponse("Feed content ID is required", {
+			status: 400,
+		});
 	}
 
 	const { content, error } = await feedService.getFeedContent(feedContentEID);
