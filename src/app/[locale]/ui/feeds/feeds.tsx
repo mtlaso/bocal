@@ -10,6 +10,7 @@ import {
 } from "@/app/[locale]/lib/actions";
 import { parsing } from "@/app/[locale]/lib/parsing";
 import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
+import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
 import { FeedContextMenu } from "@/app/[locale]/ui/feeds/feed-context-menu";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -98,6 +99,30 @@ const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
 		}
 	};
 
+	function getURL(url: string) {
+		const secondPart = url.split(userfeedsfuncs.NEWSLETTER_URL_PREFIX);
+		let finalurl = url;
+
+		switch (process.env.NEXT_PUBLIC_VERCEL_ENV) {
+			case "development":
+				if (secondPart.length > 1) {
+					finalurl = `http://localhost:3000/userfeeds/${secondPart[1]}`;
+				}
+				break;
+
+			case "preview":
+				if (secondPart.length > 1) {
+					finalurl = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/${secondPart[1]}`;
+				}
+				break;
+
+			default:
+				finalurl = url;
+		}
+
+		return finalurl;
+	}
+
 	return (
 		<div className="flex gap-2">
 			<div className="pt-1 h-full">
@@ -119,9 +144,7 @@ const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
 					"opacity-50": isRead,
 				})}
 				onClick={(): Promise<void> => handleMarkAsRead(item.feedId, item.id)}
-				// Todo:
-				// In localhost, redirect to http://localhost:<port>:<url>
-				href={item.url}
+				href={getURL(item.url)}
 				target="_blank"
 			>
 				<h2 className="tracking-tight text-xl font-semibold line-clamp-3">
