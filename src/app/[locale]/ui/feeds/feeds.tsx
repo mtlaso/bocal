@@ -101,7 +101,7 @@ const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
 
 	function getURL(url: string) {
 		const secondPart = url.split(userfeedsfuncs.NEWSLETTER_URL_PREFIX);
-		let finalurl = "";
+		let finalurl = url;
 
 		switch (process.env.NEXT_PUBLIC_VERCEL_ENV) {
 			case "development":
