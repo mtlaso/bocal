@@ -1,4 +1,4 @@
-import { eq, like, sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { Feed as FeedCreator } from "feed";
 import { decode } from "html-entities";
 import { cache } from "react";
@@ -14,7 +14,6 @@ import {
 import { db } from "@/db/db";
 import { type Feed, feeds, feedsContent } from "@/db/schema";
 import "server-only";
-import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
 
 const USER_AGENT = "RSS https://bocal.fyi/1.0";
 const SYNC_BATCH_SIZE = 10;
@@ -310,12 +309,7 @@ const getFeedContent = cache(
 					content: feedsContent.content,
 				})
 				.from(feedsContent)
-				.where(
-					like(
-						feedsContent.url,
-						`${userfeedsfuncs.NEWSLETTER_URL_PREFIX}%/content/${eid}`,
-					),
-				)
+				.where(eq(feedsContent.eid, eid))
 				.limit(1);
 
 			if (!feedContent.length) {

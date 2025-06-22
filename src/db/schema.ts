@@ -2,7 +2,6 @@ import { type InferSelectModel, sql } from "drizzle-orm";
 import {
 	boolean,
 	check,
-	index,
 	integer,
 	pgTable,
 	primaryKey,
@@ -75,6 +74,7 @@ export const feeds = pgTable(
 	{
 		id: integer().primaryKey().generatedAlwaysAsIdentity(),
 		// external id.
+		// Used when this feed was created as a newsletter.
 		eid: uuid().notNull().defaultRandom(),
 		// It has a value only when the current feed is a newsletter.
 		// This is needed when deleting a newsletter, to make sure that the user deleting a newsletter is the owner of the feed.
@@ -95,7 +95,7 @@ export const feeds = pgTable(
 			enum: enumToPgEnum(FeedErrorType),
 		}),
 	},
-	(table) => [index("eid_user_id").on(table.eid), uniqueIndex().on(table.eid)],
+	(table) => [uniqueIndex().on(table.eid)],
 );
 
 /**
@@ -105,6 +105,9 @@ export const feedsContent = pgTable(
 	"feeds_content",
 	{
 		id: integer().primaryKey().generatedAlwaysAsIdentity(),
+		// external id.
+		// Only used when the feed content is part of a newsletter feed.
+		eid: uuid().notNull().defaultRandom(),
 		feedId: integer()
 			.notNull()
 			.references(() => feeds.id, { onDelete: "cascade" }),
@@ -114,7 +117,10 @@ export const feedsContent = pgTable(
 		content: text().notNull(),
 		createdAt: timestamp().defaultNow().notNull(),
 	},
-	(table) => [uniqueIndex("url_feedid").on(table.url, table.feedId)],
+	(table) => [
+		uniqueIndex("url_feedid").on(table.url, table.feedId),
+		uniqueIndex().on(table.eid),
+	],
 );
 
 /**
