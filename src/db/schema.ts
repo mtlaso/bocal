@@ -105,6 +105,8 @@ export const feedsContent = pgTable(
 	"feeds_content",
 	{
 		id: integer().primaryKey().generatedAlwaysAsIdentity(),
+		// external id.
+		eid: uuid().notNull().defaultRandom(),
 		feedId: integer()
 			.notNull()
 			.references(() => feeds.id, { onDelete: "cascade" }),
@@ -114,7 +116,10 @@ export const feedsContent = pgTable(
 		content: text().notNull(),
 		createdAt: timestamp().defaultNow().notNull(),
 	},
-	(table) => [uniqueIndex("url_feedid").on(table.url, table.feedId)],
+	(table) => [
+		uniqueIndex("url_feedid").on(table.url, table.feedId),
+		uniqueIndex().on(table.eid),
+	],
 );
 
 /**
