@@ -6,9 +6,7 @@ export const getAppBaseURL = cache(() => {
 		case "production":
 			return "https://bocal.fyi";
 		case "preview": {
-			return process.env.NEXT_PUBLIC_SITE_URL
-				? `https://${process.env.NEXT_PUBLIC_SITE_URL}`
-				: `https://${process.env.NEXT_PUBLIC_SITE_URL}`;
+			return `http://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
 		}
 		default:
 			return "http://localhost:3000";
