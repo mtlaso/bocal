@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { type NextRequest, NextResponse } from "next/server";
 import { feedService } from "@/app/[locale]/lib/feed-service";
+import { logger } from "@/app/[locale]/lib/logging";
 export async function GET(
 	_request: NextRequest,
 	{
@@ -33,14 +34,15 @@ export async function GET(
 	}
 
 	if (!content) {
+		logger.error("Error fetching feed content", { feedContentEID });
 		return new NextResponse("Error fetching feed content", {
-			status: 400,
+			status: 500,
 		});
 	}
 
 	return new Response(content, {
 		headers: {
-			"Content-Type": "text/html; charset=utf-8;",
+			"Content-Type": "text/html; charset=utf-8",
 		},
 	});
 }
