@@ -110,7 +110,7 @@ const getUserFeeds = cache(
         -- LEFT JOIN because we want to get the feeds event if there is no content.
         -- LATERAL gives the subrequest to access tables outisde the FROM.
         LEFT JOIN LATERAL (
-                SELECT fc.id, fc."feedId", fc.date, fc.url, fc.title, fc.content, fc."createdAt", rc."readAt"
+                SELECT fc.id, fc."feedId", fc.date, fc.url, fc.title, fc.content, fc.eid, fc."createdAt", rc."readAt"
                 FROM feeds_content AS fc
 
                 -- Join on read_content
