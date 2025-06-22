@@ -23,7 +23,7 @@ export default async function Page({
 	return (
 		<>
 			<div
-				className="mb-6 mx-auto max-w-[75ch] p-4"
+				className="mb-6 mx-auto max-w-[75ch] p-4 wrap-anywhere"
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized html
 				dangerouslySetInnerHTML={{ __html: content }}
 			/>

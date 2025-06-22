@@ -183,7 +183,7 @@
 	},
 	"newsletter": {
 		"newsletters": "Newsletters",
-		"description": "Follow your newsletters with an RSS feed.",
+		"description": "Follow your newsletters as a feed.",
 		"descFeedUrl": "Feed URL to follow the newsletter. Automatically added to Feeds section.",
 		"descUsermail": "Subscribe to a newsletter with this email.",
 		"addNewsletterForm": {
