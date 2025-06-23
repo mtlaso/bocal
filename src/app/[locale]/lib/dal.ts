@@ -125,9 +125,9 @@ const getUserFeeds = cache(
         `;
 
 			if (onlyNewsletters) {
-				query.append(sql`
-            AND f.URL LIKE '${sql.raw(userfeedsfuncs.NEWSLETTER_URL_PREFIX)}%'
-          `);
+				query.append(
+					sql`AND f.URL LIKE ${`${userfeedsfuncs.NEWSLETTER_URL_PREFIX}%`}`,
+				);
 			}
 
 			query.append(sql`
