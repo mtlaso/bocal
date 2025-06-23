@@ -122,18 +122,10 @@ const getUserFeeds = cache(
                 LIMIT ${limit}
             ) AS fc_row ON TRUE
         WHERE uf."userId" = ${user.user.id}
+        ${onlyNewsletters ? sql`AND f.URL LIKE ${`${userfeedsfuncs.NEWSLETTER_URL_PREFIX}%`}` : sql``}
+        GROUP BY f.id
+            ORDER BY f."createdAt" DESC;
         `;
-
-			if (onlyNewsletters) {
-				query.append(
-					sql`AND f.URL LIKE ${`${userfeedsfuncs.NEWSLETTER_URL_PREFIX}%`}`,
-				);
-			}
-
-			query.append(sql`
-          GROUP BY f.id
-              ORDER BY f."createdAt" DESC;
-        `);
 
 			const req = await db.execute(query);
 
