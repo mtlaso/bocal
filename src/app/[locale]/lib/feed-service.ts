@@ -327,6 +327,102 @@ const getFeedContent = cache(
 );
 
 /**
+ * triggerBackgroundSync synchronizes outdated feeds in the background.
+ * @param outdatedFeedsIds Ids of outdated feeds.
+ */
+async function triggerBackgroundSync2(
+	outdatedFeedsIds: number[],
+): Promise<void> {
+	const sync = async (feedId: number): Promise<void> => {
+		try {
+			await db.transaction(async (tx) => {
+				const feed = await db
+					.select({
+						id: feeds.id,
+						url: feeds.url,
+					})
+					.from(feeds)
+					.where(eq(feeds.id, feedId))
+					.limit(1);
+				if (!feed) {
+					logger.error(
+						`feed with id ${feedId} not found during background sync.`,
+					);
+					throw new Error("errors.unexpected");
+				}
+
+				const { content, title } = await parse(feed[0].url);
+
+				await tx
+					.update(feeds)
+					.set({
+						title,
+						lastSyncAt: new Date(),
+						errorCount: 0,
+						lastError: null,
+						status: FeedStatusType.ACTIVE,
+					})
+					.where(eq(feeds.id, feed[0].id));
+
+				await tx
+					.insert(feedsContent)
+					.values(
+						content.map((c) => ({
+							feedId: feed[0].id,
+							url: c.url,
+							title: c.title,
+							content: c.content,
+							date: c.date,
+						})),
+					)
+					.onConflictDoNothing();
+
+				logger.info(`Synced ${content.length} items for feed ${feedId}`);
+			});
+		} catch (err) {
+			let errMsg = "errors.unexpected";
+			let errType = FeedErrorType.UNKNOWN;
+
+			if (err instanceof Error) {
+				errMsg = err.message;
+			}
+
+			if (err instanceof feedService.FeedUnreachable) {
+				errMsg = "errors.feedUnreachable";
+				errType = FeedErrorType.FETCH;
+			}
+
+			if (err instanceof feedService.FeedCannotBeProcessed) {
+				errMsg = "errors.feedCannotBeProcessed";
+				errType = FeedErrorType.PARSE;
+			}
+
+			if (err instanceof feedService.FeedTimeout) {
+				errMsg = "errors.feedTimeout";
+				errType = FeedErrorType.TIMEOUT;
+			}
+
+			await db
+				.update(feeds)
+				.set({
+					errorCount: sql`${feeds.errorCount} + 1`,
+					lastError: errMsg,
+					errorType: errType,
+					status: FeedStatusType.ERROR,
+				})
+				.where(eq(feeds.id, feedId));
+		}
+	};
+
+	const syncPromises = outdatedFeedsIds.map((feed) => sync(feed));
+
+	for (let i = 0; i < syncPromises.length; i += SYNC_BATCH_SIZE) {
+		const batch = syncPromises.slice(i, i + SYNC_BATCH_SIZE);
+		await Promise.all(batch);
+	}
+}
+
+/**
  * feedService contient les fonctions pour gérer les flux RSS.
  */
 export const feedService = {
@@ -335,6 +431,7 @@ export const feedService = {
 	FeedCannotBeProcessed,
 	FeedTimeout,
 	triggerBackgroundSync,
+	triggerBackgroundSync2,
 	generateUserAtomFeed,
 	getFeedContent,
 };

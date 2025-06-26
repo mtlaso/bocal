@@ -1,7 +1,13 @@
 import { and, desc, eq, type SQL, sql } from "drizzle-orm";
 import { z } from "zod/v4";
 import { db } from "@/db/db";
-import { type FeedWithContent, feedsWithContent, links } from "@/db/schema";
+import {
+	type FeedTimeline,
+	type FeedWithContent,
+	feedsTimeline,
+	feedsWithContent,
+	links,
+} from "@/db/schema";
 import "server-only";
 import type { Session } from "next-auth";
 import { cache } from "react";
@@ -65,7 +71,6 @@ const getLinks = cache(
 
 /**
  * getUserFeeds returns the feeds of current user.
- *
  */
 const getUserFeeds = cache(
 	async ({
@@ -152,10 +157,89 @@ const getUserFeeds = cache(
 );
 
 /**
+ * getUserFeedsTimeline returns the contents of the feeds a user follows.
+ */
+const getUserFeedsTimeline = cache(
+	async ({
+		/**
+		 * Only returns the feeds_contents that are part of a newsletter.
+		 * Newsletters are stored in the 'feeds' table.
+		 * Their url start with 'https://bocal.fyi/userfeeds/xxxx'.
+		 */
+		onlyNewsletters = false,
+	}): Promise<FeedTimeline[]> => {
+		try {
+			const user = await verifySession();
+			if (!user) {
+				throw new Error("errors.notSignedIn");
+			}
+
+			const limit = user.user.feedContentLimit;
+			const query = sql`
+        SELECT
+           	-- feeds_contents information.
+           	fc.id,
+           	fc."feedId",
+           	fc.date,
+           	fc.url,
+           	fc.title,
+           	fc.content,
+            fc."createdAt",
+            fc.eid,
+
+            -- users_feeds_read_content information.
+           	rc."readAt",
+
+           	-- minimal feed metadata.
+           	feeds.title AS "feedTitle",
+           	feeds."errorType" AS "feedErrorType",
+            feeds."lastSyncAt" AS "feedLastSyncAt"
+        FROM
+           	feeds_content fc
+       	JOIN
+            feeds ON feeds.id = fc."feedId"
+       	JOIN
+            users_feeds uf ON uf."feedId" = fc."feedId"
+       	LEFT JOIN
+            users_feeds_read_content rc ON rc."feedContentId" = fc.id
+        WHERE
+                uf."userId" = ${user.user.id}
+                ${onlyNewsletters ? sql`AND f.URL LIKE ${`${userfeedsfuncs.NEWSLETTER_URL_PREFIX}%`}` : sql``}
+        ORDER BY fc.date DESC
+        LIMIT ${limit}
+	`;
+
+			const req = await db.execute(query);
+			const { data, error } = feedsTimeline.safeParse(req.rows);
+			if (error) {
+				logger.error(error);
+				throw new z.ZodError(error.issues);
+			}
+
+			logger.info(data[0]);
+
+			const now = new Date();
+			const outdatedFeeds = data.filter((el) => {
+				!el.feedLastSyncAt ||
+					now.getTime() - el.feedLastSyncAt.getTime() > ONE_HOUR;
+			});
+			void feedService.triggerBackgroundSync2(
+				outdatedFeeds.map((el) => el.feedId),
+			);
+			return data;
+		} catch (err) {
+			logger.error(err);
+			throw new Error("errors.unexpected");
+		}
+	},
+);
+
+/**
  * dal contient les fonctions d'accés aux données.
  */
 export const dal = {
 	verifySession,
 	getLinks,
 	getUserFeeds,
+	getUserFeedsTimeline,
 };
