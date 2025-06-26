@@ -72,23 +72,15 @@ const getLinks = cache(
 /**
  * getUserFeedsTimeline returns the contents of the feeds a user follows.
  */
-const getUserFeedsTimeline = cache(
-	async ({
-		/**
-		 * Only returns the feeds_contents that are part of a newsletter.
-		 * Newsletters are stored in the 'feeds' table.
-		 * Their url start with 'https://bocal.fyi/userfeeds/xxxx'.
-		 */
-		onlyNewsletters = false,
-	}): Promise<FeedTimeline[]> => {
-		try {
-			const user = await verifySession();
-			if (!user) {
-				throw new Error("errors.notSignedIn");
-			}
+const getUserFeedsTimeline = cache(async (): Promise<FeedTimeline[]> => {
+	try {
+		const user = await verifySession();
+		if (!user) {
+			throw new Error("errors.notSignedIn");
+		}
 
-			const limit = user.user.feedContentLimit;
-			const query = sql`
+		const limit = user.user.feedContentLimit;
+		const query = sql`
         SELECT
            	-- feeds_contents information.
            	fc.id,
@@ -118,33 +110,31 @@ const getUserFeedsTimeline = cache(
             users_feeds_read_content rc ON rc."feedContentId" = fc.id
         WHERE
                 uf."userId" = ${user.user.id}
-                ${onlyNewsletters ? sql`AND f.URL LIKE ${`${userfeedsfuncs.NEWSLETTER_URL_PREFIX}%`}` : sql``}
         ORDER BY fc.date DESC
         LIMIT ${limit}
 	`;
 
-			const req = await db.execute(query);
-			const { data, error } = feedsTimelineSchema.safeParse(req.rows);
-			if (error) {
-				logger.error(error.issues);
-				throw new z.ZodError(error.issues);
-			}
-
-			const now = new Date();
-			const outdatedFeeds = data.filter((el) => {
-				!el.feedLastSyncAt ||
-					now.getTime() - el.feedLastSyncAt.getTime() > ONE_HOUR;
-			});
-			void feedService.triggerBackgroundSync(
-				outdatedFeeds.map((el) => el.feedId),
-			);
-			return data;
-		} catch (err) {
-			logger.error(err);
-			throw new Error("errors.unexpected");
+		const req = await db.execute(query);
+		const { data, error } = feedsTimelineSchema.safeParse(req.rows);
+		if (error) {
+			logger.error(error.issues);
+			throw new z.ZodError(error.issues);
 		}
-	},
-);
+
+		const now = new Date();
+		const outdatedFeeds = data.filter((el) => {
+			!el.feedLastSyncAt ||
+				now.getTime() - el.feedLastSyncAt.getTime() > ONE_HOUR;
+		});
+		void feedService.triggerBackgroundSync(
+			outdatedFeeds.map((el) => el.feedId),
+		);
+		return data;
+	} catch (err) {
+		logger.error(err);
+		throw new Error("errors.unexpected");
+	}
+});
 
 /**
  * getUserNewsletters returns the newsletters a user has.

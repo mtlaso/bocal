@@ -53,11 +53,11 @@ export default function Page(): React.JSX.Element {
 }
 
 async function FeedInfoWrapper(): Promise<React.JSX.Element> {
-	const timeline = await dal.getUserFeedsTimeline({});
+	const timeline = await dal.getUserFeedsTimeline();
 	return <FeedsInfoMenu timeline={timeline} />;
 }
 
 async function FeedsWrapper(): Promise<React.JSX.Element> {
-	const timeline = await dal.getUserFeedsTimeline({});
+	const timeline = await dal.getUserFeedsTimeline();
 	return <FeedsTimeline timeline={timeline} />;
 }
