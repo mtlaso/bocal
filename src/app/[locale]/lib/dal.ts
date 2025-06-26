@@ -1,11 +1,11 @@
-import { and, desc, eq, type SQL, sql } from "drizzle-orm";
+import { and, desc, eq, like, type SQL, sql } from "drizzle-orm";
 import { z } from "zod/v4";
 import { db } from "@/db/db";
 import {
+	type Feed,
 	type FeedTimeline,
-	type FeedWithContent,
+	feeds,
 	feedsTimeline,
-	feedsWithContent,
 	links,
 } from "@/db/schema";
 import "server-only";
@@ -70,93 +70,6 @@ const getLinks = cache(
 );
 
 /**
- * getUserFeeds returns the feeds of current user.
- */
-const getUserFeeds = cache(
-	async ({
-		/**
-		 * Whether to only return newsletters.
-		 * Newsletters are stored in the 'feeds' table.
-		 * Their url start with 'https://bocal.fyi/userfeeds/xxxx'.
-		 */
-		onlyNewsletters = false,
-	}): Promise<FeedWithContent[]> => {
-		try {
-			const user = await verifySession();
-			if (!user) {
-				throw new Error("errors.notSignedIn");
-			}
-
-			const limit = user.user.feedContentLimit;
-
-			const query = sql`
-      		SELECT
-            f.id,
-            f.eid,
-            f.url,
-            f.title,
-            f."createdAt",
-            f."lastSyncAt",
-            CASE
-                -- Check if the json_agg result is an array containing a single null
-                WHEN json_typeof(json_agg(fc_row ORDER BY fc_row.date DESC)) = 'array'
-                        AND json_array_length(json_agg(fc_row ORDER BY fc_row.date DESC)) = 1
-                        AND json_extract_path_text(json_agg(fc_row ORDER BY fc_row.date DESC)::json, '0') IS NULL
-                THEN '[]'::json -- Replace with an empty array
-                ELSE json_agg(fc_row ORDER BY fc_row.date DESC) -- Otherwise, keep the original result
-            END AS contents,
-            f.status,
-            f."lastError",
-            f."errorCount",
-            f."errorType",
-            f."newsletterOwnerId"
-        FROM feeds AS f
-        JOIN users_feeds AS uf ON uf."feedId" = f.id
-        -- LEFT JOIN because we want to get the feeds event if there is no content.
-        -- LATERAL gives the subrequest to access tables outisde the FROM.
-        LEFT JOIN LATERAL (
-                SELECT fc.id, fc."feedId", fc.date, fc.url, fc.title, fc.content, fc.eid, fc."createdAt", rc."readAt"
-                FROM feeds_content AS fc
-
-                -- Join on read_content
-                LEFT JOIN users_feeds_read_content AS rc ON rc."feedId" = f.id
-                        AND rc."feedContentId" = fc.id
-
-                WHERE fc."feedId" = f.id
-                ORDER BY fc.date DESC
-                LIMIT ${limit}
-            ) AS fc_row ON TRUE
-        WHERE uf."userId" = ${user.user.id}
-        ${onlyNewsletters ? sql`AND f.URL LIKE ${`${userfeedsfuncs.NEWSLETTER_URL_PREFIX}%`}` : sql``}
-        GROUP BY f.id
-            ORDER BY f."createdAt" DESC;
-        `;
-
-			const req = await db.execute(query);
-
-			const { data, error } = feedsWithContent.safeParse(req.rows);
-			if (error) {
-				throw new z.ZodError(error.issues);
-			}
-
-			const now = new Date();
-			const outdatedFeeds = data.filter(
-				(feed) =>
-					!feed.lastSyncAt ||
-					now.getTime() - feed.lastSyncAt.getTime() > ONE_HOUR,
-			);
-
-			void feedService.triggerBackgroundSync(outdatedFeeds);
-
-			return data;
-		} catch (err) {
-			logger.error(err);
-			throw new Error("errors.unexpected");
-		}
-	},
-);
-
-/**
  * getUserFeedsTimeline returns the contents of the feeds a user follows.
  */
 const getUserFeedsTimeline = cache(
@@ -213,7 +126,7 @@ const getUserFeedsTimeline = cache(
 			const req = await db.execute(query);
 			const { data, error } = feedsTimeline.safeParse(req.rows);
 			if (error) {
-				logger.error(error);
+				logger.error(error.issues);
 				throw new z.ZodError(error.issues);
 			}
 
@@ -224,7 +137,7 @@ const getUserFeedsTimeline = cache(
 				!el.feedLastSyncAt ||
 					now.getTime() - el.feedLastSyncAt.getTime() > ONE_HOUR;
 			});
-			void feedService.triggerBackgroundSync2(
+			void feedService.triggerBackgroundSync(
 				outdatedFeeds.map((el) => el.feedId),
 			);
 			return data;
@@ -236,11 +149,48 @@ const getUserFeedsTimeline = cache(
 );
 
 /**
+ * getUserNewsletters returns the newsletters a user has.
+ */
+const getUserNewsletters = cache(async (): Promise<Feed[]> => {
+	try {
+		const user = await verifySession();
+		if (!user) {
+			throw new Error("errors.unauthorized");
+		}
+
+		return await db
+			.select({
+				id: feeds.id,
+				url: feeds.url,
+				title: feeds.title,
+				createdAt: feeds.createdAt,
+				lastSyncAt: feeds.lastSyncAt,
+				status: feeds.status,
+				lastError: feeds.lastError,
+				errorCount: feeds.errorCount,
+				errorType: feeds.errorType,
+				eid: feeds.eid,
+				newsletterOwnerId: feeds.newsletterOwnerId,
+			})
+			.from(feeds)
+			.where(
+				and(
+					eq(feeds.newsletterOwnerId, user.user.id),
+					like(feeds.url, `${userfeedsfuncs.NEWSLETTER_URL_PREFIX}%`),
+				),
+			);
+	} catch (err) {
+		logger.error(err);
+		throw new Error("errors.unexpected");
+	}
+});
+
+/**
  * dal contient les fonctions d'accés aux données.
  */
 export const dal = {
 	verifySession,
 	getLinks,
-	getUserFeeds,
 	getUserFeedsTimeline,
+	getUserNewsletters,
 };

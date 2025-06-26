@@ -28,13 +28,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { FeedWithContent } from "@/db/schema";
+import type { Feed } from "@/db/schema";
 
-export function NewsletterItem({
-	item,
-}: {
-	item: FeedWithContent;
-}): React.JSX.Element {
+export function NewsletterItem({ item }: { item: Feed }): React.JSX.Element {
 	const t = useTranslations("newsletter");
 	function copyToClipboard(text: string): void {
 		navigator.clipboard
@@ -119,7 +115,7 @@ export function NewsletterItem({
 	);
 }
 
-function ContextMenu({ item }: { item: FeedWithContent }): React.JSX.Element {
+function ContextMenu({ item }: { item: Feed }): React.JSX.Element {
 	const t = useTranslations("newsletter.deleteNewsletterContextMenu");
 	const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
 

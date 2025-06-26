@@ -1,10 +1,10 @@
 import { useTranslations } from "next-intl";
 import { NewsletterItem } from "@/app/[locale]/ui/newsletters/newsletter-item";
 import { SPACING } from "@/app/[locale]/ui/spacing";
-import type { FeedWithContent } from "@/db/schema";
+import type { Feed } from "@/db/schema";
 
 type Props = {
-	newsletters: FeedWithContent[];
+	newsletters: Feed[];
 };
 
 export function Newsletters({ newsletters }: Props): React.JSX.Element {

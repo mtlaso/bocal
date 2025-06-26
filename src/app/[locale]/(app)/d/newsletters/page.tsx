@@ -49,6 +49,6 @@ export default function Page(): React.JSX.Element {
 }
 
 async function NewsLetterWrapper(): Promise<React.JSX.Element> {
-	const newsletters = await dal.getUserFeeds({ onlyNewsletters: true });
+	const newsletters = await dal.getUserNewsletters();
 	return <Newsletters newsletters={newsletters} />;
 }
