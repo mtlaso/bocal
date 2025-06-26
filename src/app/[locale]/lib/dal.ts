@@ -5,7 +5,7 @@ import {
 	type Feed,
 	type FeedTimeline,
 	feeds,
-	feedsTimeline,
+	feedsTimelineSchema,
 	links,
 } from "@/db/schema";
 import "server-only";
@@ -124,13 +124,11 @@ const getUserFeedsTimeline = cache(
 	`;
 
 			const req = await db.execute(query);
-			const { data, error } = feedsTimeline.safeParse(req.rows);
+			const { data, error } = feedsTimelineSchema.safeParse(req.rows);
 			if (error) {
 				logger.error(error.issues);
 				throw new z.ZodError(error.issues);
 			}
-
-			logger.info(data[0]);
 
 			const now = new Date();
 			const outdatedFeeds = data.filter((el) => {

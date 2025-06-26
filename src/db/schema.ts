@@ -331,7 +331,7 @@ const feedTimeline = z.object({
 	feedLastSyncAt: z.coerce.date(),
 });
 
-export const feedsTimeline = z.array(feedTimeline);
+export const feedsTimelineSchema = z.array(feedTimeline);
 
 export type User = InferSelectModel<typeof users>;
 export type Feed = InferSelectModel<typeof feeds>;

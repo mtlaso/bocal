@@ -14,7 +14,7 @@ import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
 import { FeedContextMenu } from "@/app/[locale]/ui/feeds/feed-context-menu";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Checkbox } from "@/components/ui/checkbox";
-import type { FeedContentWithReadAt, FeedTimeline } from "@/db/schema";
+import type { FeedTimeline } from "@/db/schema";
 import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 
@@ -41,7 +41,7 @@ export function FeedsTimeline({ timeline }: Props): React.JSX.Element {
 	);
 }
 
-const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
+const Item = ({ item }: { item: FeedTimeline }): React.JSX.Element => {
 	const t = useTranslations("rssFeed");
 	const locale = useLocale();
 
