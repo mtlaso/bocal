@@ -4,7 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { dal } from "@/app/[locale]/lib/dal";
 import { AddFeedForm } from "@/app/[locale]/ui/feeds/add-feed-form";
-import { FeedInfoMenu } from "@/app/[locale]/ui/feeds/feed-info-menu";
+import { FeedsInfoMenu } from "@/app/[locale]/ui/feeds/feeds-info-menu";
 import { FeedsTimeline } from "@/app/[locale]/ui/feeds/feeds-timeline";
 import { FeedInfoSkeleton, FeedsSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
@@ -53,8 +53,8 @@ export default function Page(): React.JSX.Element {
 }
 
 async function FeedInfoWrapper(): Promise<React.JSX.Element> {
-	const feeds = await dal.getUserFeeds({});
-	return <FeedInfoMenu feeds={feeds} />;
+	const timeline = await dal.getUserFeedsTimeline({});
+	return <FeedsInfoMenu timeline={timeline} />;
 }
 
 async function FeedsWrapper(): Promise<React.JSX.Element> {

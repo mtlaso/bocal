@@ -4,6 +4,7 @@ import { useQueryStates } from "nuqs";
 import { useState } from "react";
 import { TbPlugConnectedX, TbRadarFilled, TbRss } from "react-icons/tb";
 import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
+import type { Feed } from "@/app/[locale]/lib/types";
 import { FeedInfoContextMenu } from "@/app/[locale]/ui/feeds/feed-info-context-menu";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
@@ -15,22 +16,50 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
-import type { FeedWithContent } from "@/db/schema";
+import type { FeedTimeline } from "@/db/schema";
 import { cn } from "@/lib/utils";
 
 type Props = {
-	feeds: FeedWithContent[];
+	timeline: FeedTimeline[];
 };
 
-export function FeedInfoMenu({ feeds }: Props): React.JSX.Element {
+export function FeedsInfoMenu({ timeline }: Props): React.JSX.Element {
 	const t = useTranslations("rssFeed.info");
 	const [isOpen, setIsOpen] = useState(false);
 
+	// Fill feedsMap with feeds informations.
+	const feedsMap = new Map<
+		number,
+		{
+			title: string;
+			url: string;
+			errorType: string | null;
+			contentsCount: number;
+		}
+	>();
+	for (const el of timeline) {
+		let entry = feedsMap.get(el.feedId);
+		if (!entry) {
+			entry = {
+				title: el.feedTitle,
+				url: el.feedUrl,
+				errorType: el.feedErrorType,
+				contentsCount: 1,
+			};
+			feedsMap.set(el.feedId, entry);
+		} else {
+			entry.contentsCount += 1;
+		}
+	}
+
+	const feeds: Feed[] = [...feedsMap.entries()].map(([feedId, el]) => ({
+		id: feedId,
+		title: el.title,
+		url: el.url,
+		errorType: el.errorType,
+		contentsCount: el.contentsCount,
+	}));
 	const unreachableFeeds = feeds.filter((feed) => feed.errorType !== null);
-	const totalContent = feeds.reduce(
-		(sum, feed) => sum + (feed.contents?.length ?? 0),
-		0,
-	);
 
 	return (
 		<div className={SPACING.XS}>
@@ -48,7 +77,7 @@ export function FeedInfoMenu({ feeds }: Props): React.JSX.Element {
 					</SheetHeader>
 
 					<div className="flex flex-col gap-4">
-						<FeedMenuItemAll totalContent={totalContent} />
+						<FeedMenuItemAll totalContent={timeline.length} />
 						<div>
 							<p className="text-muted-foreground text-sm font-bold">
 								{t("textFeedsCount", { count: feeds.length })}
@@ -138,7 +167,7 @@ function FeedMenuItem({
 	feed,
 	onClick,
 }: {
-	feed: FeedWithContent;
+	feed: Feed;
 	onClick?: () => void;
 }): React.JSX.Element {
 	const [{ selectedFeed }, setSearchParamsState] = useQueryStates(
@@ -171,7 +200,7 @@ function FeedMenuItem({
 
 			<p className="truncate text-left">{feed.title}</p>
 
-			<p className={"text-primary text-end truncate"}>{feed.contents.length}</p>
+			<p className={"text-primary text-end truncate"}>{feed.contentsCount}</p>
 		</button>
 	);
 }

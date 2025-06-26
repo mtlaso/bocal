@@ -6,6 +6,7 @@ import { TbClipboard, TbSettings } from "react-icons/tb";
 import { toast } from "sonner";
 import { unfollowFeed } from "@/app/[locale]/lib/actions";
 import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
+import type { Feed } from "@/app/[locale]/lib/types";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -13,7 +14,6 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { Feed } from "@/db/schema";
 
 export function FeedInfoContextMenu({
 	feeds,

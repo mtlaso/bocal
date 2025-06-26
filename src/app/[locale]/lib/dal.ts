@@ -192,6 +192,7 @@ const getUserFeedsTimeline = cache(
 
            	-- minimal feed metadata.
            	feeds.title AS "feedTitle",
+            feeds.url AS "feedUrl",
            	feeds."errorType" AS "feedErrorType",
             feeds."lastSyncAt" AS "feedLastSyncAt"
         FROM

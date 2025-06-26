@@ -331,6 +331,7 @@ const feedTimeline = z.object({
 	...createSelectSchema(feedsContent).shape,
 	readAt: z.coerce.date().nullable(),
 	feedTitle: z.string(),
+	feedUrl: z.string(),
 	feedErrorType: z.enum(FeedErrorType).nullable(),
 	feedLastSyncAt: z.coerce.date(),
 });
