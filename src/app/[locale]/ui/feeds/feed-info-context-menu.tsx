@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { unfollowFeed } from "@/app/[locale]/lib/actions";
 import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
 import type { FeedWithContentsCount } from "@/app/[locale]/lib/types";
+import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -104,7 +105,7 @@ function CopyFeedURL({ url }: { url: string }): React.JSX.Element {
 
 	const handleCopy = async (): Promise<void> => {
 		try {
-			await navigator.clipboard.writeText(url);
+			await navigator.clipboard.writeText(userfeedsfuncs.formatFeedURL(url));
 			toast.success(t("feedURLCopied"), {
 				duration: 2000,
 			});
