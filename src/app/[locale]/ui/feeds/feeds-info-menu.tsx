@@ -4,7 +4,7 @@ import { useQueryStates } from "nuqs";
 import { useState } from "react";
 import { TbPlugConnectedX, TbRadarFilled, TbRss } from "react-icons/tb";
 import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
-import type { Feed, FeedErrorType } from "@/app/[locale]/lib/types";
+import type { FeedWithContentsCount } from "@/app/[locale]/lib/types";
 import { FeedInfoContextMenu } from "@/app/[locale]/ui/feeds/feed-info-context-menu";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
@@ -21,13 +21,7 @@ import { cn } from "@/lib/utils";
 
 type Props = {
 	timeline: FeedTimeline[];
-	userFeedsWithContentsCount: {
-		id: number;
-		title: string;
-		url: string;
-		errorType: FeedErrorType | null;
-		contentsCount: number;
-	}[];
+	userFeedsWithContentsCount: FeedWithContentsCount[];
 };
 
 export function FeedsInfoMenu({
@@ -146,7 +140,7 @@ function FeedMenuItem({
 	feed,
 	onClick,
 }: {
-	feed: Feed;
+	feed: FeedWithContentsCount;
 	onClick?: () => void;
 }): React.JSX.Element {
 	const [{ selectedFeed }, setSearchParamsState] = useQueryStates(

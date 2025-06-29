@@ -1,4 +1,4 @@
-export type Feed = {
+export type FeedWithContentsCount = {
 	id: number;
 	title: string;
 	url: string;

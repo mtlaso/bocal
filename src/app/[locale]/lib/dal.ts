@@ -15,7 +15,7 @@ import type { Session } from "next-auth";
 import { cache } from "react";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 import { logger } from "@/app/[locale]/lib/logging";
-import type { FeedErrorType } from "@/app/[locale]/lib/types";
+import type { FeedWithContentsCount } from "@/app/[locale]/lib/types";
 import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
 import { auth } from "@/auth";
 
@@ -140,15 +140,7 @@ const getUserFeedsTimeline = cache(async (): Promise<FeedTimeline[]> => {
  * number of feed_content in each feed.
  */
 const getUserFeedsWithContentsCount = cache(
-	async (): Promise<
-		{
-			id: number;
-			title: string;
-			url: string;
-			errorType: FeedErrorType | null;
-			contentsCount: number;
-		}[]
-	> => {
+	async (): Promise<FeedWithContentsCount[]> => {
 		try {
 			const user = await verifySession();
 			if (!user) {

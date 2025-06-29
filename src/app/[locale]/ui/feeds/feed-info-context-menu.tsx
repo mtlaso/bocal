@@ -6,7 +6,7 @@ import { TbClipboard, TbSettings } from "react-icons/tb";
 import { toast } from "sonner";
 import { unfollowFeed } from "@/app/[locale]/lib/actions";
 import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
-import type { Feed } from "@/app/[locale]/lib/types";
+import type { FeedWithContentsCount } from "@/app/[locale]/lib/types";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -18,7 +18,7 @@ import {
 export function FeedInfoContextMenu({
 	feeds,
 }: {
-	feeds: Feed[];
+	feeds: FeedWithContentsCount[];
 }): React.JSX.Element {
 	const [{ selectedFeed }] = useQueryStates(searchParamsState.searchParams, {
 		urlKeys: searchParamsState.urlKeys,
