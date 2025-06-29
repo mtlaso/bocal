@@ -34,9 +34,10 @@ export function FeedsTimeline({ timeline }: Props): React.JSX.Element {
 
 	return (
 		<section className={cn("wrap-anywhere", SPACING.LG)}>
-			{items.map((item) => (
-				<Item item={item} key={`${item.id}`} />
-			))}
+			{items.map((item) => {
+				if (!item.content) return;
+				return <Item item={item} key={`${item.id}`} />;
+			})}
 		</section>
 	);
 }

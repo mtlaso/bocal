@@ -1,18 +1,21 @@
-import { and, desc, eq, like, type SQL, sql } from "drizzle-orm";
+import { and, count, desc, eq, like, type SQL, sql } from "drizzle-orm";
 import { z } from "zod/v4";
 import { db } from "@/db/db";
 import {
 	type Feed,
 	type FeedTimeline,
 	feeds,
+	feedsContent,
 	feedsTimelineSchema,
 	links,
+	usersFeeds,
 } from "@/db/schema";
 import "server-only";
 import type { Session } from "next-auth";
 import { cache } from "react";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 import { logger } from "@/app/[locale]/lib/logging";
+import type { FeedErrorType } from "@/app/[locale]/lib/types";
 import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
 import { auth } from "@/auth";
 
@@ -94,25 +97,21 @@ const getUserFeedsTimeline = cache(async (): Promise<FeedTimeline[]> => {
 
             -- users_feeds_read_content information.
            	rc."readAt",
-
            	-- minimal feed metadata.
+            feeds.id AS "feedId",
            	feeds.title AS "feedTitle",
-            feeds.url AS "feedUrl",
+           	feeds.url AS "feedUrl",
            	feeds."errorType" AS "feedErrorType",
-            feeds."lastSyncAt" AS "feedLastSyncAt"
+           	feeds."lastSyncAt" AS "feedLastSyncAt"
         FROM
-           	feeds_content fc
-       	JOIN
-            feeds ON feeds.id = fc."feedId"
-       	JOIN
-            users_feeds uf ON uf."feedId" = fc."feedId"
-       	LEFT JOIN
-            users_feeds_read_content rc ON rc."feedContentId" = fc.id
+           	users_feeds uf
+       	JOIN feeds ON feeds.id = uf."feedId"
+       	JOIN feeds_content fc ON fc."feedId" = feeds.id
+       	LEFT JOIN users_feeds_read_content rc ON rc."feedContentId" = fc.id
         WHERE
-                uf."userId" = ${user.user.id}
-        ORDER BY fc.date DESC
-        LIMIT ${limit}
-	`;
+           	uf."userId" = ${user.user.id}
+        ORDER BY COALESCE(fc.date, feeds."createdAt") DESC
+        LIMIT ${limit}`;
 
 		const req = await db.execute(query);
 		const { data, error } = feedsTimelineSchema.safeParse(req.rows);
@@ -135,6 +134,46 @@ const getUserFeedsTimeline = cache(async (): Promise<FeedTimeline[]> => {
 		throw new Error("errors.unexpected");
 	}
 });
+
+/**
+ * getUserFeedsWithContentsCount returns the feeds a user follows with the
+ * number of feed_content in each feed.
+ */
+const getUserFeedsWithContentsCount = cache(
+	async (): Promise<
+		{
+			id: number;
+			title: string;
+			url: string;
+			errorType: FeedErrorType | null;
+			contentsCount: number;
+		}[]
+	> => {
+		try {
+			const user = await verifySession();
+			if (!user) {
+				throw new Error("errors.notSignedIn");
+			}
+
+			return await db
+				.select({
+					id: feeds.id,
+					title: feeds.title,
+					url: feeds.url,
+					errorType: feeds.errorType,
+					contentsCount: count(feedsContent.id),
+				})
+				.from(feeds)
+				.innerJoin(usersFeeds, eq(usersFeeds.feedId, feeds.id))
+				.leftJoin(feedsContent, eq(feedsContent.feedId, feeds.id))
+				.where(eq(usersFeeds.userId, user.user.id))
+				.groupBy(feeds.id);
+		} catch (err) {
+			logger.error(err);
+			throw new Error("errors.unexpected");
+		}
+	},
+);
 
 /**
  * getUserNewsletters returns the newsletters a user has.
@@ -180,5 +219,6 @@ export const dal = {
 	verifySession,
 	getLinks,
 	getUserFeedsTimeline,
+	getUserFeedsWithContentsCount,
 	getUserNewsletters,
 };
