@@ -1,3 +1,11 @@
+export type FeedWithContentsCount = {
+	id: number;
+	title: string;
+	url: string;
+	errorType: string | null;
+	contentsCount: number;
+};
+
 export enum SortOptions {
 	BY_DATE_ASC = "byDateAsc",
 	BY_DATE_DESC = "byDateDesc",

@@ -4,6 +4,7 @@ import { useQueryStates } from "nuqs";
 import { useState } from "react";
 import { TbPlugConnectedX, TbRadarFilled, TbRss } from "react-icons/tb";
 import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
+import type { FeedWithContentsCount } from "@/app/[locale]/lib/types";
 import { FeedInfoContextMenu } from "@/app/[locale]/ui/feeds/feed-info-context-menu";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
@@ -15,22 +16,23 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
-import type { FeedWithContent } from "@/db/schema";
+import type { FeedTimeline } from "@/db/schema";
 import { cn } from "@/lib/utils";
 
 type Props = {
-	feeds: FeedWithContent[];
+	timeline: FeedTimeline[];
+	userFeedsWithContentsCount: FeedWithContentsCount[];
 };
 
-export function FeedInfoMenu({ feeds }: Props): React.JSX.Element {
+export function FeedsInfoMenu({
+	timeline,
+	userFeedsWithContentsCount,
+}: Props): React.JSX.Element {
 	const t = useTranslations("rssFeed.info");
 	const [isOpen, setIsOpen] = useState(false);
 
+	const feeds = userFeedsWithContentsCount;
 	const unreachableFeeds = feeds.filter((feed) => feed.errorType !== null);
-	const totalContent = feeds.reduce(
-		(sum, feed) => sum + (feed.contents?.length ?? 0),
-		0,
-	);
 
 	return (
 		<div className={SPACING.XS}>
@@ -48,7 +50,7 @@ export function FeedInfoMenu({ feeds }: Props): React.JSX.Element {
 					</SheetHeader>
 
 					<div className="flex flex-col gap-4">
-						<FeedMenuItemAll totalContent={totalContent} />
+						<FeedMenuItemAll totalContent={timeline.length} />
 						<div>
 							<p className="text-muted-foreground text-sm font-bold">
 								{t("textFeedsCount", { count: feeds.length })}
@@ -138,7 +140,7 @@ function FeedMenuItem({
 	feed,
 	onClick,
 }: {
-	feed: FeedWithContent;
+	feed: FeedWithContentsCount;
 	onClick?: () => void;
 }): React.JSX.Element {
 	const [{ selectedFeed }, setSearchParamsState] = useQueryStates(
@@ -171,7 +173,7 @@ function FeedMenuItem({
 
 			<p className="truncate text-left">{feed.title}</p>
 
-			<p className={"text-primary text-end truncate"}>{feed.contents.length}</p>
+			<p className={"text-primary text-end truncate"}>{feed.contentsCount}</p>
 		</button>
 	);
 }

@@ -1,3 +1,4 @@
+"use client";
 import { useTranslations } from "next-intl";
 import { useTransition } from "react";
 import { BsThreeDots } from "react-icons/bs";

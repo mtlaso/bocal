@@ -1,16 +1,17 @@
 import { useTranslations } from "next-intl";
 import { NewsletterItem } from "@/app/[locale]/ui/newsletters/newsletter-item";
 import { SPACING } from "@/app/[locale]/ui/spacing";
-import type { FeedWithContent } from "@/db/schema";
+import type { Feed } from "@/db/schema";
+import { cn } from "@/lib/utils";
 
 type Props = {
-	newsletters: FeedWithContent[];
+	newsletters: Feed[];
 };
 
 export function Newsletters({ newsletters }: Props): React.JSX.Element {
 	const t = useTranslations("newsletter");
 	return (
-		<section className="wrap-anywhere">
+		<section className={cn("flex flex-col gap-4", SPACING.MD)}>
 			<details className={SPACING.MD}>
 				<summary className="tracking-tight text-xl font-semibold">
 					{t("explanation.title")}

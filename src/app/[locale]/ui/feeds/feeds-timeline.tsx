@@ -14,36 +14,35 @@ import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
 import { FeedContextMenu } from "@/app/[locale]/ui/feeds/feed-context-menu";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Checkbox } from "@/components/ui/checkbox";
-import type { FeedContentWithReadAt, FeedWithContent } from "@/db/schema";
+import type { FeedTimeline } from "@/db/schema";
 import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 
 type Props = {
-	feeds: FeedWithContent[];
+	timeline: FeedTimeline[];
 };
 
-export function Feeds({ feeds }: Props): React.JSX.Element {
+export function FeedsTimeline({ timeline }: Props): React.JSX.Element {
 	const [{ selectedFeed }] = useQueryStates(searchParamsState.searchParams, {
 		urlKeys: searchParamsState.urlKeys,
 	});
 
-	const items = feeds.filter((feed) => {
+	const items = timeline.filter((el) => {
 		if (selectedFeed === searchParamsState.DEFAULT_FEED) return true;
-		return feed.id.toString() === selectedFeed;
+		return el.feedId.toString() === selectedFeed;
 	});
 
 	return (
 		<section className={cn("wrap-anywhere", SPACING.LG)}>
 			{items.map((item) => {
-				return item.contents.map((content) => (
-					<Item item={content} key={`${content.id}`} />
-				));
+				if (!item.content) return;
+				return <Item item={item} key={`${item.id}`} />;
 			})}
 		</section>
 	);
 }
 
-const Item = ({ item }: { item: FeedContentWithReadAt }): React.JSX.Element => {
+const Item = ({ item }: { item: FeedTimeline }): React.JSX.Element => {
 	const t = useTranslations("rssFeed");
 	const locale = useLocale();
 

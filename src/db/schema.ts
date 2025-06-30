@@ -322,19 +322,17 @@ export const deleteNewsletterSchema = z.object({
 		}),
 });
 
-const feedContentWithReadAt = z.object({
+const feedTimeline = z.object({
 	...createSelectSchema(feedsContent).shape,
 	readAt: z.coerce.date().nullable(),
+	feedTitle: z.string(),
+	feedUrl: z.string(),
+	feedErrorType: z.enum(FeedErrorType).nullable(),
+	feedLastSyncAt: z.coerce.date(),
 });
 
-const feedWithContent = z.object({
-	...createSelectSchema(feeds).shape,
-	contents: z.array(feedContentWithReadAt),
-});
-
-export const feedsWithContent = z.array(feedWithContent);
+export const feedsTimelineSchema = z.array(feedTimeline);
 
 export type User = InferSelectModel<typeof users>;
 export type Feed = InferSelectModel<typeof feeds>;
-export type FeedWithContent = z.infer<typeof feedWithContent>;
-export type FeedContentWithReadAt = z.infer<typeof feedContentWithReadAt>;
+export type FeedTimeline = z.infer<typeof feedTimeline>;
