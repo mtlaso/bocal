@@ -240,7 +240,7 @@
 				"placeholder": "Nombre d'articles"
 			},
 			"errors": {
-				"contentLimitPerFeedFieldInvalid": "Limite de contenu par flux invalide.",
+				"feedContentLimitFieldInvalid": "Limite de contenu par flux invalide.",
 				"missingFields": "Champ(s) manquant(s)."
 			},
 			"success": "Paramètres enregistrés",

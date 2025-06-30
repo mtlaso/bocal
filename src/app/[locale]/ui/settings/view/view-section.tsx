@@ -41,14 +41,22 @@ export function FeedContentLimitForm({
 		startTransition(async () => {
 			try {
 				setValue(Number.parseInt(e));
+				toast.success(t("success"));
 				const res = await setFeedContentLimit(e);
 
-				if (res.errMessage) {
-					toast.error(t(res.errMessage));
+				if (res.errors?.feedContentLimit) {
+					setValue(feedContentLimit);
+					for (const error of res.errors.feedContentLimit) {
+						toast.error(t(error));
+					}
 					return;
 				}
 
-				toast.success(t("success"));
+				if (res.errMessage) {
+					setValue(feedContentLimit);
+					toast.error(t(res.errMessage));
+					return;
+				}
 			} catch (_err) {
 				setValue(feedContentLimit);
 				toast.error(t("errors.unexpected"));
