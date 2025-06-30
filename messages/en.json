@@ -239,7 +239,7 @@
 				"description": "Set the maximum number of items per feed."
 			},
 			"errors": {
-				"contentLimitPerFeedFieldInvalid": "Content limit per feed invalid.",
+				"feedContentLimitFieldInvalid": "Content limit per feed invalid.",
 				"missingFields": "Missing fields."
 			},
 			"success": "Settings saved",
