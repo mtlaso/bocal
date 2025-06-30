@@ -82,17 +82,15 @@ function UnArchiveLink({ id }: { id: string }): React.JSX.Element {
 	};
 
 	return (
-		<>
-			<button
-				type="button"
-				onClick={(e): void => handleUnArchiveLink(e)}
-				className="flex justify-start items-center grow text-sm gap-2 p-1 cursor-pointer"
-				disabled={isPending}
-			>
-				<TbLinkPlus />
-				{t("unarchive")}
-			</button>
-		</>
+		<button
+			type="button"
+			onClick={(e): void => handleUnArchiveLink(e)}
+			className="flex justify-start items-center grow text-sm gap-2 p-1 cursor-pointer"
+			disabled={isPending}
+		>
+			<TbLinkPlus />
+			{t("unarchive")}
+		</button>
 	);
 }
 
@@ -117,17 +115,15 @@ function ArchiveLink({ id }: { id: string }): React.JSX.Element {
 	};
 
 	return (
-		<>
-			<button
-				onClick={(e): void => handleArchiveLink(e)}
-				type="button"
-				disabled={isPending}
-				className="flex justify-start items-center grow text-sm gap-2 p-1 cursor-pointer"
-			>
-				<BsArchive />
-				{t("archive")}
-			</button>
-		</>
+		<button
+			onClick={(e): void => handleArchiveLink(e)}
+			type="button"
+			disabled={isPending}
+			className="flex justify-start items-center grow text-sm gap-2 p-1 cursor-pointer"
+		>
+			<BsArchive />
+			{t("archive")}
+		</button>
 	);
 }
 
