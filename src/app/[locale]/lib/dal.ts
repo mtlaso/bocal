@@ -157,7 +157,7 @@ const getUserFeedsWithContentsCount = cache(
 					id: feeds.id,
 					title: feeds.title,
 					url: feeds.url,
-					errorType: feeds.errorType,
+					status: feeds.status,
 					contentsCount: count(feedsContent.id),
 				})
 				.from(feeds)

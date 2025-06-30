@@ -2,7 +2,7 @@ export type FeedWithContentsCount = {
 	id: number;
 	title: string;
 	url: string;
-	errorType: string | null;
+	status: FeedStatusType;
 	contentsCount: number;
 };
 
