@@ -58,7 +58,7 @@ export default function Page(): React.JSX.Element {
 }
 
 async function LinksWrapper(): Promise<React.JSX.Element> {
-	const links = await dal.getLinks({ archivedLinksOnly: true });
+	const links = await dal.getUserLinks({ archivedLinksOnly: true });
 
 	return <Links links={links} />;
 }

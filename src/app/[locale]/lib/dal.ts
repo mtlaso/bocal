@@ -29,6 +29,9 @@ const verifySession = cache(async (): Promise<Session | null> => {
 });
 
 type GetLinksProps = {
+	/**
+	 * If true, only archived links are returned.
+	 */
 	archivedLinksOnly?: boolean;
 };
 
@@ -40,9 +43,9 @@ type GetLinksResponse = {
 };
 
 /**
- * getLinks retourne les liens de l'utilisateur.
+ * getUserLinks returns the links of the user.
  */
-const getLinks = cache(
+const getUserLinks = cache(
 	async ({ archivedLinksOnly }: GetLinksProps): Promise<GetLinksResponse[]> => {
 		try {
 			const user = await verifySession();
@@ -214,7 +217,7 @@ const getUserNewsletters = cache(async (): Promise<Feed[]> => {
  */
 export const dal = {
 	verifySession,
-	getLinks,
+	getUserLinks,
 	getUserFeedsTimeline,
 	getUserFeedsWithContentsCount,
 	getUserNewsletters,
