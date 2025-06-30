@@ -242,8 +242,6 @@ export const insertUsersSchema = createInsertSchema(users, {
 export const insertLinksSchema = createInsertSchema(links, {
 	url: (): z.ZodCoercedString =>
 		z.url({
-			protocol: /^https?$/,
-			hostname: z.regexes.domain,
 			error: "errors.urlFieldInvalid",
 		}),
 }).pick({ url: true });
@@ -258,9 +256,6 @@ export const deleteLinkSchema = createSelectSchema(links, {
 export const insertFeedsSchema = createInsertSchema(feeds, {
 	url: (): z.ZodCoercedString =>
 		z.url({
-			protocol: /^http?$/,
-			// To permit localhost.
-			// hostname: z.regexes.domain,
 			error: "errors.urlFieldInvalid",
 		}),
 }).pick({ url: true });
