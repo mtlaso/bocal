@@ -45,9 +45,16 @@ export function FeedContentLimitForm({
 				const res = await setFeedContentLimit(e);
 
 				if (res.errors?.feedContentLimit) {
+					setValue(feedContentLimit);
 					for (const error of res.errors.feedContentLimit) {
 						toast.error(t(error));
 					}
+					return;
+				}
+
+				if (res.errMessage) {
+					setValue(feedContentLimit);
+					toast.error(t(res.errMessage));
 					return;
 				}
 			} catch (_err) {
