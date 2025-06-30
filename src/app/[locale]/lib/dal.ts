@@ -122,8 +122,10 @@ const getUserFeedsTimeline = cache(async (): Promise<FeedTimeline[]> => {
 
 		const now = new Date();
 		const outdatedFeeds = data.filter((el) => {
-			!el.feedLastSyncAt ||
-				now.getTime() - el.feedLastSyncAt.getTime() > ONE_HOUR;
+			return (
+				!el.feedLastSyncAt ||
+				now.getTime() - el.feedLastSyncAt.getTime() > ONE_HOUR
+			);
 		});
 		void feedService.triggerBackgroundSync(
 			outdatedFeeds.map((el) => el.feedId),

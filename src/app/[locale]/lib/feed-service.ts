@@ -268,7 +268,7 @@ async function triggerBackgroundSync(
 					.from(feeds)
 					.where(eq(feeds.id, feedId))
 					.limit(1);
-				if (!feed) {
+				if (!feed || feed.length === 0) {
 					logger.error(
 						`feed with id ${feedId} not found during background sync.`,
 					);
@@ -311,17 +311,17 @@ async function triggerBackgroundSync(
 				errMsg = err.message;
 			}
 
-			if (err instanceof feedService.FeedUnreachable) {
+			if (err instanceof FeedUnreachable) {
 				errMsg = "errors.feedUnreachable";
 				errType = FeedErrorType.FETCH;
 			}
 
-			if (err instanceof feedService.FeedCannotBeProcessed) {
+			if (err instanceof FeedCannotBeProcessed) {
 				errMsg = "errors.feedCannotBeProcessed";
 				errType = FeedErrorType.PARSE;
 			}
 
-			if (err instanceof feedService.FeedTimeout) {
+			if (err instanceof FeedTimeout) {
 				errMsg = "errors.feedTimeout";
 				errType = FeedErrorType.TIMEOUT;
 			}
