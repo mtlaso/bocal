@@ -285,6 +285,7 @@ async function triggerBackgroundSync(
 						errorCount: 0,
 						lastError: null,
 						status: FeedStatusType.ACTIVE,
+						errorType: null,
 					})
 					.where(eq(feeds.id, feed[0].id));
 
