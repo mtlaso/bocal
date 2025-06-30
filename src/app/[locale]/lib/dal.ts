@@ -123,7 +123,7 @@ const getUserFeedsTimeline = cache(async (): Promise<FeedTimeline[]> => {
 		// Find outdated feeds.
 		const now = new Date();
 		const outdatedFeedsIds = new Set<number>();
-		data.map((el) => {
+		data.forEach((el) => {
 			const isOutdated =
 				!el.feedLastSyncAt ||
 				now.getTime() - el.feedLastSyncAt.getTime() > ONE_HOUR;
