@@ -21,17 +21,15 @@ export function ScrollIndicator(): React.JSX.Element {
 	}, []);
 
 	return (
-		<>
-			<ArrowDownUp
-				className={cn(
-					"size-6 z-10 fixed right-12 bottom-12  transition-all duration-400 ease-out",
-					{
-						"opacity-0": !isVisible,
-						"opacity-100": isVisible,
-						"scale-0": smallScreen,
-					},
-				)}
-			/>
-		</>
+		<ArrowDownUp
+			className={cn(
+				"size-6 z-10 fixed right-12 bottom-12  transition-all duration-400 ease-out",
+				{
+					"opacity-0": !isVisible,
+					"opacity-100": isVisible,
+					"scale-0": smallScreen,
+				},
+			)}
+		/>
 	);
 }
