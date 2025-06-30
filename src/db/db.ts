@@ -1,24 +1,28 @@
-import { Pool } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-serverless";
-
-import { drizzle as drizzlePg } from "drizzle-orm/node-postgres";
-import { Pool as PoolPg } from "pg";
+import { neon } from "@neondatabase/serverless";
+import { drizzle as drizzleNeon } from "drizzle-orm/neon-http";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 
 import * as schema from "./schema";
 
-// biome-ignore lint/suspicious/noImplicitAnyLet: locale exception.
-let pool;
-// biome-ignore lint/suspicious/noImplicitAnyLet: locale exception.
+// biome-ignore lint/suspicious/noImplicitAnyLet: db.
 let _db;
 
 if (!process.env.VERCEL_ENV) {
-	pool = new PoolPg({
-		connectionString: process.env.DATABASE_URL,
+	_db = drizzle({
+		client: new Pool({
+			connectionString: process.env.DATABASE_URL,
+		}),
+		schema,
+		logger: false,
 	});
-	_db = drizzlePg({ client: pool, schema, logger: false });
 } else {
-	pool = new Pool({ connectionString: process.env.DATABASE_URL });
-	_db = drizzle({ client: pool, schema, logger: false });
+	_db = drizzleNeon({
+		// biome-ignore lint/style/noNonNullAssertion: db.
+		client: neon(process.env.DATABASE_URL!),
+		schema,
+		logger: false,
+	});
 }
 
 export const db = _db;
