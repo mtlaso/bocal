@@ -1,5 +1,5 @@
-import { neon } from "@neondatabase/serverless";
-import { drizzle as drizzleNeon } from "drizzle-orm/neon-http";
+import { Pool as PoolNeon } from "@neondatabase/serverless";
+import { drizzle as drizzleNeon } from "drizzle-orm/neon-serverless";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 
@@ -18,8 +18,9 @@ if (!process.env.VERCEL_ENV) {
 	});
 } else {
 	_db = drizzleNeon({
-		// biome-ignore lint/style/noNonNullAssertion: db.
-		client: neon(process.env.DATABASE_URL!),
+		client: new PoolNeon({
+			connectionString: process.env.DATABASE_URL,
+		}),
 		schema,
 		logger: false,
 	});
