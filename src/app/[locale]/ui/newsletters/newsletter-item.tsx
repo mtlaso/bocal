@@ -75,7 +75,9 @@ export function NewsletterItem({ item }: { item: Feed }): React.JSX.Element {
 						/>
 
 						<Button
-							onClick={(): void => copyToClipboard(item.url)}
+							onClick={(): void =>
+								copyToClipboard(userfeedsfuncs.formatFeedURL(item.url))
+							}
 							variant="outline"
 							size="icon"
 						>
@@ -130,6 +132,7 @@ function ContextMenu({ item }: { item: Feed }): React.JSX.Element {
 				<DropdownMenuContent className="w-56">
 					<DropdownMenuGroup>
 						<DropdownMenuItem
+							className="text-sm"
 							variant="destructive"
 							onSelect={(): void => setIsAlertDialogOpen(true)}
 						>

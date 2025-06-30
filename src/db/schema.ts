@@ -258,8 +258,9 @@ export const deleteLinkSchema = createSelectSchema(links, {
 export const insertFeedsSchema = createInsertSchema(feeds, {
 	url: (): z.ZodCoercedString =>
 		z.url({
-			protocol: /^https?$/,
-			hostname: z.regexes.domain,
+			protocol: /^http?$/,
+			// To permit localhost.
+			// hostname: z.regexes.domain,
 			error: "errors.urlFieldInvalid",
 		}),
 }).pick({ url: true });

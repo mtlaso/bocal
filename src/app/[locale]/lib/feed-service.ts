@@ -338,6 +338,7 @@ async function triggerBackgroundSync(
 		}
 	};
 
+	logger.info("Outdated feeds to sync: ", outdatedFeedsIds);
 	const syncPromises = outdatedFeedsIds.map((feed) => sync(feed));
 
 	for (let i = 0; i < syncPromises.length; i += SYNC_BATCH_SIZE) {

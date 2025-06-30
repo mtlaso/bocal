@@ -120,16 +120,19 @@ const getUserFeedsTimeline = cache(async (): Promise<FeedTimeline[]> => {
 			throw new z.ZodError(error.issues);
 		}
 
+		// Find outdated feeds.
 		const now = new Date();
-		const outdatedFeeds = data.filter((el) => {
-			return (
+		const outdatedFeedsIds = new Set<number>();
+		data.map((el) => {
+			const isOutdated =
 				!el.feedLastSyncAt ||
-				now.getTime() - el.feedLastSyncAt.getTime() > ONE_HOUR
-			);
+				now.getTime() - el.feedLastSyncAt.getTime() > ONE_HOUR;
+			if (isOutdated) {
+				outdatedFeedsIds.add(el.feedId);
+			}
 		});
-		void feedService.triggerBackgroundSync(
-			outdatedFeeds.map((el) => el.feedId),
-		);
+
+		void feedService.triggerBackgroundSync(Array.from(outdatedFeedsIds));
 		return data;
 	} catch (err) {
 		logger.error(err);
