@@ -41,7 +41,7 @@ const ProfileSection = ({
 			<h1 className="text-xl font-medium">{t("title")}</h1>
 
 			<div className={SPACING.MD}>
-				<div className={SPACING.SM}>
+				<div className={SPACING.XS}>
 					<Label htmlFor="email" className="block text-sm font-medium">
 						{t("email")}
 					</Label>
@@ -104,7 +104,7 @@ const DeleteAccountSection = (): React.JSX.Element => {
 
 	return (
 		<section className={SPACING.LG}>
-			<div className={SPACING.XS}>
+			<div className={SPACING.SM}>
 				<h1 className="text-xl font-medium text-destructive">{t("title")}</h1>
 				<p className="text-sm text-muted-foreground">{t("description")}</p>
 			</div>

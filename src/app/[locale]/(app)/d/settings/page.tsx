@@ -26,7 +26,7 @@ export default function Page(): React.JSX.Element {
 
 	return (
 		<>
-			<section className="flex justify-between">
+			<section>
 				<h1 className="font-semibold tracking-tight text-3xl">{t("title")}</h1>
 			</section>
 
