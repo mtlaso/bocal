@@ -44,7 +44,7 @@
 		"motion": "^12.18.1",
 		"next": "15.4.0-canary.51",
 		"next-auth": "5.0.0-beta.28",
-		"next-intl": "^4.1.0",
+		"next-intl": "^4.2.0",
 		"next-themes": "^0.4.6",
 		"nuqs": "^2.4.3",
 		"open-graph-scraper": "^6.10.0",
