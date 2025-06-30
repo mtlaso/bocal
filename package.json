@@ -49,7 +49,7 @@
 		"nuqs": "^2.4.3",
 		"open-graph-scraper": "^6.10.0",
 		"pg": "^8.16.3",
-		"react": "19.0.0",
+		"react": "19.1.0",
 		"react-dom": "19.0.0",
 		"react-icons": "^5.5.0",
 		"rss-parser": "^3.13.0",
@@ -67,7 +67,7 @@
 		"@types/jsdom": "^21.1.7",
 		"@types/node": "^24.0.7",
 		"@types/pg": "^8.15.4",
-		"@types/react": "19.0.12",
+		"@types/react": "19.1.8",
 		"@types/react-dom": "19.0.4",
 		"drizzle-kit": "^0.31.4",
 		"postcss": "^8.5.6",
@@ -76,7 +76,7 @@
 	},
 	"pnpm": {
 		"overrides": {
-			"@types/react": "19.0.12",
+			"@types/react": "19.1.8",
 			"@types/react-dom": "19.0.4"
 		},
 		"ignoredBuiltDependencies": [
