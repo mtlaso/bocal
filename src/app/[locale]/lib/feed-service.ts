@@ -285,6 +285,7 @@ async function triggerBackgroundSync(
 						errorCount: 0,
 						lastError: null,
 						status: FeedStatusType.ACTIVE,
+						errorType: null,
 					})
 					.where(eq(feeds.id, feed[0].id));
 
@@ -338,6 +339,7 @@ async function triggerBackgroundSync(
 		}
 	};
 
+	logger.info("Outdated feeds to sync: ", outdatedFeedsIds);
 	const syncPromises = outdatedFeedsIds.map((feed) => sync(feed));
 
 	for (let i = 0; i < syncPromises.length; i += SYNC_BATCH_SIZE) {

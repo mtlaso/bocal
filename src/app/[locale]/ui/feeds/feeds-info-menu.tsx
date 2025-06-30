@@ -4,7 +4,10 @@ import { useQueryStates } from "nuqs";
 import { useState } from "react";
 import { TbPlugConnectedX, TbRadarFilled, TbRss } from "react-icons/tb";
 import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
-import type { FeedWithContentsCount } from "@/app/[locale]/lib/types";
+import {
+	FeedStatusType,
+	type FeedWithContentsCount,
+} from "@/app/[locale]/lib/types";
 import { FeedInfoContextMenu } from "@/app/[locale]/ui/feeds/feed-info-context-menu";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
@@ -32,7 +35,9 @@ export function FeedsInfoMenu({
 	const [isOpen, setIsOpen] = useState(false);
 
 	const feeds = userFeedsWithContentsCount;
-	const unreachableFeeds = feeds.filter((feed) => feed.errorType !== null);
+	const unreachableFeeds = feeds.filter(
+		(feed) => feed.status !== FeedStatusType.ACTIVE,
+	);
 
 	return (
 		<div className={SPACING.XS}>
@@ -160,12 +165,12 @@ function FeedMenuItem({
 				`grid grid-cols-[5%_1fr_15%] gap-4
 				cursor-pointer w-full px6! py2! focus:bg-background`,
 				{
-					"text-muted-foreground": feed.errorType !== null,
+					"text-muted-foreground": feed.status !== FeedStatusType.ACTIVE,
 					"bg-accent!": selectedFeed === feed.id.toString(),
 				},
 			)}
 		>
-			{feed.errorType ? (
+			{feed.status !== FeedStatusType.ACTIVE ? (
 				<TbPlugConnectedX size={20} className={"text-destructive"} />
 			) : (
 				<TbRss size={20} className={"text-primary"} />
