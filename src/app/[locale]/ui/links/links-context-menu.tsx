@@ -25,9 +25,9 @@ export function LinksContextMenu({
 	onRemove,
 	onRemoveFailed,
 }: {
-	id: string;
-	onRemove: (id: string) => void;
-	onRemoveFailed: (id: string) => void;
+	id: number;
+	onRemove: (id: number) => void;
+	onRemoveFailed: (id: number) => void;
 }): React.JSX.Element {
 	const pathname = usePathname();
 
@@ -85,9 +85,9 @@ function UnArchiveLink({
 	onUnarchive,
 	onUnarchiveFailed,
 }: {
-	id: string;
-	onUnarchive: (id: string) => void;
-	onUnarchiveFailed: (id: string) => void;
+	id: number;
+	onUnarchive: (id: number) => void;
+	onUnarchiveFailed: (id: number) => void;
 }): React.JSX.Element {
 	const t = useTranslations("dashboard");
 	const [isPending, startTransition] = useTransition();
@@ -129,9 +129,9 @@ function ArchiveLink({
 	onArchive,
 	onArchiveFailed,
 }: {
-	id: string;
-	onArchive: (id: string) => void;
-	onArchiveFailed: (id: string) => void;
+	id: number;
+	onArchive: (id: number) => void;
+	onArchiveFailed: (id: number) => void;
 }): React.JSX.Element {
 	const t = useTranslations("dashboard");
 	const [isPending, startTransition] = useTransition();
@@ -173,9 +173,9 @@ function DeleteLink({
 	onDelete,
 	onDeleteFailed,
 }: {
-	id: string;
-	onDelete: (id: string) => void;
-	onDeleteFailed: (id: string) => void;
+	id: number;
+	onDelete: (id: number) => void;
+	onDeleteFailed: (id: number) => void;
 }): React.JSX.Element {
 	const t = useTranslations("dashboard");
 	const [isPending, startTransition] = useTransition();
