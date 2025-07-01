@@ -29,48 +29,42 @@ const verifySession = cache(async (): Promise<Session | null> => {
 });
 
 type GetLinksProps = {
+	/**
+	 * If true, only archived links are returned.
+	 */
 	archivedLinksOnly?: boolean;
 };
 
-type GetLinksResponse = {
-	id: number;
-	url: string;
-	ogTitle: string | null;
-	ogImageURL: string | null;
-};
-
 /**
- * getLinks retourne les liens de l'utilisateur.
+ * getUserLinks returns the links of the user.
  */
-const getLinks = cache(
-	async ({ archivedLinksOnly }: GetLinksProps): Promise<GetLinksResponse[]> => {
-		try {
-			const user = await verifySession();
-			if (!user) {
-				throw new Error("errors.notSignedIn");
-			}
-
-			const archivedFilter: SQL[] = [];
-			if (archivedLinksOnly) archivedFilter.push(eq(links.isArchived, true));
-			else archivedFilter.push(eq(links.isArchived, false));
-
-			return await db
-				.select({
-					id: links.id,
-					url: links.url,
-					ogTitle: links.ogTitle,
-					ogImageURL: links.ogImageURL,
-				})
-				.from(links)
-				.where(and(eq(links.userId, user.user.id), ...archivedFilter))
-				.orderBy(desc(links.createdAt))
-				.execute();
-		} catch (err) {
-			logger.error(err);
-			throw new Error("errors.unexpected");
+const getUserLinks = cache(async ({ archivedLinksOnly }: GetLinksProps) => {
+	try {
+		const user = await verifySession();
+		if (!user) {
+			throw new Error("errors.notSignedIn");
 		}
-	},
-);
+
+		const archivedFilter: SQL[] = [];
+		if (archivedLinksOnly) archivedFilter.push(eq(links.isArchived, true));
+		else archivedFilter.push(eq(links.isArchived, false));
+
+		return await db
+			.select({
+				id: links.id,
+				url: links.url,
+				ogTitle: links.ogTitle,
+				ogImageURL: links.ogImageURL,
+			})
+			.from(links)
+			.where(and(eq(links.userId, user.user.id), ...archivedFilter))
+			.orderBy(desc(links.createdAt))
+			.execute();
+	} catch (err) {
+		logger.error(err);
+		throw new Error("errors.unexpected");
+	}
+});
 
 /**
  * getUserFeedsTimeline returns the contents of the feeds a user follows.
@@ -214,7 +208,7 @@ const getUserNewsletters = cache(async (): Promise<Feed[]> => {
  */
 export const dal = {
 	verifySession,
-	getLinks,
+	getUserLinks,
 	getUserFeedsTimeline,
 	getUserFeedsWithContentsCount,
 	getUserNewsletters,

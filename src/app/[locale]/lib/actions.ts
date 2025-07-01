@@ -129,15 +129,15 @@ type DeleteLinkState = State<{
 	id?: number;
 }>;
 
-export async function deleteLink(id: string): Promise<DeleteLinkState> {
+export async function deleteLink(id: number): Promise<DeleteLinkState> {
 	const validatedFields = deleteLinkSchema.safeParse({
-		id: Number.parseInt(id),
+		id: id,
 	});
 
 	if (!validatedFields.success) {
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
-			data: { id: Number.parseInt(id) },
+			data: { id: id },
 			errMessage: "errors.missingFields",
 		};
 	}
@@ -168,15 +168,15 @@ export async function deleteLink(id: string): Promise<DeleteLinkState> {
 	return {};
 }
 
-export async function archiveLink(id: string): Promise<DeleteLinkState> {
+export async function archiveLink(id: number): Promise<DeleteLinkState> {
 	const validatedFields = deleteLinkSchema.safeParse({
-		id: Number.parseInt(id),
+		id: id,
 	});
 
 	if (!validatedFields.success) {
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
-			data: { id: Number.parseInt(id) },
+			data: { id: id },
 			errMessage: "errors.missingFields",
 		};
 	}
@@ -208,15 +208,15 @@ export async function archiveLink(id: string): Promise<DeleteLinkState> {
 	return {};
 }
 
-export async function unarchiveLink(id: string): Promise<DeleteLinkState> {
+export async function unarchiveLink(id: number): Promise<DeleteLinkState> {
 	const validatedFields = deleteLinkSchema.safeParse({
-		id: Number.parseInt(id),
+		id: id,
 	});
 
 	if (!validatedFields.success) {
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
-			data: { id: Number.parseInt(id) },
+			data: { id: id },
 			errMessage: "errors.missingFields",
 		};
 	}

@@ -1,4 +1,3 @@
-"use client";
 import { Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useTransition } from "react";
@@ -21,7 +20,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { usePathname } from "@/i18n/routing";
 
-export function LinksContextMenu({ id }: { id: string }): React.JSX.Element {
+export function LinksContextMenu({
+	id,
+	onRemove,
+	onRemoveFailed,
+}: {
+	id: number;
+	onRemove: (id: number) => void;
+	onRemoveFailed: (id: number) => void;
+}): React.JSX.Element {
 	const pathname = usePathname();
 
 	const isDashboardPage = pathname === APP_ROUTES.links;
@@ -42,18 +49,30 @@ export function LinksContextMenu({ id }: { id: string }): React.JSX.Element {
 				<DropdownMenuGroup>
 					{isDashboardPage && (
 						<DropdownMenuItem>
-							<ArchiveLink id={id} />
+							<ArchiveLink
+								id={id}
+								onArchive={(id) => onRemove(id)}
+								onArchiveFailed={(id) => onRemoveFailed(id)}
+							/>
 						</DropdownMenuItem>
 					)}
 
 					{isArchivePage && (
 						<DropdownMenuItem>
-							<UnArchiveLink id={id} />
+							<UnArchiveLink
+								id={id}
+								onUnarchive={(id) => onRemove(id)}
+								onUnarchiveFailed={(id) => onRemoveFailed(id)}
+							/>
 						</DropdownMenuItem>
 					)}
 
 					<DropdownMenuItem variant="destructive">
-						<DeleteLink id={id} />
+						<DeleteLink
+							id={id}
+							onDelete={(id) => onRemove(id)}
+							onDeleteFailed={(id) => onRemoveFailed(id)}
+						/>
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 			</DropdownMenuContent>
@@ -61,11 +80,20 @@ export function LinksContextMenu({ id }: { id: string }): React.JSX.Element {
 	);
 }
 
-function UnArchiveLink({ id }: { id: string }): React.JSX.Element {
+function UnArchiveLink({
+	id,
+	onUnarchive,
+	onUnarchiveFailed,
+}: {
+	id: number;
+	onUnarchive: (id: number) => void;
+	onUnarchiveFailed: (id: number) => void;
+}): React.JSX.Element {
 	const t = useTranslations("dashboard");
 	const [isPending, startTransition] = useTransition();
 
 	const handleUnArchiveLink = (e: React.MouseEvent): void => {
+		onUnarchive(id);
 		startTransition(async () => {
 			try {
 				e.preventDefault();
@@ -73,9 +101,11 @@ function UnArchiveLink({ id }: { id: string }): React.JSX.Element {
 
 				if (res.errMessage) {
 					toast.error(t(res.errMessage));
+					onUnarchiveFailed(id);
 					return;
 				}
 			} catch (_err) {
+				onUnarchiveFailed(id);
 				toast.error(t("errors.unexpected"));
 			}
 		});
@@ -94,11 +124,20 @@ function UnArchiveLink({ id }: { id: string }): React.JSX.Element {
 	);
 }
 
-function ArchiveLink({ id }: { id: string }): React.JSX.Element {
+function ArchiveLink({
+	id,
+	onArchive,
+	onArchiveFailed,
+}: {
+	id: number;
+	onArchive: (id: number) => void;
+	onArchiveFailed: (id: number) => void;
+}): React.JSX.Element {
 	const t = useTranslations("dashboard");
 	const [isPending, startTransition] = useTransition();
 
 	const handleArchiveLink = (e: React.MouseEvent): void => {
+		onArchive(id);
 		startTransition(async () => {
 			try {
 				e.preventDefault();
@@ -106,9 +145,11 @@ function ArchiveLink({ id }: { id: string }): React.JSX.Element {
 
 				if (res.errMessage) {
 					toast.error(t(res.errMessage));
+					onArchiveFailed(id);
 					return;
 				}
 			} catch (_err) {
+				onArchiveFailed(id);
 				toast.error(t("errors.unexpected"));
 			}
 		});
@@ -127,11 +168,20 @@ function ArchiveLink({ id }: { id: string }): React.JSX.Element {
 	);
 }
 
-function DeleteLink({ id }: { id: string }): React.JSX.Element {
+function DeleteLink({
+	id,
+	onDelete,
+	onDeleteFailed,
+}: {
+	id: number;
+	onDelete: (id: number) => void;
+	onDeleteFailed: (id: number) => void;
+}): React.JSX.Element {
 	const t = useTranslations("dashboard");
 	const [isPending, startTransition] = useTransition();
 
 	const handleDeleteLink = (e: React.MouseEvent): void => {
+		onDelete(id);
 		startTransition(async () => {
 			try {
 				e.preventDefault();
@@ -139,9 +189,11 @@ function DeleteLink({ id }: { id: string }): React.JSX.Element {
 
 				if (res.errMessage) {
 					toast.error(t(res.errMessage));
+					onDeleteFailed(id);
 					return;
 				}
 			} catch (_err) {
+				onDeleteFailed(id);
 				toast.error(t("errors.unexpected"));
 			}
 		});
