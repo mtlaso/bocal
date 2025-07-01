@@ -1,4 +1,3 @@
-"use client";
 import { Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useTransition } from "react";
@@ -21,7 +20,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { usePathname } from "@/i18n/routing";
 
-export function LinksContextMenu({ id }: { id: string }): React.JSX.Element {
+export function LinksContextMenu({
+	id,
+	onDelete,
+	onDeleteFailed,
+}: {
+	id: string;
+	onDelete: (id: string) => void;
+	onDeleteFailed: (id: string) => void;
+}): React.JSX.Element {
 	const pathname = usePathname();
 
 	const isDashboardPage = pathname === APP_ROUTES.links;
@@ -53,7 +60,11 @@ export function LinksContextMenu({ id }: { id: string }): React.JSX.Element {
 					)}
 
 					<DropdownMenuItem variant="destructive">
-						<DeleteLink id={id} />
+						<DeleteLink
+							id={id}
+							onDelete={(id) => onDelete(id)}
+							onDeleteFailed={(id) => onDeleteFailed(id)}
+						/>
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 			</DropdownMenuContent>
@@ -98,10 +109,14 @@ function ArchiveLink({ id }: { id: string }): React.JSX.Element {
 	const t = useTranslations("dashboard");
 	const [isPending, startTransition] = useTransition();
 
+	const _wait = (ms: number) =>
+		new Promise((resolve) => setTimeout(resolve, ms));
+
 	const handleArchiveLink = (e: React.MouseEvent): void => {
 		startTransition(async () => {
 			try {
 				e.preventDefault();
+				// await wait(2000);
 				const res = await archiveLink(id);
 
 				if (res.errMessage) {
@@ -127,11 +142,20 @@ function ArchiveLink({ id }: { id: string }): React.JSX.Element {
 	);
 }
 
-function DeleteLink({ id }: { id: string }): React.JSX.Element {
+function DeleteLink({
+	id,
+	onDelete,
+	onDeleteFailed,
+}: {
+	id: string;
+	onDelete: (id: string) => void;
+	onDeleteFailed: (id: string) => void;
+}): React.JSX.Element {
 	const t = useTranslations("dashboard");
 	const [isPending, startTransition] = useTransition();
 
 	const handleDeleteLink = (e: React.MouseEvent): void => {
+		onDelete(id);
 		startTransition(async () => {
 			try {
 				e.preventDefault();
@@ -139,9 +163,11 @@ function DeleteLink({ id }: { id: string }): React.JSX.Element {
 
 				if (res.errMessage) {
 					toast.error(t(res.errMessage));
+					onDeleteFailed(id);
 					return;
 				}
 			} catch (_err) {
+				onDeleteFailed(id);
 				toast.error(t("errors.unexpected"));
 			}
 		});
