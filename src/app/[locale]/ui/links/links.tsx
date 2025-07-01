@@ -67,7 +67,7 @@ export function Links({ links }: Props): React.JSX.Element {
 	// Optimistic delete.
 	// If the deletion fails, add the last deleted item back to the list.
 	const handleOnRemoveFailed = (id: string) => {
-		const lastDeletedItem = items.find((item) => item.id.toString() === id);
+		const lastDeletedItem = links.find((item) => item.id.toString() === id);
 		if (lastDeletedItem) {
 			setItems((prev) =>
 				filter([...prev, lastDeletedItem], sortLinks, searchedLink),
