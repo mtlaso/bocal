@@ -24,10 +24,14 @@ export function LinksContextMenu({
 	id,
 	onDelete,
 	onDeleteFailed,
+	onArchive,
+	onArchiveFailed,
 }: {
 	id: string;
 	onDelete: (id: string) => void;
 	onDeleteFailed: (id: string) => void;
+	onArchive: (id: string) => void;
+	onArchiveFailed: (id: string) => void;
 }): React.JSX.Element {
 	const pathname = usePathname();
 
@@ -49,7 +53,11 @@ export function LinksContextMenu({
 				<DropdownMenuGroup>
 					{isDashboardPage && (
 						<DropdownMenuItem>
-							<ArchiveLink id={id} />
+							<ArchiveLink
+								id={id}
+								onArchive={(id) => onArchive(id)}
+								onArchiveFailed={(id) => onArchiveFailed(id)}
+							/>
 						</DropdownMenuItem>
 					)}
 
@@ -105,25 +113,32 @@ function UnArchiveLink({ id }: { id: string }): React.JSX.Element {
 	);
 }
 
-function ArchiveLink({ id }: { id: string }): React.JSX.Element {
+function ArchiveLink({
+	id,
+	onArchive,
+	onArchiveFailed,
+}: {
+	id: string;
+	onArchive: (id: string) => void;
+	onArchiveFailed: (id: string) => void;
+}): React.JSX.Element {
 	const t = useTranslations("dashboard");
 	const [isPending, startTransition] = useTransition();
 
-	const _wait = (ms: number) =>
-		new Promise((resolve) => setTimeout(resolve, ms));
-
 	const handleArchiveLink = (e: React.MouseEvent): void => {
+		onArchive(id);
 		startTransition(async () => {
 			try {
 				e.preventDefault();
-				// await wait(2000);
 				const res = await archiveLink(id);
 
 				if (res.errMessage) {
 					toast.error(t(res.errMessage));
+					onArchiveFailed(id);
 					return;
 				}
 			} catch (_err) {
+				onArchiveFailed(id);
 				toast.error(t("errors.unexpected"));
 			}
 		});

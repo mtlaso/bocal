@@ -140,6 +140,8 @@ export function Links({ links }: Props): React.JSX.Element {
 								<LinksContextMenu
 									onDelete={(id) => handleOnDelete(id)}
 									onDeleteFailed={(id) => handleOnDeleteFailed(id)}
+									onArchive={(id) => handleOnDelete(id)}
+									onArchiveFailed={(id) => handleOnDeleteFailed(id)}
 									id={item.id.toString()}
 								/>
 							</CardFooter>
