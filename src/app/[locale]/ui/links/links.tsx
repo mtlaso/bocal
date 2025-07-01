@@ -60,13 +60,13 @@ export function Links({ links }: Props): React.JSX.Element {
 	};
 
 	// Optimistic delete.
-	const handleOnDelete = (id: string) => {
+	const handleOnRemove = (id: string) => {
 		setItems((prev) => prev.filter((item) => item.id.toString() !== id));
 	};
 
 	// Optimistic delete.
 	// If the deletion fails, add the last deleted item back to the list.
-	const handleOnDeleteFailed = (id: string) => {
+	const handleOnRemoveFailed = (id: string) => {
 		const lastDeletedItem = items.find((item) => item.id.toString() === id);
 		if (lastDeletedItem) {
 			setItems((prev) =>
@@ -138,10 +138,8 @@ export function Links({ links }: Props): React.JSX.Element {
 								</Link>
 
 								<LinksContextMenu
-									onDelete={(id) => handleOnDelete(id)}
-									onDeleteFailed={(id) => handleOnDeleteFailed(id)}
-									onArchive={(id) => handleOnDelete(id)}
-									onArchiveFailed={(id) => handleOnDeleteFailed(id)}
+									onRemove={(id) => handleOnRemove(id)}
+									onRemoveFailed={(id) => handleOnRemoveFailed(id)}
 									id={item.id.toString()}
 								/>
 							</CardFooter>

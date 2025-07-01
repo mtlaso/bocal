@@ -22,16 +22,12 @@ import { usePathname } from "@/i18n/routing";
 
 export function LinksContextMenu({
 	id,
-	onDelete,
-	onDeleteFailed,
-	onArchive,
-	onArchiveFailed,
+	onRemove,
+	onRemoveFailed,
 }: {
 	id: string;
-	onDelete: (id: string) => void;
-	onDeleteFailed: (id: string) => void;
-	onArchive: (id: string) => void;
-	onArchiveFailed: (id: string) => void;
+	onRemove: (id: string) => void;
+	onRemoveFailed: (id: string) => void;
 }): React.JSX.Element {
 	const pathname = usePathname();
 
@@ -55,23 +51,27 @@ export function LinksContextMenu({
 						<DropdownMenuItem>
 							<ArchiveLink
 								id={id}
-								onArchive={(id) => onArchive(id)}
-								onArchiveFailed={(id) => onArchiveFailed(id)}
+								onArchive={(id) => onRemove(id)}
+								onArchiveFailed={(id) => onRemoveFailed(id)}
 							/>
 						</DropdownMenuItem>
 					)}
 
 					{isArchivePage && (
 						<DropdownMenuItem>
-							<UnArchiveLink id={id} />
+							<UnArchiveLink
+								id={id}
+								onUnarchive={(id) => onRemove(id)}
+								onUnarchiveFailed={(id) => onRemoveFailed(id)}
+							/>
 						</DropdownMenuItem>
 					)}
 
 					<DropdownMenuItem variant="destructive">
 						<DeleteLink
 							id={id}
-							onDelete={(id) => onDelete(id)}
-							onDeleteFailed={(id) => onDeleteFailed(id)}
+							onDelete={(id) => onRemove(id)}
+							onDeleteFailed={(id) => onRemoveFailed(id)}
 						/>
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
@@ -80,11 +80,20 @@ export function LinksContextMenu({
 	);
 }
 
-function UnArchiveLink({ id }: { id: string }): React.JSX.Element {
+function UnArchiveLink({
+	id,
+	onUnarchive,
+	onUnarchiveFailed,
+}: {
+	id: string;
+	onUnarchive: (id: string) => void;
+	onUnarchiveFailed: (id: string) => void;
+}): React.JSX.Element {
 	const t = useTranslations("dashboard");
 	const [isPending, startTransition] = useTransition();
 
 	const handleUnArchiveLink = (e: React.MouseEvent): void => {
+		onUnarchive(id);
 		startTransition(async () => {
 			try {
 				e.preventDefault();
@@ -92,9 +101,11 @@ function UnArchiveLink({ id }: { id: string }): React.JSX.Element {
 
 				if (res.errMessage) {
 					toast.error(t(res.errMessage));
+					onUnarchiveFailed(id);
 					return;
 				}
 			} catch (_err) {
+				onUnarchiveFailed(id);
 				toast.error(t("errors.unexpected"));
 			}
 		});
