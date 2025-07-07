@@ -235,9 +235,8 @@
 				"description": "Afficher les liens en grille."
 			},
 			"feed": {
-				"title": "Limite d'articles par flux",
-				"description": "Définir le nombre d'articles à afficher par flux.",
-				"placeholder": "Nombre d'articles"
+				"title": "Limite de contenu de flux",
+				"description": "Définir le nombre de contenu à afficher dans la page de flux."
 			},
 			"errors": {
 				"feedContentLimitFieldInvalid": "Limite de contenu par flux invalide.",

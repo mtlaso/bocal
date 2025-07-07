@@ -59,13 +59,18 @@ async function FeedInfoWrapper(): Promise<React.JSX.Element> {
 	]);
 	return (
 		<FeedsInfoMenu
-			timeline={timeline}
+			timeline={timeline[0] ?? []}
 			userFeedsWithContentsCount={userFeedsWithContentsCount}
 		/>
 	);
 }
 
 async function FeedsWrapper(): Promise<React.JSX.Element> {
-	const timeline = await dal.getUserFeedsTimeline();
-	return <FeedsTimeline timeline={timeline} />;
+	const [timeline, limit] = await dal.getUserFeedsTimeline();
+	return (
+		<FeedsTimeline
+			timeline={timeline}
+			feedContentLimit={limit.feedContentLimit}
+		/>
+	);
 }
