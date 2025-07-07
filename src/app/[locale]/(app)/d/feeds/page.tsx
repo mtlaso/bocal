@@ -59,7 +59,7 @@ async function FeedInfoWrapper(): Promise<React.JSX.Element> {
 	]);
 	return (
 		<FeedsInfoMenu
-			timeline={timeline[0]}
+			timeline={timeline[0] ?? []}
 			userFeedsWithContentsCount={userFeedsWithContentsCount}
 		/>
 	);
