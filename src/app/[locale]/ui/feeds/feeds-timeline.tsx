@@ -20,17 +20,26 @@ import { cn } from "@/lib/utils";
 
 type Props = {
 	timeline: FeedTimeline[];
+	/**
+	 * The maximum number of items to show on the timeline.
+	 */
+	timelineContentsLimit: number;
 };
 
-export function FeedsTimeline({ timeline }: Props): React.JSX.Element {
+export function FeedsTimeline({
+	timeline,
+	timelineContentsLimit,
+}: Props): React.JSX.Element {
 	const [{ selectedFeed }] = useQueryStates(searchParamsState.searchParams, {
 		urlKeys: searchParamsState.urlKeys,
 	});
 
-	const items = timeline.filter((el) => {
-		if (selectedFeed === searchParamsState.DEFAULT_FEED) return true;
-		return el.feedId.toString() === selectedFeed;
-	});
+	const items = timeline
+		.filter((el) => {
+			if (selectedFeed === searchParamsState.DEFAULT_FEED) return true;
+			return el.feedId.toString() === selectedFeed;
+		})
+		.slice(0, timelineContentsLimit);
 
 	return (
 		<section className={cn("wrap-anywhere", SPACING.LG)}>
