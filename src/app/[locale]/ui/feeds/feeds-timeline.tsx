@@ -44,7 +44,6 @@ export function FeedsTimeline({
 	return (
 		<section className={cn("wrap-anywhere", SPACING.LG)}>
 			{items.map((item) => {
-				if (!item.content) return;
 				return <Item item={item} key={`${item.id}`} />;
 			})}
 		</section>
