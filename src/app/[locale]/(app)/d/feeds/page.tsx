@@ -70,7 +70,7 @@ async function FeedsWrapper(): Promise<React.JSX.Element> {
 	return (
 		<FeedsTimeline
 			timeline={timeline}
-			timelineContentsLimit={limit.timelineContentsLimit}
+			feedContentLimit={limit.feedContentLimit}
 		/>
 	);
 }

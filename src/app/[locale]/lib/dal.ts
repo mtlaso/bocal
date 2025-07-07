@@ -67,11 +67,11 @@ const getUserLinks = cache(async ({ archivedLinksOnly }: GetLinksProps) => {
 });
 
 /**
- * getUserFeedsTimeline returns the contents of the feeds a user follows and the limit of items to show in the "all" timeline.
+ * getUserFeedsTimeline returns the contents of the feeds a user follows and the limit of items to show in the timeline.
  *
  */
 const getUserFeedsTimeline = cache(
-	async (): Promise<[FeedTimeline[], { timelineContentsLimit: number }]> => {
+	async (): Promise<[FeedTimeline[], { feedContentLimit: number }]> => {
 		try {
 			const user = await verifySession();
 			if (!user) {
@@ -127,7 +127,7 @@ const getUserFeedsTimeline = cache(
 			});
 
 			void feedService.triggerBackgroundSync(Array.from(outdatedFeedsIds));
-			return [data, { timelineContentsLimit: user.user.feedContentLimit }];
+			return [data, { feedContentLimit: user.user.feedContentLimit }];
 		} catch (err) {
 			logger.error(err);
 			throw new Error("errors.unexpected");

@@ -23,12 +23,12 @@ type Props = {
 	/**
 	 * The maximum number of items to show on the timeline.
 	 */
-	timelineContentsLimit: number;
+	feedContentLimit: number;
 };
 
 export function FeedsTimeline({
 	timeline,
-	timelineContentsLimit,
+	feedContentLimit,
 }: Props): React.JSX.Element {
 	const [{ selectedFeed }] = useQueryStates(searchParamsState.searchParams, {
 		urlKeys: searchParamsState.urlKeys,
@@ -39,7 +39,7 @@ export function FeedsTimeline({
 			if (selectedFeed === searchParamsState.DEFAULT_FEED) return true;
 			return el.feedId.toString() === selectedFeed;
 		})
-		.slice(0, timelineContentsLimit);
+		.slice(0, feedContentLimit);
 
 	return (
 		<section className={cn("wrap-anywhere", SPACING.LG)}>

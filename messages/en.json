@@ -235,8 +235,8 @@
 				"description": "Use grid layout for links."
 			},
 			"feed": {
-				"title": "Items limit per feed",
-				"description": "Set the maximum number of items per feed."
+				"title": "Feeds items limit",
+				"description": "Set the maximum number of items to show on the feeds page."
 			},
 			"errors": {
 				"feedContentLimitFieldInvalid": "Content limit per feed invalid.",
