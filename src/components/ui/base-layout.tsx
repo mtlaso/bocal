@@ -24,6 +24,7 @@ export default async function BaseLayout({
 						enableSystem
 						disableTransitionOnChange={false}
 					>
+						<DevIndicator />
 						<NuqsAdapter>{children}</NuqsAdapter>
 						<Toaster />
 					</ThemeProvider>
@@ -32,4 +33,22 @@ export default async function BaseLayout({
 			<Script defer src="https://assets.onedollarstats.com/stonks.js" />
 		</html>
 	);
+}
+
+function DevIndicator() {
+	const env = process.env.NEXT_PUBLIC_VERCEL_ENV;
+	if (env === "development") {
+		return (
+			<div className="fixed bottom-5 right-[50%] translate-x-1/2 z-50 bg-red-300 dark:bg-red-900 px-8 py-2 rounded-full">
+				{env}
+			</div>
+		);
+	}
+	if (env === "preview") {
+		return (
+			<div className="fixed bottom-5 right-[50%] translate-x-1/2 z-50 bg-green-300 dark:bg-green-900 px-8 py-2 rounded-full">
+				{env}
+			</div>
+		);
+	}
 }
