@@ -145,6 +145,8 @@ function SidebarProvider({
 		[state, open, setOpen, isMobile, openMobile, toggleSidebar],
 	);
 
+	const pathname = usePathname();
+
 	return (
 		<CustomSidebarContext.Provider value={contextValue}>
 			<TooltipProvider delayDuration={0}>
@@ -158,7 +160,10 @@ function SidebarProvider({
 						} as React.CSSProperties
 					}
 					className={cn(
-						"group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh w-full",
+						{
+							"group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh wfull":
+								pathname === APP_ROUTES.feeds,
+						},
 						className,
 					)}
 					{...props}
@@ -298,9 +303,6 @@ function Sidebar({
 
 function SidebarFeeds({ ref, ...props }: SidebarProps) {
 	const { isMobile, state, openMobile, setOpenMobile } = useSidebarFeeds();
-
-	const pathname = usePathname();
-	if (pathname !== APP_ROUTES.feeds) return null;
 
 	return (
 		<Sidebar

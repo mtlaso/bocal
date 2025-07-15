@@ -20,19 +20,21 @@ export default async function BaseLayout({
 		<html lang={locale} suppressHydrationWarning>
 			<body className={`${inter.className} antialiased`}>
 				<NextIntlClientProvider>
-					<SidebarFeedsProvider defaultOpen={false}>
-						<FeedsSidebar />
-						<ThemeProvider
-							attribute="class"
-							defaultTheme="system"
-							enableSystem
-							disableTransitionOnChange={false}
-						>
-							<DevIndicator />
-							<NuqsAdapter>{children}</NuqsAdapter>
-							<Toaster />
-						</ThemeProvider>
-					</SidebarFeedsProvider>
+					<ThemeProvider
+						attribute="class"
+						defaultTheme="system"
+						enableSystem
+						disableTransitionOnChange={false}
+					>
+						<DevIndicator />
+						<NuqsAdapter>
+							<SidebarFeedsProvider defaultOpen={false}>
+								<FeedsSidebar />
+								{children}
+							</SidebarFeedsProvider>
+						</NuqsAdapter>
+						<Toaster />
+					</ThemeProvider>
 				</NextIntlClientProvider>
 			</body>
 			<Script defer src="https://assets.onedollarstats.com/stonks.js" />
