@@ -11,6 +11,7 @@ import {
 } from "@/app/[locale]/lib/types";
 import { FeedInfoContextMenu } from "@/app/[locale]/ui/feeds/feed-info-context-menu";
 import { SPACING } from "@/app/[locale]/ui/spacing";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import { useSidebarFeeds } from "@/components/ui/sidebar";
@@ -89,18 +90,20 @@ function FeedInfoDetails({
 	const t = useTranslations("rssFeed.info");
 	const { toggleSidebar, state } = useSidebarFeeds();
 	return (
-		<div className="flex items-center">
-			<ShortcutKeys />
+		<div>
+			<div className="flex items-center gap-1">
+				<ShortcutKeys />
+				<Button
+					onClick={toggleSidebar}
+					variant="ghost"
+					size="icon"
+					className="mr-1 size-5"
+				>
+					{state === "collapsed" && <PanelLeftOpen />}
+					{state === "expanded" && <PanelRightOpen />}
+				</Button>
+			</div>
 
-			<Button
-				onClick={toggleSidebar}
-				variant="ghost"
-				size="icon"
-				className="mr-1 size-5"
-			>
-				{state === "collapsed" && <PanelLeftOpen />}
-				{state === "expanded" && <PanelRightOpen />}
-			</Button>
 			<p className="text-muted-foreground">
 				<span>{t("textPartOne")}&nbsp;</span>
 				<button
@@ -203,12 +206,12 @@ function _FeedMenuItem({
 function ShortcutKeys(): React.JSX.Element {
 	return (
 		<div className="flex gap-1">
-			<kbd className="rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset">
-				ctrl
-			</kbd>
-			<kbd className="rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset">
-				b
-			</kbd>
+			<Badge variant="outline" asChild>
+				<kbd>ctrl</kbd>
+			</Badge>
+			<Badge variant="outline" asChild>
+				<kbd>b</kbd>
+			</Badge>
 		</div>
 	);
 }
