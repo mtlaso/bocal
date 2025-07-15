@@ -567,6 +567,20 @@ const sidebarMenuButtonVariants = cva(
 	},
 );
 
+type SidebarMenuButtonProps = React.ComponentProps<"button"> & {
+	asChild?: boolean;
+	isActive?: boolean;
+	tooltip?: string | React.ComponentProps<typeof TooltipContent>;
+} & VariantProps<typeof sidebarMenuButtonVariants> & {
+		isMobile?: boolean;
+		state?: "expanded" | "collapsed";
+	};
+
+function SidebarFeedsMenuButton(props: SidebarMenuButtonProps) {
+	const { isMobile, state } = useSidebarFeeds();
+	return <SidebarMenuButton {...props} />;
+}
+
 function SidebarMenuButton({
 	asChild = false,
 	isActive = false,
@@ -574,14 +588,12 @@ function SidebarMenuButton({
 	size = "default",
 	tooltip,
 	className,
+	isMobile,
+	state,
 	...props
-}: React.ComponentProps<"button"> & {
-	asChild?: boolean;
-	isActive?: boolean;
-	tooltip?: string | React.ComponentProps<typeof TooltipContent>;
-} & VariantProps<typeof sidebarMenuButtonVariants>) {
+}: SidebarMenuButtonProps) {
 	const Comp = asChild ? Slot : "button";
-	const { isMobile, state } = useSidebar();
+	// const { isMobile, state } = useSidebar();
 
 	const button = (
 		<Comp
@@ -799,4 +811,5 @@ export {
 	SidebarFeedsProvider,
 	SidebarFeedsTrigger,
 	SidebarFeeds,
+	SidebarFeedsMenuButton,
 };
