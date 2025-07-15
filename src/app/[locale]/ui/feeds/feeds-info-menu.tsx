@@ -90,6 +90,8 @@ function FeedInfoDetails({
 	const { toggleSidebar, state } = useSidebarFeeds();
 	return (
 		<div className="flex items-center">
+			<ShortcutKeys />
+
 			<Button
 				onClick={toggleSidebar}
 				variant="ghost"
@@ -195,5 +197,18 @@ function _FeedMenuItem({
 
 			<p className={"text-primary text-end truncate"}>{feed.contentsCount}</p>
 		</button>
+	);
+}
+
+function ShortcutKeys(): React.JSX.Element {
+	return (
+		<div className="flex gap-1">
+			<kbd className="rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset">
+				ctrl
+			</kbd>
+			<kbd className="rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset">
+				b
+			</kbd>
+		</div>
 	);
 }
