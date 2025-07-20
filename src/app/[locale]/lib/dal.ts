@@ -68,7 +68,6 @@ const getUserLinks = cache(async ({ archivedLinksOnly }: GetLinksProps) => {
 
 /**
  * getUserFeedsTimeline returns the contents of the feeds a user follows and the limit of items to show in the timeline.
- *
  */
 const getUserFeedsTimeline = cache(
 	async (): Promise<[FeedTimeline[], { feedContentLimit: number }]> => {

@@ -71,7 +71,7 @@ export function FeedsInfoMenu({
         </SheetContent>
       </Sheet>
  */}
-			<FeedInfoDetails
+			<Details
 				totalFeeds={feeds.length}
 				totalUnreachableFeeds={unreachableFeeds.length}
 			/>
@@ -80,7 +80,7 @@ export function FeedsInfoMenu({
 	);
 }
 
-function FeedInfoDetails({
+function Details({
 	totalFeeds,
 	totalUnreachableFeeds,
 }: {
@@ -92,7 +92,6 @@ function FeedInfoDetails({
 	return (
 		<div>
 			<div className="flex items-center gap-1">
-				<ShortcutKeys />
 				<Button
 					onClick={toggleSidebar}
 					variant="ghost"
@@ -102,6 +101,7 @@ function FeedInfoDetails({
 					{state === "collapsed" && <PanelLeftOpen />}
 					{state === "expanded" && <PanelRightOpen />}
 				</Button>
+				<ShortcutKeys />
 			</div>
 
 			<p className="text-muted-foreground">

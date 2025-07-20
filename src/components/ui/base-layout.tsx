@@ -1,10 +1,8 @@
 import Script from "next/script";
 import { NextIntlClientProvider } from "next-intl";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import { FeedsSidebar } from "@/app/[locale]/ui/feeds/feeds-sidebar";
 import { inter } from "@/app/[locale]/ui/fonts";
 import ThemeProvider from "@/components/theme-provider";
-import { SidebarFeedsProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 
 type Props = {
@@ -27,12 +25,7 @@ export default async function BaseLayout({
 						disableTransitionOnChange={false}
 					>
 						<DevIndicator />
-						<NuqsAdapter>
-							<SidebarFeedsProvider defaultOpen={false}>
-								<FeedsSidebar />
-								{children}
-							</SidebarFeedsProvider>
-						</NuqsAdapter>
+						<NuqsAdapter>{children}</NuqsAdapter>
 						<Toaster />
 					</ThemeProvider>
 				</NextIntlClientProvider>

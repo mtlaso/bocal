@@ -112,15 +112,12 @@ function SidebarProvider({
 		return isMobile ? setOpenMobile((open) => !open) : setOpen((open) => !open);
 	}, [isMobile, setOpen]);
 
-	const pathname = usePathname();
-
 	// Adds a keyboard shortcut to toggle the sidebar.
 	React.useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
 			if (
 				event.key === SIDEBAR_FEEDS_KEYBOARD_SHORTCUT &&
-				(event.metaKey || event.ctrlKey) &&
-				pathname === APP_ROUTES.feeds
+				(event.metaKey || event.ctrlKey)
 			) {
 				event.preventDefault();
 				toggleSidebar();
@@ -129,7 +126,7 @@ function SidebarProvider({
 
 		window.addEventListener("keydown", handleKeyDown);
 		return () => window.removeEventListener("keydown", handleKeyDown);
-	}, [toggleSidebar, pathname]);
+	}, [toggleSidebar]);
 
 	// We add a state so that we can do data-state="expanded" or "collapsed".
 	// This makes it easier to style the sidebar with Tailwind classes.
@@ -161,10 +158,7 @@ function SidebarProvider({
 						} as React.CSSProperties
 					}
 					className={cn(
-						{
-							"group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh wfull":
-								pathname === APP_ROUTES.feeds,
-						},
+						"group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex flexcol min-h-svh w-full",
 						className,
 					)}
 					{...props}
@@ -180,6 +174,9 @@ function SidebarFeedsProvider({
 	ref,
 	...props
 }: Omit<React.ComponentProps<typeof SidebarProvider>, "CustomSidebarContext">) {
+	const pathname = usePathname();
+	if (pathname !== APP_ROUTES.feeds) return props.children;
+
 	return (
 		<SidebarProvider
 			CustomSidebarContext={SidebarFeedsContext}
@@ -578,7 +575,7 @@ type SidebarMenuButtonProps = React.ComponentProps<"button"> & {
 
 function SidebarFeedsMenuButton(props: SidebarMenuButtonProps) {
 	const { isMobile, state } = useSidebarFeeds();
-	return <SidebarMenuButton {...props} />;
+	return <SidebarMenuButton {...props} state={state} isMobile={isMobile} />;
 }
 
 function SidebarMenuButton({

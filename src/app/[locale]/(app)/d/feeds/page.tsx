@@ -39,7 +39,7 @@ export default function Page(): React.JSX.Element {
 				</div>
 
 				<Suspense fallback={<FeedInfoSkeleton />}>
-					<FeedInfoWrapper />
+					<FeedInfoMenuWrapper />
 				</Suspense>
 			</section>
 
@@ -52,7 +52,7 @@ export default function Page(): React.JSX.Element {
 	);
 }
 
-async function FeedInfoWrapper(): Promise<React.JSX.Element> {
+async function FeedInfoMenuWrapper(): Promise<React.JSX.Element> {
 	const [timeline, userFeedsWithContentsCount] = await Promise.all([
 		dal.getUserFeedsTimeline(),
 		dal.getUserFeedsWithContentsCount(),
