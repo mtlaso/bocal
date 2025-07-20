@@ -15,7 +15,7 @@ export async function FeedsSidebarContent(): Promise<React.JSX.Element> {
 		<SidebarMenu>
 			<FeedsSidebarMenuItemAll totalFeedsContents={timeline[0].length} />
 
-			<SidebarMenuItem className="mt-4">
+			<SidebarMenuItem className="mt-4 px-2 text-xs font-md">
 				<span>
 					{t("textFeedsCount", { count: userFeedsWithContentsCount.length })}
 				</span>

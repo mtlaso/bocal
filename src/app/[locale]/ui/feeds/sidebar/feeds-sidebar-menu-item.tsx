@@ -38,7 +38,7 @@ export function FeedsSidebarMenuItem({ feed }: Props) {
 				}}
 			>
 				{/* biome-ignore lint/a11y/useValidAnchor: link */}
-				<a href="#">
+				<a href="#" className="grid grid-cols-[min-content_1fr_auto] gap-4">
 					{feed.status !== FeedStatusType.ACTIVE ? (
 						<TbPlugConnectedX />
 					) : (
