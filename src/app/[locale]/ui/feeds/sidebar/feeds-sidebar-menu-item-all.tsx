@@ -1,12 +1,9 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useQueryStates } from "nuqs";
-import { TbPlugConnectedX, TbRss } from "react-icons/tb";
+import { TbRadarFilled } from "react-icons/tb";
 import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
-import {
-	FeedStatusType,
-	type FeedWithContentsCount,
-} from "@/app/[locale]/lib/types";
 import {
 	SidebarFeedsMenuButton,
 	SidebarMenuBadge,
@@ -15,10 +12,11 @@ import {
 import { cn } from "@/lib/utils";
 
 type Props = {
-	feed: FeedWithContentsCount;
+	totalFeedsContents: number;
 };
 
-export function FeedsSidebarMenuItem({ feed }: Props) {
+export function FeedsSidebarMenuItemAll({ totalFeedsContents }: Props) {
+	const t = useTranslations("rssFeed.info");
 	const [{ selectedFeed }, setSearchParamsState] = useQueryStates(
 		searchParamsState.searchParams,
 		{
@@ -28,24 +26,23 @@ export function FeedsSidebarMenuItem({ feed }: Props) {
 	return (
 		<SidebarMenuItem
 			className={cn({
-				"bg-accent rounded-md text-sm": selectedFeed === feed.id.toString(),
+				"bg-accent rounded-md text-sm":
+					selectedFeed === searchParamsState.DEFAULT_FEED,
 			})}
 		>
 			<SidebarFeedsMenuButton
 				asChild
 				onClick={(): void => {
-					setSearchParamsState({ selectedFeed: feed.id.toString() });
+					setSearchParamsState({
+						selectedFeed: searchParamsState.DEFAULT_FEED,
+					});
 				}}
 			>
 				{/* biome-ignore lint/a11y/useValidAnchor: link */}
 				<a href="#">
-					{feed.status !== FeedStatusType.ACTIVE ? (
-						<TbPlugConnectedX />
-					) : (
-						<TbRss />
-					)}
-					<span className="truncate">{feed.title}</span>
-					<SidebarMenuBadge>{feed.contentsCount}</SidebarMenuBadge>
+					<TbRadarFilled />
+					<span className="truncate">{t("allFeeds")}</span>
+					<SidebarMenuBadge>{totalFeedsContents}</SidebarMenuBadge>
 				</a>
 			</SidebarFeedsMenuButton>
 		</SidebarMenuItem>

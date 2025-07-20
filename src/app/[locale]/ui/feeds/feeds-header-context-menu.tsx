@@ -16,7 +16,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function FeedInfoContextMenu({
+export function FeedsHeaderContextMenu({
 	feeds,
 }: {
 	feeds: FeedWithContentsCount[];

@@ -1,26 +1,21 @@
 "use client";
 import { PanelLeftOpen, PanelRightOpen } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useQueryStates } from "nuqs";
-import { TbPlugConnectedX, TbRss } from "react-icons/tb";
-import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
 import {
 	FeedStatusType,
 	type FeedWithContentsCount,
 } from "@/app/[locale]/lib/types";
-import { FeedInfoContextMenu } from "@/app/[locale]/ui/feeds/feed-info-context-menu";
+import { FeedsHeaderContextMenu } from "@/app/[locale]/ui/feeds/feeds-header-context-menu";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import { useSidebarFeeds } from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
 
 type Props = {
 	userFeedsWithContentsCount: FeedWithContentsCount[];
 };
 
-export function FeedsInfoMenu({
+export function FeedsHeader({
 	userFeedsWithContentsCount,
 }: Props): React.JSX.Element {
 	const feeds = userFeedsWithContentsCount;
@@ -34,7 +29,7 @@ export function FeedsInfoMenu({
 				totalFeeds={feeds.length}
 				totalUnreachableFeeds={unreachableFeeds.length}
 			/>
-			<FeedInfoContextMenu feeds={feeds} />
+			<FeedsHeaderContextMenu feeds={feeds} />
 		</div>
 	);
 }
@@ -82,48 +77,6 @@ function Details({
 				</button>
 			</p>
 		</div>
-	);
-}
-
-function _FeedMenuItem({
-	feed,
-	onClick,
-}: {
-	feed: FeedWithContentsCount;
-	onClick?: () => void;
-}): React.JSX.Element {
-	const [{ selectedFeed }, setSearchParamsState] = useQueryStates(
-		searchParamsState.searchParams,
-		{ urlKeys: searchParamsState.urlKeys },
-	);
-
-	return (
-		<button
-			type="button"
-			onClick={(): void => {
-				setSearchParamsState({ selectedFeed: feed.id.toString() });
-				onClick?.();
-			}}
-			className={cn(
-				navigationMenuTriggerStyle(),
-				`grid grid-cols-[5%_1fr_15%] gap-4
-				cursor-pointer w-full px6! py2! focus:bg-background`,
-				{
-					"text-muted-foreground": feed.status !== FeedStatusType.ACTIVE,
-					"bg-accent!": selectedFeed === feed.id.toString(),
-				},
-			)}
-		>
-			{feed.status !== FeedStatusType.ACTIVE ? (
-				<TbPlugConnectedX size={20} className={"text-destructive"} />
-			) : (
-				<TbRss size={20} className={"text-primary"} />
-			)}
-
-			<p className="truncate text-left">{feed.title}</p>
-
-			<p className={"text-primary text-end truncate"}>{feed.contentsCount}</p>
-		</button>
 	);
 }
 
