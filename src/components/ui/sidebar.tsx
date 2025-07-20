@@ -61,7 +61,7 @@ function useSidebar() {
 function useSidebarFeeds() {
 	const context = React.useContext(SidebarFeedsContext);
 	if (!context) {
-		throw new Error("useFeedsSidebar must be used within a SidebarProvider.");
+		throw new Error("useSidebarFeeds must be used within a SidebarProvider.");
 	}
 
 	return context;
