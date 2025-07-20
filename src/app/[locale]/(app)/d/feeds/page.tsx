@@ -53,15 +53,9 @@ export default function Page(): React.JSX.Element {
 }
 
 async function FeedInfoMenuWrapper(): Promise<React.JSX.Element> {
-	const [timeline, userFeedsWithContentsCount] = await Promise.all([
-		dal.getUserFeedsTimeline(),
-		dal.getUserFeedsWithContentsCount(),
-	]);
+	const userFeedsWithContentsCount = await dal.getUserFeedsWithContentsCount();
 	return (
-		<FeedsInfoMenu
-			timeline={timeline[0] ?? []}
-			userFeedsWithContentsCount={userFeedsWithContentsCount}
-		/>
+		<FeedsInfoMenu userFeedsWithContentsCount={userFeedsWithContentsCount} />
 	);
 }
 
