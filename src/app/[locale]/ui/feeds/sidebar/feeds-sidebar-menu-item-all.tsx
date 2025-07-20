@@ -9,7 +9,6 @@ import {
 	SidebarMenuBadge,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
 
 type Props = {
 	totalFeedsContents: number;
@@ -24,13 +23,9 @@ export function FeedsSidebarMenuItemAll({ totalFeedsContents }: Props) {
 		},
 	);
 	return (
-		<SidebarMenuItem
-			className={cn({
-				"bg-accent rounded-md text-sm":
-					selectedFeed === searchParamsState.DEFAULT_FEED,
-			})}
-		>
+		<SidebarMenuItem>
 			<SidebarFeedsMenuButton
+				isActive={selectedFeed === searchParamsState.DEFAULT_FEED}
 				asChild
 				onClick={(): void => {
 					setSearchParamsState({

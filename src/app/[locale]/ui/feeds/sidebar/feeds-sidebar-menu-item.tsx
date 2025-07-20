@@ -12,7 +12,6 @@ import {
 	SidebarMenuBadge,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
 
 type Props = {
 	feed: FeedWithContentsCount;
@@ -26,12 +25,9 @@ export function FeedsSidebarMenuItem({ feed }: Props) {
 		},
 	);
 	return (
-		<SidebarMenuItem
-			className={cn({
-				"bg-accent rounded-md text-sm": selectedFeed === feed.id.toString(),
-			})}
-		>
+		<SidebarMenuItem>
 			<SidebarFeedsMenuButton
+				isActive={selectedFeed === feed.id.toString()}
 				asChild
 				onClick={(): void => {
 					setSearchParamsState({ selectedFeed: feed.id.toString() });
