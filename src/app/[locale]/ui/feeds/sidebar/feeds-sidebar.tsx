@@ -14,6 +14,7 @@ export function FeedsSidebar({ children }: { children: React.ReactNode }) {
 	const t = useTranslations("rssFeed");
 	const pathname = usePathname();
 	if (pathname !== APP_ROUTES.feeds) return null;
+
 	return (
 		<SidebarFeeds>
 			<SidebarContent>

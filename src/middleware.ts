@@ -47,14 +47,14 @@ export default async function middleware(
 	const isProtectedRoute = PROTECTED_ROUTES.has(pathname);
 	const isPublicRoute = PUBLIC_ROUTES.has(pathname);
 
+	const cookieStore = await cookies();
 	const sessCookieName = getSessionCookieName();
-	const sessionCookie = (await cookies()).get(sessCookieName)?.value;
+	const sessionCookie = cookieStore.get(sessCookieName)?.value;
 
 	/**
     Using optimistic authorization by only checking for the presence of a cookie.
     https://nextjs.org/docs/app/building-your-application/authentication#authorization
   */
-
 	if (isProtectedRoute && !sessionCookie) {
 		return NextResponse.redirect(
 			new URL(`${langPrefix}${LOGIN_PATH}`, req.nextUrl.origin),
