@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { APP_ROUTES } from "@/app/[locale]/lib/app-routes";
+import { APP_ROUTES } from "@/app/[locale]/lib/constants";
 import { getAppBaseURL } from "@/app/[locale]/lib/get-app-base-url";
 import { getPathname, type Locale, routing } from "@/i18n/routing";
 

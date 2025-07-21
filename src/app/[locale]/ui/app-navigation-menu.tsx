@@ -3,7 +3,7 @@ import { XIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { TbMenu2 } from "react-icons/tb";
-import { APP_ROUTES } from "@/app/[locale]/lib/app-routes";
+import { APP_ROUTES } from "@/app/[locale]/lib/constants";
 import { Button } from "@/components/ui/button";
 import { LocaleToggle } from "@/components/ui/locale-toggle";
 import {

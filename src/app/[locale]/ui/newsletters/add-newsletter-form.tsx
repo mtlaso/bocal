@@ -6,8 +6,8 @@ import {
 	type AddNewsletterState,
 	addNewsletter,
 } from "@/app/[locale]/lib/actions";
+import { LENGTHS } from "@/app/[locale]/lib/constants";
 import { useMediaQuery } from "@/app/[locale]/lib/hooks/use-media-query";
-import { LENGTHS } from "@/app/[locale]/lib/types";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Button } from "@/components/ui/button";
 import {

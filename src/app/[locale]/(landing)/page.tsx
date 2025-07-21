@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { TbArchive, TbMail, TbRss } from "react-icons/tb";
-import { APP_ROUTES } from "@/app/[locale]/lib/app-routes";
+import { APP_ROUTES } from "@/app/[locale]/lib/constants";
 import { ScrollIndicator } from "@/app/[locale]/ui/landing/scroll-indicator";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import BlurFade from "@/components/ui/blur-fade";

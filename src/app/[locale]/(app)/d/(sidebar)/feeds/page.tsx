@@ -4,7 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { dal } from "@/app/[locale]/lib/dal";
 import { AddFeedForm } from "@/app/[locale]/ui/feeds/add-feed-form";
-import { FeedsInfoMenu } from "@/app/[locale]/ui/feeds/feeds-info-menu";
+import { FeedsHeader } from "@/app/[locale]/ui/feeds/feeds-header";
 import { FeedsTimeline } from "@/app/[locale]/ui/feeds/feeds-timeline";
 import { FeedInfoSkeleton, FeedsSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
@@ -39,7 +39,7 @@ export default function Page(): React.JSX.Element {
 				</div>
 
 				<Suspense fallback={<FeedInfoSkeleton />}>
-					<FeedInfoWrapper />
+					<FeedsHeaderWrapper />
 				</Suspense>
 			</section>
 
@@ -52,16 +52,10 @@ export default function Page(): React.JSX.Element {
 	);
 }
 
-async function FeedInfoWrapper(): Promise<React.JSX.Element> {
-	const [timeline, userFeedsWithContentsCount] = await Promise.all([
-		dal.getUserFeedsTimeline(),
-		dal.getUserFeedsWithContentsCount(),
-	]);
+async function FeedsHeaderWrapper(): Promise<React.JSX.Element> {
+	const userFeedsWithContentsCount = await dal.getUserFeedsWithContentsCount();
 	return (
-		<FeedsInfoMenu
-			timeline={timeline[0] ?? []}
-			userFeedsWithContentsCount={userFeedsWithContentsCount}
-		/>
+		<FeedsHeader userFeedsWithContentsCount={userFeedsWithContentsCount} />
 	);
 }
 

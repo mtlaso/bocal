@@ -1,4 +1,9 @@
 import { SPACING } from "@/app/[locale]/ui/spacing";
+import {
+	SidebarMenu,
+	SidebarMenuItem,
+	SidebarMenuSkeleton,
+} from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
@@ -41,6 +46,19 @@ export function FeedsSkeleton(): React.JSX.Element {
 				</div>
 			</div>
 		</div>
+	);
+}
+
+export function FeedsSidebarSkeleton() {
+	return (
+		<SidebarMenu>
+			{Array.from({ length: 5 }).map((_, index) => (
+				// biome-ignore lint/suspicious/noArrayIndexKey: skeleton.
+				<SidebarMenuItem key={index}>
+					<SidebarMenuSkeleton showIcon />
+				</SidebarMenuItem>
+			))}
+		</SidebarMenu>
 	);
 }
 

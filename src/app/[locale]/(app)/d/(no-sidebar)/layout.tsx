@@ -1,4 +1,4 @@
-import { AppNavigationMenu } from "../ui/app-navigation-menu";
+import { AppNavigationMenu } from "@/app/[locale]/ui/app-navigation-menu";
 
 export default function DashboardLayout({
 	children,

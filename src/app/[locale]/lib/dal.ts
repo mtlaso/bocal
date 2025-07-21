@@ -13,9 +13,9 @@ import {
 import "server-only";
 import type { Session } from "next-auth";
 import { cache } from "react";
+import type { FeedWithContentsCount } from "@/app/[locale]/lib/constants";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 import { logger } from "@/app/[locale]/lib/logging";
-import type { FeedWithContentsCount } from "@/app/[locale]/lib/types";
 import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
 import { auth } from "@/auth";
 
@@ -68,7 +68,6 @@ const getUserLinks = cache(async ({ archivedLinksOnly }: GetLinksProps) => {
 
 /**
  * getUserFeedsTimeline returns the contents of the feeds a user follows and the limit of items to show in the timeline.
- *
  */
 const getUserFeedsTimeline = cache(
 	async (): Promise<[FeedTimeline[], { feedContentLimit: number }]> => {

@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { TbMail, TbUser } from "react-icons/tb";
-import { APP_ROUTES } from "@/app/[locale]/lib/app-routes";
+import { APP_ROUTES } from "@/app/[locale]/lib/constants";
 import { ViewSection } from "@/app/[locale]/ui/settings/view/view-section";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { auth } from "@/auth";

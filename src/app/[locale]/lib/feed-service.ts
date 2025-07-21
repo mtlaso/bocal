@@ -4,13 +4,13 @@ import { decode } from "html-entities";
 import { cache } from "react";
 import Parser from "rss-parser";
 import { z } from "zod/v4";
-import { logger } from "@/app/[locale]/lib/logging";
-import { parsing } from "@/app/[locale]/lib/parsing";
 import {
 	FeedErrorType,
 	FeedStatusType,
 	LENGTHS,
-} from "@/app/[locale]/lib/types";
+} from "@/app/[locale]/lib/constants";
+import { logger } from "@/app/[locale]/lib/logging";
+import { parsing } from "@/app/[locale]/lib/parsing";
 import { db } from "@/db/db";
 import { feeds, feedsContent } from "@/db/schema";
 import "server-only";
