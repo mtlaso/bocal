@@ -59,10 +59,7 @@ async function FeedsHeaderWrapper(): Promise<React.JSX.Element> {
 	);
 }
 
-const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 async function FeedsWrapper(): Promise<React.JSX.Element> {
-	await wait(5000);
 	const [timeline, limit] = await dal.getUserFeedsTimeline();
 	return (
 		<FeedsTimeline
