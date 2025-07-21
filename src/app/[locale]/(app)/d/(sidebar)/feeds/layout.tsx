@@ -10,7 +10,7 @@ export default function DashboardLayout({
 	return (
 		<SidebarFeedsProvider>
 			<FeedsSidebar />
-			<div className="min-h-screen max-w-6xl mx-auto px-4 mb-12">
+			<div className="min-h-screen w-full max-w-6xl mx-auto px-4 mb-12">
 				<AppNavigationMenu />
 				<main>{children}</main>
 			</div>
