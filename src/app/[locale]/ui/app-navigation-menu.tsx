@@ -47,11 +47,11 @@ function DesktopNavMenu(): React.JSX.Element {
 		<NavigationMenu className="py-5 mb-6 max-w-full! justify-between">
 			<NavigationMenuList>
 				<NavigationMenuItem>
+					{/* transition-all duration-200 */}
 					<NavigationMenuLink
+						data-active={pathname === APP_ROUTES.links}
 						href={APP_ROUTES.links}
-						className={cn(navigationMenuTriggerStyle(), {
-							"font-semibold bg-accent": pathname === APP_ROUTES.links,
-						})}
+						className={navigationMenuTriggerStyle()}
 					>
 						{t("links")}
 					</NavigationMenuLink>
@@ -59,10 +59,9 @@ function DesktopNavMenu(): React.JSX.Element {
 
 				<NavigationMenuItem>
 					<NavigationMenuLink
+						data-active={pathname === APP_ROUTES.archive}
 						href={APP_ROUTES.archive}
-						className={cn(navigationMenuTriggerStyle(), {
-							"font-semibold bg-accent": pathname === APP_ROUTES.archive,
-						})}
+						className={navigationMenuTriggerStyle()}
 					>
 						{t("archive")}
 					</NavigationMenuLink>
@@ -70,10 +69,9 @@ function DesktopNavMenu(): React.JSX.Element {
 
 				<NavigationMenuItem>
 					<NavigationMenuLink
+						data-active={pathname === APP_ROUTES.feeds}
 						href={APP_ROUTES.feeds}
-						className={cn(navigationMenuTriggerStyle(), {
-							"font-semibold bg-accent": pathname === APP_ROUTES.feeds,
-						})}
+						className={navigationMenuTriggerStyle()}
 					>
 						{t("rssFeed")}
 					</NavigationMenuLink>
@@ -81,10 +79,9 @@ function DesktopNavMenu(): React.JSX.Element {
 
 				<NavigationMenuItem>
 					<NavigationMenuLink
+						data-active={pathname === APP_ROUTES.newsletters}
 						href={APP_ROUTES.newsletters}
-						className={cn(navigationMenuTriggerStyle(), {
-							"font-semibold bg-accent": pathname === APP_ROUTES.newsletters,
-						})}
+						className={navigationMenuTriggerStyle()}
 					>
 						{t("newsletters")}
 					</NavigationMenuLink>
@@ -92,10 +89,9 @@ function DesktopNavMenu(): React.JSX.Element {
 
 				<NavigationMenuItem>
 					<NavigationMenuLink
+						data-active={pathname === APP_ROUTES.settings}
 						href={APP_ROUTES.settings}
-						className={cn(navigationMenuTriggerStyle(), {
-							"font-semibold bg-accent": pathname === APP_ROUTES.settings,
-						})}
+						className={navigationMenuTriggerStyle()}
 					>
 						{t("settings")}
 					</NavigationMenuLink>
