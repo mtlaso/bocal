@@ -159,7 +159,7 @@
 			"textPartOne": "Following",
 			"textFeedsCount": "{count, plural, =0 {no feeds yet} =1 {one feed} other {# feeds}}",
 			"textPartTwo": "with",
-			"textUnreachableCount": "{count} unreachable.",
+			"textUnreachableCount": "{count, plural, =0 {all feeds reachable} =1 {one unreachable} other {# unreachable}}",
 			"title": "Feeds",
 			"allFeeds": "All content"
 		},

@@ -160,7 +160,7 @@
 			"textPartOne": "Vous suivez",
 			"textFeedsCount": "{count, plural, =0 {aucun flux} =1 {un flux} other {# flux}}",
 			"textPartTwo": "avec",
-			"textUnreachableCount": "{count} inaccessible(s).",
+			"textUnreachableCount": "{count, plural, =0 {tous les flux accessibles} =1 {un flux inaccessible} other {# flux inaccessibles}}",
 			"title": "Flux",
 			"allFeeds": "Tout le contenu"
 		},
