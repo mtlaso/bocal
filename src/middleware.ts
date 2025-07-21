@@ -52,10 +52,6 @@ export default async function middleware(
 	const sessCookieName = getSessionCookieName();
 	const sessionCookie = cookieStore.get(sessCookieName)?.value;
 
-	// Add the pathname to a cookie so it can be accessed in server components (such as /d/feeds sidebar).
-	// console.log("middleware pathname", pathname);
-	// cookieStore.set(COOKIE_NAMES.currentPathname, pathname);
-
 	/**
     Using optimistic authorization by only checking for the presence of a cookie.
     https://nextjs.org/docs/app/building-your-application/authentication#authorization
@@ -72,14 +68,9 @@ export default async function middleware(
 		);
 	}
 
-	// const d = createMiddleware(routing);
-	// const res = NextResponse.next();
-	// const p = d(req);
 	const res = i18nMiddleware(req);
 	res.headers.set(COOKIE_NAMES.currentPathname, pathname);
 	return res;
-
-	// return i18nMiddleware(req);
 }
 
 export const config = {
