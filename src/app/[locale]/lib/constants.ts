@@ -40,10 +40,16 @@ export const LENGTHS = {
 	},
 } as const;
 
-export const COOKIE_NAMES = {
-	/**
-	 * The name of the cookie that stores the current pathname.
-	 * Mainly used to access the current pathname in server components.
-	 */
-	currentPathname: "X-CURRENT_PATHNAME-BOCAL",
+/**
+ * APP_ROUTES centralizes the app routes.
+ */
+export const APP_ROUTES = {
+	login: "/login",
+	links: "/d/links",
+	archive: "/d/archive",
+	feeds: "/d/feeds",
+	settings: "/d/settings",
+	newsletters: "/d/newsletters",
+	legalPrivacy: "/legal/privacy",
+	legalTerms: "/legal/terms",
 } as const;

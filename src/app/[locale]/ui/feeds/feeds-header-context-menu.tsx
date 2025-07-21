@@ -5,8 +5,8 @@ import { useTransition } from "react";
 import { TbClipboard, TbSettings } from "react-icons/tb";
 import { toast } from "sonner";
 import { unfollowFeed } from "@/app/[locale]/lib/actions";
+import type { FeedWithContentsCount } from "@/app/[locale]/lib/constants";
 import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
-import type { FeedWithContentsCount } from "@/app/[locale]/lib/types";
 import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
 import {
 	DropdownMenu,
