@@ -33,8 +33,10 @@ export function FeedsSidebarMenuItem({ feed }: Props) {
 					setSearchParamsState({ selectedFeed: feed.id.toString() });
 				}}
 			>
-				{/* biome-ignore lint/a11y/useValidAnchor: link */}
-				<a href="#" className="grid grid-cols-[min-content_1fr_auto] gap-4">
+				<button
+					type="button"
+					className="grid grid-cols-[min-content_1fr_auto] gap-4 hover:cursor-pointer"
+				>
 					{feed.status !== FeedStatusType.ACTIVE ? (
 						<TbPlugConnectedX />
 					) : (
@@ -42,7 +44,7 @@ export function FeedsSidebarMenuItem({ feed }: Props) {
 					)}
 					<span className="truncate">{feed.title}</span>
 					<SidebarMenuBadge>{feed.contentsCount}</SidebarMenuBadge>
-				</a>
+				</button>
 			</SidebarFeedsMenuButton>
 		</SidebarMenuItem>
 	);

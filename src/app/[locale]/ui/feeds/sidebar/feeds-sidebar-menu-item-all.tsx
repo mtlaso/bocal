@@ -33,12 +33,11 @@ export function FeedsSidebarMenuItemAll({ totalFeedsContents }: Props) {
 					});
 				}}
 			>
-				{/* biome-ignore lint/a11y/useValidAnchor: link */}
-				<a href="#">
+				<button type="button" className="hover:cursor-pointer">
 					<TbRadarFilled />
 					<span className="truncate">{t("allFeeds")}</span>
 					<SidebarMenuBadge>{totalFeedsContents}</SidebarMenuBadge>
-				</a>
+				</button>
 			</SidebarFeedsMenuButton>
 		</SidebarMenuItem>
 	);
