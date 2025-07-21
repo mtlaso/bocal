@@ -85,6 +85,13 @@
       "when": 1750561843130,
       "tag": "0011_cute_nighthawk",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1753086560526,
+      "tag": "0012_spotty_shooting_star",
+      "breakpoints": true
     }
   ]
 }

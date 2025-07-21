@@ -3,6 +3,7 @@ import {
 	boolean,
 	check,
 	integer,
+	jsonb,
 	pgTable,
 	primaryKey,
 	text,
@@ -14,6 +15,7 @@ import { createSchemaFactory } from "drizzle-zod";
 import type { AdapterAccountType } from "next-auth/adapters";
 import { z } from "zod/v4";
 import {
+	type DEFAULT_USERS_PREFERENCES,
 	FeedErrorType,
 	FeedStatusType,
 	LENGTHS,
@@ -50,6 +52,17 @@ export const users = pgTable(
 		),
 	],
 );
+
+/**
+ * usersPreferences contains users preferences.
+ */
+export const usersPreferences = pgTable("users_preferences", {
+	userId: text()
+		.notNull()
+		.primaryKey()
+		.references(() => users.id, { onDelete: "cascade" }),
+	prefs: jsonb().notNull().$type<typeof DEFAULT_USERS_PREFERENCES>(),
+});
 
 /**
  * links contains links that a user has saved.

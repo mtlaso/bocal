@@ -53,3 +53,14 @@ export const APP_ROUTES = {
 	legalPrivacy: "/legal/privacy",
 	legalTerms: "/legal/terms",
 } as const;
+
+/**
+ * DEFAULT_USERS_PREFERENCES represent the default users preferences.
+ */
+export const DEFAULT_USERS_PREFERENCES = {
+	hideReadFeedContent: false,
+	feedContentLimit: 30,
+};
+
+// export type UserPreferenceKey = keyof typeof DEFAULT_USERS_PREFERENCES;
+// export type UserPreferenceType = typeof DEFAULT_USERS_PREFERENCES;
