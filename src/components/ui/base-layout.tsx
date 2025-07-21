@@ -39,14 +39,22 @@ function DevIndicator() {
 	const env = process.env.NEXT_PUBLIC_VERCEL_ENV;
 	if (env === "development") {
 		return (
-			<div className="fixed bottom-5 right-[50%] translate-x-1/2 z-50 bg-red-300 dark:bg-red-900 px-8 py-2 rounded-full select-none">
+			<div
+				className="fixed bottom-5 right-[50%] translate-x-1/2 z-50 px-12 py-2 rounded-full select-none
+        bg-red-50 ring-1 text-red-900 ring-red-900/20
+        dark:bg-red-500/10 dark:text-red-300 dark:ring-red-300/20"
+			>
 				{env}
 			</div>
 		);
 	}
 	if (env === "preview") {
 		return (
-			<div className="fixed bottom-5 right-[50%] translate-x-1/2 z-50 bg-green-300 dark:bg-green-900 px-8 py-2 rounded-full select-none">
+			<div
+				className="fixed bottom-5 right-[50%] translate-x-1/2 z-50 px-12 py-2 rounded-full select-none
+        bg-green-50 ring-1 text-green-900 ring-green-900/20
+        dark:bg-green-500/10 dark:text-green-300 dark:ring-green-300/20"
+			>
 				{env}
 			</div>
 		);
