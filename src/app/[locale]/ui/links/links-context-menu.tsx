@@ -9,7 +9,7 @@ import {
 	deleteLink,
 	unarchiveLink,
 } from "@/app/[locale]/lib/actions";
-import { APP_ROUTES } from "@/app/[locale]/lib/app-routes";
+import { APP_ROUTES } from "@/app/[locale]/lib/constants";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
