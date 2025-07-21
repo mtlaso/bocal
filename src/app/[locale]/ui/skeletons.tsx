@@ -30,13 +30,8 @@ export function FeedInfoSkeleton(): React.JSX.Element {
 
 export function FeedsSkeleton(): React.JSX.Element {
 	return (
-		<div className="flex items-start justify-start">
-			<div
-				className="pt-1 pr-2
-          flex flex-col justify-between h-full"
-			>
-				<Skeleton className="rounded-full size-6" />
-			</div>
+		<div className="flex gap-2">
+			<Skeleton className="rounded-full size-6" />
 
 			<div className={cn(SPACING.MD, "grow")}>
 				<Skeleton className="h-4 w-[270px]" />
