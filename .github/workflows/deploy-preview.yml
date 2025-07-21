@@ -30,7 +30,7 @@ jobs:
     name: Create Neon Branch
     outputs:
       db_url: ${{ steps.create_neon_branch_encode.outputs.db_url }}
-      db_url_with_pooler: ${{ steps.create_neon_branch_encode.outputs.db_url_with_pooler }}
+      db_url_pooled: ${{ steps.create_neon_branch_encode.outputs.db_url_pooled }}
     needs: setup
     if: |
       github.event_name == 'pull_request' && (
@@ -64,7 +64,7 @@ jobs:
 
       - name: Create Neon Branch
         id: create_neon_branch
-        uses: neondatabase/create-branch-action@v5
+        uses: neondatabase/create-branch-action@v6
         with:
           project_id: ${{ vars.NEON_PROJECT_ID }}
           branch_name: preview/pr-${{ github.event.number }}-${{ needs.setup.outputs.branch }}
@@ -72,7 +72,7 @@ jobs:
 
       - name: Run Migrations
         env:
-          DATABASE_URL: "${{ steps.create_neon_branch.outputs.db_url_with_pooler }}"
+          DATABASE_URL: "${{ steps.create_neon_branch.outputs.db_url_pooled }}"
           DATABASE_URL_UNPOOLED: "${{ steps.create_neon_branch.outputs.db_url }}"
         run: |
           touch .env
@@ -103,7 +103,7 @@ jobs:
         id: deploy
         run: |
           VERCEL_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} \
-          -e DATABASE_URL="${{ steps.create_neon_branch.outputs.db_url_with_pooler }}" \
+          -e DATABASE_URL="${{ steps.create_neon_branch.outputs.db_url_pooled }}" \
           -e DIRECT_URL="${{ steps.create_neon_branch.outputs.db_url }}")
           echo "preview_url=$VERCEL_URL" >> $GITHUB_OUTPUT
 
