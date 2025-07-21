@@ -39,3 +39,11 @@ export const LENGTHS = {
 		},
 	},
 } as const;
+
+export const COOKIE_NAMES = {
+	/**
+	 * The name of the cookie that stores the current pathname.
+	 * Mainly used to access the current pathname in server components.
+	 */
+	currentPathname: "X-CURRENT_PATHNAME-BOCAL",
+} as const;

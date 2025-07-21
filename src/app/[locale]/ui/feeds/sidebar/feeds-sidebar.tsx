@@ -1,6 +1,7 @@
-"use client";
 import { useTranslations } from "next-intl";
-import { APP_ROUTES } from "@/app/[locale]/lib/app-routes";
+import { Suspense } from "react";
+import { FeedsSidebarContent } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-content";
+import { FeedsSidebarSkeleton } from "@/app/[locale]/ui/skeletons";
 import {
 	SidebarContent,
 	SidebarFeeds,
@@ -8,19 +9,20 @@ import {
 	SidebarGroupContent,
 	SidebarGroupLabel,
 } from "@/components/ui/sidebar";
-import { usePathname } from "@/i18n/routing";
 
-export function FeedsSidebar({ children }: { children: React.ReactNode }) {
+export function FeedsSidebar() {
 	const t = useTranslations("rssFeed");
-	const pathname = usePathname();
-	if (pathname !== APP_ROUTES.feeds) return null;
 
 	return (
 		<SidebarFeeds>
 			<SidebarContent>
 				<SidebarGroup>
 					<SidebarGroupLabel>{t("rssFeed")}</SidebarGroupLabel>
-					<SidebarGroupContent>{children}</SidebarGroupContent>
+					<SidebarGroupContent>
+						<Suspense fallback={<FeedsSidebarSkeleton />}>
+							<FeedsSidebarContent />
+						</Suspense>
+					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarContent>
 		</SidebarFeeds>

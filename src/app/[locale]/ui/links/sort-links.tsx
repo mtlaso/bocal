@@ -2,8 +2,8 @@
 import { useTranslations } from "next-intl";
 import { useQueryStates } from "nuqs";
 import { TbArrowsSort } from "react-icons/tb";
+import { SortOptions } from "@/app/[locale]/lib/constants";
 import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
-import { SortOptions } from "@/app/[locale]/lib/types";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Button } from "@/components/ui/button";
 import {

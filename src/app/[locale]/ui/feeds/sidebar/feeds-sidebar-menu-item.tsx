@@ -2,11 +2,11 @@
 
 import { useQueryStates } from "nuqs";
 import { TbPlugConnectedX, TbRss } from "react-icons/tb";
-import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
 import {
 	FeedStatusType,
 	type FeedWithContentsCount,
-} from "@/app/[locale]/lib/types";
+} from "@/app/[locale]/lib/constants";
+import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
 import {
 	SidebarFeedsMenuButton,
 	SidebarMenuBadge,

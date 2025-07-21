@@ -1,5 +1,5 @@
 import { parseAsString, parseAsStringEnum, type UrlKeys } from "nuqs/server";
-import { SortOptions } from "@/app/[locale]/lib/types";
+import { SortOptions } from "@/app/[locale]/lib/constants";
 
 const DEFAULT_FEED = "all";
 const SEARCHED_LINK_KEY = "link";

@@ -5,9 +5,9 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useQueryStates } from "nuqs";
 import { useEffect, useState } from "react";
+import { SortOptions } from "@/app/[locale]/lib/constants";
 import { parsing } from "@/app/[locale]/lib/parsing";
 import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
-import { SortOptions } from "@/app/[locale]/lib/types";
 import {
 	Card,
 	CardContent,

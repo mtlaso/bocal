@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
 import { APP_ROUTES } from "@/app/[locale]/lib/app-routes";
+import { COOKIE_NAMES } from "@/app/[locale]/lib/constants";
 import { routing } from "./i18n/routing";
 
 const PROTECTED_ROUTES: ReadonlySet<string> = new Set([
@@ -50,6 +51,9 @@ export default async function middleware(
 	const cookieStore = await cookies();
 	const sessCookieName = getSessionCookieName();
 	const sessionCookie = cookieStore.get(sessCookieName)?.value;
+
+	// Add the pathname to a cookie so it can be accessed in server components (such as /d/feeds sidebar).
+	cookieStore.set(COOKIE_NAMES.currentPathname, pathname);
 
 	/**
     Using optimistic authorization by only checking for the presence of a cookie.

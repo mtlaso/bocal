@@ -17,7 +17,7 @@ import {
 	FeedErrorType,
 	FeedStatusType,
 	LENGTHS,
-} from "@/app/[locale]/lib/types";
+} from "@/app/[locale]/lib/constants";
 
 // biome-ignore lint/suspicious/noExplicitAny: locale exception.
 function enumToPgEnum<T extends Record<string, any>>(

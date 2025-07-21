@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import {
 	FeedStatusType,
 	type FeedWithContentsCount,
-} from "@/app/[locale]/lib/types";
+} from "@/app/[locale]/lib/constants";
 import { FeedsHeaderContextMenu } from "@/app/[locale]/ui/feeds/feeds-header-context-menu";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Badge } from "@/components/ui/badge";
