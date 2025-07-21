@@ -4,7 +4,6 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { PanelLeftIcon } from "lucide-react";
 import * as React from "react";
-import { APP_ROUTES } from "@/app/[locale]/lib/app-routes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
@@ -22,7 +21,6 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { usePathname } from "@/i18n/routing";
 import { useIsMobile } from "@/lib/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
@@ -174,9 +172,6 @@ function SidebarFeedsProvider({
 	ref,
 	...props
 }: Omit<React.ComponentProps<typeof SidebarProvider>, "CustomSidebarContext">) {
-	const pathname = usePathname();
-	if (pathname !== APP_ROUTES.feeds) return props.children;
-
 	return (
 		<SidebarProvider
 			CustomSidebarContext={SidebarFeedsContext}
