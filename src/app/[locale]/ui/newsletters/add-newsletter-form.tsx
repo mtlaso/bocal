@@ -112,7 +112,7 @@ function NewsletterForm({
 	const t = useTranslations("newsletter");
 	const initialState: AddNewsletterState = {
 		errors: undefined,
-		errMessage: undefined,
+		defaultErrMessage: undefined,
 		data: undefined,
 	};
 	const [state, action, pending] = useActionState(addNewsletter, initialState);
@@ -153,8 +153,10 @@ function NewsletterForm({
 					</p>
 				))}
 
-				{state?.errMessage && (
-					<p className="mt-2 text-sm text-destructive">{t(state.errMessage)}</p>
+				{state?.defaultErrMessage && (
+					<p className="mt-2 text-sm text-destructive">
+						{t(state.defaultErrMessage)}
+					</p>
 				)}
 
 				{state?.successMessage && (

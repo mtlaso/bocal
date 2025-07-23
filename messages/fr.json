@@ -226,13 +226,9 @@
 		},
 		"viewSection": {
 			"title": "Affichage",
-			"hideImages": {
-				"title": "Masquer les images",
-				"description": "Masquer les images dans les liens."
-			},
-			"gridView": {
-				"title": "Vue en grille",
-				"description": "Afficher les liens en grille."
+			"hide": {
+				"title": "Masquer le contenu lu",
+				"description": "Masquer le contenu lu du flux"
 			},
 			"feed": {
 				"title": "Limite de contenu de flux",
@@ -240,7 +236,8 @@
 			},
 			"errors": {
 				"feedContentLimitFieldInvalid": "Limite de contenu par flux invalide.",
-				"missingFields": "Champ(s) manquant(s)."
+				"missingFields": "Champ(s) manquant(s).",
+				"unexpected": "Erreur inattendue."
 			},
 			"success": "Paramètres enregistrés",
 			"submit": "Enregistrer"

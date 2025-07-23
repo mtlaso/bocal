@@ -168,8 +168,8 @@ function DeleteNewsletterDialog({
 		startTransition(async () => {
 			try {
 				const res = await deleteNewsletter(feedId);
-				if (res.errMessage) {
-					toast.error(t(res.errMessage));
+				if (res.defaultErrMessage) {
+					toast.error(t(res.defaultErrMessage));
 					return;
 				}
 			} catch (_err) {

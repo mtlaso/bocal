@@ -52,13 +52,14 @@ const config = {
 			});
 
 			// In case some users don't have preferences yet (created before this feature).
-			const finalPrefrences = {
+			// So we need to have default preferences
+			const finalPreferences = {
 				...DEFAULT_USERS_PREFERENCES,
 				...userPrefs?.prefs,
 			};
 
 			session.user.id = user.id;
-			session.user.preferences = finalPrefrences;
+			session.user.preferences = finalPreferences;
 			return session;
 		},
 	},

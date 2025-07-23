@@ -1,7 +1,7 @@
 "use server";
 
 import { randomUUID } from "node:crypto";
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
@@ -30,12 +30,13 @@ import {
 	users,
 	usersFeeds,
 	usersFeedsReadContent,
+	usersPreferences,
 } from "@/db/schema";
 
 type State<T, E extends string = keyof T & string> = {
 	errors?: { [key in E]?: string[] };
 	data?: T;
-	errMessage?: string | null;
+	defaultErrMessage?: string | null;
 	successMessage?: string | null;
 };
 
@@ -94,7 +95,7 @@ export async function addLink(
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { url: formData.get("url")?.toString() },
-			errMessage: "errors.missingFields",
+			defaultErrMessage: "errors.missingFields",
 		};
 	}
 
@@ -115,7 +116,7 @@ export async function addLink(
 	} catch (err) {
 		logger.error(err);
 		return {
-			errMessage: "errors.unexpected",
+			defaultErrMessage: "errors.unexpected",
 			errors: undefined,
 		};
 	}
@@ -137,7 +138,7 @@ export async function deleteLink(id: number): Promise<DeleteLinkState> {
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { id: id },
-			errMessage: "errors.missingFields",
+			defaultErrMessage: "errors.missingFields",
 		};
 	}
 
@@ -159,7 +160,7 @@ export async function deleteLink(id: number): Promise<DeleteLinkState> {
 	} catch (err) {
 		logger.error(err);
 		return {
-			errMessage: "errors.unexpected",
+			defaultErrMessage: "errors.unexpected",
 		};
 	}
 
@@ -176,7 +177,7 @@ export async function archiveLink(id: number): Promise<DeleteLinkState> {
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { id: id },
-			errMessage: "errors.missingFields",
+			defaultErrMessage: "errors.missingFields",
 		};
 	}
 
@@ -199,7 +200,7 @@ export async function archiveLink(id: number): Promise<DeleteLinkState> {
 	} catch (err) {
 		logger.error(err);
 		return {
-			errMessage: "errors.unexpected",
+			defaultErrMessage: "errors.unexpected",
 		};
 	}
 
@@ -216,7 +217,7 @@ export async function unarchiveLink(id: number): Promise<DeleteLinkState> {
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { id: id },
-			errMessage: "errors.missingFields",
+			defaultErrMessage: "errors.missingFields",
 		};
 	}
 
@@ -239,7 +240,7 @@ export async function unarchiveLink(id: number): Promise<DeleteLinkState> {
 	} catch (err) {
 		logger.error(err);
 		return {
-			errMessage: "errors.unexpected",
+			defaultErrMessage: "errors.unexpected",
 		};
 	}
 
@@ -263,7 +264,7 @@ export async function addFeed(
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { url: formData.get("url")?.toString() },
-			errMessage: "errors.missingFields",
+			defaultErrMessage: "errors.missingFields",
 		};
 	}
 
@@ -354,14 +355,14 @@ export async function addFeed(
 
 		if (isFeedAlreadyFollowed) {
 			return {
-				errMessage: "errors.feedAlreadyFollowed",
+				defaultErrMessage: "errors.feedAlreadyFollowed",
 				errors: undefined,
 			};
 		}
 
 		if (isMaxFeedsLimit) {
 			return {
-				errMessage: "errors.maxFeedsReached",
+				defaultErrMessage: "errors.maxFeedsReached",
 				errors: undefined,
 			};
 		}
@@ -369,20 +370,20 @@ export async function addFeed(
 		logger.error(err);
 		if (err instanceof feedService.FeedUnreachable) {
 			return {
-				errMessage: "errors.feedUnreachable",
+				defaultErrMessage: "errors.feedUnreachable",
 				errors: undefined,
 			};
 		}
 
 		if (err instanceof feedService.FeedCannotBeProcessed) {
 			return {
-				errMessage: "errors.feedCannotBeProcessed",
+				defaultErrMessage: "errors.feedCannotBeProcessed",
 				errors: undefined,
 			};
 		}
 
 		return {
-			errMessage: "errors.unexpected",
+			defaultErrMessage: "errors.unexpected",
 			errors: undefined,
 		};
 	}
@@ -406,7 +407,7 @@ export async function unfollowFeed(id: string): Promise<UnfollowFeedState> {
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { feedId: Number.parseInt(id) },
-			errMessage: "errors.missingFields",
+			defaultErrMessage: "errors.missingFields",
 		};
 	}
 
@@ -440,7 +441,7 @@ export async function unfollowFeed(id: string): Promise<UnfollowFeedState> {
 	} catch (err) {
 		logger.error(err);
 		return {
-			errMessage: "errors.unexpected",
+			defaultErrMessage: "errors.unexpected",
 		};
 	}
 
@@ -468,7 +469,7 @@ export async function markFeedContentAsRead(
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { feedId, feedContentId },
-			errMessage: "errors.missingFields",
+			defaultErrMessage: "errors.missingFields",
 		};
 	}
 
@@ -491,7 +492,7 @@ export async function markFeedContentAsRead(
 	} catch (err) {
 		logger.error(err);
 		return {
-			errMessage: "errors.unexpected",
+			defaultErrMessage: "errors.unexpected",
 		};
 	}
 
@@ -517,7 +518,7 @@ export async function markFeedContentAsUnread(
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { feedId, feedContentId },
-			errMessage: "errors.missingFields",
+			defaultErrMessage: "errors.missingFields",
 		};
 	}
 
@@ -543,7 +544,7 @@ export async function markFeedContentAsUnread(
 	} catch (err) {
 		logger.error(err);
 		return {
-			errMessage: "errors.unexpected",
+			defaultErrMessage: "errors.unexpected",
 		};
 	}
 
@@ -566,7 +567,7 @@ export async function setFeedContentLimit(
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { feedContentLimit },
-			errMessage: "errors.missingFields",
+			defaultErrMessage: "errors.missingFields",
 		};
 	}
 
@@ -584,9 +585,47 @@ export async function setFeedContentLimit(
 	} catch (err) {
 		logger.error(err);
 		return {
-			errMessage: "errors.unexpected",
+			defaultErrMessage: "errors.unexpected",
 		};
 	}
+
+	revalidatePath(APP_ROUTES.settings);
+	return {};
+}
+
+export type SetHideReadFeedContentState = State<{
+	hideRead: boolean;
+}>;
+
+export async function setHideReadFeedContent(
+	hideRead: boolean,
+): Promise<SetHideReadFeedContentState> {
+	const validatedFields = z
+		.object({
+			hideRead: z.boolean(),
+		})
+		.safeParse({ hideRead });
+
+	if (!validatedFields.success) {
+		return {
+			errors: z.flattenError(validatedFields.error).fieldErrors,
+			data: { hideRead: hideRead },
+			defaultErrMessage: "errors.missingFields",
+		};
+	}
+
+	const user = await dal.verifySession();
+	if (!user) {
+		throw new Error("errors.notSignedIn");
+	}
+
+	const val = String(validatedFields.data.hideRead);
+	db.update(usersPreferences)
+		.set({
+			prefs: sql`jsonb_set(prefs, '{hideReadFeedContent}', ${val})`,
+		})
+		.where(eq(usersPreferences.userId, user.user.id))
+		.execute();
 
 	revalidatePath(APP_ROUTES.settings);
 	return {};
@@ -610,7 +649,7 @@ export async function archiveFeedContent(
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { url: url },
-			errMessage: "errors.missingFields",
+			defaultErrMessage: "errors.missingFields",
 		};
 	}
 
@@ -632,7 +671,7 @@ export async function archiveFeedContent(
 	} catch (err) {
 		logger.error(err);
 		return {
-			errMessage: "errors.unexpected",
+			defaultErrMessage: "errors.unexpected",
 		};
 	}
 
@@ -656,7 +695,7 @@ export async function addNewsletter(
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { title: formData.get("title")?.toString() },
-			errMessage: "errors.missingFields",
+			defaultErrMessage: "errors.missingFields",
 		};
 	}
 
@@ -672,7 +711,7 @@ export async function addNewsletter(
 
 		if (userFeeds.length >= LENGTHS.feeds.maxPerUser) {
 			return {
-				errMessage: "errors.maxFeedsReached",
+				defaultErrMessage: "errors.maxFeedsReached",
 				errors: undefined,
 			};
 		}
@@ -697,7 +736,7 @@ export async function addNewsletter(
 	} catch (err) {
 		logger.error(err);
 		return {
-			errMessage: "errors.unexpected",
+			defaultErrMessage: "errors.unexpected",
 		};
 	}
 
@@ -720,7 +759,7 @@ export async function deleteNewsletter(
 
 	if (!validatedFields.success) {
 		return {
-			errMessage: "errors.missingFields",
+			defaultErrMessage: "errors.missingFields",
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 		};
 	}
@@ -745,7 +784,7 @@ export async function deleteNewsletter(
 	} catch (err) {
 		logger.error(err);
 		return {
-			errMessage: "errors.unexpected",
+			defaultErrMessage: "errors.unexpected",
 		};
 	}
 

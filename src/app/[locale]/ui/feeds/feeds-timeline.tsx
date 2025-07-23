@@ -65,8 +65,8 @@ const Item = ({ item }: { item: FeedTimeline }): React.JSX.Element => {
 				setIsRead(true);
 				const res = await markFeedContentAsRead(feedId, feedContentId);
 
-				if (res.errMessage) {
-					toast.error(t(res.errMessage));
+				if (res.defaultErrMessage) {
+					toast.error(t(res.defaultErrMessage));
 				}
 			} catch (_err) {
 				setIsRead(false);
@@ -84,8 +84,8 @@ const Item = ({ item }: { item: FeedTimeline }): React.JSX.Element => {
 				setIsRead(false);
 				const res = await markFeedContentAsUnread(feedId, feedContentId);
 
-				if (res.errMessage) {
-					toast.error(t(res.errMessage));
+				if (res.defaultErrMessage) {
+					toast.error(t(res.defaultErrMessage));
 				}
 			} catch (_err) {
 				setIsRead(true);

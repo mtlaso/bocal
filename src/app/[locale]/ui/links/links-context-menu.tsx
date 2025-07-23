@@ -99,8 +99,8 @@ function UnArchiveLink({
 				e.preventDefault();
 				const res = await unarchiveLink(id);
 
-				if (res.errMessage) {
-					toast.error(t(res.errMessage));
+				if (res.defaultErrMessage) {
+					toast.error(t(res.defaultErrMessage));
 					onUnarchiveFailed(id);
 					return;
 				}
@@ -143,8 +143,8 @@ function ArchiveLink({
 				e.preventDefault();
 				const res = await archiveLink(id);
 
-				if (res.errMessage) {
-					toast.error(t(res.errMessage));
+				if (res.defaultErrMessage) {
+					toast.error(t(res.defaultErrMessage));
 					onArchiveFailed(id);
 					return;
 				}
@@ -187,8 +187,8 @@ function DeleteLink({
 				e.preventDefault();
 				const res = await deleteLink(id);
 
-				if (res.errMessage) {
-					toast.error(t(res.errMessage));
+				if (res.defaultErrMessage) {
+					toast.error(t(res.defaultErrMessage));
 					onDeleteFailed(id);
 					return;
 				}

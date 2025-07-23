@@ -22,7 +22,7 @@ import { auth } from "@/auth";
 const ONE_HOUR = 60 * 60 * 1000;
 
 /**
- * verifySession vérifie la session actuelle.
+ * verifySession returns the current session (logged in user).
  */
 const verifySession = cache(async (): Promise<Session | null> => {
 	return await auth();
