@@ -195,9 +195,9 @@ function DeleteLink({
 				e.preventDefault();
 				const res = await deleteLink(id);
 
-				if (res.defaultErrMessage) {
-					toast.error(res.defaultErrMessage);
+				if (res.errors) {
 					onDeleteFailed(id);
+					toast.error(res.errors.id?.join(", "));
 					return;
 				}
 			} catch (err) {

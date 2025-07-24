@@ -238,7 +238,7 @@ export const authenticators = pgTable(
 	],
 );
 
-export const insertLinksSchema = createInsertSchema(links, {
+export const insertLinkSchema = createInsertSchema(links, {
 	url: (): z.ZodCoercedString => z.url(),
 }).pick({ url: true });
 

@@ -22,7 +22,7 @@ import {
 	feeds,
 	feedsContent,
 	insertFeedsSchema,
-	insertLinksSchema,
+	insertLinkSchema,
 	insertUsersFeedsReadContentSchema,
 	links,
 	unfollowFeedSchema,
@@ -93,7 +93,7 @@ export async function addLink(
 		const t = await getTranslations("dashboard");
 
 		const payload = { url: formData.get("url") };
-		const validatedFields = insertLinksSchema.safeParse(payload, {
+		const validatedFields = insertLinkSchema.safeParse(payload, {
 			error: (iss) => {
 				const path = iss.path?.join(".");
 				if (!path) {
@@ -704,7 +704,7 @@ export type ArchiveFeedContentState = State<{
 export async function archiveFeedContent(
 	url: string,
 ): Promise<ArchiveFeedContentState> {
-	const validatedFields = insertLinksSchema.safeParse({
+	const validatedFields = insertLinkSchema.safeParse({
 		url: url,
 	});
 
