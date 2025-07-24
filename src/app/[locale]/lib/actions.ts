@@ -629,11 +629,10 @@ export async function setHideReadFeedContent(
 			throw new Error("errors.notSignedIn");
 		}
 
-		const val = String(validatedFields.data.hideRead);
 		await db
 			.update(usersPreferences)
 			.set({
-				prefs: sql`jsonb_set(prefs, '{hideReadFeedContent}', ${val})`,
+				prefs: sql`jsonb_set(prefs, '{hideReadFeedContent}', ${hideRead})`,
 			})
 			.where(eq(usersPreferences.userId, user.user.id))
 			.execute();
