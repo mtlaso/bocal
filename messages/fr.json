@@ -102,11 +102,7 @@
 			"OAuthCallbackError": "Erreur lors du retour d'authentification",
 			"InvalidCallbackUrl": "URL de retour invalide",
 			"CallbackRouteError": "Erreur lors du traitement de la route de retour",
-			"default": "Une erreur s'est produite lors de l'authentification",
-			"unexpected": {
-				"title": "Erreur inattendue",
-				"description": "Une erreur inattendue s'est produite. Veuillez réessayer plus tard."
-			}
+			"unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer plus tard."
 		}
 	},
 	"logout": {

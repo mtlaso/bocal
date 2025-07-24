@@ -101,11 +101,7 @@
 			"OAuthCallbackError": "Error during authentication callback",
 			"InvalidCallbackUrl": "Invalid callback URL",
 			"CallbackRouteError": "Error processing callback route",
-			"default": "Something went wrong with authentication",
-			"unexpected": {
-				"title": "Unexpected Error",
-				"description": "An unexpected error occurred. Please try again later."
-			}
+			"unexpected": "An unexpected error occurred. Please try again later."
 		}
 	},
 	"logout": {

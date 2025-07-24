@@ -3,8 +3,8 @@
 import { randomUUID } from "node:crypto";
 import { and, eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
+import { getTranslations } from "next-intl/server";
 import { z } from "zod/v4";
 import { APP_ROUTES, LENGTHS } from "@/app/[locale]/lib/constants";
 import { dal } from "@/app/[locale]/lib/dal";
@@ -38,37 +38,35 @@ type State<T, E extends string = keyof T & string> = {
 	successMessage?: string | null;
 };
 
-export async function authenticate(
-	provider: string,
-): Promise<string | undefined> {
-	let redirectUrl: null | string = null;
+/**
+ * authenticate authenticates a user using the specified provider. Returns a string containing the error message if any.
+ * @param provider - The authentication provider to use.
+ */
+export async function authenticate(provider: string) {
 	try {
-		redirectUrl = await signIn(provider, { redirect: false });
+		await signIn(provider, { redirect: true });
 	} catch (err) {
 		logger.error(err);
+		const t = await getTranslations("login");
+
 		if (err instanceof AuthError) {
-			switch (err.message) {
+			switch (err.type) {
 				case "CredentialsSignin":
-					return "errors.CredentialsSignin";
+					return t("errors.CredentialsSignin");
 				case "OAuthSignInError":
-					return "errors.OAuthSignInError";
+					return t("errors.OAuthSignInError");
 				case "OAuthCallbackError":
-					return "errors.OAuthCallbackError";
+					return t("errors.OAuthCallbackError");
 				case "InvalidCallbackUrl":
-					return "errors.InvalidCallbackUrl";
+					return t("errors.InvalidCallbackUrl");
 				case "CallbackRouteError":
-					return "errors.CallbackRouteError";
+					return t("errors.CallbackRouteError");
 				default:
-					return "errors.default";
+					return t("errors.unexpected");
 			}
 		}
 
 		throw err;
-	}
-
-	if (redirectUrl) {
-		// 'redirect' ne peut pas être utilisé dans un try-catch.
-		redirect(redirectUrl);
 	}
 }
 
