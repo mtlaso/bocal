@@ -104,6 +104,12 @@ function UnArchiveLink({
 					toast.error(res.errors.id?.join(", "));
 					return;
 				}
+
+				if (res.defaultErrMessage) {
+					onUnarchiveFailed(id);
+					toast.error(res.defaultErrMessage);
+					return;
+				}
 			} catch (err) {
 				onUnarchiveFailed(id);
 				if (err instanceof Error) {
@@ -152,6 +158,12 @@ function ArchiveLink({
 					onArchiveFailed(id);
 					return;
 				}
+
+				if (res.defaultErrMessage) {
+					onArchiveFailed(id);
+					toast.error(res.defaultErrMessage);
+					return;
+				}
 			} catch (err) {
 				onArchiveFailed(id);
 				if (err instanceof Error) {
@@ -198,6 +210,12 @@ function DeleteLink({
 				if (res.errors) {
 					onDeleteFailed(id);
 					toast.error(res.errors.id?.join(", "));
+					return;
+				}
+
+				if (res.defaultErrMessage) {
+					onDeleteFailed(id);
+					toast.error(res.defaultErrMessage);
 					return;
 				}
 			} catch (err) {

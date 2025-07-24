@@ -91,7 +91,6 @@ export async function addLink(
 		}
 
 		const t = await getTranslations("dashboard");
-
 		const payload = { url: formData.get("url") };
 		const validatedFields = insertLinkSchema.safeParse(payload, {
 			error: (iss) => {
@@ -462,26 +461,41 @@ export async function addFeed(
 }
 
 export type UnfollowFeedState = State<{
-	feedId?: number;
+	feedId: number;
 }>;
 
-export async function unfollowFeed(id: string): Promise<UnfollowFeedState> {
-	const validatedFields = unfollowFeedSchema.safeParse({
-		feedId: Number.parseInt(id),
-	});
-
-	if (!validatedFields.success) {
-		return {
-			errors: z.flattenError(validatedFields.error).fieldErrors,
-			data: { feedId: Number.parseInt(id) },
-			defaultErrMessage: "errors.missingFields",
-		};
-	}
+export async function unfollowFeed(id: number): Promise<UnfollowFeedState> {
+	let successUnfollow = "";
 
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
+		}
+
+		const t = await getTranslations("rssFeed");
+		successUnfollow = t("successUnfollow");
+
+		const payload = { feedId: id };
+		const validatedFields = unfollowFeedSchema.safeParse(payload, {
+			error: (iss) => {
+				const path = iss.path?.join(".");
+				if (!path) {
+					return { message: t("errors.unexpected") };
+				}
+
+				const message = {
+					url: t("errors.idFieldInvalid"),
+				}[path];
+				return { message: message ?? t("errors.unexpected") };
+			},
+		});
+
+		if (!validatedFields.success) {
+			return {
+				errors: z.flattenError(validatedFields.error).fieldErrors,
+				data: { feedId: id },
+			};
 		}
 
 		await db.transaction(async (tx) => {
@@ -508,13 +522,13 @@ export async function unfollowFeed(id: string): Promise<UnfollowFeedState> {
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrMessage: "errors.unexpected",
+			defaultErrMessage: UNEXPECTED_ERROR_MESSAGE,
 		};
 	}
 
 	revalidatePath(APP_ROUTES.feeds);
 	return {
-		successMessage: "successUnfollow",
+		successMessage: successUnfollow,
 	};
 }
 

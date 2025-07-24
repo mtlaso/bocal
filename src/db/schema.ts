@@ -251,10 +251,7 @@ export const insertFeedsSchema = createInsertSchema(feeds, {
 }).pick({ url: true });
 
 export const unfollowFeedSchema = createSelectSchema(usersFeeds, {
-	feedId: (schema): z.ZodCoercedNumber =>
-		schema.nonnegative({
-			error: "errors.idFieldInvalid",
-		}),
+	feedId: (schema): z.ZodCoercedNumber => schema.nonnegative(),
 }).pick({ feedId: true });
 
 export const insertUsersFeedsReadContentSchema = createSelectSchema(

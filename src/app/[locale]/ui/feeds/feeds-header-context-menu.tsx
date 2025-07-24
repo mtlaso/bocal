@@ -73,16 +73,25 @@ function UnfollowFeed(): React.JSX.Element {
 				e.preventDefault();
 				if (selectedFeed === searchParamsState.DEFAULT_FEED) return;
 
-				const res = await unfollowFeed(selectedFeed);
+				const res = await unfollowFeed(Number.parseInt(selectedFeed));
+				if (res.errors) {
+					toast.error(res.errors.feedId?.join("."));
+					return;
+				}
+
 				if (res.defaultErrMessage) {
-					toast.error(t(res.defaultErrMessage));
+					toast.error(res.defaultErrMessage);
 					return;
 				}
 
 				setSearchParamsState({ selectedFeed: searchParamsState.DEFAULT_FEED });
-				if (res.successMessage) toast.success(t(res.successMessage));
-			} catch (_err) {
-				toast.error(t("errors.unexpected"));
+				if (res.successMessage) toast.success(res.successMessage);
+			} catch (err) {
+				if (err instanceof Error) {
+					toast.error(err.message);
+				} else {
+					toast.error(t("errors.unexpected"));
+				}
 			}
 		});
 	};
