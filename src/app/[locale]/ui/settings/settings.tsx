@@ -12,7 +12,7 @@ type Props = {
 	user: Session["user"];
 };
 
-export async function Settings({ user }: Props): Promise<React.JSX.Element> {
+export function Settings({ user }: Props): React.JSX.Element {
 	return (
 		<section>
 			<ProfileSection name={user.name ?? ""} email={user.email ?? ""} />
