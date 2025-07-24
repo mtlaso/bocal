@@ -294,24 +294,17 @@ export async function unarchiveLink(id: number): Promise<DeleteLinkState> {
 }
 
 export type AddFeedState = State<{
-	url?: string;
+	url: string;
 }>;
 
 export async function addFeed(
 	_currState: AddFeedState,
 	formData: FormData,
 ): Promise<AddFeedState> {
-	const validatedFields = insertFeedsSchema.safeParse({
-		url: formData.get("url"),
-	});
-
-	if (!validatedFields.success) {
-		return {
-			errors: z.flattenError(validatedFields.error).fieldErrors,
-			data: { url: formData.get("url")?.toString() },
-			defaultErrMessage: "errors.missingFields",
-		};
-	}
+	let unreachaleErrMsg = "";
+	let cannotBeProcessErrMsg = "";
+	let feedTimeoutErrMsg = "";
+	let successMsg = "";
 
 	try {
 		const user = await dal.verifySession();
@@ -319,7 +312,35 @@ export async function addFeed(
 			throw new Error("errors.notSignedIn");
 		}
 
-		let isMaxFeedsLimit = false;
+		const t = await getTranslations("rssFeed");
+		unreachaleErrMsg = t("errors.feedUnreachable");
+		cannotBeProcessErrMsg = t("errors.feedCannotBeProcessed");
+		feedTimeoutErrMsg = t("errors.feedTimeout");
+		successMsg = t("success");
+
+		const payload = { url: formData.get("url") };
+		const validatedFields = insertFeedsSchema.safeParse(payload, {
+			error: (iss) => {
+				const path = iss.path?.join(".");
+				if (!path) {
+					return { message: t("errors.unexpected") };
+				}
+
+				const message = {
+					url: t("errors.urlFieldInvalid"),
+				}[path];
+				return { message: message ?? t("errors.unexpected") };
+			},
+		});
+
+		if (!validatedFields.success) {
+			return {
+				errors: z.flattenError(validatedFields.error).fieldErrors,
+				data: { url: formData.get("url") as string },
+			};
+		}
+
+		let isFeedsLimitReached = false;
 		let isFeedAlreadyFollowed = false;
 
 		await db.transaction(async (tx) => {
@@ -328,7 +349,7 @@ export async function addFeed(
 			});
 
 			if (userFeeds.length >= LENGTHS.feeds.maxPerUser) {
-				isMaxFeedsLimit = true;
+				isFeedsLimitReached = true;
 				return;
 			}
 
@@ -337,8 +358,8 @@ export async function addFeed(
 			});
 
 			// IMPORTANT
-			// Ne pas retier les params des URL pour vérifier si des duplications existent comme 'example.com/feed et 'example.com/feed?some_data=...'.
-			// Certains flux peuvent avoir besoin des params et retourner du contenu qui changent le contenu du flux.
+			// Do not remove URL parameters when checking for duplicates such as 'example.com/feed' and 'example.com/feed?some_data=...'.
+			// Some feeds may require the parameters and return content that changes the feed content.
 			if (!feed) {
 				const { content, title } = await feedService.parse(
 					validatedFields.data.url,
@@ -373,7 +394,7 @@ export async function addFeed(
 				return;
 			}
 
-			// Vérifier si l'utilisateur suit ce flux seulement si le flux existe déjà.
+			// Check if the user already follows this feed.
 			const existingUserFeed = await tx
 				.select({
 					userId: usersFeeds.userId,
@@ -400,42 +421,43 @@ export async function addFeed(
 
 		if (isFeedAlreadyFollowed) {
 			return {
-				defaultErrMessage: "errors.feedAlreadyFollowed",
-				errors: undefined,
+				defaultErrMessage: t("errors.feedAlreadyFollowed"),
 			};
 		}
 
-		if (isMaxFeedsLimit) {
+		if (isFeedsLimitReached) {
 			return {
-				defaultErrMessage: "errors.maxFeedsReached",
-				errors: undefined,
+				defaultErrMessage: t("errors.maxFeedsReached"),
 			};
 		}
 	} catch (err) {
 		logger.error(err);
 		if (err instanceof feedService.FeedUnreachable) {
 			return {
-				defaultErrMessage: "errors.feedUnreachable",
-				errors: undefined,
+				defaultErrMessage: unreachaleErrMsg,
 			};
 		}
 
 		if (err instanceof feedService.FeedCannotBeProcessed) {
 			return {
-				defaultErrMessage: "errors.feedCannotBeProcessed",
-				errors: undefined,
+				defaultErrMessage: cannotBeProcessErrMsg,
+			};
+		}
+
+		if (err instanceof feedService.FeedTimeout) {
+			return {
+				defaultErrMessage: feedTimeoutErrMsg,
 			};
 		}
 
 		return {
-			defaultErrMessage: "errors.unexpected",
-			errors: undefined,
+			defaultErrMessage: UNEXPECTED_ERROR_MESSAGE,
 		};
 	}
 
 	revalidatePath(APP_ROUTES.feeds);
 	return {
-		successMessage: "success",
+		successMessage: successMsg,
 	};
 }
 

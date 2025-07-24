@@ -247,10 +247,7 @@ export const deleteLinkSchema = createSelectSchema(links, {
 }).pick({ id: true });
 
 export const insertFeedsSchema = createInsertSchema(feeds, {
-	url: (): z.ZodCoercedString =>
-		z.url({
-			error: "errors.urlFieldInvalid",
-		}),
+	url: (): z.ZodCoercedString => z.url(),
 }).pick({ url: true });
 
 export const unfollowFeedSchema = createSelectSchema(usersFeeds, {

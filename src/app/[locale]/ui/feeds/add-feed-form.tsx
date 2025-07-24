@@ -112,18 +112,15 @@ const FeedForm = ({
 	const [state, formAction, pending] = useActionState(addFeed, initialState);
 
 	return (
-		<form
-			className={cn(SPACING.LG, "grid", className)}
-			action={formAction}
-			id="form"
-		>
-			<div className={SPACING.SM}>
+		<form className={cn(SPACING.MD, className)} action={formAction} id="form">
+			<div className={SPACING.XS}>
 				<Label htmlFor="url" className="block text-sm font-medium">
 					{t("addFeedForm.link")}
 				</Label>
 
 				<div className="relative">
 					<Input
+						type="url"
 						required
 						className="block w-full cursor-pointer rounded-md py-2 pl-10 outline-2 placeholder:text-gray-500"
 						name="url"
@@ -138,24 +135,22 @@ const FeedForm = ({
 
 				{state.errors?.url?.map((err) => (
 					<p className="mt-2 text-sm text-destructive" key={err}>
-						{t(err)}
+						{err}
 					</p>
 				))}
 
 				{state?.defaultErrMessage && (
 					<p className="mt-2 text-sm text-destructive">
-						{t(state.defaultErrMessage)}
+						{state.defaultErrMessage}
 					</p>
 				)}
 
 				{state?.successMessage && (
-					<p className="mt-2 text-sm text-green-500">
-						{t(state.successMessage)}
-					</p>
+					<p className="mt-2 text-sm text-green-500">{state.successMessage}</p>
 				)}
 			</div>
 
-			<Button disabled={pending} type="submit" form="form">
+			<Button className="w-full" disabled={pending} type="submit" form="form">
 				{t("add")}
 			</Button>
 		</form>
