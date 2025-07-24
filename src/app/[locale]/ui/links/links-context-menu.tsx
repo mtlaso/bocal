@@ -99,14 +99,18 @@ function UnArchiveLink({
 				e.preventDefault();
 				const res = await unarchiveLink(id);
 
-				if (res.defaultErrMessage) {
-					toast.error(t(res.defaultErrMessage));
+				if (res.errors) {
 					onUnarchiveFailed(id);
+					toast.error(res.errors.id?.join(", "));
 					return;
 				}
-			} catch (_err) {
+			} catch (err) {
 				onUnarchiveFailed(id);
-				toast.error(t("errors.unexpected"));
+				if (err instanceof Error) {
+					toast.error(err.message);
+				} else {
+					toast.error(t("errors.unexpected"));
+				}
 			}
 		});
 	};
@@ -143,14 +147,18 @@ function ArchiveLink({
 				e.preventDefault();
 				const res = await archiveLink(id);
 
-				if (res.defaultErrMessage) {
-					toast.error(t(res.defaultErrMessage));
+				if (res.errors) {
+					toast.error(res.errors.id?.join(", "));
 					onArchiveFailed(id);
 					return;
 				}
-			} catch (_err) {
+			} catch (err) {
 				onArchiveFailed(id);
-				toast.error(t("errors.unexpected"));
+				if (err instanceof Error) {
+					toast.error(err.message);
+				} else {
+					toast.error(t("errors.unexpected"));
+				}
 			}
 		});
 	};
