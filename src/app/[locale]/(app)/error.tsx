@@ -1,22 +1,22 @@
-"use client"; // Error boundaries must be Client Components
+"use client" // Error boundaries must be Client Components
 
-import { useTranslations } from "next-intl";
-import { useEffect } from "react";
-import { logger } from "@/app/[locale]/lib/logging";
-import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl"
+import { useEffect } from "react"
+import { logger } from "@/app/[locale]/lib/logging"
+import { Button } from "@/components/ui/button"
 
 export default function Error404({
 	err,
 	reset,
 }: {
-	err: Error & { digest?: string };
-	reset: () => void;
+	err: Error & { digest?: string }
+	reset: () => void
 }): React.JSX.Element {
-	const t = useTranslations("errors");
+	const t = useTranslations("errors")
 
 	useEffect(() => {
-		logger.error(err);
-	}, [err]);
+		logger.error(err)
+	}, [err])
 
 	return (
 		<div className="min-h-screen flex flex-col justify-center items-center gap-4">
@@ -31,5 +31,5 @@ export default function Error404({
 				{t("retry")}
 			</Button>
 		</div>
-	);
+	)
 }

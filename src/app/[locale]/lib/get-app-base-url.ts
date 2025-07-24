@@ -1,14 +1,14 @@
-import { cache } from "react";
+import { cache } from "react"
 
 export const getAppBaseURL = cache(() => {
 	// https://vercel.com/docs/environment-variables/framework-environment-variables
 	switch (process.env.NEXT_PUBLIC_VERCEL_ENV) {
 		case "production":
-			return "https://bocal.fyi";
+			return "https://bocal.fyi"
 		case "preview": {
-			return `http://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+			return `http://${process.env.NEXT_PUBLIC_VERCEL_URL}`
 		}
 		default:
-			return "http://localhost:3000";
+			return "http://localhost:3000"
 	}
-});
+})

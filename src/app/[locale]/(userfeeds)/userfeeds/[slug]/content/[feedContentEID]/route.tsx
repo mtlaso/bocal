@@ -1,44 +1,44 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { feedService } from "@/app/[locale]/lib/feed-service";
-import { logger } from "@/app/[locale]/lib/logging";
+import { type NextRequest, NextResponse } from "next/server"
+import { feedService } from "@/app/[locale]/lib/feed-service"
+import { logger } from "@/app/[locale]/lib/logging"
 export async function GET(
 	_request: NextRequest,
 	{
 		params,
 	}: {
-		params: Promise<{ feedContentEID: string }>;
-	},
+		params: Promise<{ feedContentEID: string }>
+	}
 ) {
-	const { feedContentEID } = await params;
+	const { feedContentEID } = await params
 	if (!feedContentEID) {
 		return new NextResponse("Feed content ID is required", {
 			status: 400,
-		});
+		})
 	}
 
-	const { content, error } = await feedService.getFeedContent(feedContentEID);
+	const { content, error } = await feedService.getFeedContent(feedContentEID)
 	if (error) {
 		switch (error) {
 			case "invalid-eid":
 				return new NextResponse("invalid feed content ID", {
 					status: 400,
-				});
+				})
 			case "not-found":
 				return new NextResponse("feed content not found", {
 					status: 404,
-				});
+				})
 			default:
 				return new NextResponse("internal server error", {
 					status: 500,
-				});
+				})
 		}
 	}
 
 	if (!content) {
-		logger.error("Error fetching feed content", { feedContentEID });
+		logger.error("Error fetching feed content", { feedContentEID })
 		return new NextResponse("Error fetching feed content", {
 			status: 500,
-		});
+		})
 	}
 
 	return new Response(content, {
@@ -46,5 +46,5 @@ export async function GET(
 			"Content-Type": "text/html; charset=utf-8",
 			"cache-control": "max-age=3600",
 		},
-	});
+	})
 }

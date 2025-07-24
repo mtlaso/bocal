@@ -1,79 +1,66 @@
-"use client";
+"use client"
 
-import { AnimatePresence, motion } from "motion/react";
-import Image from "next/image";
-import { useTranslations } from "next-intl";
-import { useQueryStates } from "nuqs";
-import { useEffect, useState } from "react";
-import { SortOptions } from "@/app/[locale]/lib/constants";
-import { parsing } from "@/app/[locale]/lib/parsing";
-import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
-import {
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
-import { Link } from "@/i18n/routing";
-import { cn } from "@/lib/utils";
-import { LinksContextMenu } from "./links-context-menu";
+import { AnimatePresence, motion } from "motion/react"
+import Image from "next/image"
+import { useTranslations } from "next-intl"
+import { useQueryStates } from "nuqs"
+import { useEffect, useState } from "react"
+import { SortOptions } from "@/app/[locale]/lib/constants"
+import { parsing } from "@/app/[locale]/lib/parsing"
+import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Link } from "@/i18n/routing"
+import { cn } from "@/lib/utils"
+import { LinksContextMenu } from "./links-context-menu"
 
 type Props = {
 	links: {
-		id: number;
-		url: string;
-		ogTitle: string | null;
-		ogImageURL: string | null;
-	}[];
-};
+		id: number
+		url: string
+		ogTitle: string | null
+		ogImageURL: string | null
+	}[]
+}
 
 export function Links({ links }: Props): React.JSX.Element {
-	const [{ sortLinks, searchedLink }] = useQueryStates(
-		searchParamsState.searchParams,
-		{
-			urlKeys: searchParamsState.urlKeys,
-		},
-	);
-	const t = useTranslations("dashboard");
-	const [items, setItems] = useState<typeof links>(
-		filter(links, sortLinks, searchedLink),
-	);
+	const [{ sortLinks, searchedLink }] = useQueryStates(searchParamsState.searchParams, {
+		urlKeys: searchParamsState.urlKeys,
+	})
+	const t = useTranslations("dashboard")
+	const [items, setItems] = useState<typeof links>(filter(links, sortLinks, searchedLink))
 
 	useEffect(() => {
-		setItems(filter(links, sortLinks, searchedLink));
-	}, [links, sortLinks, searchedLink]);
+		setItems(filter(links, sortLinks, searchedLink))
+	}, [links, sortLinks, searchedLink])
 
 	const randomBackground = (firstLetter: string): string => {
-		const letter = firstLetter.toUpperCase();
-		const charCode = letter.charCodeAt(0);
+		const letter = firstLetter.toUpperCase()
+		const charCode = letter.charCodeAt(0)
 
 		if (charCode >= 65 && charCode <= 68) {
-			return "from-[#FFB6B9] to-[#FF79C6]";
+			return "from-[#FFB6B9] to-[#FF79C6]"
 		}
 
 		if (charCode >= 69 && charCode <= 72) {
-			return "from-red-200 to-indigo-600";
+			return "from-red-200 to-indigo-600"
 		}
 
-		return "from-emerald-300 to-violet-700";
-	};
+		return "from-emerald-300 to-violet-700"
+	}
 
 	// Optimistic delete.
 	const handleOnRemove = (id: number) => {
-		setItems((prev) => prev.filter((item) => item.id !== id));
-	};
+		setItems((prev) => prev.filter((item) => item.id !== id))
+	}
 
 	// Optimistic delete.
 	// If the deletion fails, add the last deleted item back to the list.
 	const handleOnRemoveFailed = (id: number) => {
-		const lastDeletedItem = links.find((item) => item.id === id);
+		const lastDeletedItem = links.find((item) => item.id === id)
 		if (lastDeletedItem) {
-			setItems((prev) =>
-				filter([...prev, lastDeletedItem], sortLinks, searchedLink),
-			);
+			setItems((prev) => filter([...prev, lastDeletedItem], sortLinks, searchedLink))
 		}
-	};
+	}
 
 	return (
 		<section className={"grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"}>
@@ -91,9 +78,7 @@ export function Links({ links }: Props): React.JSX.Element {
 								<Link href={item.url} target="_blank">
 									{item.ogImageURL && (
 										<Image
-											className={
-												"aspect-video w-full object-center rounded-t-xl"
-											}
+											className={"aspect-video w-full object-center rounded-t-xl"}
 											src={item.ogImageURL}
 											width={500}
 											height={500}
@@ -107,9 +92,8 @@ export function Links({ links }: Props): React.JSX.Element {
 											className={cn(
 												"aspect-video bg-linear-to-br rounded-t-xl",
 												randomBackground(
-													item.ogTitle ??
-														parsing.readableUrl(new URL(item.url).host),
-												),
+													item.ogTitle ?? parsing.readableUrl(new URL(item.url).host)
+												)
 											)}
 										/>
 									)}
@@ -118,11 +102,7 @@ export function Links({ links }: Props): React.JSX.Element {
 
 							<CardContent>
 								<CardTitle>
-									<Link
-										href={item.url}
-										target="_blank"
-										className="line-clamp-3"
-									>
+									<Link href={item.url} target="_blank" className="line-clamp-3">
 										{item.ogTitle ?? new URL(item.url).host}
 									</Link>
 								</CardTitle>
@@ -148,41 +128,39 @@ export function Links({ links }: Props): React.JSX.Element {
 				))}
 			</AnimatePresence>
 		</section>
-	);
+	)
 }
 
 function filter(
 	links: Props["links"],
 	sortLinks: SortOptions,
-	searchedLink: string,
+	searchedLink: string
 ): Props["links"] {
-	let items = [...links];
+	let items = [...links]
 
 	// Filter.
 	if (searchedLink) {
 		items = items.filter((item) => {
-			const url = URL.parse(item.url);
+			const url = URL.parse(item.url)
 
 			return (
-				item.ogTitle
-					?.toLowerCase()
-					.includes(searchedLink.toLowerCase().trim()) ||
+				item.ogTitle?.toLowerCase().includes(searchedLink.toLowerCase().trim()) ||
 				url?.host?.toLowerCase().includes(searchedLink.toLowerCase().trim())
-			);
-		});
+			)
+		})
 	}
 
 	// Sort.
 	switch (sortLinks) {
 		case SortOptions.BY_DATE_ASC:
-			items.sort((a, b) => a.id - b.id);
-			break;
+			items.sort((a, b) => a.id - b.id)
+			break
 		case SortOptions.BY_DATE_DESC:
-			items.sort((a, b) => b.id - a.id);
-			break;
+			items.sort((a, b) => b.id - a.id)
+			break
 		default:
-			break;
+			break
 	}
 
-	return items;
+	return items
 }

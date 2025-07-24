@@ -1,17 +1,17 @@
-"use client";
-import { useTranslations } from "next-intl";
-import { TbLogout } from "react-icons/tb";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { logout } from "../../lib/actions";
+"use client"
+import { useTranslations } from "next-intl"
+import { TbLogout } from "react-icons/tb"
+import { toast } from "sonner"
+import { Button } from "@/components/ui/button"
+import { logout } from "../../lib/actions"
 
 export function LogoutForm(): React.JSX.Element {
-	const t = useTranslations("logout");
+	const t = useTranslations("logout")
 	return (
 		<form action={logout}>
 			<Button
 				onClick={(): void => {
-					toast.info(t("loggingOut"), { duration: 1500 });
+					toast.info(t("loggingOut"), { duration: 1500 })
 				}}
 				type="submit"
 				variant="outline"
@@ -20,5 +20,5 @@ export function LogoutForm(): React.JSX.Element {
 				<TbLogout />
 			</Button>
 		</form>
-	);
+	)
 }

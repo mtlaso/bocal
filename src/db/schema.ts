@@ -1,4 +1,4 @@
-import type { InferSelectModel } from "drizzle-orm";
+import type { InferSelectModel } from "drizzle-orm"
 import {
 	boolean,
 	integer,
@@ -9,27 +9,25 @@ import {
 	timestamp,
 	uniqueIndex,
 	uuid,
-} from "drizzle-orm/pg-core";
-import { createSchemaFactory } from "drizzle-zod";
-import type { AdapterAccountType } from "next-auth/adapters";
-import { z } from "zod/v4";
+} from "drizzle-orm/pg-core"
+import { createSchemaFactory } from "drizzle-zod"
+import type { AdapterAccountType } from "next-auth/adapters"
+import { z } from "zod/v4"
 import {
 	type DEFAULT_USERS_PREFERENCES,
 	FeedErrorType,
 	FeedStatusType,
-} from "@/app/[locale]/lib/constants";
+} from "@/app/[locale]/lib/constants"
 
 // biome-ignore lint/suspicious/noExplicitAny: locale exception.
-function enumToPgEnum<T extends Record<string, any>>(
-	myEnum: T,
-): [T[keyof T], ...T[keyof T][]] {
+function enumToPgEnum<T extends Record<string, any>>(myEnum: T): [T[keyof T], ...T[keyof T][]] {
 	// biome-ignore lint/suspicious/noExplicitAny: locale exception.
-	return Object.values(myEnum).map((value: any) => `${value}`) as any;
+	return Object.values(myEnum).map((value: any) => `${value}`) as any
 }
 
 const { createSelectSchema, createInsertSchema } = createSchemaFactory({
 	coerce: true,
-});
+})
 
 export const users = pgTable(
 	"users",
@@ -41,14 +39,14 @@ export const users = pgTable(
 		email: text().unique(),
 		emailVerified: timestamp({ mode: "date" }),
 		image: text(),
-	},
+	}
 	// (table) => [
 	// 	check(
 	// 		"feedContentLimit_check",
 	// 		sql`${table.feedContentLimit} > 0 AND ${table.feedContentLimit} <= 100`,
 	// 	),
 	// ],
-);
+)
 
 /**
  * usersPreferences contains users preferences.
@@ -59,7 +57,7 @@ export const usersPreferences = pgTable("users_preferences", {
 		.primaryKey()
 		.references(() => users.id, { onDelete: "cascade" }),
 	prefs: jsonb().notNull().$type<typeof DEFAULT_USERS_PREFERENCES>(),
-});
+})
 
 /**
  * links contains links that a user has saved.
@@ -74,7 +72,7 @@ export const links = pgTable("links", {
 	ogImageURL: text(),
 	isArchived: boolean().default(false),
 	createdAt: timestamp().defaultNow().notNull(),
-});
+})
 
 /**
  * feeds contains the feeds present in the database.
@@ -105,8 +103,8 @@ export const feeds = pgTable(
 			enum: enumToPgEnum(FeedErrorType),
 		}),
 	},
-	(table) => [uniqueIndex().on(table.eid)],
-);
+	(table) => [uniqueIndex().on(table.eid)]
+)
 
 /**
  * feedsContent contains the content of the feeds.
@@ -127,11 +125,8 @@ export const feedsContent = pgTable(
 		content: text().notNull(),
 		createdAt: timestamp().defaultNow().notNull(),
 	},
-	(table) => [
-		uniqueIndex("url_feedid").on(table.url, table.feedId),
-		uniqueIndex().on(table.eid),
-	],
-);
+	(table) => [uniqueIndex("url_feedid").on(table.url, table.feedId), uniqueIndex().on(table.eid)]
+)
 
 /**
  * userFeeds contains the feeds that a user is following.
@@ -146,8 +141,8 @@ export const usersFeeds = pgTable(
 			.notNull()
 			.references(() => feeds.id, { onDelete: "cascade" }),
 	},
-	(table) => [primaryKey({ columns: [table.userId, table.feedId] })],
-);
+	(table) => [primaryKey({ columns: [table.userId, table.feedId] })]
+)
 
 /**
  * userFeedsReadContent keep tracks of the feeds content read by a user.
@@ -170,8 +165,8 @@ export const usersFeedsReadContent = pgTable(
 		primaryKey({
 			columns: [table.userId, table.feedId, table.feedContentId],
 		}),
-	],
-);
+	]
+)
 
 export const accounts = pgTable(
 	"accounts",
@@ -190,10 +185,8 @@ export const accounts = pgTable(
 		id_token: text(),
 		session_state: text(),
 	},
-	(table) => [
-		primaryKey({ columns: [table.provider, table.providerAccountId] }),
-	],
-);
+	(table) => [primaryKey({ columns: [table.provider, table.providerAccountId] })]
+)
 
 export const sessions = pgTable("sessions", {
 	sessionToken: text().primaryKey(),
@@ -201,7 +194,7 @@ export const sessions = pgTable("sessions", {
 		.notNull()
 		.references(() => users.id, { onDelete: "cascade" }),
 	expires: timestamp({ mode: "date" }).notNull(),
-});
+})
 
 export const verificationTokens = pgTable(
 	"verification_tokens",
@@ -214,8 +207,8 @@ export const verificationTokens = pgTable(
 		primaryKey({
 			columns: [table.identifier, table.token],
 		}),
-	],
-);
+	]
+)
 
 export const authenticators = pgTable(
 	"authenticators",
@@ -235,64 +228,58 @@ export const authenticators = pgTable(
 		primaryKey({
 			columns: [table.userId, table.credentialID],
 		}),
-	],
-);
+	]
+)
 
 export const insertLinksSchema = createInsertSchema(links, {
 	url: (): z.ZodCoercedString =>
 		z.url({
 			error: "errors.urlFieldInvalid",
 		}),
-}).pick({ url: true });
+}).pick({ url: true })
 
 export const deleteLinkSchema = createSelectSchema(links, {
 	id: (schema): z.ZodCoercedNumber =>
 		schema.nonnegative({
 			error: "errors.idFieldInvalid",
 		}),
-}).pick({ id: true });
+}).pick({ id: true })
 
 export const insertFeedsSchema = createInsertSchema(feeds, {
 	url: (): z.ZodCoercedString =>
 		z.url({
 			error: "errors.urlFieldInvalid",
 		}),
-}).pick({ url: true });
+}).pick({ url: true })
 
 export const unfollowFeedSchema = createSelectSchema(usersFeeds, {
 	feedId: (schema): z.ZodCoercedNumber =>
 		schema.nonnegative({
 			error: "errors.idFieldInvalid",
 		}),
-}).pick({ feedId: true });
+}).pick({ feedId: true })
 
-export const insertUsersFeedsReadContentSchema = createSelectSchema(
-	usersFeedsReadContent,
-	{
-		feedId: (schema): z.ZodCoercedNumber =>
-			schema.nonnegative({
-				error: "errors.idFieldInvalid",
-			}),
-		feedContentId: (schema): z.ZodCoercedNumber =>
-			schema.nonnegative({
-				error: "errors.feedContentIdFieldInvalid",
-			}),
-	},
-).pick({ feedId: true, feedContentId: true });
+export const insertUsersFeedsReadContentSchema = createSelectSchema(usersFeedsReadContent, {
+	feedId: (schema): z.ZodCoercedNumber =>
+		schema.nonnegative({
+			error: "errors.idFieldInvalid",
+		}),
+	feedContentId: (schema): z.ZodCoercedNumber =>
+		schema.nonnegative({
+			error: "errors.feedContentIdFieldInvalid",
+		}),
+}).pick({ feedId: true, feedContentId: true })
 
-export const deleteUsersFeedsReadContentSchema = createSelectSchema(
-	usersFeedsReadContent,
-	{
-		feedId: (schema): z.ZodCoercedNumber =>
-			schema.nonnegative({
-				error: "errors.idFieldInvalid",
-			}),
-		feedContentId: (schema): z.ZodCoercedNumber =>
-			schema.nonnegative({
-				error: "errors.feedContentIdFieldInvalid",
-			}),
-	},
-).pick({ feedId: true, feedContentId: true });
+export const deleteUsersFeedsReadContentSchema = createSelectSchema(usersFeedsReadContent, {
+	feedId: (schema): z.ZodCoercedNumber =>
+		schema.nonnegative({
+			error: "errors.idFieldInvalid",
+		}),
+	feedContentId: (schema): z.ZodCoercedNumber =>
+		schema.nonnegative({
+			error: "errors.feedContentIdFieldInvalid",
+		}),
+}).pick({ feedId: true, feedContentId: true })
 
 export const addNewsletterSchema = z.object({
 	title: z
@@ -305,7 +292,7 @@ export const addNewsletterSchema = z.object({
 		.max(100, {
 			error: "errors.titleFieldTooLong",
 		}),
-});
+})
 
 export const deleteNewsletterSchema = z.object({
 	id: z
@@ -315,7 +302,7 @@ export const deleteNewsletterSchema = z.object({
 		.nonnegative({
 			error: "errors.idFieldInvalid",
 		}),
-});
+})
 
 const feedTimeline = z.object({
 	...createSelectSchema(feedsContent).shape,
@@ -324,10 +311,10 @@ const feedTimeline = z.object({
 	feedUrl: z.string(),
 	feedErrorType: z.enum(FeedErrorType).nullable(),
 	feedLastSyncAt: z.coerce.date(),
-});
+})
 
-export const feedsTimelineSchema = z.array(feedTimeline);
+export const feedsTimelineSchema = z.array(feedTimeline)
 
-export type User = InferSelectModel<typeof users>;
-export type Feed = InferSelectModel<typeof feeds>;
-export type FeedTimeline = z.infer<typeof feedTimeline>;
+export type User = InferSelectModel<typeof users>
+export type Feed = InferSelectModel<typeof feeds>
+export type FeedTimeline = z.infer<typeof feedTimeline>

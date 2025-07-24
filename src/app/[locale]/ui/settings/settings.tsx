@@ -1,16 +1,16 @@
-import type { Session } from "next-auth";
-import { useTranslations } from "next-intl";
-import { TbMail, TbUser } from "react-icons/tb";
-import { ViewSection } from "@/app/[locale]/ui/settings/view/view-section";
-import { SPACING } from "@/app/[locale]/ui/spacing";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
+import type { Session } from "next-auth"
+import { useTranslations } from "next-intl"
+import { TbMail, TbUser } from "react-icons/tb"
+import { ViewSection } from "@/app/[locale]/ui/settings/view/view-section"
+import { SPACING } from "@/app/[locale]/ui/spacing"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { cn } from "@/lib/utils"
 
 type Props = {
-	user: Session["user"];
-};
+	user: Session["user"]
+}
 
 export function Settings({ user }: Props): React.JSX.Element {
 	return (
@@ -20,17 +20,11 @@ export function Settings({ user }: Props): React.JSX.Element {
 			<ExportDataSection />
 			<DeleteAccountSection />
 		</section>
-	);
+	)
 }
 
-const ProfileSection = ({
-	email,
-	name,
-}: {
-	email: string;
-	name: string;
-}): React.JSX.Element => {
-	const t = useTranslations("settings.profileSection");
+const ProfileSection = ({ email, name }: { email: string; name: string }): React.JSX.Element => {
+	const t = useTranslations("settings.profileSection")
 
 	return (
 		<section className={cn("mb-12", SPACING.LG)}>
@@ -74,11 +68,11 @@ const ProfileSection = ({
 				</div>
 			</div>
 		</section>
-	);
-};
+	)
+}
 
 const ExportDataSection = (): React.JSX.Element => {
-	const t = useTranslations("settings.exportDataSection");
+	const t = useTranslations("settings.exportDataSection")
 	return (
 		<section className={cn("mb-12", SPACING.LG)}>
 			<div className={SPACING.XS}>
@@ -92,11 +86,11 @@ const ExportDataSection = (): React.JSX.Element => {
 				</Button>
 			</form>
 		</section>
-	);
-};
+	)
+}
 
 const DeleteAccountSection = (): React.JSX.Element => {
-	const t = useTranslations("settings.deleteAccountSection");
+	const t = useTranslations("settings.deleteAccountSection")
 
 	return (
 		<section className={SPACING.LG}>
@@ -111,5 +105,5 @@ const DeleteAccountSection = (): React.JSX.Element => {
 				</Button>
 			</form>
 		</section>
-	);
-};
+	)
+}

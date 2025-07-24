@@ -1,31 +1,31 @@
-import { Trash } from "lucide-react";
-import { useTranslations } from "next-intl";
-import { useQueryStates } from "nuqs";
-import { useTransition } from "react";
-import { TbClipboard, TbSettings } from "react-icons/tb";
-import { toast } from "sonner";
-import { unfollowFeed } from "@/app/[locale]/lib/actions";
-import type { FeedWithContentsCount } from "@/app/[locale]/lib/constants";
-import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
-import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
+import { Trash } from "lucide-react"
+import { useTranslations } from "next-intl"
+import { useQueryStates } from "nuqs"
+import { useTransition } from "react"
+import { TbClipboard, TbSettings } from "react-icons/tb"
+import { toast } from "sonner"
+import { unfollowFeed } from "@/app/[locale]/lib/actions"
+import type { FeedWithContentsCount } from "@/app/[locale]/lib/constants"
+import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states"
+import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs"
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuGroup,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu"
 
 export function FeedsHeaderContextMenu({
 	feeds,
 }: {
-	feeds: FeedWithContentsCount[];
+	feeds: FeedWithContentsCount[]
 }): React.JSX.Element {
 	const [{ selectedFeed }] = useQueryStates(searchParamsState.searchParams, {
 		urlKeys: searchParamsState.urlKeys,
-	});
-	const t = useTranslations("rssFeed.info");
-	const feed = feeds.find((feed) => feed.id.toString() === selectedFeed);
+	})
+	const t = useTranslations("rssFeed.info")
+	const feed = feeds.find((feed) => feed.id.toString() === selectedFeed)
 
 	return (
 		<DropdownMenu>
@@ -56,36 +56,35 @@ export function FeedsHeaderContextMenu({
 				</DropdownMenuGroup>
 			</DropdownMenuContent>
 		</DropdownMenu>
-	);
+	)
 }
 
 function UnfollowFeed(): React.JSX.Element {
-	const t = useTranslations("rssFeed");
-	const [{ selectedFeed }, setSearchParamsState] = useQueryStates(
-		searchParamsState.searchParams,
-		{ urlKeys: searchParamsState.urlKeys },
-	);
-	const [pending, startTransition] = useTransition();
+	const t = useTranslations("rssFeed")
+	const [{ selectedFeed }, setSearchParamsState] = useQueryStates(searchParamsState.searchParams, {
+		urlKeys: searchParamsState.urlKeys,
+	})
+	const [pending, startTransition] = useTransition()
 
 	const handleUnfollow = (e: React.MouseEvent): void => {
 		startTransition(async () => {
 			try {
-				e.preventDefault();
-				if (selectedFeed === searchParamsState.DEFAULT_FEED) return;
+				e.preventDefault()
+				if (selectedFeed === searchParamsState.DEFAULT_FEED) return
 
-				const res = await unfollowFeed(selectedFeed);
+				const res = await unfollowFeed(selectedFeed)
 				if (res.defaultErrMessage) {
-					toast.error(t(res.defaultErrMessage));
-					return;
+					toast.error(t(res.defaultErrMessage))
+					return
 				}
 
-				setSearchParamsState({ selectedFeed: searchParamsState.DEFAULT_FEED });
-				if (res.successMessage) toast.success(t(res.successMessage));
+				setSearchParamsState({ selectedFeed: searchParamsState.DEFAULT_FEED })
+				if (res.successMessage) toast.success(t(res.successMessage))
 			} catch (_err) {
-				toast.error(t("errors.unexpected"));
+				toast.error(t("errors.unexpected"))
 			}
-		});
-	};
+		})
+	}
 
 	return (
 		<button
@@ -97,22 +96,22 @@ function UnfollowFeed(): React.JSX.Element {
 			<Trash className="text-destructive" />
 			{t("unfollow")}
 		</button>
-	);
+	)
 }
 
 function CopyFeedURL({ url }: { url: string }): React.JSX.Element {
-	const t = useTranslations("rssFeed");
+	const t = useTranslations("rssFeed")
 
 	const handleCopy = async (): Promise<void> => {
 		try {
-			await navigator.clipboard.writeText(userfeedsfuncs.formatFeedURL(url));
+			await navigator.clipboard.writeText(userfeedsfuncs.formatFeedURL(url))
 			toast.success(t("feedURLCopied"), {
 				duration: 2000,
-			});
+			})
 		} catch (_err) {
-			toast.error(t("errors.cannotCopyFeedURL"));
+			toast.error(t("errors.cannotCopyFeedURL"))
 		}
-	};
+	}
 
 	return (
 		<button
@@ -123,5 +122,5 @@ function CopyFeedURL({ url }: { url: string }): React.JSX.Element {
 			<TbClipboard />
 			{t("copyFeedURL")}
 		</button>
-	);
+	)
 }

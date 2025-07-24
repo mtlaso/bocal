@@ -1,19 +1,19 @@
-"use client";
+"use client"
 
-import { Moon, Sun } from "lucide-react";
-import { useTranslations } from "next-intl";
-import { useTheme } from "next-themes";
-import { Button } from "@/components/ui/button";
+import { Moon, Sun } from "lucide-react"
+import { useTranslations } from "next-intl"
+import { useTheme } from "next-themes"
+import { Button } from "@/components/ui/button"
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu"
 
 export function ThemeToggle(): React.JSX.Element {
-	const { setTheme } = useTheme();
-	const t = useTranslations("navbar.themeToggle");
+	const { setTheme } = useTheme()
+	const t = useTranslations("navbar.themeToggle")
 
 	return (
 		<DropdownMenu>
@@ -25,25 +25,16 @@ export function ThemeToggle(): React.JSX.Element {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
-				<DropdownMenuItem
-					className="text-sm"
-					onClick={(): void => setTheme("light")}
-				>
+				<DropdownMenuItem className="text-sm" onClick={(): void => setTheme("light")}>
 					{t("light")}
 				</DropdownMenuItem>
-				<DropdownMenuItem
-					className="text-sm"
-					onClick={(): void => setTheme("dark")}
-				>
+				<DropdownMenuItem className="text-sm" onClick={(): void => setTheme("dark")}>
 					{t("dark")}
 				</DropdownMenuItem>
-				<DropdownMenuItem
-					className="text-sm"
-					onClick={(): void => setTheme("system")}
-				>
+				<DropdownMenuItem className="text-sm" onClick={(): void => setTheme("system")}>
 					{t("system")}
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
-	);
+	)
 }

@@ -1,11 +1,7 @@
-import { SPACING } from "@/app/[locale]/ui/spacing";
-import {
-	SidebarMenu,
-	SidebarMenuItem,
-	SidebarMenuSkeleton,
-} from "@/components/ui/sidebar";
-import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
+import { SPACING } from "@/app/[locale]/ui/spacing"
+import { SidebarMenu, SidebarMenuItem, SidebarMenuSkeleton } from "@/components/ui/sidebar"
+import { Skeleton } from "@/components/ui/skeleton"
+import { cn } from "@/lib/utils"
 
 export function LinksSkeleton(): React.JSX.Element {
 	return (
@@ -16,7 +12,7 @@ export function LinksSkeleton(): React.JSX.Element {
 				<Skeleton className="h-4 w-[200px]" />
 			</div>
 		</div>
-	);
+	)
 }
 
 export function FeedInfoSkeleton(): React.JSX.Element {
@@ -25,7 +21,7 @@ export function FeedInfoSkeleton(): React.JSX.Element {
 			<Skeleton className="h-4 w-[250px]" />
 			<Skeleton className="h-4 w-[200px]" />
 		</div>
-	);
+	)
 }
 
 export function FeedsSkeleton(): React.JSX.Element {
@@ -41,7 +37,7 @@ export function FeedsSkeleton(): React.JSX.Element {
 				</div>
 			</div>
 		</div>
-	);
+	)
 }
 
 export function FeedsSidebarSkeleton() {
@@ -54,7 +50,7 @@ export function FeedsSidebarSkeleton() {
 				</SidebarMenuItem>
 			))}
 		</SidebarMenu>
-	);
+	)
 }
 
 export function NewsletterSkeleton(): React.JSX.Element {
@@ -64,7 +60,7 @@ export function NewsletterSkeleton(): React.JSX.Element {
 			<Skeleton className="h-4 w-[270px]" />
 			<Skeleton className="h-4 w-[270px]" />
 		</div>
-	);
+	)
 }
 
 export function SettingsSkeleton(): React.JSX.Element {
@@ -123,5 +119,5 @@ export function SettingsSkeleton(): React.JSX.Element {
 				</div>
 			</section>
 		</div>
-	);
+	)
 }

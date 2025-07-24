@@ -3,9 +3,9 @@
  * @param err error to show.
  */
 function error(...err: unknown[]): void {
-	const now = new Date();
+	const now = new Date()
 	// biome-ignore lint/suspicious/noConsole: logging.
-	console.error(`[${now.toISOString()}] [ERROR]`, ...err);
+	console.error(`[${now.toISOString()}] [ERROR]`, ...err)
 }
 
 /**
@@ -13,9 +13,9 @@ function error(...err: unknown[]): void {
  * @param msg message to show.
  */
 function info(...msg: unknown[]): void {
-	const now = new Date();
+	const now = new Date()
 	// biome-ignore lint/suspicious/noConsole: logging.
-	console.log(`[${now.toISOString()}] [INFO]`, ...msg);
+	console.log(`[${now.toISOString()}] [INFO]`, ...msg)
 }
 
 /**
@@ -23,9 +23,9 @@ function info(...msg: unknown[]): void {
  * @param msg message to show.
  */
 function warn(...msg: unknown[]): void {
-	const now = new Date();
+	const now = new Date()
 	// biome-ignore lint/suspicious/noConsole: logging.
-	console.warn(`[${now.toISOString()}] [WARN]`, ...msg);
+	console.warn(`[${now.toISOString()}] [WARN]`, ...msg)
 }
 
 /**
@@ -35,4 +35,4 @@ export const logger = {
 	error,
 	info,
 	warn,
-};
+}

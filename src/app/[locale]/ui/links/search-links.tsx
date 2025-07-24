@@ -1,55 +1,46 @@
-"use client";
+"use client"
 
-import { useTranslations } from "next-intl";
-import { useQueryStates } from "nuqs";
-import { useRef, useState } from "react";
-import { TbSearch, TbX } from "react-icons/tb";
-import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { useTranslations } from "next-intl"
+import { useQueryStates } from "nuqs"
+import { useRef, useState } from "react"
+import { TbSearch, TbX } from "react-icons/tb"
+import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 export function SearchLinksDesktop(): React.JSX.Element {
-	const [{ searchedLink }, setSearchParamsState] = useQueryStates(
-		searchParamsState.searchParams,
-		{
-			urlKeys: searchParamsState.urlKeys,
-		},
-	);
+	const [{ searchedLink }, setSearchParamsState] = useQueryStates(searchParamsState.searchParams, {
+		urlKeys: searchParamsState.urlKeys,
+	})
 
-	const t = useTranslations("navbar.search-links");
-	const [isOpen, setIsOpen] = useState(false);
-	const inputRef = useRef<HTMLInputElement>(null);
+	const t = useTranslations("navbar.search-links")
+	const [isOpen, setIsOpen] = useState(false)
+	const inputRef = useRef<HTMLInputElement>(null)
 
 	const handleOpen = (): void => {
-		inputRef.current?.focus();
-		setIsOpen(true);
-	};
+		inputRef.current?.focus()
+		setIsOpen(true)
+	}
 
 	const handleClose = (): void => {
-		setIsOpen(false);
-		inputRef.current?.blur();
-		setSearchParamsState({ searchedLink: "" });
+		setIsOpen(false)
+		inputRef.current?.blur()
+		setSearchParamsState({ searchedLink: "" })
 		if (inputRef.current?.value) {
-			inputRef.current.value = "";
+			inputRef.current.value = ""
 		}
-	};
+	}
 
-	const handleCloseWithEscape = (
-		e: React.KeyboardEvent<HTMLInputElement>,
-	): void => {
+	const handleCloseWithEscape = (e: React.KeyboardEvent<HTMLInputElement>): void => {
 		if (e.key === "Escape") {
-			handleClose();
+			handleClose()
 		}
-	};
+	}
 
 	return (
 		<div className="hidden md:flex md:gap-2">
-			<Button
-				onClick={isOpen ? handleClose : handleOpen}
-				variant="outline"
-				size="icon"
-			>
+			<Button onClick={isOpen ? handleClose : handleOpen} variant="outline" size="icon">
 				{!isOpen && <TbSearch />}
 				{isOpen && <TbX />}
 			</Button>
@@ -80,9 +71,8 @@ export function SearchLinksDesktop(): React.JSX.Element {
 					<button
 						type="button"
 						onClick={(): Promise<URLSearchParams> | undefined => {
-							if (inputRef.current?.value?.length)
-								return setSearchParamsState({ searchedLink: "" });
-							handleClose();
+							if (inputRef.current?.value?.length) return setSearchParamsState({ searchedLink: "" })
+							handleClose()
 						}}
 						className="absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500"
 					>
@@ -91,17 +81,14 @@ export function SearchLinksDesktop(): React.JSX.Element {
 				</div>
 			</div>
 		</div>
-	);
+	)
 }
 
 export function SearchLinksMobile(): React.JSX.Element {
-	const [{ searchedLink }, setSearchParamsState] = useQueryStates(
-		searchParamsState.searchParams,
-		{
-			urlKeys: searchParamsState.urlKeys,
-		},
-	);
-	const t = useTranslations("navbar.search-links");
+	const [{ searchedLink }, setSearchParamsState] = useQueryStates(searchParamsState.searchParams, {
+		urlKeys: searchParamsState.urlKeys,
+	})
+	const t = useTranslations("navbar.search-links")
 	return (
 		<div className="md:hidden">
 			<Label htmlFor="search-links-mobile" className="sr-only">
@@ -123,14 +110,12 @@ export function SearchLinksMobile(): React.JSX.Element {
 
 				<button
 					type="button"
-					onClick={(_e): Promise<URLSearchParams> =>
-						setSearchParamsState({ searchedLink: "" })
-					}
+					onClick={(_e): Promise<URLSearchParams> => setSearchParamsState({ searchedLink: "" })}
 					className="absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500"
 				>
 					<TbX />
 				</button>
 			</div>
 		</div>
-	);
+	)
 }

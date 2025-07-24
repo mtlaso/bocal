@@ -1,6 +1,6 @@
-import { and, count, desc, eq, like, type SQL, sql } from "drizzle-orm";
-import { z } from "zod/v4";
-import { db } from "@/db/db";
+import { and, count, desc, eq, like, type SQL, sql } from "drizzle-orm"
+import { z } from "zod/v4"
+import { db } from "@/db/db"
 import {
 	type Feed,
 	type FeedTimeline,
@@ -9,45 +9,45 @@ import {
 	feedsTimelineSchema,
 	links,
 	usersFeeds,
-} from "@/db/schema";
-import "server-only";
-import type { Session } from "next-auth";
-import { cache } from "react";
-import type { FeedWithContentsCount } from "@/app/[locale]/lib/constants";
-import { feedService } from "@/app/[locale]/lib/feed-service";
-import { logger } from "@/app/[locale]/lib/logging";
-import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
-import { auth } from "@/auth";
+} from "@/db/schema"
+import "server-only"
+import type { Session } from "next-auth"
+import { cache } from "react"
+import type { FeedWithContentsCount } from "@/app/[locale]/lib/constants"
+import { feedService } from "@/app/[locale]/lib/feed-service"
+import { logger } from "@/app/[locale]/lib/logging"
+import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs"
+import { auth } from "@/auth"
 
-const ONE_HOUR = 60 * 60 * 1000;
+const ONE_HOUR = 60 * 60 * 1000
 
 /**
  * verifySession returns the current session (logged in user).
  */
 const verifySession = cache(async (): Promise<Session | null> => {
-	return await auth();
-});
+	return await auth()
+})
 
 type GetLinksProps = {
 	/**
 	 * If true, only archived links are returned.
 	 */
-	archivedLinksOnly?: boolean;
-};
+	archivedLinksOnly?: boolean
+}
 
 /**
  * getUserLinks returns the links of the user.
  */
 const getUserLinks = cache(async ({ archivedLinksOnly }: GetLinksProps) => {
 	try {
-		const user = await verifySession();
+		const user = await verifySession()
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("errors.notSignedIn")
 		}
 
-		const archivedFilter: SQL[] = [];
-		if (archivedLinksOnly) archivedFilter.push(eq(links.isArchived, true));
-		else archivedFilter.push(eq(links.isArchived, false));
+		const archivedFilter: SQL[] = []
+		if (archivedLinksOnly) archivedFilter.push(eq(links.isArchived, true))
+		else archivedFilter.push(eq(links.isArchived, false))
 
 		return await db
 			.select({
@@ -59,12 +59,12 @@ const getUserLinks = cache(async ({ archivedLinksOnly }: GetLinksProps) => {
 			.from(links)
 			.where(and(eq(links.userId, user.user.id), ...archivedFilter))
 			.orderBy(desc(links.createdAt))
-			.execute();
+			.execute()
 	} catch (err) {
-		logger.error(err);
-		throw new Error("errors.unexpected");
+		logger.error(err)
+		throw new Error("errors.unexpected")
 	}
-});
+})
 
 /**
  * getUserFeedsTimeline returns the contents of the feeds a user follows.
@@ -72,9 +72,9 @@ const getUserLinks = cache(async ({ archivedLinksOnly }: GetLinksProps) => {
  */
 const getUserFeedsTimeline = cache(async (): Promise<FeedTimeline[]> => {
 	try {
-		const user = await verifySession();
+		const user = await verifySession()
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("errors.notSignedIn")
 		}
 
 		const query = sql`
@@ -105,75 +105,72 @@ const getUserFeedsTimeline = cache(async (): Promise<FeedTimeline[]> => {
        	LEFT JOIN users_feeds_read_content rc ON rc."feedContentId" = fc.id
         WHERE
            	uf."userId" = ${user.user.id}
-        ORDER BY COALESCE(fc.date, feeds."createdAt") DESC`;
+        ORDER BY COALESCE(fc.date, feeds."createdAt") DESC`
 
-		const req = await db.execute(query);
-		const { data, error } = feedsTimelineSchema.safeParse(req.rows);
+		const req = await db.execute(query)
+		const { data, error } = feedsTimelineSchema.safeParse(req.rows)
 		if (error) {
-			logger.error(error.issues);
-			throw new z.ZodError(error.issues);
+			logger.error(error.issues)
+			throw new z.ZodError(error.issues)
 		}
 
 		// Find outdated feeds.
-		const now = new Date();
-		const outdatedFeedsIds = new Set<number>();
+		const now = new Date()
+		const outdatedFeedsIds = new Set<number>()
 		data.forEach((el) => {
 			const isOutdated =
-				!el.feedLastSyncAt ||
-				now.getTime() - el.feedLastSyncAt.getTime() > ONE_HOUR;
+				!el.feedLastSyncAt || now.getTime() - el.feedLastSyncAt.getTime() > ONE_HOUR
 			if (isOutdated) {
-				outdatedFeedsIds.add(el.feedId);
+				outdatedFeedsIds.add(el.feedId)
 			}
-		});
+		})
 
-		void feedService.triggerBackgroundSync(Array.from(outdatedFeedsIds));
-		return data;
+		void feedService.triggerBackgroundSync(Array.from(outdatedFeedsIds))
+		return data
 	} catch (err) {
-		logger.error(err);
-		throw new Error("errors.unexpected");
+		logger.error(err)
+		throw new Error("errors.unexpected")
 	}
-});
+})
 
 /**
  * getUserFeedsWithContentsCount returns the feeds a user follows with the
  * number of feed_content in each feed.
  */
-const getUserFeedsWithContentsCount = cache(
-	async (): Promise<FeedWithContentsCount[]> => {
-		try {
-			const user = await verifySession();
-			if (!user) {
-				throw new Error("errors.notSignedIn");
-			}
-
-			return await db
-				.select({
-					id: feeds.id,
-					title: feeds.title,
-					url: feeds.url,
-					status: feeds.status,
-					contentsCount: count(feedsContent.id),
-				})
-				.from(feeds)
-				.innerJoin(usersFeeds, eq(usersFeeds.feedId, feeds.id))
-				.leftJoin(feedsContent, eq(feedsContent.feedId, feeds.id))
-				.where(eq(usersFeeds.userId, user.user.id))
-				.groupBy(feeds.id);
-		} catch (err) {
-			logger.error(err);
-			throw new Error("errors.unexpected");
+const getUserFeedsWithContentsCount = cache(async (): Promise<FeedWithContentsCount[]> => {
+	try {
+		const user = await verifySession()
+		if (!user) {
+			throw new Error("errors.notSignedIn")
 		}
-	},
-);
+
+		return await db
+			.select({
+				id: feeds.id,
+				title: feeds.title,
+				url: feeds.url,
+				status: feeds.status,
+				contentsCount: count(feedsContent.id),
+			})
+			.from(feeds)
+			.innerJoin(usersFeeds, eq(usersFeeds.feedId, feeds.id))
+			.leftJoin(feedsContent, eq(feedsContent.feedId, feeds.id))
+			.where(eq(usersFeeds.userId, user.user.id))
+			.groupBy(feeds.id)
+	} catch (err) {
+		logger.error(err)
+		throw new Error("errors.unexpected")
+	}
+})
 
 /**
  * getUserNewsletters returns the newsletters a user has.
  */
 const getUserNewsletters = cache(async (): Promise<Feed[]> => {
 	try {
-		const user = await verifySession();
+		const user = await verifySession()
 		if (!user) {
-			throw new Error("errors.unauthorized");
+			throw new Error("errors.unauthorized")
 		}
 
 		return await db
@@ -194,14 +191,14 @@ const getUserNewsletters = cache(async (): Promise<Feed[]> => {
 			.where(
 				and(
 					eq(feeds.newsletterOwnerId, user.user.id),
-					like(feeds.url, `${userfeedsfuncs.NEWSLETTER_URL_PREFIX}%`),
-				),
-			);
+					like(feeds.url, `${userfeedsfuncs.NEWSLETTER_URL_PREFIX}%`)
+				)
+			)
 	} catch (err) {
-		logger.error(err);
-		throw new Error("errors.unexpected");
+		logger.error(err)
+		throw new Error("errors.unexpected")
 	}
-});
+})
 
 /**
  * dal contient les fonctions d'accés aux données.
@@ -212,4 +209,4 @@ export const dal = {
 	getUserFeedsTimeline,
 	getUserFeedsWithContentsCount,
 	getUserNewsletters,
-};
+}

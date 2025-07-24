@@ -1,47 +1,39 @@
-import { Trash } from "lucide-react";
-import { useTranslations } from "next-intl";
-import { useTransition } from "react";
-import { BsArchive, BsThreeDots } from "react-icons/bs";
-import { TbLinkPlus } from "react-icons/tb";
-import { toast } from "sonner";
-import {
-	archiveLink,
-	deleteLink,
-	unarchiveLink,
-} from "@/app/[locale]/lib/actions";
-import { APP_ROUTES } from "@/app/[locale]/lib/constants";
-import { Button } from "@/components/ui/button";
+import { Trash } from "lucide-react"
+import { useTranslations } from "next-intl"
+import { useTransition } from "react"
+import { BsArchive, BsThreeDots } from "react-icons/bs"
+import { TbLinkPlus } from "react-icons/tb"
+import { toast } from "sonner"
+import { archiveLink, deleteLink, unarchiveLink } from "@/app/[locale]/lib/actions"
+import { APP_ROUTES } from "@/app/[locale]/lib/constants"
+import { Button } from "@/components/ui/button"
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuGroup,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { usePathname } from "@/i18n/routing";
+} from "@/components/ui/dropdown-menu"
+import { usePathname } from "@/i18n/routing"
 
 export function LinksContextMenu({
 	id,
 	onRemove,
 	onRemoveFailed,
 }: {
-	id: number;
-	onRemove: (id: number) => void;
-	onRemoveFailed: (id: number) => void;
+	id: number
+	onRemove: (id: number) => void
+	onRemoveFailed: (id: number) => void
 }): React.JSX.Element {
-	const pathname = usePathname();
+	const pathname = usePathname()
 
-	const isDashboardPage = pathname === APP_ROUTES.links;
-	const isArchivePage = pathname === APP_ROUTES.archive;
+	const isDashboardPage = pathname === APP_ROUTES.links
+	const isArchivePage = pathname === APP_ROUTES.archive
 
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button
-					variant="link"
-					size="icon"
-					className="max-w-min text-foreground"
-				>
+				<Button variant="link" size="icon" className="max-w-min text-foreground">
 					<BsThreeDots />
 				</Button>
 			</DropdownMenuTrigger>
@@ -77,7 +69,7 @@ export function LinksContextMenu({
 				</DropdownMenuGroup>
 			</DropdownMenuContent>
 		</DropdownMenu>
-	);
+	)
 }
 
 function UnArchiveLink({
@@ -85,31 +77,31 @@ function UnArchiveLink({
 	onUnarchive,
 	onUnarchiveFailed,
 }: {
-	id: number;
-	onUnarchive: (id: number) => void;
-	onUnarchiveFailed: (id: number) => void;
+	id: number
+	onUnarchive: (id: number) => void
+	onUnarchiveFailed: (id: number) => void
 }): React.JSX.Element {
-	const t = useTranslations("dashboard");
-	const [isPending, startTransition] = useTransition();
+	const t = useTranslations("dashboard")
+	const [isPending, startTransition] = useTransition()
 
 	const handleUnArchiveLink = (e: React.MouseEvent): void => {
-		onUnarchive(id);
+		onUnarchive(id)
 		startTransition(async () => {
 			try {
-				e.preventDefault();
-				const res = await unarchiveLink(id);
+				e.preventDefault()
+				const res = await unarchiveLink(id)
 
 				if (res.defaultErrMessage) {
-					toast.error(t(res.defaultErrMessage));
-					onUnarchiveFailed(id);
-					return;
+					toast.error(t(res.defaultErrMessage))
+					onUnarchiveFailed(id)
+					return
 				}
 			} catch (_err) {
-				onUnarchiveFailed(id);
-				toast.error(t("errors.unexpected"));
+				onUnarchiveFailed(id)
+				toast.error(t("errors.unexpected"))
 			}
-		});
-	};
+		})
+	}
 
 	return (
 		<button
@@ -121,7 +113,7 @@ function UnArchiveLink({
 			<TbLinkPlus />
 			{t("unarchive")}
 		</button>
-	);
+	)
 }
 
 function ArchiveLink({
@@ -129,31 +121,31 @@ function ArchiveLink({
 	onArchive,
 	onArchiveFailed,
 }: {
-	id: number;
-	onArchive: (id: number) => void;
-	onArchiveFailed: (id: number) => void;
+	id: number
+	onArchive: (id: number) => void
+	onArchiveFailed: (id: number) => void
 }): React.JSX.Element {
-	const t = useTranslations("dashboard");
-	const [isPending, startTransition] = useTransition();
+	const t = useTranslations("dashboard")
+	const [isPending, startTransition] = useTransition()
 
 	const handleArchiveLink = (e: React.MouseEvent): void => {
-		onArchive(id);
+		onArchive(id)
 		startTransition(async () => {
 			try {
-				e.preventDefault();
-				const res = await archiveLink(id);
+				e.preventDefault()
+				const res = await archiveLink(id)
 
 				if (res.defaultErrMessage) {
-					toast.error(t(res.defaultErrMessage));
-					onArchiveFailed(id);
-					return;
+					toast.error(t(res.defaultErrMessage))
+					onArchiveFailed(id)
+					return
 				}
 			} catch (_err) {
-				onArchiveFailed(id);
-				toast.error(t("errors.unexpected"));
+				onArchiveFailed(id)
+				toast.error(t("errors.unexpected"))
 			}
-		});
-	};
+		})
+	}
 
 	return (
 		<button
@@ -165,7 +157,7 @@ function ArchiveLink({
 			<BsArchive />
 			{t("archive")}
 		</button>
-	);
+	)
 }
 
 function DeleteLink({
@@ -173,31 +165,31 @@ function DeleteLink({
 	onDelete,
 	onDeleteFailed,
 }: {
-	id: number;
-	onDelete: (id: number) => void;
-	onDeleteFailed: (id: number) => void;
+	id: number
+	onDelete: (id: number) => void
+	onDeleteFailed: (id: number) => void
 }): React.JSX.Element {
-	const t = useTranslations("dashboard");
-	const [isPending, startTransition] = useTransition();
+	const t = useTranslations("dashboard")
+	const [isPending, startTransition] = useTransition()
 
 	const handleDeleteLink = (e: React.MouseEvent): void => {
-		onDelete(id);
+		onDelete(id)
 		startTransition(async () => {
 			try {
-				e.preventDefault();
-				const res = await deleteLink(id);
+				e.preventDefault()
+				const res = await deleteLink(id)
 
 				if (res.defaultErrMessage) {
-					toast.error(t(res.defaultErrMessage));
-					onDeleteFailed(id);
-					return;
+					toast.error(t(res.defaultErrMessage))
+					onDeleteFailed(id)
+					return
 				}
 			} catch (_err) {
-				onDeleteFailed(id);
-				toast.error(t("errors.unexpected"));
+				onDeleteFailed(id)
+				toast.error(t("errors.unexpected"))
 			}
-		});
-	};
+		})
+	}
 
 	return (
 		<button
@@ -209,5 +201,5 @@ function DeleteLink({
 			<Trash className="text-destructive" />
 			{t("delete")}
 		</button>
-	);
+	)
 }

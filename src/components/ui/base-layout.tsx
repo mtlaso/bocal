@@ -1,19 +1,16 @@
-import Script from "next/script";
-import { NextIntlClientProvider } from "next-intl";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
-import { inter } from "@/app/[locale]/ui/fonts";
-import ThemeProvider from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/sonner";
+import Script from "next/script"
+import { NextIntlClientProvider } from "next-intl"
+import { NuqsAdapter } from "nuqs/adapters/next/app"
+import { inter } from "@/app/[locale]/ui/fonts"
+import ThemeProvider from "@/components/theme-provider"
+import { Toaster } from "@/components/ui/sonner"
 
 type Props = {
-	children: React.ReactNode;
-	locale: string;
-};
+	children: React.ReactNode
+	locale: string
+}
 
-export default async function BaseLayout({
-	children,
-	locale,
-}: Props): Promise<React.JSX.Element> {
+export default async function BaseLayout({ children, locale }: Props): Promise<React.JSX.Element> {
 	return (
 		<html lang={locale} suppressHydrationWarning>
 			<body className={`${inter.className} antialiased`}>
@@ -32,11 +29,11 @@ export default async function BaseLayout({
 			</body>
 			<Script defer src="https://assets.onedollarstats.com/stonks.js" />
 		</html>
-	);
+	)
 }
 
 function DevIndicator() {
-	const env = process.env.NEXT_PUBLIC_VERCEL_ENV;
+	const env = process.env.NEXT_PUBLIC_VERCEL_ENV
 	if (env === "development") {
 		return (
 			<div
@@ -46,7 +43,7 @@ function DevIndicator() {
 			>
 				{env}
 			</div>
-		);
+		)
 	}
 	if (env === "preview") {
 		return (
@@ -57,8 +54,8 @@ function DevIndicator() {
 			>
 				{env}
 			</div>
-		);
+		)
 	}
 
-	return null;
+	return null
 }

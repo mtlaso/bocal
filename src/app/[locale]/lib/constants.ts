@@ -1,10 +1,10 @@
 export type FeedWithContentsCount = {
-	id: number;
-	title: string;
-	url: string;
-	status: FeedStatusType;
-	contentsCount: number;
-};
+	id: number
+	title: string
+	url: string
+	status: FeedStatusType
+	contentsCount: number
+}
 
 export enum SortOptions {
 	BY_DATE_ASC = "byDateAsc",
@@ -38,7 +38,7 @@ export const LENGTHS = {
 			max: 100,
 		},
 	},
-} as const;
+} as const
 
 /**
  * APP_ROUTES centralizes the app routes.
@@ -52,7 +52,7 @@ export const APP_ROUTES = {
 	newsletters: "/d/newsletters",
 	legalPrivacy: "/legal/privacy",
 	legalTerms: "/legal/terms",
-} as const;
+} as const
 
 /**
  * DEFAULT_USERS_PREFERENCES represents the default users preferences.
@@ -60,7 +60,7 @@ export const APP_ROUTES = {
 export const DEFAULT_USERS_PREFERENCES = {
 	hideReadFeedContent: false,
 	feedContentLimit: 30,
-};
+}
 
-export type UserPreferences = typeof DEFAULT_USERS_PREFERENCES;
+export type UserPreferences = typeof DEFAULT_USERS_PREFERENCES
 // export type UserPreferencesKey = keyof typeof DEFAULT_USERS_PREFERENCES;

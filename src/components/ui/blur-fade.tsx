@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
 	AnimatePresence,
@@ -6,25 +6,25 @@ import {
 	type UseInViewOptions,
 	useInView,
 	type Variants,
-} from "motion/react";
-import { useRef } from "react";
+} from "motion/react"
+import { useRef } from "react"
 
-type MarginType = UseInViewOptions["margin"];
+type MarginType = UseInViewOptions["margin"]
 
 interface BlurFadeProps {
-	children: React.ReactNode;
-	className?: string;
+	children: React.ReactNode
+	className?: string
 	variant?: {
-		hidden: { y: number };
-		visible: { y: number };
-	};
-	duration?: number;
-	delay?: number;
-	offset?: number;
-	direction?: "up" | "down" | "left" | "right";
-	inView?: boolean;
-	inViewMargin?: MarginType;
-	blur?: string;
+		hidden: { y: number }
+		visible: { y: number }
+	}
+	duration?: number
+	delay?: number
+	offset?: number
+	direction?: "up" | "down" | "left" | "right"
+	inView?: boolean
+	inViewMargin?: MarginType
+	blur?: string
 }
 
 export default function BlurFade({
@@ -39,9 +39,9 @@ export default function BlurFade({
 	inViewMargin = "-50px",
 	blur = "6px",
 }: BlurFadeProps): React.JSX.Element {
-	const ref = useRef(null);
-	const inViewResult = useInView(ref, { once: true, margin: inViewMargin });
-	const isInView = !inView || inViewResult;
+	const ref = useRef(null)
+	const inViewResult = useInView(ref, { once: true, margin: inViewMargin })
+	const isInView = !inView || inViewResult
 	const defaultVariants: Variants = {
 		hidden: {
 			[direction === "left" || direction === "right" ? "x" : "y"]:
@@ -54,8 +54,8 @@ export default function BlurFade({
 			opacity: 1,
 			filter: "blur(0px)",
 		},
-	};
-	const combinedVariants = variant || defaultVariants;
+	}
+	const combinedVariants = variant || defaultVariants
 	return (
 		<AnimatePresence>
 			<motion.div
@@ -74,5 +74,5 @@ export default function BlurFade({
 				{children}
 			</motion.div>
 		</AnimatePresence>
-	);
+	)
 }

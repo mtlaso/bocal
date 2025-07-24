@@ -1,17 +1,17 @@
-"use client";
+"use client"
 
-import { useTranslations } from "next-intl";
-import { useActionState, useState } from "react";
-import { TbLinkPlus } from "react-icons/tb";
-import { useMediaQuery } from "@/app/[locale]/lib/hooks/use-media-query";
-import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl"
+import { useActionState, useState } from "react"
+import { TbLinkPlus } from "react-icons/tb"
+import { useMediaQuery } from "@/app/[locale]/lib/hooks/use-media-query"
+import { Button } from "@/components/ui/button"
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog"
 import {
 	Drawer,
 	DrawerClose,
@@ -20,38 +20,32 @@ import {
 	DrawerHeader,
 	DrawerTitle,
 	DrawerTrigger,
-} from "@/components/ui/drawer";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
-import { type AddLinkState, addLink } from "../../lib/actions";
-import { SPACING } from "../spacing";
+} from "@/components/ui/drawer"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { cn } from "@/lib/utils"
+import { type AddLinkState, addLink } from "../../lib/actions"
+import { SPACING } from "../spacing"
 
 export function AddLinkForm(): React.JSX.Element {
-	const [isOpen, setIsOpen] = useState(false);
-	const isDesktop = useMediaQuery("(min-width: 768px)");
+	const [isOpen, setIsOpen] = useState(false)
+	const isDesktop = useMediaQuery("(min-width: 768px)")
 
 	return isDesktop ? (
-		<AddLinkFormDesktop
-			isOpen={isOpen}
-			onOpen={(status: boolean): void => setIsOpen(status)}
-		/>
+		<AddLinkFormDesktop isOpen={isOpen} onOpen={(status: boolean): void => setIsOpen(status)} />
 	) : (
-		<AddLinkFormMobile
-			isOpen={isOpen}
-			onOpen={(status: boolean): void => setIsOpen(status)}
-		/>
-	);
+		<AddLinkFormMobile isOpen={isOpen} onOpen={(status: boolean): void => setIsOpen(status)} />
+	)
 }
 
 function AddLinkFormDesktop({
 	isOpen,
 	onOpen,
 }: {
-	isOpen: boolean;
-	onOpen: (status: boolean) => void;
+	isOpen: boolean
+	onOpen: (status: boolean) => void
 }): React.JSX.Element {
-	const t = useTranslations("dashboard");
+	const t = useTranslations("dashboard")
 
 	return (
 		<Dialog open={isOpen} onOpenChange={(status): void => onOpen(status)}>
@@ -67,17 +61,17 @@ function AddLinkFormDesktop({
 				<LinkForm />
 			</DialogContent>
 		</Dialog>
-	);
+	)
 }
 
 function AddLinkFormMobile({
 	isOpen,
 	onOpen,
 }: {
-	isOpen: boolean;
-	onOpen: (status: boolean) => void;
+	isOpen: boolean
+	onOpen: (status: boolean) => void
 }): React.JSX.Element {
-	const t = useTranslations("dashboard");
+	const t = useTranslations("dashboard")
 	return (
 		<Drawer open={isOpen} onOpenChange={onOpen}>
 			<DrawerTrigger asChild>
@@ -97,25 +91,19 @@ function AddLinkFormMobile({
 				</DrawerFooter>
 			</DrawerContent>
 		</Drawer>
-	);
+	)
 }
 
-function LinkForm({
-	className,
-}: React.ComponentProps<"form">): React.JSX.Element {
+function LinkForm({ className }: React.ComponentProps<"form">): React.JSX.Element {
 	const initialState: AddLinkState = {
 		errors: undefined,
 		defaultErrMessage: null,
 		data: undefined,
-	};
-	const t = useTranslations("dashboard");
-	const [state, formAction, pending] = useActionState(addLink, initialState);
+	}
+	const t = useTranslations("dashboard")
+	const [state, formAction, pending] = useActionState(addLink, initialState)
 	return (
-		<form
-			className={cn(SPACING.LG, "grid", className)}
-			action={formAction}
-			id="form"
-		>
+		<form className={cn(SPACING.LG, "grid", className)} action={formAction} id="form">
 			<div className={`${SPACING.SM}`}>
 				<Label htmlFor="url" className="block text-sm font-medium">
 					{t("addLinkForm.link")}
@@ -140,9 +128,7 @@ function LinkForm({
 					</p>
 				))}
 				{state?.defaultErrMessage && (
-					<p className="mt-2 text-sm text-destructive">
-						{t(state.defaultErrMessage)}
-					</p>
+					<p className="mt-2 text-sm text-destructive">{t(state.defaultErrMessage)}</p>
 				)}
 			</div>
 
@@ -150,5 +136,5 @@ function LinkForm({
 				{t("add")}
 			</Button>
 		</form>
-	);
+	)
 }

@@ -1,19 +1,19 @@
-"use server";
+"use server"
 
-import { randomUUID } from "node:crypto";
-import { and, eq, sql } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import { AuthError } from "next-auth";
-import { z } from "zod/v4";
-import { APP_ROUTES, LENGTHS } from "@/app/[locale]/lib/constants";
-import { dal } from "@/app/[locale]/lib/dal";
-import { feedService } from "@/app/[locale]/lib/feed-service";
-import { logger } from "@/app/[locale]/lib/logging";
-import { og } from "@/app/[locale]/lib/og";
-import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
-import { signIn, signOut } from "@/auth";
-import { db } from "@/db/db";
+import { randomUUID } from "node:crypto"
+import { and, eq, sql } from "drizzle-orm"
+import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
+import { AuthError } from "next-auth"
+import { z } from "zod/v4"
+import { APP_ROUTES, LENGTHS } from "@/app/[locale]/lib/constants"
+import { dal } from "@/app/[locale]/lib/dal"
+import { feedService } from "@/app/[locale]/lib/feed-service"
+import { logger } from "@/app/[locale]/lib/logging"
+import { og } from "@/app/[locale]/lib/og"
+import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs"
+import { signIn, signOut } from "@/auth"
+import { db } from "@/db/db"
 import {
 	addNewsletterSchema,
 	deleteLinkSchema,
@@ -29,273 +29,248 @@ import {
 	usersFeeds,
 	usersFeedsReadContent,
 	usersPreferences,
-} from "@/db/schema";
+} from "@/db/schema"
 
 type State<T, E extends string = keyof T & string> = {
-	errors?: { [key in E]?: string[] };
-	data?: T;
-	defaultErrMessage?: string | null;
-	successMessage?: string | null;
-};
+	errors?: { [key in E]?: string[] }
+	data?: T
+	defaultErrMessage?: string | null
+	successMessage?: string | null
+}
 
-export async function authenticate(
-	provider: string,
-): Promise<string | undefined> {
-	let redirectUrl: null | string = null;
+export async function authenticate(provider: string): Promise<string | undefined> {
+	let redirectUrl: null | string = null
 	try {
-		redirectUrl = await signIn(provider, { redirect: false });
+		redirectUrl = await signIn(provider, { redirect: false })
 	} catch (err) {
-		logger.error(err);
+		logger.error(err)
 		if (err instanceof AuthError) {
 			switch (err.message) {
 				case "CredentialsSignin":
-					return "errors.CredentialsSignin";
+					return "errors.CredentialsSignin"
 				case "OAuthSignInError":
-					return "errors.OAuthSignInError";
+					return "errors.OAuthSignInError"
 				case "OAuthCallbackError":
-					return "errors.OAuthCallbackError";
+					return "errors.OAuthCallbackError"
 				case "InvalidCallbackUrl":
-					return "errors.InvalidCallbackUrl";
+					return "errors.InvalidCallbackUrl"
 				case "CallbackRouteError":
-					return "errors.CallbackRouteError";
+					return "errors.CallbackRouteError"
 				default:
-					return "errors.default";
+					return "errors.default"
 			}
 		}
 
-		throw err;
+		throw err
 	}
 
 	if (redirectUrl) {
 		// 'redirect' ne peut pas être utilisé dans un try-catch.
-		redirect(redirectUrl);
+		redirect(redirectUrl)
 	}
 }
 
 export async function logout(): Promise<void> {
-	await signOut({ redirectTo: "/" });
+	await signOut({ redirectTo: "/" })
 }
 
 export type AddLinkState = State<{
-	url?: string;
-}>;
+	url?: string
+}>
 
-export async function addLink(
-	_currState: AddLinkState,
-	formData: FormData,
-): Promise<AddLinkState> {
+export async function addLink(_currState: AddLinkState, formData: FormData): Promise<AddLinkState> {
 	const validatedFields = insertLinksSchema.safeParse({
 		url: formData.get("url"),
-	});
+	})
 
 	if (!validatedFields.success) {
-		logger.info("Validation failed", validatedFields.error);
+		logger.info("Validation failed", validatedFields.error)
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { url: formData.get("url")?.toString() },
 			defaultErrMessage: "errors.missingFields",
-		};
+		}
 	}
 
 	try {
-		const user = await dal.verifySession();
+		const user = await dal.verifySession()
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("errors.notSignedIn")
 		}
 
-		const { ogTitle, ogImageURL } = await og.scrape(validatedFields.data.url);
+		const { ogTitle, ogImageURL } = await og.scrape(validatedFields.data.url)
 
 		await db.insert(links).values({
 			url: validatedFields.data.url,
 			userId: user.user.id,
 			ogTitle: ogTitle,
 			ogImageURL: ogImageURL,
-		});
+		})
 	} catch (err) {
-		logger.error(err);
+		logger.error(err)
 		return {
 			defaultErrMessage: "errors.unexpected",
 			errors: undefined,
-		};
+		}
 	}
 
-	revalidatePath(APP_ROUTES.links);
-	return {};
+	revalidatePath(APP_ROUTES.links)
+	return {}
 }
 
 type DeleteLinkState = State<{
-	id?: number;
-}>;
+	id?: number
+}>
 
 export async function deleteLink(id: number): Promise<DeleteLinkState> {
 	const validatedFields = deleteLinkSchema.safeParse({
 		id: id,
-	});
+	})
 
 	if (!validatedFields.success) {
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { id: id },
 			defaultErrMessage: "errors.missingFields",
-		};
+		}
 	}
 
 	try {
-		const user = await dal.verifySession();
+		const user = await dal.verifySession()
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("errors.notSignedIn")
 		}
 
 		await db
 			.delete(links)
-			.where(
-				and(
-					eq(links.id, validatedFields.data.id),
-					eq(links.userId, user.user.id),
-				),
-			)
-			.execute();
+			.where(and(eq(links.id, validatedFields.data.id), eq(links.userId, user.user.id)))
+			.execute()
 	} catch (err) {
-		logger.error(err);
+		logger.error(err)
 		return {
 			defaultErrMessage: "errors.unexpected",
-		};
+		}
 	}
 
-	revalidatePath(APP_ROUTES.links);
-	return {};
+	revalidatePath(APP_ROUTES.links)
+	return {}
 }
 
 export async function archiveLink(id: number): Promise<DeleteLinkState> {
 	const validatedFields = deleteLinkSchema.safeParse({
 		id: id,
-	});
+	})
 
 	if (!validatedFields.success) {
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { id: id },
 			defaultErrMessage: "errors.missingFields",
-		};
+		}
 	}
 
 	try {
-		const user = await dal.verifySession();
+		const user = await dal.verifySession()
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("errors.notSignedIn")
 		}
 
 		await db
 			.update(links)
 			.set({ isArchived: true })
-			.where(
-				and(
-					eq(links.id, validatedFields.data.id),
-					eq(links.userId, user.user.id),
-				),
-			)
-			.execute();
+			.where(and(eq(links.id, validatedFields.data.id), eq(links.userId, user.user.id)))
+			.execute()
 	} catch (err) {
-		logger.error(err);
+		logger.error(err)
 		return {
 			defaultErrMessage: "errors.unexpected",
-		};
+		}
 	}
 
-	revalidatePath(APP_ROUTES.links);
-	return {};
+	revalidatePath(APP_ROUTES.links)
+	return {}
 }
 
 export async function unarchiveLink(id: number): Promise<DeleteLinkState> {
 	const validatedFields = deleteLinkSchema.safeParse({
 		id: id,
-	});
+	})
 
 	if (!validatedFields.success) {
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { id: id },
 			defaultErrMessage: "errors.missingFields",
-		};
+		}
 	}
 
 	try {
-		const user = await dal.verifySession();
+		const user = await dal.verifySession()
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("errors.notSignedIn")
 		}
 
 		await db
 			.update(links)
 			.set({ isArchived: false })
-			.where(
-				and(
-					eq(links.id, validatedFields.data.id),
-					eq(links.userId, user.user.id),
-				),
-			)
-			.execute();
+			.where(and(eq(links.id, validatedFields.data.id), eq(links.userId, user.user.id)))
+			.execute()
 	} catch (err) {
-		logger.error(err);
+		logger.error(err)
 		return {
 			defaultErrMessage: "errors.unexpected",
-		};
+		}
 	}
 
-	revalidatePath(APP_ROUTES.archive);
-	return {};
+	revalidatePath(APP_ROUTES.archive)
+	return {}
 }
 
 export type AddFeedState = State<{
-	url?: string;
-}>;
+	url?: string
+}>
 
-export async function addFeed(
-	_currState: AddFeedState,
-	formData: FormData,
-): Promise<AddFeedState> {
+export async function addFeed(_currState: AddFeedState, formData: FormData): Promise<AddFeedState> {
 	const validatedFields = insertFeedsSchema.safeParse({
 		url: formData.get("url"),
-	});
+	})
 
 	if (!validatedFields.success) {
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { url: formData.get("url")?.toString() },
 			defaultErrMessage: "errors.missingFields",
-		};
+		}
 	}
 
 	try {
-		const user = await dal.verifySession();
+		const user = await dal.verifySession()
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("errors.notSignedIn")
 		}
 
-		let isMaxFeedsLimit = false;
-		let isFeedAlreadyFollowed = false;
+		let isMaxFeedsLimit = false
+		let isFeedAlreadyFollowed = false
 
 		await db.transaction(async (tx) => {
 			const userFeeds = await tx.query.usersFeeds.findMany({
 				where: eq(usersFeeds.userId, user.user.id),
-			});
+			})
 
 			if (userFeeds.length >= LENGTHS.feeds.maxPerUser) {
-				isMaxFeedsLimit = true;
-				return;
+				isMaxFeedsLimit = true
+				return
 			}
 
 			let feed = await tx.query.feeds.findFirst({
 				where: eq(feeds.url, validatedFields.data.url),
-			});
+			})
 
 			// IMPORTANT
 			// Ne pas retier les params des URL pour vérifier si des duplications existent comme 'example.com/feed et 'example.com/feed?some_data=...'.
 			// Certains flux peuvent avoir besoin des params et retourner du contenu qui changent le contenu du flux.
 			if (!feed) {
-				const { content, title } = await feedService.parse(
-					validatedFields.data.url,
-				);
+				const { content, title } = await feedService.parse(validatedFields.data.url)
 
 				const newFeed = await tx
 					.insert(feeds)
@@ -304,9 +279,9 @@ export async function addFeed(
 						title,
 						lastSyncAt: new Date(),
 					})
-					.returning();
+					.returning()
 
-				feed = newFeed[0];
+				feed = newFeed[0]
 
 				await tx.insert(feedsContent).values(
 					content.map((c) => ({
@@ -315,15 +290,15 @@ export async function addFeed(
 						title: c.title,
 						content: c.content,
 						date: new Date(c.date),
-					})),
-				);
+					}))
+				)
 
 				await tx.insert(usersFeeds).values({
 					userId: user.user.id,
 					feedId: feed.id,
-				});
+				})
 
-				return;
+				return
 			}
 
 			// Vérifier si l'utilisateur suit ce flux seulement si le flux existe déjà.
@@ -333,86 +308,81 @@ export async function addFeed(
 					feedId: usersFeeds.feedId,
 				})
 				.from(usersFeeds)
-				.where(
-					and(
-						eq(usersFeeds.userId, user.user.id),
-						eq(usersFeeds.feedId, feed.id),
-					),
-				);
+				.where(and(eq(usersFeeds.userId, user.user.id), eq(usersFeeds.feedId, feed.id)))
 
 			if (existingUserFeed.length > 0) {
-				isFeedAlreadyFollowed = true;
-				return;
+				isFeedAlreadyFollowed = true
+				return
 			}
 
 			await tx.insert(usersFeeds).values({
 				userId: user.user.id,
 				feedId: feed.id,
-			});
-		});
+			})
+		})
 
 		if (isFeedAlreadyFollowed) {
 			return {
 				defaultErrMessage: "errors.feedAlreadyFollowed",
 				errors: undefined,
-			};
+			}
 		}
 
 		if (isMaxFeedsLimit) {
 			return {
 				defaultErrMessage: "errors.maxFeedsReached",
 				errors: undefined,
-			};
+			}
 		}
 	} catch (err) {
-		logger.error(err);
+		logger.error(err)
 		if (err instanceof feedService.FeedUnreachable) {
 			return {
 				defaultErrMessage: "errors.feedUnreachable",
 				errors: undefined,
-			};
+			}
 		}
 
 		if (err instanceof feedService.FeedCannotBeProcessed) {
 			return {
 				defaultErrMessage: "errors.feedCannotBeProcessed",
 				errors: undefined,
-			};
+			}
 		}
 
 		return {
 			defaultErrMessage: "errors.unexpected",
 			errors: undefined,
-		};
+		}
 	}
 
-	revalidatePath(APP_ROUTES.feeds);
+	revalidatePath(APP_ROUTES.feeds)
 	return {
 		successMessage: "success",
-	};
+	}
 }
 
 export type UnfollowFeedState = State<{
-	feedId?: number;
-}>;
+	feedId?: number
+}>
 
 export async function unfollowFeed(id: string): Promise<UnfollowFeedState> {
 	const validatedFields = unfollowFeedSchema.safeParse({
 		feedId: Number.parseInt(id),
-	});
+	})
 
 	if (!validatedFields.success) {
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { feedId: Number.parseInt(id) },
 			defaultErrMessage: "errors.missingFields",
-		};
+		}
 	}
 
 	try {
-		const user = await dal.verifySession();
+		const user = await dal.verifySession()
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("errors.notSignedIn")
 		}
 
 		await db.transaction(async (tx) => {
@@ -421,60 +391,60 @@ export async function unfollowFeed(id: string): Promise<UnfollowFeedState> {
 				.where(
 					and(
 						eq(usersFeeds.userId, user.user.id),
-						eq(usersFeeds.feedId, validatedFields.data.feedId),
-					),
+						eq(usersFeeds.feedId, validatedFields.data.feedId)
+					)
 				)
-				.execute();
+				.execute()
 
 			await tx
 				.delete(usersFeedsReadContent)
 				.where(
 					and(
 						eq(usersFeedsReadContent.userId, user.user.id),
-						eq(usersFeedsReadContent.feedId, validatedFields.data.feedId),
-					),
+						eq(usersFeedsReadContent.feedId, validatedFields.data.feedId)
+					)
 				)
-				.execute();
-		});
+				.execute()
+		})
 	} catch (err) {
-		logger.error(err);
+		logger.error(err)
 		return {
 			defaultErrMessage: "errors.unexpected",
-		};
+		}
 	}
 
-	revalidatePath(APP_ROUTES.feeds);
+	revalidatePath(APP_ROUTES.feeds)
 	return {
 		successMessage: "successUnfollow",
-	};
+	}
 }
 
 export type MarkFeedContentAsReadState = State<{
-	feedId?: number;
-	feedContentId?: number;
-}>;
+	feedId?: number
+	feedContentId?: number
+}>
 
 export async function markFeedContentAsRead(
 	feedId: number,
-	feedContentId: number,
+	feedContentId: number
 ): Promise<MarkFeedContentAsReadState> {
 	const validatedFields = insertUsersFeedsReadContentSchema.safeParse({
 		feedId,
 		feedContentId,
-	});
+	})
 
 	if (!validatedFields.success) {
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { feedId, feedContentId },
 			defaultErrMessage: "errors.missingFields",
-		};
+		}
 	}
 
 	try {
-		const user = await dal.verifySession();
+		const user = await dal.verifySession()
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("errors.notSignedIn")
 		}
 
 		await db
@@ -486,44 +456,44 @@ export async function markFeedContentAsRead(
 				readAt: new Date(),
 			})
 			.onConflictDoNothing()
-			.execute();
+			.execute()
 	} catch (err) {
-		logger.error(err);
+		logger.error(err)
 		return {
 			defaultErrMessage: "errors.unexpected",
-		};
+		}
 	}
 
-	revalidatePath(APP_ROUTES.feeds);
-	return {};
+	revalidatePath(APP_ROUTES.feeds)
+	return {}
 }
 
 export type MarkFeedContentAsUnreadState = State<{
-	feedId?: number;
-	feedContentId?: number;
-}>;
+	feedId?: number
+	feedContentId?: number
+}>
 
 export async function markFeedContentAsUnread(
 	feedId: number,
-	feedContentId: number,
+	feedContentId: number
 ): Promise<MarkFeedContentAsUnreadState> {
 	const validatedFields = deleteUsersFeedsReadContentSchema.safeParse({
 		feedId,
 		feedContentId,
-	});
+	})
 
 	if (!validatedFields.success) {
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { feedId, feedContentId },
 			defaultErrMessage: "errors.missingFields",
-		};
+		}
 	}
 
 	try {
-		const user = await dal.verifySession();
+		const user = await dal.verifySession()
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("errors.notSignedIn")
 		}
 
 		await db
@@ -532,30 +502,27 @@ export async function markFeedContentAsUnread(
 				and(
 					eq(usersFeedsReadContent.userId, user.user.id),
 					eq(usersFeedsReadContent.feedId, validatedFields.data.feedId),
-					eq(
-						usersFeedsReadContent.feedContentId,
-						validatedFields.data.feedContentId,
-					),
-				),
+					eq(usersFeedsReadContent.feedContentId, validatedFields.data.feedContentId)
+				)
 			)
-			.execute();
+			.execute()
 	} catch (err) {
-		logger.error(err);
+		logger.error(err)
 		return {
 			defaultErrMessage: "errors.unexpected",
-		};
+		}
 	}
 
-	revalidatePath(APP_ROUTES.feeds);
-	return {};
+	revalidatePath(APP_ROUTES.feeds)
+	return {}
 }
 
 export type SetFeedContentLimitState = State<{
-	feedContentLimit: number;
-}>;
+	feedContentLimit: number
+}>
 
 export async function setFeedContentLimit(
-	feedContentLimit: number,
+	feedContentLimit: number
 ): Promise<SetFeedContentLimitState> {
 	const validatedFields = z
 		.object({
@@ -568,20 +535,20 @@ export async function setFeedContentLimit(
 					error: "errors.feedContentLimitFieldInvalid",
 				}),
 		})
-		.safeParse({ feedContentLimit });
+		.safeParse({ feedContentLimit })
 
 	if (!validatedFields.success) {
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { feedContentLimit },
 			defaultErrMessage: "errors.missingFields",
-		};
+		}
 	}
 
 	try {
-		const user = await dal.verifySession();
+		const user = await dal.verifySession()
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("errors.notSignedIn")
 		}
 
 		await db
@@ -590,43 +557,43 @@ export async function setFeedContentLimit(
 				prefs: sql`jsonb_set(prefs, '{feedContentLimit}', ${validatedFields.data.feedContentLimit})`,
 			})
 			.where(eq(usersPreferences.userId, user.user.id))
-			.execute();
+			.execute()
 	} catch (err) {
-		logger.error(err);
+		logger.error(err)
 		return {
 			defaultErrMessage: "errors.unexpected",
-		};
+		}
 	}
 
-	revalidatePath(APP_ROUTES.settings);
-	return {};
+	revalidatePath(APP_ROUTES.settings)
+	return {}
 }
 
 export type SetHideReadFeedContentState = State<{
-	hideRead: boolean;
-}>;
+	hideRead: boolean
+}>
 
 export async function setHideReadFeedContent(
-	hideRead: boolean,
+	hideRead: boolean
 ): Promise<SetHideReadFeedContentState> {
 	const validatedFields = z
 		.object({
 			hideRead: z.boolean(),
 		})
-		.safeParse({ hideRead });
+		.safeParse({ hideRead })
 
 	if (!validatedFields.success) {
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { hideRead: hideRead },
 			defaultErrMessage: "errors.missingFields",
-		};
+		}
 	}
 
 	try {
-		const user = await dal.verifySession();
+		const user = await dal.verifySession()
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("errors.notSignedIn")
 		}
 
 		await db
@@ -635,47 +602,45 @@ export async function setHideReadFeedContent(
 				prefs: sql`jsonb_set(prefs, '{hideReadFeedContent}', ${hideRead})`,
 			})
 			.where(eq(usersPreferences.userId, user.user.id))
-			.execute();
+			.execute()
 	} catch (err) {
-		logger.error(err);
+		logger.error(err)
 		return {
 			defaultErrMessage: "errors.unexpected",
-		};
+		}
 	}
 
-	revalidatePath(APP_ROUTES.settings);
-	return {};
+	revalidatePath(APP_ROUTES.settings)
+	return {}
 }
 
 export type ArchiveFeedContentState = State<{
-	url: string;
-}>;
+	url: string
+}>
 
 // This function is exactly the same as the one to add a link (AddLink).
 // The only difference is the endpoint to revalidate the path and the archiving.
 // They are seperated just in case.
-export async function archiveFeedContent(
-	url: string,
-): Promise<ArchiveFeedContentState> {
+export async function archiveFeedContent(url: string): Promise<ArchiveFeedContentState> {
 	const validatedFields = insertLinksSchema.safeParse({
 		url: url,
-	});
+	})
 
 	if (!validatedFields.success) {
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { url: url },
 			defaultErrMessage: "errors.missingFields",
-		};
+		}
 	}
 
 	try {
-		const user = await dal.verifySession();
+		const user = await dal.verifySession()
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("errors.notSignedIn")
 		}
 
-		const { ogTitle, ogImageURL } = await og.scrape(validatedFields.data.url);
+		const { ogTitle, ogImageURL } = await og.scrape(validatedFields.data.url)
 
 		await db.insert(links).values({
 			url: validatedFields.data.url,
@@ -683,56 +648,56 @@ export async function archiveFeedContent(
 			ogTitle: ogTitle,
 			ogImageURL: ogImageURL,
 			isArchived: true,
-		});
+		})
 	} catch (err) {
-		logger.error(err);
+		logger.error(err)
 		return {
 			defaultErrMessage: "errors.unexpected",
-		};
+		}
 	}
 
-	revalidatePath(APP_ROUTES.archive);
-	return { successMessage: "success" };
+	revalidatePath(APP_ROUTES.archive)
+	return { successMessage: "success" }
 }
 
 export type AddNewsletterState = State<{
-	title?: string;
-}>;
+	title?: string
+}>
 
 export async function addNewsletter(
 	_currState: AddNewsletterState,
-	formData: FormData,
+	formData: FormData
 ): Promise<AddNewsletterState> {
 	const validatedFields = addNewsletterSchema.safeParse({
 		title: formData.get("title"),
-	});
+	})
 
 	if (!validatedFields.success) {
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 			data: { title: formData.get("title")?.toString() },
 			defaultErrMessage: "errors.missingFields",
-		};
+		}
 	}
 
 	try {
-		const user = await dal.verifySession();
+		const user = await dal.verifySession()
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("errors.notSignedIn")
 		}
 
 		const userFeeds = await db.query.usersFeeds.findMany({
 			where: eq(usersFeeds.userId, user.user.id),
-		});
+		})
 
 		if (userFeeds.length >= LENGTHS.feeds.maxPerUser) {
 			return {
 				defaultErrMessage: "errors.maxFeedsReached",
 				errors: undefined,
-			};
+			}
 		}
 
-		const eid = randomUUID();
+		const eid = randomUUID()
 
 		const feed = await db
 			.insert(feeds)
@@ -743,47 +708,45 @@ export async function addNewsletter(
 				title: validatedFields.data.title,
 				lastSyncAt: new Date(),
 			})
-			.returning();
+			.returning()
 
 		await db.insert(usersFeeds).values({
 			userId: user.user.id,
 			feedId: feed[0].id,
-		});
+		})
 	} catch (err) {
-		logger.error(err);
+		logger.error(err)
 		return {
 			defaultErrMessage: "errors.unexpected",
-		};
+		}
 	}
 
-	revalidatePath(APP_ROUTES.newsletters);
+	revalidatePath(APP_ROUTES.newsletters)
 	return {
 		successMessage: "success",
-	};
+	}
 }
 
 export type DeleteNewsletterState = State<{
-	id: number;
-}>;
+	id: number
+}>
 
-export async function deleteNewsletter(
-	id: number,
-): Promise<DeleteNewsletterState> {
+export async function deleteNewsletter(id: number): Promise<DeleteNewsletterState> {
 	const validatedFields = deleteNewsletterSchema.safeParse({
 		id,
-	});
+	})
 
 	if (!validatedFields.success) {
 		return {
 			defaultErrMessage: "errors.missingFields",
 			errors: z.flattenError(validatedFields.error).fieldErrors,
-		};
+		}
 	}
 
 	try {
-		const user = await dal.verifySession();
+		const user = await dal.verifySession()
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("errors.notSignedIn")
 		}
 
 		// We don't check if there is a relationship in users_feeds because
@@ -791,19 +754,14 @@ export async function deleteNewsletter(
 		// though the newsletter page.
 		await db
 			.delete(feeds)
-			.where(
-				and(
-					eq(feeds.id, validatedFields.data.id),
-					eq(feeds.newsletterOwnerId, user.user.id),
-				),
-			);
+			.where(and(eq(feeds.id, validatedFields.data.id), eq(feeds.newsletterOwnerId, user.user.id)))
 	} catch (err) {
-		logger.error(err);
+		logger.error(err)
 		return {
 			defaultErrMessage: "errors.unexpected",
-		};
+		}
 	}
 
-	revalidatePath(APP_ROUTES.newsletters);
-	return {};
+	revalidatePath(APP_ROUTES.newsletters)
+	return {}
 }

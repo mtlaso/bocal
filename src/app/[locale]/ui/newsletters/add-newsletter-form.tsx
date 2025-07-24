@@ -1,22 +1,19 @@
-"use client";
-import { useTranslations } from "next-intl";
-import { useActionState, useState } from "react";
-import { TbLinkPlus, TbMail } from "react-icons/tb";
-import {
-	type AddNewsletterState,
-	addNewsletter,
-} from "@/app/[locale]/lib/actions";
-import { LENGTHS } from "@/app/[locale]/lib/constants";
-import { useMediaQuery } from "@/app/[locale]/lib/hooks/use-media-query";
-import { SPACING } from "@/app/[locale]/ui/spacing";
-import { Button } from "@/components/ui/button";
+"use client"
+import { useTranslations } from "next-intl"
+import { useActionState, useState } from "react"
+import { TbLinkPlus, TbMail } from "react-icons/tb"
+import { type AddNewsletterState, addNewsletter } from "@/app/[locale]/lib/actions"
+import { LENGTHS } from "@/app/[locale]/lib/constants"
+import { useMediaQuery } from "@/app/[locale]/lib/hooks/use-media-query"
+import { SPACING } from "@/app/[locale]/ui/spacing"
+import { Button } from "@/components/ui/button"
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog"
 import {
 	Drawer,
 	DrawerClose,
@@ -24,14 +21,14 @@ import {
 	DrawerFooter,
 	DrawerHeader,
 	DrawerTrigger,
-} from "@/components/ui/drawer";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
+} from "@/components/ui/drawer"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { cn } from "@/lib/utils"
 
 export function AddNewsletterForm(): React.JSX.Element {
-	const [isOpen, setIsOpen] = useState(false);
-	const isDesktop = useMediaQuery("(min-width: 768px)");
+	const [isOpen, setIsOpen] = useState(false)
+	const isDesktop = useMediaQuery("(min-width: 768px)")
 
 	return isDesktop ? (
 		<AddNewsletterFormDesktop
@@ -43,17 +40,17 @@ export function AddNewsletterForm(): React.JSX.Element {
 			isOpen={isOpen}
 			onOpen={(status: boolean): void => setIsOpen(status)}
 		/>
-	);
+	)
 }
 
 function AddNewsletterFormDesktop({
 	isOpen,
 	onOpen,
 }: {
-	isOpen: boolean;
-	onOpen: (status: boolean) => void;
+	isOpen: boolean
+	onOpen: (status: boolean) => void
 }): React.JSX.Element {
-	const t = useTranslations("newsletter");
+	const t = useTranslations("newsletter")
 
 	return (
 		<Dialog open={isOpen} onOpenChange={(status): void => onOpen(status)}>
@@ -69,17 +66,17 @@ function AddNewsletterFormDesktop({
 				<NewsletterForm />
 			</DialogContent>
 		</Dialog>
-	);
+	)
 }
 
 function AddNewsletterFormMobile({
 	isOpen,
 	onOpen,
 }: {
-	isOpen: boolean;
-	onOpen: (status: boolean) => void;
+	isOpen: boolean
+	onOpen: (status: boolean) => void
 }): React.JSX.Element {
-	const t = useTranslations("newsletter");
+	const t = useTranslations("newsletter")
 	return (
 		<Drawer open={isOpen} onOpenChange={onOpen}>
 			<DrawerTrigger asChild>
@@ -89,9 +86,7 @@ function AddNewsletterFormMobile({
 			</DrawerTrigger>
 			<DrawerContent>
 				<DrawerHeader>
-					<DialogTitle className="text-left">
-						{t("addNewsletterForm.title")}
-					</DialogTitle>
+					<DialogTitle className="text-left">{t("addNewsletterForm.title")}</DialogTitle>
 				</DrawerHeader>
 				<NewsletterForm className="px-4" />
 				<DrawerFooter className="pt-2">
@@ -101,28 +96,20 @@ function AddNewsletterFormMobile({
 				</DrawerFooter>
 			</DrawerContent>
 		</Drawer>
-	);
+	)
 }
 
-function NewsletterForm({
-	className,
-}: {
-	className?: string;
-}): React.JSX.Element {
-	const t = useTranslations("newsletter");
+function NewsletterForm({ className }: { className?: string }): React.JSX.Element {
+	const t = useTranslations("newsletter")
 	const initialState: AddNewsletterState = {
 		errors: undefined,
 		defaultErrMessage: undefined,
 		data: undefined,
-	};
-	const [state, action, pending] = useActionState(addNewsletter, initialState);
+	}
+	const [state, action, pending] = useActionState(addNewsletter, initialState)
 
 	return (
-		<form
-			action={action}
-			className={cn(SPACING.LG, "grid", className)}
-			id="form"
-		>
+		<form action={action} className={cn(SPACING.LG, "grid", className)} id="form">
 			<div className={SPACING.SM}>
 				<Label htmlFor="title" className="block text-sm font-medium">
 					{t("addNewsletterForm.feedTitle")}
@@ -154,15 +141,11 @@ function NewsletterForm({
 				))}
 
 				{state?.defaultErrMessage && (
-					<p className="mt-2 text-sm text-destructive">
-						{t(state.defaultErrMessage)}
-					</p>
+					<p className="mt-2 text-sm text-destructive">{t(state.defaultErrMessage)}</p>
 				)}
 
 				{state?.successMessage && (
-					<p className="mt-2 text-sm text-green-500">
-						{t(state.successMessage)}
-					</p>
+					<p className="mt-2 text-sm text-green-500">{t(state.successMessage)}</p>
 				)}
 			</div>
 
@@ -170,5 +153,5 @@ function NewsletterForm({
 				{t("add")}
 			</Button>
 		</form>
-	);
+	)
 }

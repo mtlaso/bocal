@@ -1,11 +1,11 @@
-import { AppNavigationMenu } from "@/app/[locale]/ui/app-navigation-menu";
-import { FeedsSidebar } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar";
-import { SidebarFeedsProvider } from "@/components/ui/sidebar";
+import { AppNavigationMenu } from "@/app/[locale]/ui/app-navigation-menu"
+import { FeedsSidebar } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar"
+import { SidebarFeedsProvider } from "@/components/ui/sidebar"
 
 export default function DashboardLayout({
 	children,
 }: {
-	children: React.ReactNode;
+	children: React.ReactNode
 }): React.JSX.Element {
 	return (
 		<SidebarFeedsProvider>
@@ -15,5 +15,5 @@ export default function DashboardLayout({
 				<main>{children}</main>
 			</div>
 		</SidebarFeedsProvider>
-	);
+	)
 }

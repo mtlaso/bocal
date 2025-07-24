@@ -1,9 +1,9 @@
 {
 	"$schema": "https://biomejs.dev/schemas/2.1.2/schema.json",
 	"vcs": {
-		"enabled": false,
+		"enabled": true,
 		"clientKind": "git",
-		"useIgnoreFile": false
+		"useIgnoreFile": true
 	},
 	"files": {
 		"ignoreUnknown": false,
@@ -16,12 +16,15 @@
 			"!**/*.config.*",
 			"!**/*.d.*",
 			"!**/*.css",
-			"!drizzle/*"
+			"!drizzle/*",
+			"!coverage/**"
 		]
 	},
 	"formatter": {
 		"enabled": true,
-		"indentStyle": "tab"
+		"indentStyle": "tab",
+		"lineWidth": 100,
+		"indentWidth": 2
 	},
 	"assist": {
 		"actions": {
@@ -50,10 +53,14 @@
 				"noUnusedImports": {
 					"level": "warn",
 					"fix": "safe"
-				}
+				},
+				"useExhaustiveDependencies": "warn",
+				"useHookAtTopLevel": "error"
 			},
 			"suspicious": {
-				"noConsole": "warn"
+				"noConsole": "warn",
+				"noDebugger": "error",
+				"noEmptyBlockStatements": "warn"
 			},
 			"style": {
 				"noParameterAssign": "error",
@@ -65,13 +72,29 @@
 				"noUnusedTemplateLiteral": "error",
 				"useNumberNamespace": "error",
 				"noInferrableTypes": "error",
-				"noUselessElse": "error"
+				"noUselessElse": "error",
+				"useConsistentArrayType": "error"
+			},
+			"performance": {
+				"noDelete": "warn",
+				"noAccumulatingSpread": "warn"
+			},
+			"complexity": {
+				"noExcessiveCognitiveComplexity": "warn",
+				"useSimplifiedLogicExpression": "error"
 			}
 		}
 	},
 	"javascript": {
 		"formatter": {
-			"quoteStyle": "double"
+			"quoteStyle": "double",
+			"semicolons": "asNeeded",
+			"trailingCommas": "es5"
+		}
+	},
+	"json": {
+		"formatter": {
+			"enabled": true
 		}
 	}
 }

@@ -1,17 +1,17 @@
-import { useTranslations } from "next-intl";
-import { Suspense } from "react";
-import { FeedsSidebarContent } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-content";
-import { FeedsSidebarSkeleton } from "@/app/[locale]/ui/skeletons";
+import { useTranslations } from "next-intl"
+import { Suspense } from "react"
+import { FeedsSidebarContent } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-content"
+import { FeedsSidebarSkeleton } from "@/app/[locale]/ui/skeletons"
 import {
 	SidebarContent,
 	SidebarFeeds,
 	SidebarGroup,
 	SidebarGroupContent,
 	SidebarGroupLabel,
-} from "@/components/ui/sidebar";
+} from "@/components/ui/sidebar"
 
 export function FeedsSidebar() {
-	const t = useTranslations("rssFeed");
+	const t = useTranslations("rssFeed")
 
 	return (
 		<SidebarFeeds>
@@ -26,5 +26,5 @@ export function FeedsSidebar() {
 				</SidebarGroup>
 			</SidebarContent>
 		</SidebarFeeds>
-	);
+	)
 }

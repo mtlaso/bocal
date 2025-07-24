@@ -1,20 +1,20 @@
-import DOMPurify from "isomorphic-dompurify";
+import DOMPurify from "isomorphic-dompurify"
 
 /**
  * readableUrl retourne une URL lisible. Retirer le 'www.' ou le 'http(s)://'.
  */
 const readableUrl = (url: string): string => {
-	const parsedURL = URL.parse(url);
+	const parsedURL = URL.parse(url)
 	if (parsedURL) {
 		if (parsedURL.hostname.startsWith("www.")) {
-			return parsedURL.hostname.slice(4);
+			return parsedURL.hostname.slice(4)
 		}
 
-		return parsedURL.hostname;
+		return parsedURL.hostname
 	}
 
-	return url;
-};
+	return url
+}
 
 /**
  * sanitizeHTML retire les balises HTML non autorisées.
@@ -72,7 +72,7 @@ function sanitizeHTML(html: string): string {
 			"start",
 			"reversed", // for lists
 		],
-	});
+	})
 }
 
 /**
@@ -81,4 +81,4 @@ function sanitizeHTML(html: string): string {
 export const parsing = {
 	readableUrl,
 	sanitizeHTML,
-};
+}

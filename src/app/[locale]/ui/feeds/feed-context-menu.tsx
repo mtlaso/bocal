@@ -1,22 +1,22 @@
-"use client";
-import { useTranslations } from "next-intl";
-import { useTransition } from "react";
-import { BsThreeDots } from "react-icons/bs";
-import { TbArchive } from "react-icons/tb";
-import { toast } from "sonner";
-import { archiveFeedContent } from "@/app/[locale]/lib/actions";
-import { Button } from "@/components/ui/button";
+"use client"
+import { useTranslations } from "next-intl"
+import { useTransition } from "react"
+import { BsThreeDots } from "react-icons/bs"
+import { TbArchive } from "react-icons/tb"
+import { toast } from "sonner"
+import { archiveFeedContent } from "@/app/[locale]/lib/actions"
+import { Button } from "@/components/ui/button"
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuGroup,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu"
 
 type Props = {
-	url: string;
-};
+	url: string
+}
 
 export function FeedContextMenu({ url }: Props): React.JSX.Element {
 	return (
@@ -34,27 +34,27 @@ export function FeedContextMenu({ url }: Props): React.JSX.Element {
 				</DropdownMenuGroup>
 			</DropdownMenuContent>
 		</DropdownMenu>
-	);
+	)
 }
 
 function ArchiveFeedContent({ url }: Props): React.JSX.Element {
-	const t = useTranslations("rssFeed.contextMenu");
-	const [isPending, startTransition] = useTransition();
+	const t = useTranslations("rssFeed.contextMenu")
+	const [isPending, startTransition] = useTransition()
 
 	const handleArchiveFeed = (): void => {
-		toast.success(t("success"));
+		toast.success(t("success"))
 		startTransition(async () => {
 			try {
-				const res = await archiveFeedContent(url);
+				const res = await archiveFeedContent(url)
 				if (res.defaultErrMessage) {
-					toast.error(t(res.defaultErrMessage));
-					return;
+					toast.error(t(res.defaultErrMessage))
+					return
 				}
 			} catch (_err) {
-				toast.error(t("errors.unexpected"));
+				toast.error(t("errors.unexpected"))
 			}
-		});
-	};
+		})
+	}
 
 	return (
 		<button
@@ -66,5 +66,5 @@ function ArchiveFeedContent({ url }: Props): React.JSX.Element {
 			<TbArchive aria-hidden />
 			{t("archive")}
 		</button>
-	);
+	)
 }

@@ -1,25 +1,23 @@
-import { cookies } from "next/headers";
-import { ImageResponse } from "next/og";
+import { cookies } from "next/headers"
+import { ImageResponse } from "next/og"
 
-const LOCALES = new Set(["en", "fr"]);
+const LOCALES = new Set(["en", "fr"])
 const TEXTS = {
 	en: {
 		title: "Bocal",
-		description:
-			"Save interesting articles and never miss updates from your favorite RSS feeds.",
+		description: "Save interesting articles and never miss updates from your favorite RSS feeds.",
 	},
 	fr: {
 		title: "Bocal",
 		description:
 			"Sauvegardez des articles intéressants et ne manquez jamais les mises à jour de vos flux RSS.",
 	},
-} as const;
+} as const
 
 export async function GET(): Promise<ImageResponse> {
-	const cookieStore = await cookies();
-	const cookieLocale = cookieStore.get("NEXT_LOCALE")?.value;
-	const locale =
-		cookieLocale && LOCALES.has(cookieLocale) ? cookieLocale : "en";
+	const cookieStore = await cookies()
+	const cookieLocale = cookieStore.get("NEXT_LOCALE")?.value
+	const locale = cookieLocale && LOCALES.has(cookieLocale) ? cookieLocale : "en"
 
 	return new ImageResponse(
 		<div
@@ -79,6 +77,6 @@ export async function GET(): Promise<ImageResponse> {
 		{
 			width: 1200,
 			height: 630,
-		},
-	);
+		}
+	)
 }

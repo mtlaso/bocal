@@ -1,113 +1,100 @@
-"use client";
-import type { CheckedState } from "@radix-ui/react-checkbox";
-import { useLocale, useTranslations } from "next-intl";
-import { useQueryStates } from "nuqs";
-import { startTransition, useOptimistic } from "react";
-import { toast } from "sonner";
-import {
-	markFeedContentAsRead,
-	markFeedContentAsUnread,
-} from "@/app/[locale]/lib/actions";
-import type { UserPreferences } from "@/app/[locale]/lib/constants";
-import { parsing } from "@/app/[locale]/lib/parsing";
-import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
-import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
-import { FeedContextMenu } from "@/app/[locale]/ui/feeds/feed-context-menu";
-import { SPACING } from "@/app/[locale]/ui/spacing";
-import { Checkbox } from "@/components/ui/checkbox";
-import type { FeedTimeline } from "@/db/schema";
-import { Link } from "@/i18n/routing";
-import { cn } from "@/lib/utils";
+"use client"
+import type { CheckedState } from "@radix-ui/react-checkbox"
+import { useLocale, useTranslations } from "next-intl"
+import { useQueryStates } from "nuqs"
+import { startTransition, useOptimistic } from "react"
+import { toast } from "sonner"
+import { markFeedContentAsRead, markFeedContentAsUnread } from "@/app/[locale]/lib/actions"
+import type { UserPreferences } from "@/app/[locale]/lib/constants"
+import { parsing } from "@/app/[locale]/lib/parsing"
+import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states"
+import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs"
+import { FeedContextMenu } from "@/app/[locale]/ui/feeds/feed-context-menu"
+import { SPACING } from "@/app/[locale]/ui/spacing"
+import { Checkbox } from "@/components/ui/checkbox"
+import type { FeedTimeline } from "@/db/schema"
+import { Link } from "@/i18n/routing"
+import { cn } from "@/lib/utils"
 
 type Props = {
-	timeline: FeedTimeline[];
-	userPreferences: UserPreferences;
-};
+	timeline: FeedTimeline[]
+	userPreferences: UserPreferences
+}
 
-export function FeedsTimeline({
-	timeline,
-	userPreferences,
-}: Props): React.JSX.Element {
+export function FeedsTimeline({ timeline, userPreferences }: Props): React.JSX.Element {
 	const [{ selectedFeed }] = useQueryStates(searchParamsState.searchParams, {
 		urlKeys: searchParamsState.urlKeys,
-	});
+	})
 
 	const items = timeline
 		.filter((el) => {
-			if (selectedFeed === searchParamsState.DEFAULT_FEED) return true;
-			return el.feedId.toString() === selectedFeed;
+			if (selectedFeed === searchParamsState.DEFAULT_FEED) return true
+			return el.feedId.toString() === selectedFeed
 		})
 		.filter((el) => {
-			if (userPreferences.hideReadFeedContent && el.readAt !== null)
-				return false;
-			return true;
+			if (userPreferences.hideReadFeedContent && el.readAt !== null) return false
+			return true
 		})
-		.slice(0, userPreferences.feedContentLimit);
+		.slice(0, userPreferences.feedContentLimit)
 
 	return (
 		<section className={cn("wrap-anywhere", SPACING.LG)}>
 			{items.map((item) => {
-				return <Item item={item} key={`${item.id}`} />;
+				return <Item item={item} key={`${item.id}`} />
 			})}
 		</section>
-	);
+	)
 }
 
 const Item = ({ item }: { item: FeedTimeline }): React.JSX.Element => {
-	const t = useTranslations("rssFeed");
-	const locale = useLocale();
+	const t = useTranslations("rssFeed")
+	const locale = useLocale()
 
-	const [isRead, setIsRead] = useOptimistic(item.readAt !== null);
+	const [isRead, setIsRead] = useOptimistic(item.readAt !== null)
 
-	const handleMarkAsRead = async (
-		feedId: number,
-		feedContentId: number,
-	): Promise<void> => {
+	const handleMarkAsRead = async (feedId: number, feedContentId: number): Promise<void> => {
 		startTransition(async () => {
 			try {
-				setIsRead(true);
-				const res = await markFeedContentAsRead(feedId, feedContentId);
+				setIsRead(true)
+				const res = await markFeedContentAsRead(feedId, feedContentId)
 
 				if (res.defaultErrMessage) {
-					toast.error(t(res.defaultErrMessage));
+					toast.error(t(res.defaultErrMessage))
 				}
 			} catch (_err) {
-				setIsRead(false);
-				toast.error(t("errors.unexpected"));
+				setIsRead(false)
+				toast.error(t("errors.unexpected"))
 			}
-		});
-	};
+		})
+	}
 
-	const handleMarkAsUnread = async (
-		feedId: number,
-		feedContentId: number,
-	): Promise<void> => {
+	const handleMarkAsUnread = async (feedId: number, feedContentId: number): Promise<void> => {
 		startTransition(async () => {
 			try {
-				setIsRead(false);
-				const res = await markFeedContentAsUnread(feedId, feedContentId);
+				setIsRead(false)
+				const res = await markFeedContentAsUnread(feedId, feedContentId)
 
 				if (res.defaultErrMessage) {
-					toast.error(t(res.defaultErrMessage));
+					toast.error(t(res.defaultErrMessage))
 				}
 			} catch (_err) {
-				setIsRead(true);
-				toast.error(t("errors.unexpected"));
+				setIsRead(true)
+				toast.error(t("errors.unexpected"))
 			}
-		});
-	};
+		})
+	}
 
 	const handleToggleReadStatus = (
 		checkState: CheckedState,
 		feedId: number,
-		feedContentId: number,
+		feedContentId: number
 	): void => {
 		if (checkState) {
-			handleMarkAsRead(feedId, feedContentId);
+			handleMarkAsRead(feedId, feedContentId)
 		} else {
-			handleMarkAsUnread(feedId, feedContentId);
+			handleMarkAsUnread(feedId, feedContentId)
 		}
-	};
+	}
 
 	return (
 		<div className="flex gap-2">
@@ -117,7 +104,7 @@ const Item = ({ item }: { item: FeedTimeline }): React.JSX.Element => {
 					className="rounded-full border border-dashed border-primary cursor-pointer"
 					checked={isRead}
 					onCheckedChange={(e): void => {
-						handleToggleReadStatus(e, item.feedId, item.id);
+						handleToggleReadStatus(e, item.feedId, item.id)
 					}}
 				/>
 				<label htmlFor={`readToggle-${item.id}`} className="sr-only">
@@ -133,20 +120,14 @@ const Item = ({ item }: { item: FeedTimeline }): React.JSX.Element => {
 				href={userfeedsfuncs.formatFeedURL(item.url)}
 				target="_blank"
 			>
-				<h2 className="tracking-tight text-xl font-semibold line-clamp-3">
-					{item.title}
-				</h2>
+				<h2 className="tracking-tight text-xl font-semibold line-clamp-3">{item.title}</h2>
 				<div>
-					<p className="text-primary font-medium">
-						{parsing.readableUrl(item.url)}
-					</p>
-					<p className="text-muted-foreground">
-						{new Date(item.date).toLocaleDateString(locale)}
-					</p>
+					<p className="text-primary font-medium">{parsing.readableUrl(item.url)}</p>
+					<p className="text-muted-foreground">{new Date(item.date).toLocaleDateString(locale)}</p>
 				</div>
 			</Link>
 
 			<FeedContextMenu url={item.url} />
 		</div>
-	);
-};
+	)
+}

@@ -13,6 +13,7 @@
 		"test:run": "vitest run",
 		"test:coverage": "vitest --coverage",
 		"type-check": "tsc --noEmit",
+		"analyze": "ANALYZE=true pnpm build",
 		"migration:generate": "pnpm drizzle-kit generate",
 		"migration:migrate": "pnpm drizzle-kit migrate"
 	},
@@ -68,6 +69,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.1.2",
+		"@next/bundle-analyzer": "^15.4.3",
 		"@tailwindcss/postcss": "^4.1.11",
 		"@tailwindcss/typography": "^0.5.16",
 		"@testing-library/jest-dom": "^6.6.3",

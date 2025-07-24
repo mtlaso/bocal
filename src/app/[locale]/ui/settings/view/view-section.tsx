@@ -1,89 +1,80 @@
-"use client";
-import { useTranslations } from "next-intl";
-import { startTransition, useOptimistic } from "react";
-import { toast } from "sonner";
-import {
-	setFeedContentLimit,
-	setHideReadFeedContent,
-} from "@/app/[locale]/lib/actions";
-import type { UserPreferences } from "@/app/[locale]/lib/constants";
-import { logger } from "@/app/[locale]/lib/logging";
-import { SPACING } from "@/app/[locale]/ui/spacing";
-import { Label } from "@/components/ui/label";
+"use client"
+import { useTranslations } from "next-intl"
+import { startTransition, useOptimistic } from "react"
+import { toast } from "sonner"
+import { setFeedContentLimit, setHideReadFeedContent } from "@/app/[locale]/lib/actions"
+import type { UserPreferences } from "@/app/[locale]/lib/constants"
+import { logger } from "@/app/[locale]/lib/logging"
+import { SPACING } from "@/app/[locale]/ui/spacing"
+import { Label } from "@/components/ui/label"
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { cn } from "@/lib/utils";
+} from "@/components/ui/select"
+import { Switch } from "@/components/ui/switch"
+import { cn } from "@/lib/utils"
 
 type Props = {
-	userPreferences: UserPreferences;
-};
+	userPreferences: UserPreferences
+}
 
 export function ViewSection({ userPreferences }: Props): React.JSX.Element {
-	const t = useTranslations("settings.viewSection");
+	const t = useTranslations("settings.viewSection")
 
 	return (
 		<section className={cn("mb-12", SPACING.LG)}>
 			<h1 className="text-xl font-medium">{t("title")}</h1>
 
 			<Group>
-				<FeedContentLimitForm
-					feedContentLimit={userPreferences.feedContentLimit}
-				/>
-				<HideReadFeedContentForm
-					hideReadFeedContent={userPreferences.hideReadFeedContent}
-				/>
+				<FeedContentLimitForm feedContentLimit={userPreferences.feedContentLimit} />
+				<HideReadFeedContentForm hideReadFeedContent={userPreferences.hideReadFeedContent} />
 			</Group>
 		</section>
-	);
+	)
 }
 
 function Group({ children }: { children: React.ReactNode }): React.JSX.Element {
-	return (
-		<div className={cn("border rounded-md p-4", SPACING.LG)}>{children}</div>
-	);
+	return <div className={cn("border rounded-md p-4", SPACING.LG)}>{children}</div>
 }
 
 function FeedContentLimitForm({
 	feedContentLimit,
 }: {
-	feedContentLimit: number;
+	feedContentLimit: number
 }): React.JSX.Element {
-	const [value, setValue] = useOptimistic(feedContentLimit);
+	const [value, setValue] = useOptimistic(feedContentLimit)
 
 	const handleFeedLimit = (e: string): void => {
 		startTransition(async () => {
 			try {
-				setValue(Number.parseInt(e));
-				toast.success(t("success"));
-				const res = await setFeedContentLimit(Number.parseInt(e));
+				setValue(Number.parseInt(e))
+				toast.success(t("success"))
+				const res = await setFeedContentLimit(Number.parseInt(e))
 				if (res.errors?.feedContentLimit) {
-					setValue(feedContentLimit);
+					setValue(feedContentLimit)
 					for (const error of res.errors.feedContentLimit) {
-						toast.error(t(error));
+						toast.error(t(error))
 					}
-					return;
+					return
 				}
 
 				if (res.defaultErrMessage) {
-					setValue(feedContentLimit);
-					toast.error(t(res.defaultErrMessage));
-					return;
+					setValue(feedContentLimit)
+					toast.error(t(res.defaultErrMessage))
+					return
 				}
 			} catch (err) {
-				setValue(feedContentLimit);
-				logger.error(err);
-				toast.error(t("errors.unexpected"));
+				setValue(feedContentLimit)
+				logger.error(err)
+				toast.error(t("errors.unexpected"))
 			}
-		});
-	};
+		})
+	}
 
-	const t = useTranslations("settings.viewSection");
+	const t = useTranslations("settings.viewSection")
 
 	return (
 		<div className="flex justify-between items-center gap-4">
@@ -96,7 +87,7 @@ function FeedContentLimitForm({
 
 			<Select
 				onValueChange={(e): void => {
-					handleFeedLimit(e);
+					handleFeedLimit(e)
 				}}
 				value={value.toString()}
 			>
@@ -127,43 +118,43 @@ function FeedContentLimitForm({
 				</SelectContent>
 			</Select>
 		</div>
-	);
+	)
 }
 
 function HideReadFeedContentForm({
 	hideReadFeedContent,
 }: {
-	hideReadFeedContent: boolean;
+	hideReadFeedContent: boolean
 }): React.JSX.Element {
-	const t = useTranslations("settings.viewSection");
-	const [value, setValue] = useOptimistic(hideReadFeedContent);
+	const t = useTranslations("settings.viewSection")
+	const [value, setValue] = useOptimistic(hideReadFeedContent)
 
 	const handleCheckedChange = (checked: boolean) => {
 		startTransition(async () => {
 			try {
-				setValue(checked);
-				toast.success(t("success"));
-				const res = await setHideReadFeedContent(checked);
+				setValue(checked)
+				toast.success(t("success"))
+				const res = await setHideReadFeedContent(checked)
 				if (res.errors?.hideRead) {
-					setValue(hideReadFeedContent);
+					setValue(hideReadFeedContent)
 					for (const error of res.errors.hideRead) {
-						toast.error(t(error));
+						toast.error(t(error))
 					}
-					return;
+					return
 				}
 
 				if (res.defaultErrMessage) {
-					setValue(hideReadFeedContent);
-					toast.error(t(res.defaultErrMessage));
-					return;
+					setValue(hideReadFeedContent)
+					toast.error(t(res.defaultErrMessage))
+					return
 				}
 			} catch (err) {
-				logger.error(err);
-				setValue(hideReadFeedContent);
-				toast.error(err?.toString() ?? t("errors.unexpected"));
+				logger.error(err)
+				setValue(hideReadFeedContent)
+				toast.error(err?.toString() ?? t("errors.unexpected"))
 			}
-		});
-	};
+		})
+	}
 
 	return (
 		<div className="flex justify-between items-center gap-4">
@@ -174,11 +165,7 @@ function HideReadFeedContentForm({
 				<p className="text-sm text-muted-foreground">{t("hide.description")}</p>
 			</div>
 
-			<Switch
-				id="hide-switch"
-				checked={value}
-				onCheckedChange={handleCheckedChange}
-			/>
+			<Switch id="hide-switch" checked={value} onCheckedChange={handleCheckedChange} />
 		</div>
-	);
+	)
 }
