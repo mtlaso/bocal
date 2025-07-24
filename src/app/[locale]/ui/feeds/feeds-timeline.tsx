@@ -37,13 +37,16 @@ export function FeedsTimeline({
 			if (selectedFeed === searchParamsState.DEFAULT_FEED) return true;
 			return el.feedId.toString() === selectedFeed;
 		})
+		.filter((el) => {
+			if (userPreferences.hideReadFeedContent && el.readAt !== null)
+				return false;
+			return true;
+		})
 		.slice(0, userPreferences.feedContentLimit);
 
 	return (
 		<section className={cn("wrap-anywhere", SPACING.LG)}>
 			{items.map((item) => {
-				if (userPreferences.hideReadFeedContent && item.readAt !== null)
-					return null;
 				return <Item item={item} key={`${item.id}`} />;
 			})}
 		</section>
