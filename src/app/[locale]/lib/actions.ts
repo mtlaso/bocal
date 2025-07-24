@@ -27,7 +27,6 @@ import {
 	insertUsersSchema,
 	links,
 	unfollowFeedSchema,
-	users,
 	usersFeeds,
 	usersFeedsReadContent,
 	usersPreferences,
@@ -578,9 +577,11 @@ export async function setFeedContentLimit(
 		}
 
 		await db
-			.update(users)
-			.set({ feedContentLimit: validatedFields.data.feedContentLimit })
-			.where(eq(users.id, user.user.id))
+			.update(usersPreferences)
+			.set({
+				prefs: sql`jsonb_set(prefs, '{feedContentLimit}', ${validatedFields.data.feedContentLimit})`,
+			})
+			.where(eq(usersPreferences.userId, user.user.id))
 			.execute();
 	} catch (err) {
 		logger.error(err);
