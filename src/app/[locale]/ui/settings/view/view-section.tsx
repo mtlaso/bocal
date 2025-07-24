@@ -61,7 +61,7 @@ function FeedContentLimitForm({
 			try {
 				setValue(Number.parseInt(e));
 				toast.success(t("success"));
-				const res = await setFeedContentLimit(e);
+				const res = await setFeedContentLimit(Number.parseInt(e));
 				if (res.errors?.feedContentLimit) {
 					setValue(feedContentLimit);
 					for (const error of res.errors.feedContentLimit) {

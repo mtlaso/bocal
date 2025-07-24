@@ -1,7 +1,6 @@
-import { type InferSelectModel, sql } from "drizzle-orm";
+import type { InferSelectModel } from "drizzle-orm";
 import {
 	boolean,
-	check,
 	integer,
 	jsonb,
 	pgTable,
@@ -18,7 +17,6 @@ import {
 	type DEFAULT_USERS_PREFERENCES,
 	FeedErrorType,
 	FeedStatusType,
-	LENGTHS,
 } from "@/app/[locale]/lib/constants";
 
 // biome-ignore lint/suspicious/noExplicitAny: locale exception.
@@ -43,14 +41,13 @@ export const users = pgTable(
 		email: text().unique(),
 		emailVerified: timestamp({ mode: "date" }),
 		image: text(),
-		feedContentLimit: integer().default(10).notNull(),
 	},
-	(table) => [
-		check(
-			"feedContentLimit_check",
-			sql`${table.feedContentLimit} > 0 AND ${table.feedContentLimit} <= 100`,
-		),
-	],
+	// (table) => [
+	// 	check(
+	// 		"feedContentLimit_check",
+	// 		sql`${table.feedContentLimit} > 0 AND ${table.feedContentLimit} <= 100`,
+	// 	),
+	// ],
 );
 
 /**
@@ -240,17 +237,6 @@ export const authenticators = pgTable(
 		}),
 	],
 );
-
-export const insertUsersSchema = createInsertSchema(users, {
-	feedContentLimit: (schema): z.ZodCoercedNumber =>
-		schema
-			.gt(0, {
-				error: "errors.feedContentLimitFieldInvalid",
-			})
-			.lte(LENGTHS.feeds.maxPerUser, {
-				error: "errors.feedContentLimitFieldInvalid",
-			}),
-}).pick({ feedContentLimit: true });
 
 export const insertLinksSchema = createInsertSchema(links, {
 	url: (): z.ZodCoercedString =>

@@ -24,7 +24,6 @@ import {
 	insertFeedsSchema,
 	insertLinksSchema,
 	insertUsersFeedsReadContentSchema,
-	insertUsersSchema,
 	links,
 	unfollowFeedSchema,
 	usersFeeds,
@@ -552,15 +551,24 @@ export async function markFeedContentAsUnread(
 }
 
 export type SetFeedContentLimitState = State<{
-	feedContentLimit?: string;
+	feedContentLimit: number;
 }>;
 
 export async function setFeedContentLimit(
-	feedContentLimit: string,
+	feedContentLimit: number,
 ): Promise<SetFeedContentLimitState> {
-	const validatedFields = insertUsersSchema.safeParse({
-		feedContentLimit: Number.parseInt(feedContentLimit),
-	});
+	const validatedFields = z
+		.object({
+			feedContentLimit: z
+				.number()
+				.min(1, {
+					error: "errors.feedContentLimitFieldInvalid",
+				})
+				.max(2, {
+					error: "errors.feedContentLimitFieldInvalid",
+				}),
+		})
+		.safeParse({ feedContentLimit });
 
 	if (!validatedFields.success) {
 		return {

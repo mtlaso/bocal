@@ -25,7 +25,6 @@ declare module "next-auth" {
 	interface Session {
 		user: {
 			id: string;
-			feedContentLimit: number;
 			preferences: typeof DEFAULT_USERS_PREFERENCES;
 		} & DefaultSession["user"];
 	}
@@ -72,7 +71,10 @@ const config = {
 					prefs: DEFAULT_USERS_PREFERENCES,
 				});
 			} else {
-				logger.warn("User ID is not defined in auth.ts > createUser", user);
+				logger.error(
+					"User ID is somehow not defined in auth.ts > createUser",
+					user,
+				);
 			}
 		},
 	},
