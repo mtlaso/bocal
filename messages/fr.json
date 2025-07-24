@@ -125,7 +125,7 @@
 		"errors": {
 			"urlFieldInvalid": "URL invalide.",
 			"idFieldInvalid": "ID invalide.",
-			"missingFields": "Champ(s) manquant(s)."
+			"unexpected": "Une erreur inattendue s'est produite."
 		}
 	},
 	"archive": {

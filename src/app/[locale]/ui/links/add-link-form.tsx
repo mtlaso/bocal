@@ -138,7 +138,7 @@ function LinkForm({
 				))}
 				{state?.defaultErrMessage && (
 					<p className="mt-2 text-sm text-destructive">
-						{t(state.defaultErrMessage)}
+						{state.defaultErrMessage}
 					</p>
 				)}
 			</div>

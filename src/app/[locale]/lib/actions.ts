@@ -31,6 +31,8 @@ import {
 	usersPreferences,
 } from "@/db/schema";
 
+const UNEXPECTED_ERROR_MESSAGE = "An unexpected error occurred";
+
 type State<T, E extends string = keyof T & string> = {
 	errors?: { [key in E]?: string[] };
 	data?: T;
@@ -95,13 +97,13 @@ export async function addLink(
 			error: (iss) => {
 				const path = iss.path?.join(".");
 				if (!path) {
-					return { message: t("errors.missingFields") };
+					return { message: t("errors.unexpected") };
 				}
 
 				const message = {
 					url: t("errors.urlFieldInvalid"),
 				}[path];
-				return { message: message ?? t("errors.missingFeilds") };
+				return { message: message ?? t("errors.unexpected") };
 			},
 		});
 
@@ -123,7 +125,7 @@ export async function addLink(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrMessage: "An unexpected error occurred",
+			defaultErrMessage: UNEXPECTED_ERROR_MESSAGE,
 			errors: undefined,
 		};
 	}
@@ -133,26 +135,38 @@ export async function addLink(
 }
 
 type DeleteLinkState = State<{
-	id?: number;
+	id: number;
 }>;
 
 export async function deleteLink(id: number): Promise<DeleteLinkState> {
-	const validatedFields = deleteLinkSchema.safeParse({
-		id: id,
-	});
-
-	if (!validatedFields.success) {
-		return {
-			errors: z.flattenError(validatedFields.error).fieldErrors,
-			data: { id: id },
-			defaultErrMessage: "errors.missingFields",
-		};
-	}
-
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
+		}
+
+		const t = await getTranslations("dashboard");
+		const payload = { id: id };
+		const validatedFields = deleteLinkSchema.safeParse(payload, {
+			error: (iss) => {
+				const path = iss.path?.join(".");
+				if (!path) {
+					return { message: t("errors.unexpected") };
+				}
+
+				const message = {
+					id: t("errors.idFieldInvalid"),
+				}[path];
+
+				return { message: message ?? t("errors.unexpected") };
+			},
+		});
+
+		if (!validatedFields.success) {
+			return {
+				errors: z.flattenError(validatedFields.error).fieldErrors,
+				data: { id: id },
+			};
 		}
 
 		await db
@@ -167,7 +181,7 @@ export async function deleteLink(id: number): Promise<DeleteLinkState> {
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrMessage: "errors.unexpected",
+			defaultErrMessage: UNEXPECTED_ERROR_MESSAGE,
 		};
 	}
 

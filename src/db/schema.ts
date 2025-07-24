@@ -243,10 +243,7 @@ export const insertLinksSchema = createInsertSchema(links, {
 }).pick({ url: true });
 
 export const deleteLinkSchema = createSelectSchema(links, {
-	id: (schema): z.ZodCoercedNumber =>
-		schema.nonnegative({
-			error: "errors.idFieldInvalid",
-		}),
+	id: (schema): z.ZodCoercedNumber => schema.nonnegative(),
 }).pick({ id: true });
 
 export const insertFeedsSchema = createInsertSchema(feeds, {

@@ -188,13 +188,17 @@ function DeleteLink({
 				const res = await deleteLink(id);
 
 				if (res.defaultErrMessage) {
-					toast.error(t(res.defaultErrMessage));
+					toast.error(res.defaultErrMessage);
 					onDeleteFailed(id);
 					return;
 				}
-			} catch (_err) {
+			} catch (err) {
 				onDeleteFailed(id);
-				toast.error(t("errors.unexpected"));
+				if (err instanceof Error) {
+					toast.error(err.message);
+				} else {
+					toast.error(t("errors.unexpected"));
+				}
 			}
 		});
 	};
