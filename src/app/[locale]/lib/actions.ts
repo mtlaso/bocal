@@ -564,7 +564,7 @@ export async function setFeedContentLimit(
 				.min(1, {
 					error: "errors.feedContentLimitFieldInvalid",
 				})
-				.max(2, {
+				.max(LENGTHS.feeds.maxPerUser, {
 					error: "errors.feedContentLimitFieldInvalid",
 				}),
 		})
@@ -623,18 +623,26 @@ export async function setHideReadFeedContent(
 		};
 	}
 
-	const user = await dal.verifySession();
-	if (!user) {
-		throw new Error("errors.notSignedIn");
-	}
+	try {
+		const user = await dal.verifySession();
+		if (!user) {
+			throw new Error("errors.notSignedIn");
+		}
 
-	const val = String(validatedFields.data.hideRead);
-	db.update(usersPreferences)
-		.set({
-			prefs: sql`jsonb_set(prefs, '{hideReadFeedContent}', ${val})`,
-		})
-		.where(eq(usersPreferences.userId, user.user.id))
-		.execute();
+		const val = String(validatedFields.data.hideRead);
+		await db
+			.update(usersPreferences)
+			.set({
+				prefs: sql`jsonb_set(prefs, '{hideReadFeedContent}', ${val})`,
+			})
+			.where(eq(usersPreferences.userId, user.user.id))
+			.execute();
+	} catch (err) {
+		logger.error(err);
+		return {
+			defaultErrMessage: "errors.unexpected",
+		};
+	}
 
 	revalidatePath(APP_ROUTES.settings);
 	return {};
