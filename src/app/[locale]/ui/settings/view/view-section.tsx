@@ -21,14 +21,10 @@ import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 
 type Props = {
-	feedContentLimit: number;
 	userPreferences: UserPreferences;
 };
 
-export function ViewSection({
-	feedContentLimit,
-	userPreferences,
-}: Props): React.JSX.Element {
+export function ViewSection({ userPreferences }: Props): React.JSX.Element {
 	const t = useTranslations("settings.viewSection");
 
 	return (
@@ -36,7 +32,9 @@ export function ViewSection({
 			<h1 className="text-xl font-medium">{t("title")}</h1>
 
 			<Group>
-				<FeedContentLimitForm feedContentLimit={feedContentLimit} />
+				<FeedContentLimitForm
+					feedContentLimit={userPreferences.feedContentLimit}
+				/>
 				<HideReadFeedContentForm
 					hideReadFeedContent={userPreferences.hideReadFeedContent}
 				/>

@@ -16,10 +16,7 @@ export async function Settings({ user }: Props): Promise<React.JSX.Element> {
 	return (
 		<section>
 			<ProfileSection name={user.name ?? ""} email={user.email ?? ""} />
-			<ViewSection
-				userPreferences={user.preferences}
-				feedContentLimit={user.feedContentLimit}
-			/>
+			<ViewSection userPreferences={user.preferences} />
 			<ExportDataSection />
 			<DeleteAccountSection />
 		</section>
