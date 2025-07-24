@@ -75,30 +75,41 @@ export async function logout(): Promise<void> {
 }
 
 export type AddLinkState = State<{
-	url?: string;
+	url: string;
 }>;
 
 export async function addLink(
 	_currState: AddLinkState,
 	formData: FormData,
 ): Promise<AddLinkState> {
-	const validatedFields = insertLinksSchema.safeParse({
-		url: formData.get("url"),
-	});
-
-	if (!validatedFields.success) {
-		logger.info("Validation failed", validatedFields.error);
-		return {
-			errors: z.flattenError(validatedFields.error).fieldErrors,
-			data: { url: formData.get("url")?.toString() },
-			defaultErrMessage: "errors.missingFields",
-		};
-	}
-
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
+		}
+
+		const t = await getTranslations("dashboard");
+
+		const payload = { url: formData.get("url") };
+		const validatedFields = insertLinksSchema.safeParse(payload, {
+			error: (iss) => {
+				const path = iss.path?.join(".");
+				if (!path) {
+					return { message: t("errors.missingFields") };
+				}
+
+				const message = {
+					url: t("errors.urlFieldInvalid"),
+				}[path];
+				return { message: message ?? t("errors.missingFeilds") };
+			},
+		});
+
+		if (!validatedFields.success) {
+			return {
+				errors: z.flattenError(validatedFields.error).fieldErrors,
+				data: { url: formData.get("url") as string },
+			};
 		}
 
 		const { ogTitle, ogImageURL } = await og.scrape(validatedFields.data.url);
@@ -112,7 +123,7 @@ export async function addLink(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrMessage: "errors.unexpected",
+			defaultErrMessage: "An unexpected error occurred",
 			errors: undefined,
 		};
 	}

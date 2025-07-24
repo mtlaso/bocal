@@ -239,10 +239,7 @@ export const authenticators = pgTable(
 );
 
 export const insertLinksSchema = createInsertSchema(links, {
-	url: (): z.ZodCoercedString =>
-		z.url({
-			error: "errors.urlFieldInvalid",
-		}),
+	url: (): z.ZodCoercedString => z.url(),
 }).pick({ url: true });
 
 export const deleteLinkSchema = createSelectSchema(links, {

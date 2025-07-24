@@ -9,64 +9,64 @@ import { authenticate } from "../../lib/actions";
 import { SPACING } from "../spacing";
 
 export function LoginForm(): React.JSX.Element {
-  const t = useTranslations("login");
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [redirectingMsg, setRedirectingMsg] = useState("");
+	const t = useTranslations("login");
+	const [isDisabled, setIsDisabled] = useState(false);
+	const [redirectingMsg, setRedirectingMsg] = useState("");
 
-  const handleProviderSignIn = async (
-    e: React.MouseEvent,
-    provider: string,
-  ): Promise<void> => {
-    try {
-      setIsDisabled(true);
-      setRedirectingMsg("");
-      e.preventDefault();
-      const authErrMsg = await authenticate(provider);
+	const handleProviderSignIn = async (
+		e: React.MouseEvent,
+		provider: string,
+	): Promise<void> => {
+		try {
+			setIsDisabled(true);
+			setRedirectingMsg("");
+			e.preventDefault();
+			const authErrMsg = await authenticate(provider);
 
-      if (typeof authErrMsg === "string") {
-        toast.error(authErrMsg);
-        return;
-      }
+			if (typeof authErrMsg === "string") {
+				toast.error(authErrMsg);
+				return;
+			}
 
-      setRedirectingMsg(t("redirecting"));
-    } catch (err) {
-      if (err instanceof Error) {
-        toast.error(err.message);
-      } else {
-        toast.error(t("errors.unexpected"));
-      }
-    } finally {
-      setIsDisabled(false);
-    }
-  };
+			setRedirectingMsg(t("redirecting"));
+		} catch (err) {
+			if (err instanceof Error) {
+				toast.error(err.message);
+			} else {
+				toast.error(t("errors.unexpected"));
+			}
+		} finally {
+			setIsDisabled(false);
+		}
+	};
 
-  return (
-    <form className={`${SPACING.LG} `}>
-      <h1 className="text-center">{t("title")}</h1>
+	return (
+		<form className={`${SPACING.LG} `}>
+			<h1 className="text-center">{t("title")}</h1>
 
-      <div className="flex flex-col gap-2">
-        <Button
-          disabled={isDisabled}
-          className="text-white bg-[#4285F4]"
-          onClick={(e): Promise<void> => handleProviderSignIn(e, "google")}
-        >
-          <FaGoogle className="text-white" />
-          {t("google")}
-        </Button>
+			<div className="flex flex-col gap-2">
+				<Button
+					disabled={isDisabled}
+					className="text-white bg-[#4285F4]"
+					onClick={(e): Promise<void> => handleProviderSignIn(e, "google")}
+				>
+					<FaGoogle className="text-white" />
+					{t("google")}
+				</Button>
 
-        <Button
-          disabled={isDisabled}
-          className="text-white bg-[#24292e] dark:bg-[#24292e]"
-          onClick={(e): Promise<void> => handleProviderSignIn(e, "github")}
-        >
-          <FaGithub className="text-white" />
-          {t("github")}
-        </Button>
-      </div>
+				<Button
+					disabled={isDisabled}
+					className="text-white bg-[#24292e] dark:bg-[#24292e]"
+					onClick={(e): Promise<void> => handleProviderSignIn(e, "github")}
+				>
+					<FaGithub className="text-white" />
+					{t("github")}
+				</Button>
+			</div>
 
-      <p className="text-center text-sm text-muted-foreground animate-pulse">
-        {redirectingMsg}
-      </p>
-    </form>
-  );
+			<p className="text-center text-sm text-muted-foreground animate-pulse">
+				{redirectingMsg}
+			</p>
+		</form>
+	);
 }

@@ -100,8 +100,7 @@
 			"OAuthSignInError": "Error connecting to authentication provider",
 			"OAuthCallbackError": "Error during authentication callback",
 			"InvalidCallbackUrl": "Invalid callback URL",
-			"CallbackRouteError": "Error processing callback route",
-			"unexpected": "An unexpected error occurred. Please try again later."
+			"CallbackRouteError": "Error processing callback route"
 		}
 	},
 	"logout": {
@@ -124,8 +123,7 @@
 		"errors": {
 			"urlFieldInvalid": "URL invalid.",
 			"idFieldInvalid": "ID invalid.",
-			"missingFields": "Missing fields.",
-			"unexpected": "An error happened. Please try again."
+			"missingFields": "Missing fields."
 		}
 	},
 	"archive": {

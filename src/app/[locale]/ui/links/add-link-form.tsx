@@ -110,13 +110,10 @@ function LinkForm({
 	};
 	const t = useTranslations("dashboard");
 	const [state, formAction, pending] = useActionState(addLink, initialState);
+
 	return (
-		<form
-			className={cn(SPACING.LG, "grid", className)}
-			action={formAction}
-			id="form"
-		>
-			<div className={`${SPACING.SM}`}>
+		<form className={cn(SPACING.MD, className)} action={formAction} id="form">
+			<div className={`${SPACING.XS}`}>
 				<Label htmlFor="url" className="block text-sm font-medium">
 					{t("addLinkForm.link")}
 				</Label>
@@ -136,7 +133,7 @@ function LinkForm({
 
 				{state.errors?.url?.map((err) => (
 					<p className="mt-2 text-sm text-destructive" key={err}>
-						{t(err)}
+						{err}
 					</p>
 				))}
 				{state?.defaultErrMessage && (
@@ -146,7 +143,7 @@ function LinkForm({
 				)}
 			</div>
 
-			<Button disabled={pending} type="submit" form="form">
+			<Button disabled={pending} type="submit" form="form" className="w-full">
 				{t("add")}
 			</Button>
 		</form>
