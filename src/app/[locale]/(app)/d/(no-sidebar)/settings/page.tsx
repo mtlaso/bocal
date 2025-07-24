@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { useTranslations } from "next-intl";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { Suspense } from "react";
+import { APP_ROUTES } from "@/app/[locale]/lib/constants";
+import { dal } from "@/app/[locale]/lib/dal";
 import { Settings } from "@/app/[locale]/ui/settings/settings";
 import { SettingsSkeleton } from "@/app/[locale]/ui/skeletons";
 import { Separator } from "@/components/ui/separator";
+import { redirect } from "@/i18n/routing";
 export const experimental_ppr = true;
 
 export async function generateMetadata({
@@ -21,8 +23,13 @@ export async function generateMetadata({
 	} satisfies Metadata;
 }
 
-export default function Page(): React.JSX.Element {
-	const t = useTranslations("settings");
+export default async function Page(): Promise<React.JSX.Element> {
+	const [t, sess, locale] = await Promise.all([
+		getTranslations("settings"),
+		dal.verifySession(),
+		getLocale(),
+	]);
+	if (!sess) return redirect({ href: APP_ROUTES.login, locale: locale });
 
 	return (
 		<>
@@ -33,7 +40,7 @@ export default function Page(): React.JSX.Element {
 			<Separator className="my-4" />
 
 			<Suspense fallback={<SettingsSkeleton />}>
-				<Settings />
+				<Settings user={sess.user} />
 			</Suspense>
 		</>
 	);

@@ -226,13 +226,9 @@
 		},
 		"viewSection": {
 			"title": "View",
-			"hideImages": {
-				"title": "Hide images",
-				"description": "Hide images in links."
-			},
-			"gridView": {
-				"title": "Grid view",
-				"description": "Use grid layout for links."
+			"hide": {
+				"title": "Hide read content",
+				"description": "Hide read content from the feeds timeline."
 			},
 			"feed": {
 				"title": "Feeds items limit",
@@ -240,7 +236,8 @@
 			},
 			"errors": {
 				"feedContentLimitFieldInvalid": "Content limit per feed invalid.",
-				"missingFields": "Missing fields."
+				"missingFields": "Missing fields.",
+				"unexpected": "Unexpected error occurred."
 			},
 			"success": "Settings saved",
 			"submit": "Save"

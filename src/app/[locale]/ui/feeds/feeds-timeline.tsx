@@ -8,6 +8,7 @@ import {
 	markFeedContentAsRead,
 	markFeedContentAsUnread,
 } from "@/app/[locale]/lib/actions";
+import type { UserPreferences } from "@/app/[locale]/lib/constants";
 import { parsing } from "@/app/[locale]/lib/parsing";
 import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
 import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
@@ -20,15 +21,12 @@ import { cn } from "@/lib/utils";
 
 type Props = {
 	timeline: FeedTimeline[];
-	/**
-	 * The maximum number of items to show on the timeline.
-	 */
-	feedContentLimit: number;
+	userPreferences: UserPreferences;
 };
 
 export function FeedsTimeline({
 	timeline,
-	feedContentLimit,
+	userPreferences,
 }: Props): React.JSX.Element {
 	const [{ selectedFeed }] = useQueryStates(searchParamsState.searchParams, {
 		urlKeys: searchParamsState.urlKeys,
@@ -39,7 +37,12 @@ export function FeedsTimeline({
 			if (selectedFeed === searchParamsState.DEFAULT_FEED) return true;
 			return el.feedId.toString() === selectedFeed;
 		})
-		.slice(0, feedContentLimit);
+		.filter((el) => {
+			if (userPreferences.hideReadFeedContent && el.readAt !== null)
+				return false;
+			return true;
+		})
+		.slice(0, userPreferences.feedContentLimit);
 
 	return (
 		<section className={cn("wrap-anywhere", SPACING.LG)}>
@@ -65,8 +68,8 @@ const Item = ({ item }: { item: FeedTimeline }): React.JSX.Element => {
 				setIsRead(true);
 				const res = await markFeedContentAsRead(feedId, feedContentId);
 
-				if (res.errMessage) {
-					toast.error(t(res.errMessage));
+				if (res.defaultErrMessage) {
+					toast.error(t(res.defaultErrMessage));
 				}
 			} catch (_err) {
 				setIsRead(false);
@@ -84,8 +87,8 @@ const Item = ({ item }: { item: FeedTimeline }): React.JSX.Element => {
 				setIsRead(false);
 				const res = await markFeedContentAsUnread(feedId, feedContentId);
 
-				if (res.errMessage) {
-					toast.error(t(res.errMessage));
+				if (res.defaultErrMessage) {
+					toast.error(t(res.defaultErrMessage));
 				}
 			} catch (_err) {
 				setIsRead(true);

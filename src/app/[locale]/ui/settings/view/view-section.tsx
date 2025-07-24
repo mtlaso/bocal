@@ -2,7 +2,12 @@
 import { useTranslations } from "next-intl";
 import { startTransition, useOptimistic } from "react";
 import { toast } from "sonner";
-import { setFeedContentLimit } from "@/app/[locale]/lib/actions";
+import {
+	setFeedContentLimit,
+	setHideReadFeedContent,
+} from "@/app/[locale]/lib/actions";
+import type { UserPreferences } from "@/app/[locale]/lib/constants";
+import { logger } from "@/app/[locale]/lib/logging";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Label } from "@/components/ui/label";
 import {
@@ -12,25 +17,39 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 
-export function ViewSection({
-	feedContentLimit,
-}: {
-	feedContentLimit: number;
-}): React.JSX.Element {
+type Props = {
+	userPreferences: UserPreferences;
+};
+
+export function ViewSection({ userPreferences }: Props): React.JSX.Element {
 	const t = useTranslations("settings.viewSection");
 
 	return (
 		<section className={cn("mb-12", SPACING.LG)}>
 			<h1 className="text-xl font-medium">{t("title")}</h1>
 
-			<FeedContentLimitForm feedContentLimit={feedContentLimit} />
+			<Group>
+				<FeedContentLimitForm
+					feedContentLimit={userPreferences.feedContentLimit}
+				/>
+				<HideReadFeedContentForm
+					hideReadFeedContent={userPreferences.hideReadFeedContent}
+				/>
+			</Group>
 		</section>
 	);
 }
 
-export function FeedContentLimitForm({
+function Group({ children }: { children: React.ReactNode }): React.JSX.Element {
+	return (
+		<div className={cn("border rounded-md p-4", SPACING.LG)}>{children}</div>
+	);
+}
+
+function FeedContentLimitForm({
 	feedContentLimit,
 }: {
 	feedContentLimit: number;
@@ -42,8 +61,7 @@ export function FeedContentLimitForm({
 			try {
 				setValue(Number.parseInt(e));
 				toast.success(t("success"));
-				const res = await setFeedContentLimit(e);
-
+				const res = await setFeedContentLimit(Number.parseInt(e));
 				if (res.errors?.feedContentLimit) {
 					setValue(feedContentLimit);
 					for (const error of res.errors.feedContentLimit) {
@@ -52,13 +70,14 @@ export function FeedContentLimitForm({
 					return;
 				}
 
-				if (res.errMessage) {
+				if (res.defaultErrMessage) {
 					setValue(feedContentLimit);
-					toast.error(t(res.errMessage));
+					toast.error(t(res.defaultErrMessage));
 					return;
 				}
-			} catch (_err) {
+			} catch (err) {
 				setValue(feedContentLimit);
+				logger.error(err);
 				toast.error(t("errors.unexpected"));
 			}
 		});
@@ -67,7 +86,7 @@ export function FeedContentLimitForm({
 	const t = useTranslations("settings.viewSection");
 
 	return (
-		<div className="flex items-center justify-between gap-4 border rounded-md p-4">
+		<div className="flex justify-between items-center gap-4">
 			<div className={SPACING.XS}>
 				<Label className="font-bold text-base" htmlFor="feed-limit">
 					{t("feed.title")}
@@ -107,6 +126,59 @@ export function FeedContentLimitForm({
 					<SelectItem value="100">100</SelectItem>
 				</SelectContent>
 			</Select>
+		</div>
+	);
+}
+
+function HideReadFeedContentForm({
+	hideReadFeedContent,
+}: {
+	hideReadFeedContent: boolean;
+}): React.JSX.Element {
+	const t = useTranslations("settings.viewSection");
+	const [value, setValue] = useOptimistic(hideReadFeedContent);
+
+	const handleCheckedChange = (checked: boolean) => {
+		startTransition(async () => {
+			try {
+				setValue(checked);
+				toast.success(t("success"));
+				const res = await setHideReadFeedContent(checked);
+				if (res.errors?.hideRead) {
+					setValue(hideReadFeedContent);
+					for (const error of res.errors.hideRead) {
+						toast.error(t(error));
+					}
+					return;
+				}
+
+				if (res.defaultErrMessage) {
+					setValue(hideReadFeedContent);
+					toast.error(t(res.defaultErrMessage));
+					return;
+				}
+			} catch (err) {
+				logger.error(err);
+				setValue(hideReadFeedContent);
+				toast.error(err?.toString() ?? t("errors.unexpected"));
+			}
+		});
+	};
+
+	return (
+		<div className="flex justify-between items-center gap-4">
+			<div className={SPACING.XS}>
+				<Label className="font-bold text-base" htmlFor="hide-switch">
+					{t("hide.title")}
+				</Label>
+				<p className="text-sm text-muted-foreground">{t("hide.description")}</p>
+			</div>
+
+			<Switch
+				id="hide-switch"
+				checked={value}
+				onCheckedChange={handleCheckedChange}
+			/>
 		</div>
 	);
 }
