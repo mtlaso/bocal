@@ -39,3 +39,22 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .env*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+
+# Temporary files
+.tmp/
+.temp/
+
+# Bundle analyzer
+.analyze/
