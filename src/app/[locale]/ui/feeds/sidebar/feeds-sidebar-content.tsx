@@ -13,7 +13,7 @@ export async function FeedsSidebarContent(): Promise<React.JSX.Element> {
 
 	return (
 		<SidebarMenu>
-			<FeedsSidebarMenuItemAll totalFeedsContents={timeline[0].length} />
+			<FeedsSidebarMenuItemAll totalFeedsContents={timeline.length} />
 
 			<SidebarMenuItem className="mt-4 px-2 text-xs font-md">
 				<span>

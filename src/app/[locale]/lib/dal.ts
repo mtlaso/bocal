@@ -67,17 +67,17 @@ const getUserLinks = cache(async ({ archivedLinksOnly }: GetLinksProps) => {
 });
 
 /**
- * getUserFeedsTimeline returns the contents of the feeds a user follows and the limit of items to show in the timeline.
+ * getUserFeedsTimeline returns the contents of the feeds a user follows.
+ * Ordered by date descending.
  */
-const getUserFeedsTimeline = cache(
-	async (): Promise<[FeedTimeline[], { feedContentLimit: number }]> => {
-		try {
-			const user = await verifySession();
-			if (!user) {
-				throw new Error("errors.notSignedIn");
-			}
+const getUserFeedsTimeline = cache(async (): Promise<FeedTimeline[]> => {
+	try {
+		const user = await verifySession();
+		if (!user) {
+			throw new Error("errors.notSignedIn");
+		}
 
-			const query = sql`
+		const query = sql`
         SELECT
            	-- feeds_contents information.
            	fc.id,
@@ -91,6 +91,7 @@ const getUserFeedsTimeline = cache(
 
             -- users_feeds_read_content information.
            	rc."readAt",
+
            	-- minimal feed metadata.
             feeds.id AS "feedId",
            	feeds.title AS "feedTitle",
@@ -106,33 +107,32 @@ const getUserFeedsTimeline = cache(
            	uf."userId" = ${user.user.id}
         ORDER BY COALESCE(fc.date, feeds."createdAt") DESC`;
 
-			const req = await db.execute(query);
-			const { data, error } = feedsTimelineSchema.safeParse(req.rows);
-			if (error) {
-				logger.error(error.issues);
-				throw new z.ZodError(error.issues);
-			}
-
-			// Find outdated feeds.
-			const now = new Date();
-			const outdatedFeedsIds = new Set<number>();
-			data.forEach((el) => {
-				const isOutdated =
-					!el.feedLastSyncAt ||
-					now.getTime() - el.feedLastSyncAt.getTime() > ONE_HOUR;
-				if (isOutdated) {
-					outdatedFeedsIds.add(el.feedId);
-				}
-			});
-
-			void feedService.triggerBackgroundSync(Array.from(outdatedFeedsIds));
-			return [data, { feedContentLimit: user.user.feedContentLimit }];
-		} catch (err) {
-			logger.error(err);
-			throw new Error("errors.unexpected");
+		const req = await db.execute(query);
+		const { data, error } = feedsTimelineSchema.safeParse(req.rows);
+		if (error) {
+			logger.error(error.issues);
+			throw new z.ZodError(error.issues);
 		}
-	},
-);
+
+		// Find outdated feeds.
+		const now = new Date();
+		const outdatedFeedsIds = new Set<number>();
+		data.forEach((el) => {
+			const isOutdated =
+				!el.feedLastSyncAt ||
+				now.getTime() - el.feedLastSyncAt.getTime() > ONE_HOUR;
+			if (isOutdated) {
+				outdatedFeedsIds.add(el.feedId);
+			}
+		});
+
+		void feedService.triggerBackgroundSync(Array.from(outdatedFeedsIds));
+		return data;
+	} catch (err) {
+		logger.error(err);
+		throw new Error("errors.unexpected");
+	}
+});
 
 /**
  * getUserFeedsWithContentsCount returns the feeds a user follows with the

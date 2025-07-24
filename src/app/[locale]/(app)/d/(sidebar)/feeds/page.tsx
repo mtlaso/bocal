@@ -60,11 +60,18 @@ async function FeedsHeaderWrapper(): Promise<React.JSX.Element> {
 }
 
 async function FeedsWrapper(): Promise<React.JSX.Element> {
-	const [timeline, limit] = await dal.getUserFeedsTimeline();
+	const [timeline, sess] = await Promise.all([
+		dal.getUserFeedsTimeline(),
+		dal.verifySession(),
+	]);
+
 	return (
 		<FeedsTimeline
 			timeline={timeline}
-			feedContentLimit={limit.feedContentLimit}
+			// At this point, we have verified the session and have access to the user's preferences.
+			// So we can assert with '!'.
+			// biome-ignore lint/style/noNonNullAssertion: it's defined.
+			userPreferences={sess!.user.preferences}
 		/>
 	);
 }
