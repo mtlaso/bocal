@@ -118,8 +118,12 @@ function CopyFeedURL({ url }: { url: string }): React.JSX.Element {
 			toast.success(t("feedURLCopied"), {
 				duration: 2000,
 			});
-		} catch (_err) {
-			toast.error(t("errors.cannotCopyFeedURL"));
+		} catch (err) {
+			if (err instanceof Error) {
+				toast.error(err.message);
+			} else {
+				toast.error(t("errors.cannotCopyFeedURL"));
+			}
 		}
 	};
 

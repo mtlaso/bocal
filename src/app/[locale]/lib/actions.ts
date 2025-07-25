@@ -533,31 +533,47 @@ export async function unfollowFeed(id: number): Promise<UnfollowFeedState> {
 }
 
 export type MarkFeedContentAsReadState = State<{
-	feedId?: number;
-	feedContentId?: number;
+	feedId: number;
+	feedContentId: number;
 }>;
 
 export async function markFeedContentAsRead(
 	feedId: number,
 	feedContentId: number,
 ): Promise<MarkFeedContentAsReadState> {
-	const validatedFields = insertUsersFeedsReadContentSchema.safeParse({
-		feedId,
-		feedContentId,
-	});
-
-	if (!validatedFields.success) {
-		return {
-			errors: z.flattenError(validatedFields.error).fieldErrors,
-			data: { feedId, feedContentId },
-			defaultErrMessage: "errors.missingFields",
-		};
-	}
-
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
+		}
+
+		const t = await getTranslations("rssFeed");
+		const payload = { feedId, feedContentId };
+
+		const validatedFields = insertUsersFeedsReadContentSchema.safeParse(
+			payload,
+			{
+				error: (iss) => {
+					const path = iss.path?.join(".");
+					if (!path) {
+						return { message: t("errors.unexpected") };
+					}
+
+					const message = {
+						feedId: t("errors.idFieldInvalid"),
+						feedContentId: t("errors.feedContentIdFieldInvalid"),
+					}[path];
+
+					return { message: message ?? t("errors.unexpected") };
+				},
+			},
+		);
+
+		if (!validatedFields.success) {
+			return {
+				errors: z.flattenError(validatedFields.error).fieldErrors,
+				data: { feedId, feedContentId },
+			};
 		}
 
 		await db
@@ -573,7 +589,7 @@ export async function markFeedContentAsRead(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrMessage: "errors.unexpected",
+			defaultErrMessage: UNEXPECTED_ERROR_MESSAGE,
 		};
 	}
 
@@ -582,31 +598,46 @@ export async function markFeedContentAsRead(
 }
 
 export type MarkFeedContentAsUnreadState = State<{
-	feedId?: number;
-	feedContentId?: number;
+	feedId: number;
+	feedContentId: number;
 }>;
 
 export async function markFeedContentAsUnread(
 	feedId: number,
 	feedContentId: number,
 ): Promise<MarkFeedContentAsUnreadState> {
-	const validatedFields = deleteUsersFeedsReadContentSchema.safeParse({
-		feedId,
-		feedContentId,
-	});
-
-	if (!validatedFields.success) {
-		return {
-			errors: z.flattenError(validatedFields.error).fieldErrors,
-			data: { feedId, feedContentId },
-			defaultErrMessage: "errors.missingFields",
-		};
-	}
-
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
+		}
+
+		const t = await getTranslations("rssFeed");
+		const payload = { feedId, feedContentId };
+		const validatedFields = deleteUsersFeedsReadContentSchema.safeParse(
+			payload,
+			{
+				error: (iss) => {
+					const path = iss.path?.join(".");
+					if (!path) {
+						return { message: t("errors.unexpected") };
+					}
+
+					const message = {
+						feedId: t("errors.idFieldInvalid"),
+						feedContentId: t("errors.feedContentIdFieldInvalid"),
+					}[path];
+
+					return { message: message ?? t("errors.unexpected") };
+				},
+			},
+		);
+
+		if (!validatedFields.success) {
+			return {
+				errors: z.flattenError(validatedFields.error).fieldErrors,
+				data: { feedId, feedContentId },
+			};
 		}
 
 		await db
@@ -625,7 +656,7 @@ export async function markFeedContentAsUnread(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrMessage: "errors.unexpected",
+			defaultErrMessage: UNEXPECTED_ERROR_MESSAGE,
 		};
 	}
 

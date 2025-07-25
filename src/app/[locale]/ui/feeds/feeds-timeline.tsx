@@ -68,12 +68,24 @@ const Item = ({ item }: { item: FeedTimeline }): React.JSX.Element => {
 				setIsRead(true);
 				const res = await markFeedContentAsRead(feedId, feedContentId);
 
-				if (res.defaultErrMessage) {
-					toast.error(t(res.defaultErrMessage));
+				if (res.errors) {
+					setIsRead(false);
+					toast.error([res.errors.feedId, res.errors.feedContentId].join(", "));
+					return;
 				}
-			} catch (_err) {
+
+				if (res.defaultErrMessage) {
+					setIsRead(false);
+					toast.error(res.defaultErrMessage);
+					return;
+				}
+			} catch (err) {
 				setIsRead(false);
-				toast.error(t("errors.unexpected"));
+				if (err instanceof Error) {
+					toast.error(err.message);
+				} else {
+					toast.error(t("errors.unexpected"));
+				}
 			}
 		});
 	};
@@ -87,12 +99,24 @@ const Item = ({ item }: { item: FeedTimeline }): React.JSX.Element => {
 				setIsRead(false);
 				const res = await markFeedContentAsUnread(feedId, feedContentId);
 
-				if (res.defaultErrMessage) {
-					toast.error(t(res.defaultErrMessage));
+				if (res.errors) {
+					setIsRead(true);
+					toast.error([res.errors.feedId, res.errors.feedContentId].join(", "));
+					return;
 				}
-			} catch (_err) {
+
+				if (res.defaultErrMessage) {
+					setIsRead(true);
+					toast.error(res.defaultErrMessage);
+					return;
+				}
+			} catch (err) {
 				setIsRead(true);
-				toast.error(t("errors.unexpected"));
+				if (err instanceof Error) {
+					toast.error(err.message);
+				} else {
+					toast.error(t("errors.unexpected"));
+				}
 			}
 		});
 	};

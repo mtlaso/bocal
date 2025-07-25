@@ -257,28 +257,16 @@ export const unfollowFeedSchema = createSelectSchema(usersFeeds, {
 export const insertUsersFeedsReadContentSchema = createSelectSchema(
 	usersFeedsReadContent,
 	{
-		feedId: (schema): z.ZodCoercedNumber =>
-			schema.nonnegative({
-				error: "errors.idFieldInvalid",
-			}),
-		feedContentId: (schema): z.ZodCoercedNumber =>
-			schema.nonnegative({
-				error: "errors.feedContentIdFieldInvalid",
-			}),
+		feedId: (schema): z.ZodCoercedNumber => schema.nonnegative(),
+		feedContentId: (schema): z.ZodCoercedNumber => schema.nonnegative(),
 	},
 ).pick({ feedId: true, feedContentId: true });
 
 export const deleteUsersFeedsReadContentSchema = createSelectSchema(
 	usersFeedsReadContent,
 	{
-		feedId: (schema): z.ZodCoercedNumber =>
-			schema.nonnegative({
-				error: "errors.idFieldInvalid",
-			}),
-		feedContentId: (schema): z.ZodCoercedNumber =>
-			schema.nonnegative({
-				error: "errors.feedContentIdFieldInvalid",
-			}),
+		feedId: (schema): z.ZodCoercedNumber => schema.nonnegative(),
+		feedContentId: (schema): z.ZodCoercedNumber => schema.nonnegative(),
 	},
 ).pick({ feedId: true, feedContentId: true });
 
