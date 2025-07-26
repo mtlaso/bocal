@@ -22,7 +22,7 @@ export async function generateMetadata({
 		namespace: "metadata",
 	});
 	return {
-		title: t("newletter.title"),
+		title: t("newsletter.title"),
 		description: t("newsletter.description"),
 	} satisfies Metadata;
 }

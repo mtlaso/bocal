@@ -871,7 +871,7 @@ export async function addNewsletter(
 		});
 		if (userFeeds.length >= LENGTHS.feeds.maxPerUser) {
 			return {
-				errI18Key: t("errors.maxFeedsReached"),
+				errI18Key: "errors.maxFeedsReached",
 			};
 		}
 
@@ -936,7 +936,7 @@ export async function deleteNewsletter(
 
 		if (!validatedFields.success) {
 			return {
-				errI18Key: t("errors.missingFields"),
+				errI18Key: "errors.missingFields",
 				errors: z.flattenError(validatedFields.error).fieldErrors,
 			};
 		}
