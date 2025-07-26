@@ -42,7 +42,7 @@ type ActionReturnType<T, E extends string = keyof T & string> = {
    */
 	defaultErrorMessage?: string;
 	// TODO: verifier que c'est traduit partout cote frontend
-	successMsgNotTranslated?: string;
+	isSuccessful?: boolean;
 };
 
 // type CustomError = { errorCode: number; message: string };
@@ -138,7 +138,7 @@ export async function addLink(
 	}
 
 	revalidatePath(APP_ROUTES.links);
-	return {};
+	return { isSuccessful: true };
 }
 
 type DeleteLinkState = ActionReturnType<{
@@ -311,7 +311,7 @@ export async function addFeed(
 	let unreachaleErrMsg = "";
 	let cannotBeProcessErrMsg = "";
 	let feedTimeoutErrMsg = "";
-	let successMsg = "";
+	const _successMsg = "";
 
 	try {
 		const user = await dal.verifySession();
@@ -323,7 +323,6 @@ export async function addFeed(
 		unreachaleErrMsg = t("errors.feedUnreachable");
 		cannotBeProcessErrMsg = t("errors.feedCannotBeProcessed");
 		feedTimeoutErrMsg = t("errors.feedTimeout");
-		successMsg = t("success");
 
 		const payload = { url: formData.get("url") };
 		const validatedFields = insertFeedsSchema.safeParse(payload, {
@@ -464,7 +463,7 @@ export async function addFeed(
 
 	revalidatePath(APP_ROUTES.feeds);
 	return {
-		successMsgNotTranslated: successMsg,
+		isSuccessful: true,
 	};
 }
 
@@ -473,8 +472,6 @@ export type UnfollowFeedState = ActionReturnType<{
 }>;
 
 export async function unfollowFeed(id: number): Promise<UnfollowFeedState> {
-	let successUnfollow = "";
-
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
@@ -482,7 +479,6 @@ export async function unfollowFeed(id: number): Promise<UnfollowFeedState> {
 		}
 
 		const t = await getTranslations("rssFeed");
-		successUnfollow = t("successUnfollow");
 
 		const payload = { feedId: id };
 		const validatedFields = unfollowFeedSchema.safeParse(payload, {
@@ -535,9 +531,7 @@ export async function unfollowFeed(id: number): Promise<UnfollowFeedState> {
 	}
 
 	revalidatePath(APP_ROUTES.feeds);
-	return {
-		successMsgNotTranslated: successUnfollow,
-	};
+	return {};
 }
 
 export type MarkFeedContentAsReadState = ActionReturnType<{
@@ -909,7 +903,7 @@ export async function addNewsletter(
 
 	revalidatePath(APP_ROUTES.newsletters);
 	return {
-		successMsgNotTranslated: "success",
+		isSuccessful: true,
 	};
 }
 

@@ -136,6 +136,10 @@ function LinkForm({
 						{state.defaultErrorMessage}
 					</p>
 				)}
+
+				{state?.isSuccessful && (
+					<p className="mt-2 text-sm text-primary">{t("success")}</p>
+				)}
 			</div>
 
 			<Button disabled={pending} type="submit" form="form" className="w-full">

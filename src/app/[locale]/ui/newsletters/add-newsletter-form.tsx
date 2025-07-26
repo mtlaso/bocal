@@ -151,10 +151,8 @@ function NewsletterForm({
 					</p>
 				)}
 
-				{state?.successMsgNotTranslated && (
-					<p className="mt-2 text-sm text-green-500">
-						{t(state.successMsgNotTranslated)}
-					</p>
+				{state?.isSuccessful && (
+					<p className="mt-2 text-sm text-primary">{t("success")}</p>
 				)}
 			</div>
 

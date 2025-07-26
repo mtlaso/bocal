@@ -2,7 +2,7 @@
 import { useTranslations } from "next-intl";
 import { useActionState, useState } from "react";
 import { TbLinkPlus } from "react-icons/tb";
-import { type AddFeedState, addFeed } from "@/app/[locale]/lib/actions";
+import { addFeed } from "@/app/[locale]/lib/actions";
 import { useMediaQuery } from "@/app/[locale]/lib/hooks/use-media-query";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Button } from "@/components/ui/button";
@@ -104,12 +104,7 @@ const FeedForm = ({
 	className,
 }: React.ComponentProps<"form">): React.JSX.Element => {
 	const t = useTranslations("rssFeed");
-	const initialState: AddFeedState = {
-		errors: undefined,
-		defaultErrorMessage: undefined,
-		payload: undefined,
-	};
-	const [state, formAction, pending] = useActionState(addFeed, initialState);
+	const [state, formAction, pending] = useActionState(addFeed, {});
 
 	return (
 		<form className={cn(SPACING.MD, className)} action={formAction} id="form">
@@ -145,10 +140,8 @@ const FeedForm = ({
 					</p>
 				)}
 
-				{state?.successMsgNotTranslated && (
-					<p className="mt-2 text-sm text-green-500">
-						{state.successMsgNotTranslated}
-					</p>
+				{state?.isSuccessful && (
+					<p className="mt-2 text-sm text-primary">{t("success")}</p>
 				)}
 			</div>
 
