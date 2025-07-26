@@ -488,7 +488,7 @@ export async function unfollowFeed(id: number): Promise<UnfollowFeedState> {
 				}
 
 				const message = {
-					url: t("errors.idFieldInvalid"),
+					feedId: t("errors.idFieldInvalid"),
 				}[path];
 				return { message: message ?? t("errors.unexpected") };
 			},
@@ -871,6 +871,8 @@ export async function addNewsletter(
 			where: eq(usersFeeds.userId, user.user.id),
 		});
 		if (userFeeds.length >= LENGTHS.feeds.maxPerUser) {
+			const _b = t("error.maxFeedsReached");
+
 			return {
 				errI18Key: t("errors.maxFeedsReached"),
 			};
