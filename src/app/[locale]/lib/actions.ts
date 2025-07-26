@@ -874,7 +874,6 @@ export async function addNewsletter(
 		if (userFeeds.length >= LENGTHS.feeds.maxPerUser) {
 			return {
 				defaultErrorMessage: t("errors.maxFeedsReached"),
-				errors: undefined,
 			};
 		}
 
@@ -914,26 +913,36 @@ export type DeleteNewsletterState = ActionReturnType<{
 export async function deleteNewsletter(
 	id: number,
 ): Promise<DeleteNewsletterState> {
-	const validatedFields = deleteNewsletterSchema.safeParse({
-		id,
-	});
-
-	if (!validatedFields.success) {
-		return {
-			defaultErrorMessage: "errors.missingFields",
-			errors: z.flattenError(validatedFields.error).fieldErrors,
-		};
-	}
-
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
 
-		// We don't check if there is a relationship in users_feeds because
-		// a user could have unfollowed the feed but still have access to it
-		// though the newsletter page.
+		const t = await getTranslations("newsletter");
+		const payload = { id };
+		const validatedFields = deleteNewsletterSchema.safeParse(payload, {
+			error: (iss) => {
+				const path = iss.path?.join(".");
+				if (!path) {
+					return { message: t("errors.unexpected") };
+				}
+
+				const message = {
+					id: t("errors.idFieldInvalid"),
+				}[path];
+
+				return { message: message ?? t("errors.unexpected") };
+			},
+		});
+
+		if (!validatedFields.success) {
+			return {
+				defaultErrorMessage: t("errors.missingFields"),
+				errors: z.flattenError(validatedFields.error).fieldErrors,
+			};
+		}
+
 		await db
 			.delete(feeds)
 			.where(
@@ -945,7 +954,7 @@ export async function deleteNewsletter(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrorMessage: "errors.unexpected",
+			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
 		};
 	}
 

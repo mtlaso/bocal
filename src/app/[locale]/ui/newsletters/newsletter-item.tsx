@@ -168,12 +168,21 @@ function DeleteNewsletterDialog({
 		startTransition(async () => {
 			try {
 				const res = await deleteNewsletter(feedId);
-				if (res.defaultErrorMessage) {
-					toast.error(t(res.defaultErrorMessage));
+				if (res.errors) {
+					toast.error(res.errors.id?.join());
 					return;
 				}
-			} catch (_err) {
-				toast.error(t("errors.unexpected"));
+
+				if (res.defaultErrorMessage) {
+					toast.error(res.defaultErrorMessage);
+					return;
+				}
+			} catch (err) {
+				if (err instanceof Error) {
+					toast.error(err.message);
+				} else {
+					toast.error(t("errors.unexpected"));
+				}
 			}
 		});
 	}

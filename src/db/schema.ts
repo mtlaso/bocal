@@ -279,13 +279,7 @@ export const addNewsletterSchema = z.object({
 });
 
 export const deleteNewsletterSchema = z.object({
-	id: z
-		.number({
-			error: "errors.idFieldInvalid",
-		})
-		.nonnegative({
-			error: "errors.idFieldInvalid",
-		}),
+	id: z.number().nonnegative(),
 });
 
 const feedTimeline = z.object({
