@@ -107,7 +107,8 @@ function UnArchiveLink({
 
 				if (res.errI18Key) {
 					onUnarchiveFailed(id);
-					toast.error(t(res.errI18Key));
+					// biome-ignore lint/suspicious/noExplicitAny: valid type.
+					toast.error(t(res.errI18Key as any));
 					return;
 				}
 			} catch (err) {
@@ -161,7 +162,8 @@ function ArchiveLink({
 
 				if (res.errI18Key) {
 					onArchiveFailed(id);
-					toast.error(t(res.errI18Key));
+					// biome-ignore lint/suspicious/noExplicitAny: valid type.
+					toast.error(t(res.errI18Key as any));
 					return;
 				}
 			} catch (err) {
@@ -215,7 +217,8 @@ function DeleteLink({
 
 				if (res.errI18Key) {
 					onDeleteFailed(id);
-					toast.error(t(res.errI18Key));
+					// biome-ignore lint/suspicious/noExplicitAny: valid type.
+					toast.error(t(res.errI18Key as any));
 					return;
 				}
 			} catch (err) {

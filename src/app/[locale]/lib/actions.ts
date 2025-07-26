@@ -57,7 +57,7 @@ type ActionReturnType<T, E extends string = keyof T & string> = {
 };
 
 /**
- * authenticate authenticates a user using the specified provider. Returns a string containing the error message if any.
+ * authenticate authenticates a user using the specified provider. Returns the TRANSLATED error message if any.
  * @param provider - The authentication provider to use.
  */
 export async function authenticate(provider: string) {
@@ -103,9 +103,8 @@ export async function addLink(
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("User not defined");
 		}
-
 		const t = await getTranslations("dashboard");
 		const payload = { url: formData.get("url") };
 		const validatedFields = insertLinkSchema.safeParse(payload, {
@@ -156,7 +155,7 @@ export async function deleteLink(id: number): Promise<DeleteLinkState> {
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("not signed in");
 		}
 
 		const t = await getTranslations("dashboard");
@@ -207,7 +206,7 @@ export async function archiveLink(id: number): Promise<DeleteLinkState> {
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("not signed in");
 		}
 
 		const t = await getTranslations("dashboard");
@@ -259,7 +258,7 @@ export async function unarchiveLink(id: number): Promise<DeleteLinkState> {
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("not signed in");
 		}
 
 		const t = await getTranslations("dashboard");
@@ -318,7 +317,7 @@ export async function addFeed(
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("not signed in");
 		}
 
 		const t = await getTranslations("rssFeed");
@@ -474,7 +473,7 @@ export async function unfollowFeed(id: number): Promise<UnfollowFeedState> {
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("not signed in");
 		}
 
 		const t = await getTranslations("rssFeed");
@@ -545,7 +544,7 @@ export async function markFeedContentAsRead(
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("not signed in");
 		}
 
 		const t = await getTranslations("rssFeed");
@@ -610,7 +609,7 @@ export async function markFeedContentAsUnread(
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("not signed in");
 		}
 
 		const t = await getTranslations("rssFeed");
@@ -675,7 +674,7 @@ export async function setFeedContentLimit(
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("not signed in");
 		}
 
 		const t = await getTranslations("settings.viewSection");
@@ -727,7 +726,7 @@ export async function setHideReadFeedContent(
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("not signed in");
 		}
 
 		const validatedFields = z
@@ -774,7 +773,7 @@ export async function archiveFeedContent(
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("not signed in");
 		}
 
 		const t = await getTranslations("dashboard");
@@ -831,7 +830,7 @@ export async function addNewsletter(
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("not signed in");
 		}
 
 		const t = await getTranslations("newsletter");
@@ -915,7 +914,7 @@ export async function deleteNewsletter(
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
-			throw new Error("errors.notSignedIn");
+			throw new Error("not signed in");
 		}
 
 		const t = await getTranslations("newsletter");

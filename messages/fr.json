@@ -56,10 +56,8 @@
 		"footerShortDescription": "[bocal] — tout votre contenu au même endroit."
 	},
 	"errors": {
-		"notSignedIn": "Non connecté",
 		"unexpected": "Une erreur inattendue s'est produite.",
 		"retry": "Réessayer",
-		"userNotFound": "Utilisateur non trouvé",
 		"404PageNotFound": "Page non trouvée",
 		"404": {
 			"title": "404 - Page non trouvée",
@@ -96,7 +94,6 @@
 		"github": "Continuer avec GitHub",
 		"redirecting": "Redirection en cours...",
 		"errors": {
-			"title": "Erreur d'authentification",
 			"CredentialsSignin": "Identifiants invalides",
 			"OAuthSignInError": "Erreur lors de la connexion avec le fournisseur d'authentification",
 			"OAuthCallbackError": "Erreur lors du retour d'authentification",
@@ -114,7 +111,6 @@
 		"addLinkForm": {
 			"title": "Ajouter un lien",
 			"link": "Lien",
-			"add": "Ajouter",
 			"cancel": "Annuler"
 		},
 		"ogImageAlt": "Image représentant le contenu",

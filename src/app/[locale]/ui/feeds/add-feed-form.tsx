@@ -135,7 +135,10 @@ const FeedForm = ({
 				))}
 
 				{state?.errI18Key && (
-					<p className="mt-2 text-sm text-destructive">{t(state.errI18Key)}</p>
+					<p className="mt-2 text-sm text-destructive">
+						{/* biome-ignore lint/suspicious/noExplicitAny: correct value */}
+						{t(state.errI18Key as any)}
+					</p>
 				)}
 
 				{state?.isSuccessful && (

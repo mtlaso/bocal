@@ -9,6 +9,7 @@ import { FeedsTimeline } from "@/app/[locale]/ui/feeds/feeds-timeline";
 import { FeedInfoSkeleton, FeedsSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
+import type { Locales } from "@/i18n/routing";
 export const experimental_ppr = true;
 
 export async function generateMetadata({
@@ -17,11 +18,14 @@ export async function generateMetadata({
 	params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
 	const { locale } = await params;
-	const t = await getTranslations({ locale, namespace: "metadata.rssFeed" });
+	const t = await getTranslations({
+		locale: locale as Locales,
+		namespace: "metadata",
+	});
 
 	return {
-		title: t("title"),
-		description: t("description"),
+		title: t("rssFeed.title"),
+		description: t("rssFeed.description"),
 	} satisfies Metadata;
 }
 

@@ -174,7 +174,8 @@ function DeleteNewsletterDialog({
 				}
 
 				if (res.errI18Key) {
-					toast.error(t(res.errI18Key));
+					// biome-ignore lint/suspicious/noExplicitAny: valid type.
+					toast.error(t(res.errI18Key as any));
 					return;
 				}
 			} catch (err) {

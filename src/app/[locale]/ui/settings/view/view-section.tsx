@@ -70,7 +70,8 @@ function FeedContentLimitForm({
 
 				if (res.errI18Key) {
 					setValue(feedContentLimit);
-					toast.error(t(res.errI18Key));
+					// biome-ignore lint/suspicious/noExplicitAny: valid type.
+					toast.error(t(res.errI18Key as any));
 				}
 			} catch (err) {
 				setValue(feedContentLimit);
@@ -152,7 +153,8 @@ function HideReadFeedContentForm({
 
 				if (res.errI18Key) {
 					setValue(hideReadFeedContent);
-					toast.error(t(res.errI18Key));
+					// biome-ignore lint/suspicious/noExplicitAny: valid type.
+					toast.error(t(res.errI18Key as any));
 					return;
 				}
 			} catch (err) {

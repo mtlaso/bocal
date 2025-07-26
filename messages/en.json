@@ -56,10 +56,8 @@
 		"footerShortDescription": "[bocal] — all your content in one place."
 	},
 	"errors": {
-		"notSignedIn": "Not signed in",
 		"unexpected": "An error happened.",
 		"retry": "Retry",
-		"userNotFound": "User not found",
 		"404": {
 			"title": "404 - Page not found",
 			"description": "The page you are looking for does not exist.",
@@ -95,7 +93,6 @@
 		"github": "Continue with GitHub",
 		"redirecting": "Redirecting...",
 		"errors": {
-			"title": "Authentication Error",
 			"CredentialsSignin": "Invalid credentials",
 			"OAuthSignInError": "Error connecting to authentication provider",
 			"OAuthCallbackError": "Error during authentication callback",
@@ -114,7 +111,6 @@
 		"addLinkForm": {
 			"title": "Add a link",
 			"link": "Link",
-			"add": "Add",
 			"cancel": "Cancel"
 		},
 		"success": "Link added",
@@ -216,7 +212,6 @@
 		"title": "Settings",
 		"profileSection": {
 			"title": "Profile",
-			"description": "Manage your profile here.",
 			"name": "Name",
 			"email": "Email"
 		},

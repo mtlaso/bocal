@@ -1,4 +1,4 @@
-import type { Formats } from "next-intl";
+import type { Formats, Locale } from "next-intl";
 import { getRequestConfig } from "next-intl/server";
 import { routing } from "./routing";
 
@@ -13,7 +13,7 @@ export default getRequestConfig(async (config) => {
 	}
 
 	// This is used to pass the correct type.
-	const realLocale = locale as (typeof routing.locales)[number];
+	const realLocale = locale as Locale;
 
 	return {
 		locale: realLocale,
