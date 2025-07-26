@@ -100,7 +100,8 @@
 			"OAuthSignInError": "Error connecting to authentication provider",
 			"OAuthCallbackError": "Error during authentication callback",
 			"InvalidCallbackUrl": "Invalid callback URL",
-			"CallbackRouteError": "Error processing callback route"
+			"CallbackRouteError": "Error processing callback route",
+			"unexpected": "Unexpected error"
 		}
 	},
 	"logout": {

@@ -678,7 +678,7 @@ export async function setFeedContentLimit(
 			throw new Error("errors.notSignedIn");
 		}
 
-		const t = await getTranslations("rssFeed");
+		const t = await getTranslations("settings.viewSection");
 		const validatedFields = z
 			.object({
 				feedContentLimit: z
@@ -871,8 +871,6 @@ export async function addNewsletter(
 			where: eq(usersFeeds.userId, user.user.id),
 		});
 		if (userFeeds.length >= LENGTHS.feeds.maxPerUser) {
-			const _b = t("error.maxFeedsReached");
-
 			return {
 				errI18Key: t("errors.maxFeedsReached"),
 			};
