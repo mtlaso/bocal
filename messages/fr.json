@@ -57,7 +57,7 @@
 	},
 	"errors": {
 		"notSignedIn": "Non connecté",
-		"unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+		"unexpected": "Une erreur inattendue s'est produite.",
 		"retry": "Réessayer",
 		"userNotFound": "Utilisateur non trouvé",
 		"404PageNotFound": "Page non trouvée",
@@ -102,7 +102,7 @@
 			"OAuthCallbackError": "Erreur lors du retour d'authentification",
 			"InvalidCallbackUrl": "URL de retour invalide",
 			"CallbackRouteError": "Erreur lors du traitement de la route de retour",
-			"unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer plus tard."
+			"unexpected": "Une erreur inattendue s'est produite."
 		}
 	},
 	"logout": {
@@ -147,7 +147,7 @@
 				"feedIdFieldInvalid": "ID de flux invalide.",
 				"feedContentIdFieldInvalid": "ID de contenu invalide.",
 				"missingFields": "Champ(s) manquant(s).",
-				"unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer."
+				"unexpected": "Une erreur inattendue s'est produite."
 			},
 			"success": "Contenu archivé"
 		},
@@ -165,7 +165,7 @@
 			"cancel": "Annuler"
 		},
 		"errors": {
-			"unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+			"unexpected": "Une erreur inattendue s'est produite.",
 			"urlFieldInvalid": "URL invalide.",
 			"feedUnreachable": "Le flux est inaccessible.",
 			"feedCannotBeProcessed": "Le flux ne peut pas être traité.",
@@ -189,6 +189,7 @@
 		},
 		"add": "Ajouter",
 		"errors": {
+			"unexpected": "Une erreur inattendue s'est produite.",
 			"missingFields": "Champ(s) manquant(s).",
 			"titleFieldInvalid": "Titre invalide.",
 			"titleFieldTooShort": "Le titre est trop court.",

@@ -68,9 +68,9 @@ function FeedContentLimitForm({
 					return;
 				}
 
-				if (res.defaultErrorMessage) {
+				if (res.errI18Key) {
 					setValue(feedContentLimit);
-					toast.error(res.defaultErrorMessage);
+					toast.error(t(res.errI18Key));
 				}
 			} catch (err) {
 				setValue(feedContentLimit);
@@ -150,9 +150,9 @@ function HideReadFeedContentForm({
 					return;
 				}
 
-				if (res.defaultErrorMessage) {
+				if (res.errI18Key) {
 					setValue(hideReadFeedContent);
-					toast.error(res.defaultErrorMessage);
+					toast.error(t(res.errI18Key));
 					return;
 				}
 			} catch (err) {

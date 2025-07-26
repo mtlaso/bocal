@@ -145,10 +145,8 @@ function NewsletterForm({
 					</p>
 				))}
 
-				{state?.defaultErrorMessage && (
-					<p className="mt-2 text-sm text-destructive">
-						{state.defaultErrorMessage}
-					</p>
+				{state?.errI18Key && (
+					<p className="mt-2 text-sm text-destructive">{t(state.errI18Key)}</p>
 				)}
 
 				{state?.isSuccessful && (

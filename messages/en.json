@@ -57,7 +57,7 @@
 	},
 	"errors": {
 		"notSignedIn": "Not signed in",
-		"unexpected": "An error happened. Please try again.",
+		"unexpected": "An error happened.",
 		"retry": "Retry",
 		"userNotFound": "User not found",
 		"404": {
@@ -145,7 +145,7 @@
 				"feedIdFieldInvalid": "ID invalid.",
 				"feedContentIdFieldInvalid": "Content ID invalid.",
 				"missingFields": "Missing fields.",
-				"unexpected": "An error happened. Please try again."
+				"unexpected": "An error happened."
 			},
 			"success": "Content archived"
 		},
@@ -163,7 +163,7 @@
 			"cancel": "Cancel"
 		},
 		"errors": {
-			"unexpected": "An error happened. Please try again.",
+			"unexpected": "An error happened.",
 			"urlFieldInvalid": "URL invalid.",
 			"feedUnreachable": "Feed is unreachable.",
 			"feedCannotBeProcessed": "Feed cannot be processed.",
@@ -187,6 +187,7 @@
 		},
 		"add": "Add",
 		"errors": {
+			"unexpected": "Unexpected error occurred.",
 			"missingFields": "Missing fields.",
 			"titleFieldInvalid": "Title invalid.",
 			"titleFieldTooShort": "Title too short.",

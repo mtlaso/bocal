@@ -74,9 +74,9 @@ const Item = ({ item }: { item: FeedTimeline }): React.JSX.Element => {
 					return;
 				}
 
-				if (res.defaultErrorMessage) {
+				if (res.errI18Key) {
 					setIsRead(false);
-					toast.error(res.defaultErrorMessage);
+					toast.error(t(res.errI18Key));
 					return;
 				}
 			} catch (err) {
@@ -105,9 +105,9 @@ const Item = ({ item }: { item: FeedTimeline }): React.JSX.Element => {
 					return;
 				}
 
-				if (res.defaultErrorMessage) {
+				if (res.errI18Key) {
 					setIsRead(true);
-					toast.error(res.defaultErrorMessage);
+					toast.error(t(res.errI18Key));
 					return;
 				}
 			} catch (err) {

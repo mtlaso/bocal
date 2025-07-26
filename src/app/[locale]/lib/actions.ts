@@ -31,22 +31,31 @@ import {
 	usersPreferences,
 } from "@/db/schema";
 
-const DEFAULT_UNEXPECTED_ERROR_MESSAGE = "An unexpected error occurred";
+const _DEFAULT_UNEXPECTED_ERROR_MESSAGE = "An unexpected error occurred";
 
 type ActionReturnType<T, E extends string = keyof T & string> = {
-	errors?: { [key in E]?: string[] };
-	payload?: T;
 	/**
-   * defaultErrMessage is defined when 'errors' is undefined (e.g. when an exception was thrown).
-   // TODO: verifier que c'est traduit partout cote frontend
-   */
-	defaultErrorMessage?: string;
-	// TODO: verifier que c'est traduit partout cote frontend
+	 * errors contains the validation errors.
+	 * Validation errors ARE translated.
+	 */
+	errors?: { [key in E]?: string[] };
+
+	/**
+	 * payload is the transmitted data.
+	 */
+	payload?: T;
+
+	/**
+	 * errI18nKey is the key of an error message to be translated.
+	 * NOT TRANSLATED.
+	 */
+	errI18Key?: string;
+	/**
+	 * isSuccessful is used when an action is called through a form
+	 * to know if the operation was successfull.
+	 */
 	isSuccessful?: boolean;
 };
-
-// type CustomError = { errorCode: number; message: string };
-// type R<T> = { data: T; error: CustomError | null };
 
 /**
  * authenticate authenticates a user using the specified provider. Returns a string containing the error message if any.
@@ -132,8 +141,7 @@ export async function addLink(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
-			errors: undefined,
+			errI18Key: "errors.unexpected",
 		};
 	}
 
@@ -188,7 +196,7 @@ export async function deleteLink(id: number): Promise<DeleteLinkState> {
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
+			errI18Key: "errors.unexpected",
 		};
 	}
 
@@ -240,7 +248,7 @@ export async function archiveLink(id: number): Promise<DeleteLinkState> {
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
+			errI18Key: "errors.unexpected",
 		};
 	}
 
@@ -292,7 +300,7 @@ export async function unarchiveLink(id: number): Promise<DeleteLinkState> {
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
+			errI18Key: "errors.unexpected",
 		};
 	}
 
@@ -308,11 +316,6 @@ export async function addFeed(
 	_currState: AddFeedState,
 	formData: FormData,
 ): Promise<AddFeedState> {
-	let unreachaleErrMsg = "";
-	let cannotBeProcessErrMsg = "";
-	let feedTimeoutErrMsg = "";
-	const _successMsg = "";
-
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
@@ -320,9 +323,6 @@ export async function addFeed(
 		}
 
 		const t = await getTranslations("rssFeed");
-		unreachaleErrMsg = t("errors.feedUnreachable");
-		cannotBeProcessErrMsg = t("errors.feedCannotBeProcessed");
-		feedTimeoutErrMsg = t("errors.feedTimeout");
 
 		const payload = { url: formData.get("url") };
 		const validatedFields = insertFeedsSchema.safeParse(payload, {
@@ -427,37 +427,37 @@ export async function addFeed(
 
 		if (isFeedAlreadyFollowed) {
 			return {
-				defaultErrorMessage: t("errors.feedAlreadyFollowed"),
+				errI18Key: "errors.feedAlreadyFollowed",
 			};
 		}
 
 		if (isFeedsLimitReached) {
 			return {
-				defaultErrorMessage: t("errors.maxFeedsReached"),
+				errI18Key: "errors.maxFeedsReached",
 			};
 		}
 	} catch (err) {
 		logger.error(err);
 		if (err instanceof feedService.FeedUnreachable) {
 			return {
-				defaultErrorMessage: unreachaleErrMsg,
+				errI18Key: "errors.feedUnreachable",
 			};
 		}
 
 		if (err instanceof feedService.FeedCannotBeProcessed) {
 			return {
-				defaultErrorMessage: cannotBeProcessErrMsg,
+				errI18Key: "errors.feedCannotBeProcessed",
 			};
 		}
 
 		if (err instanceof feedService.FeedTimeout) {
 			return {
-				defaultErrorMessage: feedTimeoutErrMsg,
+				errI18Key: "errors.feedTimeout",
 			};
 		}
 
 		return {
-			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
+			errI18Key: "errors.unexpected",
 		};
 	}
 
@@ -526,7 +526,7 @@ export async function unfollowFeed(id: number): Promise<UnfollowFeedState> {
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
+			errI18Key: "errors.unexpected",
 		};
 	}
 
@@ -591,7 +591,7 @@ export async function markFeedContentAsRead(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
+			errI18Key: "errors.unexpected",
 		};
 	}
 
@@ -658,7 +658,7 @@ export async function markFeedContentAsUnread(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
+			errI18Key: "errors.unexpected",
 		};
 	}
 
@@ -710,7 +710,7 @@ export async function setFeedContentLimit(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
+			errI18Key: "errors.unexpected",
 		};
 	}
 
@@ -754,7 +754,7 @@ export async function setHideReadFeedContent(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
+			errI18Key: "errors.unexpected",
 		};
 	}
 
@@ -813,7 +813,7 @@ export async function archiveFeedContent(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
+			errI18Key: "errors.unexpected",
 		};
 	}
 
@@ -873,7 +873,7 @@ export async function addNewsletter(
 		});
 		if (userFeeds.length >= LENGTHS.feeds.maxPerUser) {
 			return {
-				defaultErrorMessage: t("errors.maxFeedsReached"),
+				errI18Key: t("errors.maxFeedsReached"),
 			};
 		}
 
@@ -896,7 +896,7 @@ export async function addNewsletter(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
+			errI18Key: "errors.unexpected",
 		};
 	}
 
@@ -938,7 +938,7 @@ export async function deleteNewsletter(
 
 		if (!validatedFields.success) {
 			return {
-				defaultErrorMessage: t("errors.missingFields"),
+				errI18Key: t("errors.missingFields"),
 				errors: z.flattenError(validatedFields.error).fieldErrors,
 			};
 		}
@@ -954,7 +954,7 @@ export async function deleteNewsletter(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
+			errI18Key: "errors.unexpected",
 		};
 	}
 

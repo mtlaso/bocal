@@ -173,8 +173,8 @@ function DeleteNewsletterDialog({
 					return;
 				}
 
-				if (res.defaultErrorMessage) {
-					toast.error(res.defaultErrorMessage);
+				if (res.errI18Key) {
+					toast.error(t(res.errI18Key));
 					return;
 				}
 			} catch (err) {
