@@ -106,7 +106,7 @@ const FeedForm = ({
 	const t = useTranslations("rssFeed");
 	const initialState: AddFeedState = {
 		errors: undefined,
-		defaultErrorMessage: null,
+		defaultErrorMessage: undefined,
 		payload: undefined,
 	};
 	const [state, formAction, pending] = useActionState(addFeed, initialState);

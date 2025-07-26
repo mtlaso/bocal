@@ -7,7 +7,6 @@ import {
 	setHideReadFeedContent,
 } from "@/app/[locale]/lib/actions";
 import type { UserPreferences } from "@/app/[locale]/lib/constants";
-import { logger } from "@/app/[locale]/lib/logging";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Label } from "@/components/ui/label";
 import {
@@ -67,19 +66,11 @@ function FeedContentLimitForm({
 					setValue(feedContentLimit);
 					toast.error(res.errors.feedContentLimit?.join(", "));
 					return;
-					// setValue(feedContentLimit);
-					// for (const error of res.errors.feedContentLimit) {
-					// 	toast.error(t(error));
-					// }
-					// return;
 				}
 
 				if (res.defaultErrorMessage) {
 					setValue(feedContentLimit);
 					toast.error(res.defaultErrorMessage);
-					// setValue(feedContentLimit);
-					// toast.error(t(res.defaultErrorMessage));
-					// return;
 				}
 			} catch (err) {
 				setValue(feedContentLimit);
@@ -153,21 +144,18 @@ function HideReadFeedContentForm({
 				setValue(checked);
 				toast.success(t("success"));
 				const res = await setHideReadFeedContent(checked);
-				if (res.errors?.hideRead) {
+				if (res.errors) {
 					setValue(hideReadFeedContent);
-					for (const error of res.errors.hideRead) {
-						toast.error(t(error));
-					}
+					toast.error(res.errors.hideRead?.join());
 					return;
 				}
 
 				if (res.defaultErrorMessage) {
 					setValue(hideReadFeedContent);
-					toast.error(t(res.defaultErrorMessage));
+					toast.error(res.defaultErrorMessage);
 					return;
 				}
 			} catch (err) {
-				logger.error(err);
 				setValue(hideReadFeedContent);
 				toast.error(err?.toString() ?? t("errors.unexpected"));
 			}

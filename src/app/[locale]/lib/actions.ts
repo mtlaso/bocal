@@ -730,24 +730,23 @@ export type SetHideReadFeedContentState = ActionReturnType<{
 export async function setHideReadFeedContent(
 	hideRead: boolean,
 ): Promise<SetHideReadFeedContentState> {
-	const validatedFields = z
-		.object({
-			hideRead: z.boolean(),
-		})
-		.safeParse({ hideRead });
-
-	if (!validatedFields.success) {
-		return {
-			errors: z.flattenError(validatedFields.error).fieldErrors,
-			payload: { hideRead: hideRead },
-			defaultErrorMessage: "errors.missingFields",
-		};
-	}
-
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
+		}
+
+		const validatedFields = z
+			.object({
+				hideRead: z.boolean(),
+			})
+			.safeParse({ hideRead });
+
+		if (!validatedFields.success) {
+			return {
+				errors: z.flattenError(validatedFields.error).fieldErrors,
+				payload: { hideRead: hideRead },
+			};
 		}
 
 		await db
@@ -760,7 +759,7 @@ export async function setHideReadFeedContent(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrorMessage: "errors.unexpected",
+			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
 		};
 	}
 
