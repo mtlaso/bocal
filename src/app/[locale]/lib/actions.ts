@@ -31,8 +31,6 @@ import {
 	usersPreferences,
 } from "@/db/schema";
 
-const _DEFAULT_UNEXPECTED_ERROR_MESSAGE = "An unexpected error occurred";
-
 type ActionReturnType<T, E extends string = keyof T & string> = {
 	/**
 	 * errors contains the validation errors.
@@ -47,6 +45,7 @@ type ActionReturnType<T, E extends string = keyof T & string> = {
 
 	/**
 	 * errI18nKey is the key of an error message to be translated.
+	 * This is returning the i18n key because we cannot directly pass the translated message in some parts of the code (e.g. outside of a try/catch block).
 	 * NOT TRANSLATED.
 	 */
 	errI18Key?: string;
