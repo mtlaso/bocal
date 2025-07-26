@@ -105,8 +105,8 @@ function LinkForm({
 }: React.ComponentProps<"form">): React.JSX.Element {
 	const initialState: AddLinkState = {
 		errors: undefined,
-		defaultErrMessage: null,
-		data: undefined,
+		defaultErrorMessage: undefined,
+		payload: undefined,
 	};
 	const t = useTranslations("dashboard");
 	const [state, formAction, pending] = useActionState(addLink, initialState);
@@ -125,7 +125,7 @@ function LinkForm({
 						autoFocus
 						id="url"
 						placeholder="https://..."
-						defaultValue={state.data?.url}
+						defaultValue={state.payload?.url}
 					/>
 
 					<TbLinkPlus className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
@@ -136,9 +136,9 @@ function LinkForm({
 						{err}
 					</p>
 				))}
-				{state?.defaultErrMessage && (
+				{state?.defaultErrorMessage && (
 					<p className="mt-2 text-sm text-destructive">
-						{state.defaultErrMessage}
+						{state.defaultErrorMessage}
 					</p>
 				)}
 			</div>

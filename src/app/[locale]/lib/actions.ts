@@ -31,14 +31,21 @@ import {
 	usersPreferences,
 } from "@/db/schema";
 
-const UNEXPECTED_ERROR_MESSAGE = "An unexpected error occurred";
+const DEFAULT_UNEXPECTED_ERROR_MESSAGE = "An unexpected error occurred";
 
-type State<T, E extends string = keyof T & string> = {
+type ActionReturnType<T, E extends string = keyof T & string> = {
 	errors?: { [key in E]?: string[] };
-	data?: T;
-	defaultErrMessage?: string | null;
-	successMessage?: string | null;
+	payload?: T;
+	/**
+	 * defaultErrMessage is defined when 'errors' is undefined (e.g. when an exception was thrown).
+	 */
+	defaultErrorMessage?: string;
+	// TODO: retirer successMessage inutile
+	successMessage?: string;
 };
+
+// type CustomError = { errorCode: number; message: string };
+// type R<T> = { data: T; error: CustomError | null };
 
 /**
  * authenticate authenticates a user using the specified provider. Returns a string containing the error message if any.
@@ -76,7 +83,7 @@ export async function logout(): Promise<void> {
 	await signOut({ redirectTo: "/" });
 }
 
-export type AddLinkState = State<{
+export type AddLinkState = ActionReturnType<{
 	url: string;
 }>;
 
@@ -109,7 +116,7 @@ export async function addLink(
 		if (!validatedFields.success) {
 			return {
 				errors: z.flattenError(validatedFields.error).fieldErrors,
-				data: { url: formData.get("url") as string },
+				payload: { url: formData.get("url") as string },
 			};
 		}
 
@@ -124,7 +131,7 @@ export async function addLink(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrMessage: UNEXPECTED_ERROR_MESSAGE,
+			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
 			errors: undefined,
 		};
 	}
@@ -133,7 +140,7 @@ export async function addLink(
 	return {};
 }
 
-type DeleteLinkState = State<{
+type DeleteLinkState = ActionReturnType<{
 	id: number;
 }>;
 
@@ -164,7 +171,7 @@ export async function deleteLink(id: number): Promise<DeleteLinkState> {
 		if (!validatedFields.success) {
 			return {
 				errors: z.flattenError(validatedFields.error).fieldErrors,
-				data: { id: id },
+				payload: { id: id },
 			};
 		}
 
@@ -180,7 +187,7 @@ export async function deleteLink(id: number): Promise<DeleteLinkState> {
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrMessage: UNEXPECTED_ERROR_MESSAGE,
+			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
 		};
 	}
 
@@ -215,7 +222,7 @@ export async function archiveLink(id: number): Promise<DeleteLinkState> {
 		if (!validatedFields.success) {
 			return {
 				errors: z.flattenError(validatedFields.error).fieldErrors,
-				data: { id: id },
+				payload: { id: id },
 			};
 		}
 
@@ -232,7 +239,7 @@ export async function archiveLink(id: number): Promise<DeleteLinkState> {
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrMessage: UNEXPECTED_ERROR_MESSAGE,
+			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
 		};
 	}
 
@@ -267,7 +274,7 @@ export async function unarchiveLink(id: number): Promise<DeleteLinkState> {
 		if (!validatedFields.success) {
 			return {
 				errors: z.flattenError(validatedFields.error).fieldErrors,
-				data: { id: id },
+				payload: { id: id },
 			};
 		}
 
@@ -284,7 +291,7 @@ export async function unarchiveLink(id: number): Promise<DeleteLinkState> {
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrMessage: UNEXPECTED_ERROR_MESSAGE,
+			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
 		};
 	}
 
@@ -292,7 +299,7 @@ export async function unarchiveLink(id: number): Promise<DeleteLinkState> {
 	return {};
 }
 
-export type AddFeedState = State<{
+export type AddFeedState = ActionReturnType<{
 	url: string;
 }>;
 
@@ -335,7 +342,7 @@ export async function addFeed(
 		if (!validatedFields.success) {
 			return {
 				errors: z.flattenError(validatedFields.error).fieldErrors,
-				data: { url: formData.get("url") as string },
+				payload: { url: formData.get("url") as string },
 			};
 		}
 
@@ -420,37 +427,37 @@ export async function addFeed(
 
 		if (isFeedAlreadyFollowed) {
 			return {
-				defaultErrMessage: t("errors.feedAlreadyFollowed"),
+				defaultErrorMessage: t("errors.feedAlreadyFollowed"),
 			};
 		}
 
 		if (isFeedsLimitReached) {
 			return {
-				defaultErrMessage: t("errors.maxFeedsReached"),
+				defaultErrorMessage: t("errors.maxFeedsReached"),
 			};
 		}
 	} catch (err) {
 		logger.error(err);
 		if (err instanceof feedService.FeedUnreachable) {
 			return {
-				defaultErrMessage: unreachaleErrMsg,
+				defaultErrorMessage: unreachaleErrMsg,
 			};
 		}
 
 		if (err instanceof feedService.FeedCannotBeProcessed) {
 			return {
-				defaultErrMessage: cannotBeProcessErrMsg,
+				defaultErrorMessage: cannotBeProcessErrMsg,
 			};
 		}
 
 		if (err instanceof feedService.FeedTimeout) {
 			return {
-				defaultErrMessage: feedTimeoutErrMsg,
+				defaultErrorMessage: feedTimeoutErrMsg,
 			};
 		}
 
 		return {
-			defaultErrMessage: UNEXPECTED_ERROR_MESSAGE,
+			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
 		};
 	}
 
@@ -460,7 +467,7 @@ export async function addFeed(
 	};
 }
 
-export type UnfollowFeedState = State<{
+export type UnfollowFeedState = ActionReturnType<{
 	feedId: number;
 }>;
 
@@ -494,7 +501,7 @@ export async function unfollowFeed(id: number): Promise<UnfollowFeedState> {
 		if (!validatedFields.success) {
 			return {
 				errors: z.flattenError(validatedFields.error).fieldErrors,
-				data: { feedId: id },
+				payload: { feedId: id },
 			};
 		}
 
@@ -522,7 +529,7 @@ export async function unfollowFeed(id: number): Promise<UnfollowFeedState> {
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrMessage: UNEXPECTED_ERROR_MESSAGE,
+			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
 		};
 	}
 
@@ -532,7 +539,7 @@ export async function unfollowFeed(id: number): Promise<UnfollowFeedState> {
 	};
 }
 
-export type MarkFeedContentAsReadState = State<{
+export type MarkFeedContentAsReadState = ActionReturnType<{
 	feedId: number;
 	feedContentId: number;
 }>;
@@ -572,7 +579,7 @@ export async function markFeedContentAsRead(
 		if (!validatedFields.success) {
 			return {
 				errors: z.flattenError(validatedFields.error).fieldErrors,
-				data: { feedId, feedContentId },
+				payload: { feedId, feedContentId },
 			};
 		}
 
@@ -589,7 +596,7 @@ export async function markFeedContentAsRead(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrMessage: UNEXPECTED_ERROR_MESSAGE,
+			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
 		};
 	}
 
@@ -597,7 +604,7 @@ export async function markFeedContentAsRead(
 	return {};
 }
 
-export type MarkFeedContentAsUnreadState = State<{
+export type MarkFeedContentAsUnreadState = ActionReturnType<{
 	feedId: number;
 	feedContentId: number;
 }>;
@@ -636,7 +643,7 @@ export async function markFeedContentAsUnread(
 		if (!validatedFields.success) {
 			return {
 				errors: z.flattenError(validatedFields.error).fieldErrors,
-				data: { feedId, feedContentId },
+				payload: { feedId, feedContentId },
 			};
 		}
 
@@ -656,7 +663,7 @@ export async function markFeedContentAsUnread(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrMessage: UNEXPECTED_ERROR_MESSAGE,
+			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
 		};
 	}
 
@@ -664,38 +671,38 @@ export async function markFeedContentAsUnread(
 	return {};
 }
 
-export type SetFeedContentLimitState = State<{
+export type SetFeedContentLimitState = ActionReturnType<{
 	feedContentLimit: number;
 }>;
 
 export async function setFeedContentLimit(
 	feedContentLimit: number,
 ): Promise<SetFeedContentLimitState> {
-	const validatedFields = z
-		.object({
-			feedContentLimit: z
-				.number()
-				.min(1, {
-					error: "errors.feedContentLimitFieldInvalid",
-				})
-				.max(LENGTHS.feeds.maxPerUser, {
-					error: "errors.feedContentLimitFieldInvalid",
-				}),
-		})
-		.safeParse({ feedContentLimit });
-
-	if (!validatedFields.success) {
-		return {
-			errors: z.flattenError(validatedFields.error).fieldErrors,
-			data: { feedContentLimit },
-			defaultErrMessage: "errors.missingFields",
-		};
-	}
-
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
+		}
+
+		const t = await getTranslations("rssFeed");
+		const validatedFields = z
+			.object({
+				feedContentLimit: z
+					.number()
+					.min(1, {
+						error: t("errors.feedContentLimitFieldInvalid"),
+					})
+					.max(LENGTHS.feeds.maxPerUser, {
+						error: t("errors.feedContentLimitFieldInvalid"),
+					}),
+			})
+			.safeParse({ feedContentLimit });
+
+		if (!validatedFields.success) {
+			return {
+				errors: z.flattenError(validatedFields.error).fieldErrors,
+				payload: { feedContentLimit },
+			};
 		}
 
 		await db
@@ -708,7 +715,7 @@ export async function setFeedContentLimit(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrMessage: "errors.unexpected",
+			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
 		};
 	}
 
@@ -716,7 +723,7 @@ export async function setFeedContentLimit(
 	return {};
 }
 
-export type SetHideReadFeedContentState = State<{
+export type SetHideReadFeedContentState = ActionReturnType<{
 	hideRead: boolean;
 }>;
 
@@ -732,8 +739,8 @@ export async function setHideReadFeedContent(
 	if (!validatedFields.success) {
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
-			data: { hideRead: hideRead },
-			defaultErrMessage: "errors.missingFields",
+			payload: { hideRead: hideRead },
+			defaultErrorMessage: "errors.missingFields",
 		};
 	}
 
@@ -753,7 +760,7 @@ export async function setHideReadFeedContent(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrMessage: "errors.unexpected",
+			defaultErrorMessage: "errors.unexpected",
 		};
 	}
 
@@ -761,7 +768,7 @@ export async function setHideReadFeedContent(
 	return {};
 }
 
-export type ArchiveFeedContentState = State<{
+export type ArchiveFeedContentState = ActionReturnType<{
 	url: string;
 }>;
 
@@ -778,8 +785,8 @@ export async function archiveFeedContent(
 	if (!validatedFields.success) {
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
-			data: { url: url },
-			defaultErrMessage: "errors.missingFields",
+			payload: { url: url },
+			defaultErrorMessage: "errors.missingFields",
 		};
 	}
 
@@ -801,7 +808,7 @@ export async function archiveFeedContent(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrMessage: "errors.unexpected",
+			defaultErrorMessage: "errors.unexpected",
 		};
 	}
 
@@ -809,7 +816,7 @@ export async function archiveFeedContent(
 	return { successMessage: "success" };
 }
 
-export type AddNewsletterState = State<{
+export type AddNewsletterState = ActionReturnType<{
 	title?: string;
 }>;
 
@@ -824,8 +831,8 @@ export async function addNewsletter(
 	if (!validatedFields.success) {
 		return {
 			errors: z.flattenError(validatedFields.error).fieldErrors,
-			data: { title: formData.get("title")?.toString() },
-			defaultErrMessage: "errors.missingFields",
+			payload: { title: formData.get("title")?.toString() },
+			defaultErrorMessage: "errors.missingFields",
 		};
 	}
 
@@ -841,7 +848,7 @@ export async function addNewsletter(
 
 		if (userFeeds.length >= LENGTHS.feeds.maxPerUser) {
 			return {
-				defaultErrMessage: "errors.maxFeedsReached",
+				defaultErrorMessage: "errors.maxFeedsReached",
 				errors: undefined,
 			};
 		}
@@ -866,7 +873,7 @@ export async function addNewsletter(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrMessage: "errors.unexpected",
+			defaultErrorMessage: "errors.unexpected",
 		};
 	}
 
@@ -876,7 +883,7 @@ export async function addNewsletter(
 	};
 }
 
-export type DeleteNewsletterState = State<{
+export type DeleteNewsletterState = ActionReturnType<{
 	id: number;
 }>;
 
@@ -889,7 +896,7 @@ export async function deleteNewsletter(
 
 	if (!validatedFields.success) {
 		return {
-			defaultErrMessage: "errors.missingFields",
+			defaultErrorMessage: "errors.missingFields",
 			errors: z.flattenError(validatedFields.error).fieldErrors,
 		};
 	}
@@ -914,7 +921,7 @@ export async function deleteNewsletter(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrMessage: "errors.unexpected",
+			defaultErrorMessage: "errors.unexpected",
 		};
 	}
 

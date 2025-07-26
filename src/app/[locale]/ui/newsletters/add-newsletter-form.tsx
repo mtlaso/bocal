@@ -112,8 +112,8 @@ function NewsletterForm({
 	const t = useTranslations("newsletter");
 	const initialState: AddNewsletterState = {
 		errors: undefined,
-		defaultErrMessage: undefined,
-		data: undefined,
+		defaultErrorMessage: undefined,
+		payload: undefined,
 	};
 	const [state, action, pending] = useActionState(addNewsletter, initialState);
 
@@ -138,7 +138,7 @@ function NewsletterForm({
 						autoFocus
 						id="title"
 						placeholder={t("addNewsletterForm.feedTitle")}
-						defaultValue={state.data?.title}
+						defaultValue={state.payload?.title}
 					/>
 
 					<TbMail
@@ -153,9 +153,9 @@ function NewsletterForm({
 					</p>
 				))}
 
-				{state?.defaultErrMessage && (
+				{state?.defaultErrorMessage && (
 					<p className="mt-2 text-sm text-destructive">
-						{t(state.defaultErrMessage)}
+						{t(state.defaultErrorMessage)}
 					</p>
 				)}
 

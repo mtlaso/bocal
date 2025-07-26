@@ -79,8 +79,8 @@ function UnfollowFeed(): React.JSX.Element {
 					return;
 				}
 
-				if (res.defaultErrMessage) {
-					toast.error(res.defaultErrMessage);
+				if (res.defaultErrorMessage) {
+					toast.error(res.defaultErrorMessage);
 					return;
 				}
 

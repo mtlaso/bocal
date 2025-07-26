@@ -206,7 +206,7 @@
 			"title": "Fonctionnement",
 			"part1": "Utilisez l’adresse courriel fournie pour vous abonner à des infolettres.",
 			"part2": "Ne partagez pas cette adresse : toute personne y ayant accès pourra vous envoyer des courriels.",
-			"part3": "Si l'infolettre à laquelle vous vous abonnez envoie un courriel de confirmation, celui-ci apparaîtra comme une nouvelle entrée dans le flux de l'infolettre"
+			"part3": "Si l'infolettre à laquelle vous vous abonnez envoie un courriel de confirmation, celui-ci apparaîtra comme une nouvelle entrée dans le flux de l'infolettre."
 		},
 		"success": "Infolettre ajoutée avec succès.",
 		"copiedToClipboard": "Copié dans le presse-papiers.",

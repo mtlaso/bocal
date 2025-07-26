@@ -106,8 +106,8 @@ const FeedForm = ({
 	const t = useTranslations("rssFeed");
 	const initialState: AddFeedState = {
 		errors: undefined,
-		defaultErrMessage: null,
-		data: undefined,
+		defaultErrorMessage: null,
+		payload: undefined,
 	};
 	const [state, formAction, pending] = useActionState(addFeed, initialState);
 
@@ -127,7 +127,7 @@ const FeedForm = ({
 						autoFocus
 						id="url"
 						placeholder="https://..."
-						defaultValue={state.data?.url}
+						defaultValue={state.payload?.url}
 					/>
 
 					<TbLinkPlus className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
@@ -139,9 +139,9 @@ const FeedForm = ({
 					</p>
 				))}
 
-				{state?.defaultErrMessage && (
+				{state?.defaultErrorMessage && (
 					<p className="mt-2 text-sm text-destructive">
-						{state.defaultErrMessage}
+						{state.defaultErrorMessage}
 					</p>
 				)}
 

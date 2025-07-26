@@ -62,23 +62,32 @@ function FeedContentLimitForm({
 				setValue(Number.parseInt(e));
 				toast.success(t("success"));
 				const res = await setFeedContentLimit(Number.parseInt(e));
-				if (res.errors?.feedContentLimit) {
+
+				if (res.errors) {
 					setValue(feedContentLimit);
-					for (const error of res.errors.feedContentLimit) {
-						toast.error(t(error));
-					}
+					toast.error(res.errors.feedContentLimit?.join(", "));
 					return;
+					// setValue(feedContentLimit);
+					// for (const error of res.errors.feedContentLimit) {
+					// 	toast.error(t(error));
+					// }
+					// return;
 				}
 
-				if (res.defaultErrMessage) {
+				if (res.defaultErrorMessage) {
 					setValue(feedContentLimit);
-					toast.error(t(res.defaultErrMessage));
-					return;
+					toast.error(res.defaultErrorMessage);
+					// setValue(feedContentLimit);
+					// toast.error(t(res.defaultErrorMessage));
+					// return;
 				}
 			} catch (err) {
 				setValue(feedContentLimit);
-				logger.error(err);
-				toast.error(t("errors.unexpected"));
+				if (err instanceof Error) {
+					toast.error(err.message);
+				} else {
+					toast.error(t("errors.unexpected"));
+				}
 			}
 		});
 	};
@@ -152,9 +161,9 @@ function HideReadFeedContentForm({
 					return;
 				}
 
-				if (res.defaultErrMessage) {
+				if (res.defaultErrorMessage) {
 					setValue(hideReadFeedContent);
-					toast.error(t(res.defaultErrMessage));
+					toast.error(t(res.defaultErrorMessage));
 					return;
 				}
 			} catch (err) {
