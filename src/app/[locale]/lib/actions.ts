@@ -777,22 +777,33 @@ export type ArchiveFeedContentState = ActionReturnType<{
 export async function archiveFeedContent(
 	url: string,
 ): Promise<ArchiveFeedContentState> {
-	const validatedFields = insertLinkSchema.safeParse({
-		url: url,
-	});
-
-	if (!validatedFields.success) {
-		return {
-			errors: z.flattenError(validatedFields.error).fieldErrors,
-			payload: { url: url },
-			defaultErrorMessage: "errors.missingFields",
-		};
-	}
-
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
+		}
+
+		const t = await getTranslations("dashboard");
+		const payload = { url: url };
+		const validatedFields = insertLinkSchema.safeParse(payload, {
+			error: (iss) => {
+				const path = iss.path?.join(".");
+				if (!path) {
+					return { message: t("errors.unexpected") };
+				}
+
+				const message = {
+					url: t("errors.urlFieldInvalid"),
+				}[path];
+				return { message: message ?? t("errors.unexpected") };
+			},
+		});
+
+		if (!validatedFields.success) {
+			return {
+				errors: z.flattenError(validatedFields.error).fieldErrors,
+				payload: { url: url },
+			};
 		}
 
 		const { ogTitle, ogImageURL } = await og.scrape(validatedFields.data.url);
@@ -807,12 +818,12 @@ export async function archiveFeedContent(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrorMessage: "errors.unexpected",
+			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
 		};
 	}
 
 	revalidatePath(APP_ROUTES.archive);
-	return { successMessage: "success" };
+	return {};
 }
 
 export type AddNewsletterState = ActionReturnType<{

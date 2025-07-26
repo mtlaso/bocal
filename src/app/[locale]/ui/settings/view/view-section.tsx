@@ -157,7 +157,11 @@ function HideReadFeedContentForm({
 				}
 			} catch (err) {
 				setValue(hideReadFeedContent);
-				toast.error(err?.toString() ?? t("errors.unexpected"));
+				if (err instanceof Error) {
+					toast.error(err.message);
+				} else {
+					toast.error(t("errors.unexpected"));
+				}
 			}
 		});
 	};
