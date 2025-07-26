@@ -7,7 +7,6 @@ import {
 	setHideReadFeedContent,
 } from "@/app/[locale]/lib/actions";
 import type { UserPreferences } from "@/app/[locale]/lib/constants";
-import { logger } from "@/app/[locale]/lib/logging";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Label } from "@/components/ui/label";
 import {
@@ -62,23 +61,25 @@ function FeedContentLimitForm({
 				setValue(Number.parseInt(e));
 				toast.success(t("success"));
 				const res = await setFeedContentLimit(Number.parseInt(e));
-				if (res.errors?.feedContentLimit) {
+
+				if (res.errors) {
 					setValue(feedContentLimit);
-					for (const error of res.errors.feedContentLimit) {
-						toast.error(t(error));
-					}
+					toast.error(res.errors.feedContentLimit?.join(", "));
 					return;
 				}
 
-				if (res.defaultErrMessage) {
+				if (res.errI18Key) {
 					setValue(feedContentLimit);
-					toast.error(t(res.defaultErrMessage));
-					return;
+					// biome-ignore lint/suspicious/noExplicitAny: valid type.
+					toast.error(t(res.errI18Key as any));
 				}
 			} catch (err) {
 				setValue(feedContentLimit);
-				logger.error(err);
-				toast.error(t("errors.unexpected"));
+				if (err instanceof Error) {
+					toast.error(err.message);
+				} else {
+					toast.error(t("errors.unexpected"));
+				}
 			}
 		});
 	};
@@ -144,23 +145,25 @@ function HideReadFeedContentForm({
 				setValue(checked);
 				toast.success(t("success"));
 				const res = await setHideReadFeedContent(checked);
-				if (res.errors?.hideRead) {
+				if (res.errors) {
 					setValue(hideReadFeedContent);
-					for (const error of res.errors.hideRead) {
-						toast.error(t(error));
-					}
+					toast.error(res.errors.hideRead?.join());
 					return;
 				}
 
-				if (res.defaultErrMessage) {
+				if (res.errI18Key) {
 					setValue(hideReadFeedContent);
-					toast.error(t(res.defaultErrMessage));
+					// biome-ignore lint/suspicious/noExplicitAny: valid type.
+					toast.error(t(res.errI18Key as any));
 					return;
 				}
 			} catch (err) {
-				logger.error(err);
 				setValue(hideReadFeedContent);
-				toast.error(err?.toString() ?? t("errors.unexpected"));
+				if (err instanceof Error) {
+					toast.error(err.message);
+				} else {
+					toast.error(t("errors.unexpected"));
+				}
 			}
 		});
 	};

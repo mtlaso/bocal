@@ -56,10 +56,8 @@
 		"footerShortDescription": "[bocal] — all your content in one place."
 	},
 	"errors": {
-		"notSignedIn": "Not signed in",
-		"unexpected": "An error happened. Please try again.",
+		"unexpected": "An error happened.",
 		"retry": "Retry",
-		"userNotFound": "User not found",
 		"404": {
 			"title": "404 - Page not found",
 			"description": "The page you are looking for does not exist.",
@@ -95,17 +93,12 @@
 		"github": "Continue with GitHub",
 		"redirecting": "Redirecting...",
 		"errors": {
-			"title": "Authentication Error",
 			"CredentialsSignin": "Invalid credentials",
 			"OAuthSignInError": "Error connecting to authentication provider",
 			"OAuthCallbackError": "Error during authentication callback",
 			"InvalidCallbackUrl": "Invalid callback URL",
 			"CallbackRouteError": "Error processing callback route",
-			"default": "Something went wrong with authentication",
-			"unexpected": {
-				"title": "Unexpected Error",
-				"description": "An unexpected error occurred. Please try again later."
-			}
+			"unexpected": "Unexpected error"
 		}
 	},
 	"logout": {
@@ -118,7 +111,6 @@
 		"addLinkForm": {
 			"title": "Add a link",
 			"link": "Link",
-			"add": "Add",
 			"cancel": "Cancel"
 		},
 		"success": "Link added",
@@ -128,8 +120,7 @@
 		"errors": {
 			"urlFieldInvalid": "URL invalid.",
 			"idFieldInvalid": "ID invalid.",
-			"missingFields": "Missing fields.",
-			"unexpected": "An error happened. Please try again."
+			"unexpected": "Unexpected error."
 		}
 	},
 	"archive": {
@@ -151,7 +142,7 @@
 				"feedIdFieldInvalid": "ID invalid.",
 				"feedContentIdFieldInvalid": "Content ID invalid.",
 				"missingFields": "Missing fields.",
-				"unexpected": "An error happened. Please try again."
+				"unexpected": "An error happened."
 			},
 			"success": "Content archived"
 		},
@@ -169,7 +160,7 @@
 			"cancel": "Cancel"
 		},
 		"errors": {
-			"unexpected": "An error happened. Please try again.",
+			"unexpected": "An error happened.",
 			"urlFieldInvalid": "URL invalid.",
 			"feedUnreachable": "Feed is unreachable.",
 			"feedCannotBeProcessed": "Feed cannot be processed.",
@@ -193,6 +184,7 @@
 		},
 		"add": "Add",
 		"errors": {
+			"unexpected": "Unexpected error occurred.",
 			"missingFields": "Missing fields.",
 			"titleFieldInvalid": "Title invalid.",
 			"titleFieldTooShort": "Title too short.",
@@ -220,7 +212,6 @@
 		"title": "Settings",
 		"profileSection": {
 			"title": "Profile",
-			"description": "Manage your profile here.",
 			"name": "Name",
 			"email": "Email"
 		},

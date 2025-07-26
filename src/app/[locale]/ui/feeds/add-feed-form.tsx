@@ -2,7 +2,7 @@
 import { useTranslations } from "next-intl";
 import { useActionState, useState } from "react";
 import { TbLinkPlus } from "react-icons/tb";
-import { type AddFeedState, addFeed } from "@/app/[locale]/lib/actions";
+import { addFeed } from "@/app/[locale]/lib/actions";
 import { useMediaQuery } from "@/app/[locale]/lib/hooks/use-media-query";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Button } from "@/components/ui/button";
@@ -104,33 +104,25 @@ const FeedForm = ({
 	className,
 }: React.ComponentProps<"form">): React.JSX.Element => {
 	const t = useTranslations("rssFeed");
-	const initialState: AddFeedState = {
-		errors: undefined,
-		defaultErrMessage: null,
-		data: undefined,
-	};
-	const [state, formAction, pending] = useActionState(addFeed, initialState);
+	const [state, formAction, pending] = useActionState(addFeed, {});
 
 	return (
-		<form
-			className={cn(SPACING.LG, "grid", className)}
-			action={formAction}
-			id="form"
-		>
-			<div className={SPACING.SM}>
+		<form className={cn(SPACING.MD, className)} action={formAction} id="form">
+			<div className={SPACING.XS}>
 				<Label htmlFor="url" className="block text-sm font-medium">
 					{t("addFeedForm.link")}
 				</Label>
 
 				<div className="relative">
 					<Input
+						type="url"
 						required
 						className="block w-full cursor-pointer rounded-md py-2 pl-10 outline-2 placeholder:text-gray-500"
 						name="url"
 						autoFocus
 						id="url"
 						placeholder="https://..."
-						defaultValue={state.data?.url}
+						defaultValue={state.payload?.url}
 					/>
 
 					<TbLinkPlus className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
@@ -138,24 +130,23 @@ const FeedForm = ({
 
 				{state.errors?.url?.map((err) => (
 					<p className="mt-2 text-sm text-destructive" key={err}>
-						{t(err)}
+						{err}
 					</p>
 				))}
 
-				{state?.defaultErrMessage && (
+				{state?.errI18Key && (
 					<p className="mt-2 text-sm text-destructive">
-						{t(state.defaultErrMessage)}
+						{/* biome-ignore lint/suspicious/noExplicitAny: correct value */}
+						{t(state.errI18Key as any)}
 					</p>
 				)}
 
-				{state?.successMessage && (
-					<p className="mt-2 text-sm text-green-500">
-						{t(state.successMessage)}
-					</p>
+				{state?.isSuccessful && (
+					<p className="mt-2 text-sm text-primary">{t("success")}</p>
 				)}
 			</div>
 
-			<Button disabled={pending} type="submit" form="form">
+			<Button className="w-full" disabled={pending} type="submit" form="form">
 				{t("add")}
 			</Button>
 		</form>

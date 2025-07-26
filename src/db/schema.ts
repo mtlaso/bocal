@@ -17,6 +17,7 @@ import {
 	type DEFAULT_USERS_PREFERENCES,
 	FeedErrorType,
 	FeedStatusType,
+	LENGTHS,
 } from "@/app/[locale]/lib/constants";
 
 // biome-ignore lint/suspicious/noExplicitAny: locale exception.
@@ -238,83 +239,47 @@ export const authenticators = pgTable(
 	],
 );
 
-export const insertLinksSchema = createInsertSchema(links, {
-	url: (): z.ZodCoercedString =>
-		z.url({
-			error: "errors.urlFieldInvalid",
-		}),
+export const insertLinkSchema = createInsertSchema(links, {
+	url: (): z.ZodCoercedString => z.url(),
 }).pick({ url: true });
 
 export const deleteLinkSchema = createSelectSchema(links, {
-	id: (schema): z.ZodCoercedNumber =>
-		schema.nonnegative({
-			error: "errors.idFieldInvalid",
-		}),
+	id: (schema): z.ZodCoercedNumber => schema.nonnegative(),
 }).pick({ id: true });
 
 export const insertFeedsSchema = createInsertSchema(feeds, {
-	url: (): z.ZodCoercedString =>
-		z.url({
-			error: "errors.urlFieldInvalid",
-		}),
+	url: (): z.ZodCoercedString => z.url(),
 }).pick({ url: true });
 
 export const unfollowFeedSchema = createSelectSchema(usersFeeds, {
-	feedId: (schema): z.ZodCoercedNumber =>
-		schema.nonnegative({
-			error: "errors.idFieldInvalid",
-		}),
+	feedId: (schema): z.ZodCoercedNumber => schema.nonnegative(),
 }).pick({ feedId: true });
 
 export const insertUsersFeedsReadContentSchema = createSelectSchema(
 	usersFeedsReadContent,
 	{
-		feedId: (schema): z.ZodCoercedNumber =>
-			schema.nonnegative({
-				error: "errors.idFieldInvalid",
-			}),
-		feedContentId: (schema): z.ZodCoercedNumber =>
-			schema.nonnegative({
-				error: "errors.feedContentIdFieldInvalid",
-			}),
+		feedId: (schema): z.ZodCoercedNumber => schema.nonnegative(),
+		feedContentId: (schema): z.ZodCoercedNumber => schema.nonnegative(),
 	},
 ).pick({ feedId: true, feedContentId: true });
 
 export const deleteUsersFeedsReadContentSchema = createSelectSchema(
 	usersFeedsReadContent,
 	{
-		feedId: (schema): z.ZodCoercedNumber =>
-			schema.nonnegative({
-				error: "errors.idFieldInvalid",
-			}),
-		feedContentId: (schema): z.ZodCoercedNumber =>
-			schema.nonnegative({
-				error: "errors.feedContentIdFieldInvalid",
-			}),
+		feedId: (schema): z.ZodCoercedNumber => schema.nonnegative(),
+		feedContentId: (schema): z.ZodCoercedNumber => schema.nonnegative(),
 	},
 ).pick({ feedId: true, feedContentId: true });
 
 export const addNewsletterSchema = z.object({
 	title: z
-		.string({
-			error: "errors.titleFieldInvalid",
-		})
-		.min(2, {
-			error: "errors.titleFieldTooShort",
-		})
-		.max(100, {
-			error: "errors.titleFieldTooLong",
-		}),
+		.string()
+		.min(LENGTHS.newsletters.title.min)
+		.max(LENGTHS.newsletters.title.max),
 });
 
 export const deleteNewsletterSchema = z.object({
-	id: z
-		.number({
-			error: "errors.idFieldInvalid",
-		})
-		.nonnegative({
-			error: "errors.idFieldInvalid",
-		}),
+	id: z.number().nonnegative(),
 });
 
 const feedTimeline = z.object({

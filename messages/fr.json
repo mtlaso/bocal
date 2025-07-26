@@ -56,10 +56,8 @@
 		"footerShortDescription": "[bocal] — tout votre contenu au même endroit."
 	},
 	"errors": {
-		"notSignedIn": "Non connecté",
-		"unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+		"unexpected": "Une erreur inattendue s'est produite.",
 		"retry": "Réessayer",
-		"userNotFound": "Utilisateur non trouvé",
 		"404PageNotFound": "Page non trouvée",
 		"404": {
 			"title": "404 - Page non trouvée",
@@ -96,17 +94,12 @@
 		"github": "Continuer avec GitHub",
 		"redirecting": "Redirection en cours...",
 		"errors": {
-			"title": "Erreur d'authentification",
 			"CredentialsSignin": "Identifiants invalides",
 			"OAuthSignInError": "Erreur lors de la connexion avec le fournisseur d'authentification",
 			"OAuthCallbackError": "Erreur lors du retour d'authentification",
 			"InvalidCallbackUrl": "URL de retour invalide",
 			"CallbackRouteError": "Erreur lors du traitement de la route de retour",
-			"default": "Une erreur s'est produite lors de l'authentification",
-			"unexpected": {
-				"title": "Erreur inattendue",
-				"description": "Une erreur inattendue s'est produite. Veuillez réessayer plus tard."
-			}
+			"unexpected": "Une erreur inattendue s'est produite."
 		}
 	},
 	"logout": {
@@ -118,7 +111,6 @@
 		"addLinkForm": {
 			"title": "Ajouter un lien",
 			"link": "Lien",
-			"add": "Ajouter",
 			"cancel": "Annuler"
 		},
 		"ogImageAlt": "Image représentant le contenu",
@@ -129,8 +121,7 @@
 		"errors": {
 			"urlFieldInvalid": "URL invalide.",
 			"idFieldInvalid": "ID invalide.",
-			"missingFields": "Champ(s) manquant(s).",
-			"unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer."
+			"unexpected": "Une erreur inattendue s'est produite."
 		}
 	},
 	"archive": {
@@ -152,7 +143,7 @@
 				"feedIdFieldInvalid": "ID de flux invalide.",
 				"feedContentIdFieldInvalid": "ID de contenu invalide.",
 				"missingFields": "Champ(s) manquant(s).",
-				"unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer."
+				"unexpected": "Une erreur inattendue s'est produite."
 			},
 			"success": "Contenu archivé"
 		},
@@ -170,7 +161,7 @@
 			"cancel": "Annuler"
 		},
 		"errors": {
-			"unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+			"unexpected": "Une erreur inattendue s'est produite.",
 			"urlFieldInvalid": "URL invalide.",
 			"feedUnreachable": "Le flux est inaccessible.",
 			"feedCannotBeProcessed": "Le flux ne peut pas être traité.",
@@ -194,6 +185,7 @@
 		},
 		"add": "Ajouter",
 		"errors": {
+			"unexpected": "Une erreur inattendue s'est produite.",
 			"missingFields": "Champ(s) manquant(s).",
 			"titleFieldInvalid": "Titre invalide.",
 			"titleFieldTooShort": "Le titre est trop court.",
@@ -211,7 +203,7 @@
 			"title": "Fonctionnement",
 			"part1": "Utilisez l’adresse courriel fournie pour vous abonner à des infolettres.",
 			"part2": "Ne partagez pas cette adresse : toute personne y ayant accès pourra vous envoyer des courriels.",
-			"part3": "Si l'infolettre à laquelle vous vous abonnez envoie un courriel de confirmation, celui-ci apparaîtra comme une nouvelle entrée dans le flux de l'infolettre"
+			"part3": "Si l'infolettre à laquelle vous vous abonnez envoie un courriel de confirmation, celui-ci apparaîtra comme une nouvelle entrée dans le flux de l'infolettre."
 		},
 		"success": "Infolettre ajoutée avec succès.",
 		"copiedToClipboard": "Copié dans le presse-papiers.",

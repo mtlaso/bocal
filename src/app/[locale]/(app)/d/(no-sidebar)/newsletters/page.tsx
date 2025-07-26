@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { useTranslations } from "next-intl";
+import { type Locale, useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { dal } from "@/app/[locale]/lib/dal";
@@ -17,10 +17,13 @@ export async function generateMetadata({
 	params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
 	const { locale } = await params;
-	const t = await getTranslations({ locale, namespace: "metadata.newsletter" });
+	const t = await getTranslations({
+		locale: locale as Locale,
+		namespace: "metadata",
+	});
 	return {
-		title: t("title"),
-		description: t("description"),
+		title: t("newsletter.title"),
+		description: t("newsletter.description"),
 	} satisfies Metadata;
 }
 

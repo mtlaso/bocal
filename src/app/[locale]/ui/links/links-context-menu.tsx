@@ -99,14 +99,25 @@ function UnArchiveLink({
 				e.preventDefault();
 				const res = await unarchiveLink(id);
 
-				if (res.defaultErrMessage) {
-					toast.error(t(res.defaultErrMessage));
+				if (res.errors) {
 					onUnarchiveFailed(id);
+					toast.error(res.errors.id?.join(", "));
 					return;
 				}
-			} catch (_err) {
+
+				if (res.errI18Key) {
+					onUnarchiveFailed(id);
+					// biome-ignore lint/suspicious/noExplicitAny: valid type.
+					toast.error(t(res.errI18Key as any));
+					return;
+				}
+			} catch (err) {
 				onUnarchiveFailed(id);
-				toast.error(t("errors.unexpected"));
+				if (err instanceof Error) {
+					toast.error(err.message);
+				} else {
+					toast.error(t("errors.unexpected"));
+				}
 			}
 		});
 	};
@@ -143,14 +154,25 @@ function ArchiveLink({
 				e.preventDefault();
 				const res = await archiveLink(id);
 
-				if (res.defaultErrMessage) {
-					toast.error(t(res.defaultErrMessage));
+				if (res.errors) {
+					toast.error(res.errors.id?.join(", "));
 					onArchiveFailed(id);
 					return;
 				}
-			} catch (_err) {
+
+				if (res.errI18Key) {
+					onArchiveFailed(id);
+					// biome-ignore lint/suspicious/noExplicitAny: valid type.
+					toast.error(t(res.errI18Key as any));
+					return;
+				}
+			} catch (err) {
 				onArchiveFailed(id);
-				toast.error(t("errors.unexpected"));
+				if (err instanceof Error) {
+					toast.error(err.message);
+				} else {
+					toast.error(t("errors.unexpected"));
+				}
 			}
 		});
 	};
@@ -187,14 +209,25 @@ function DeleteLink({
 				e.preventDefault();
 				const res = await deleteLink(id);
 
-				if (res.defaultErrMessage) {
-					toast.error(t(res.defaultErrMessage));
+				if (res.errors) {
 					onDeleteFailed(id);
+					toast.error(res.errors.id?.join(", "));
 					return;
 				}
-			} catch (_err) {
+
+				if (res.errI18Key) {
+					onDeleteFailed(id);
+					// biome-ignore lint/suspicious/noExplicitAny: valid type.
+					toast.error(t(res.errI18Key as any));
+					return;
+				}
+			} catch (err) {
 				onDeleteFailed(id);
-				toast.error(t("errors.unexpected"));
+				if (err instanceof Error) {
+					toast.error(err.message);
+				} else {
+					toast.error(t("errors.unexpected"));
+				}
 			}
 		});
 	};

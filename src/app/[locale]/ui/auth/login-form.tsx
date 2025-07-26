@@ -21,20 +21,20 @@ export function LoginForm(): React.JSX.Element {
 			setIsDisabled(true);
 			setRedirectingMsg("");
 			e.preventDefault();
-			const res = await authenticate(provider);
+			const authErrMsg = await authenticate(provider);
 
-			if (typeof res === "string") {
-				toast.error(t("errors.title"), {
-					description: t(res),
-				});
+			if (typeof authErrMsg === "string") {
+				toast.error(authErrMsg);
 				return;
 			}
 
 			setRedirectingMsg(t("redirecting"));
-		} catch (_err) {
-			toast.error(t("errors.unexpected.title"), {
-				description: t("errors.unexpected.description"),
-			});
+		} catch (err) {
+			if (err instanceof Error) {
+				toast.error(err.message);
+			} else {
+				toast.error(t("errors.unexpected"));
+			}
 		} finally {
 			setIsDisabled(false);
 		}

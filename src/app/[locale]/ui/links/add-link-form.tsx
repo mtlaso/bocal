@@ -24,7 +24,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { type AddLinkState, addLink } from "../../lib/actions";
+import { addLink } from "../../lib/actions";
 import { SPACING } from "../spacing";
 
 export function AddLinkForm(): React.JSX.Element {
@@ -103,20 +103,12 @@ function AddLinkFormMobile({
 function LinkForm({
 	className,
 }: React.ComponentProps<"form">): React.JSX.Element {
-	const initialState: AddLinkState = {
-		errors: undefined,
-		defaultErrMessage: null,
-		data: undefined,
-	};
 	const t = useTranslations("dashboard");
-	const [state, formAction, pending] = useActionState(addLink, initialState);
+	const [state, formAction, pending] = useActionState(addLink, {});
+
 	return (
-		<form
-			className={cn(SPACING.LG, "grid", className)}
-			action={formAction}
-			id="form"
-		>
-			<div className={`${SPACING.SM}`}>
+		<form className={cn(SPACING.MD, className)} action={formAction} id="form">
+			<div className={`${SPACING.XS}`}>
 				<Label htmlFor="url" className="block text-sm font-medium">
 					{t("addLinkForm.link")}
 				</Label>
@@ -128,7 +120,7 @@ function LinkForm({
 						autoFocus
 						id="url"
 						placeholder="https://..."
-						defaultValue={state.data?.url}
+						defaultValue={state.payload?.url}
 					/>
 
 					<TbLinkPlus className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
@@ -136,17 +128,22 @@ function LinkForm({
 
 				{state.errors?.url?.map((err) => (
 					<p className="mt-2 text-sm text-destructive" key={err}>
-						{t(err)}
+						{err}
 					</p>
 				))}
-				{state?.defaultErrMessage && (
+				{state?.errI18Key && (
 					<p className="mt-2 text-sm text-destructive">
-						{t(state.defaultErrMessage)}
+						{/* biome-ignore lint/suspicious/noExplicitAny: correct value */}
+						{t(state.errI18Key as any)}
 					</p>
+				)}
+
+				{state?.isSuccessful && (
+					<p className="mt-2 text-sm text-primary">{t("success")}</p>
 				)}
 			</div>
 
-			<Button disabled={pending} type="submit" form="form">
+			<Button disabled={pending} type="submit" form="form" className="w-full">
 				{t("add")}
 			</Button>
 		</form>

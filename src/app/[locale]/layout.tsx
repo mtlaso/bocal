@@ -2,6 +2,7 @@ import { getAppBaseURL } from "@/app/[locale]/lib/get-app-base-url";
 import "@/app/[locale]/ui/globals.css";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import type { Locale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import BaseLayout from "@/components/ui/base-layout";
 import { routing } from "@/i18n/routing";
@@ -12,7 +13,10 @@ export async function generateMetadata({
 	params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
 	const { locale } = await params;
-	const t = await getTranslations({ locale, namespace: "metadata" });
+	const t = await getTranslations({
+		locale: locale as Locale,
+		namespace: "metadata",
+	});
 
 	return {
 		title: {
@@ -43,12 +47,11 @@ export default async function RootLayout({
 }>): Promise<React.JSX.Element> {
 	const locale = (await params).locale;
 
-	// biome-ignore lint/suspicious/noExplicitAny: locale exception.
-	if (!routing.locales.includes(locale as any)) {
+	if (!routing.locales.includes(locale as Locale)) {
 		notFound();
 	}
 
-	setRequestLocale(locale);
+	setRequestLocale(locale as Locale);
 
 	return <BaseLayout locale={locale}>{children}</BaseLayout>;
 }

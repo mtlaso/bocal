@@ -73,16 +73,26 @@ function UnfollowFeed(): React.JSX.Element {
 				e.preventDefault();
 				if (selectedFeed === searchParamsState.DEFAULT_FEED) return;
 
-				const res = await unfollowFeed(selectedFeed);
-				if (res.defaultErrMessage) {
-					toast.error(t(res.defaultErrMessage));
+				const res = await unfollowFeed(Number.parseInt(selectedFeed));
+				if (res.errors) {
+					toast.error(res.errors.feedId?.join("."));
+					return;
+				}
+
+				if (res.errI18Key) {
+					// biome-ignore lint/suspicious/noExplicitAny: valid type.
+					toast.error(t(res.errI18Key as any));
 					return;
 				}
 
 				setSearchParamsState({ selectedFeed: searchParamsState.DEFAULT_FEED });
-				if (res.successMessage) toast.success(t(res.successMessage));
-			} catch (_err) {
-				toast.error(t("errors.unexpected"));
+				toast.success(t("successUnfollow"));
+			} catch (err) {
+				if (err instanceof Error) {
+					toast.error(err.message);
+				} else {
+					toast.error(t("errors.unexpected"));
+				}
 			}
 		});
 	};
@@ -109,8 +119,12 @@ function CopyFeedURL({ url }: { url: string }): React.JSX.Element {
 			toast.success(t("feedURLCopied"), {
 				duration: 2000,
 			});
-		} catch (_err) {
-			toast.error(t("errors.cannotCopyFeedURL"));
+		} catch (err) {
+			if (err instanceof Error) {
+				toast.error(err.message);
+			} else {
+				toast.error(t("errors.cannotCopyFeedURL"));
+			}
 		}
 	};
 
