@@ -2,10 +2,7 @@
 import { useTranslations } from "next-intl";
 import { useActionState, useState } from "react";
 import { TbLinkPlus, TbMail } from "react-icons/tb";
-import {
-	type AddNewsletterState,
-	addNewsletter,
-} from "@/app/[locale]/lib/actions";
+import { addNewsletter } from "@/app/[locale]/lib/actions";
 import { LENGTHS } from "@/app/[locale]/lib/constants";
 import { useMediaQuery } from "@/app/[locale]/lib/hooks/use-media-query";
 import { SPACING } from "@/app/[locale]/ui/spacing";
@@ -110,20 +107,15 @@ function NewsletterForm({
 	className?: string;
 }): React.JSX.Element {
 	const t = useTranslations("newsletter");
-	const initialState: AddNewsletterState = {
-		errors: undefined,
-		defaultErrorMessage: undefined,
-		payload: undefined,
-	};
-	const [state, action, pending] = useActionState(addNewsletter, initialState);
+	const [state, action, pending] = useActionState(addNewsletter, {});
 
 	return (
 		<form
 			action={action}
-			className={cn(SPACING.LG, "grid", className)}
+			className={cn(SPACING.MD, "grid", className)}
 			id="form"
 		>
-			<div className={SPACING.SM}>
+			<div className={SPACING.XS}>
 				<Label htmlFor="title" className="block text-sm font-medium">
 					{t("addNewsletterForm.feedTitle")}
 				</Label>
@@ -149,19 +141,19 @@ function NewsletterForm({
 
 				{state.errors?.title?.map((err) => (
 					<p className="mt-2 text-sm text-destructive" key={err}>
-						{t(err)}
+						{err}
 					</p>
 				))}
 
 				{state?.defaultErrorMessage && (
 					<p className="mt-2 text-sm text-destructive">
-						{t(state.defaultErrorMessage)}
+						{state.defaultErrorMessage}
 					</p>
 				)}
 
-				{state?.successMessage && (
+				{state?.successMsgNotTranslated && (
 					<p className="mt-2 text-sm text-green-500">
-						{t(state.successMessage)}
+						{t(state.successMsgNotTranslated)}
 					</p>
 				)}
 			</div>

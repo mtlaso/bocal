@@ -37,11 +37,12 @@ type ActionReturnType<T, E extends string = keyof T & string> = {
 	errors?: { [key in E]?: string[] };
 	payload?: T;
 	/**
-	 * defaultErrMessage is defined when 'errors' is undefined (e.g. when an exception was thrown).
-	 */
+   * defaultErrMessage is defined when 'errors' is undefined (e.g. when an exception was thrown).
+   // TODO: verifier que c'est traduit partout cote frontend
+   */
 	defaultErrorMessage?: string;
-	// TODO: retirer successMessage inutile
-	successMessage?: string;
+	// TODO: verifier que c'est traduit partout cote frontend
+	successMsgNotTranslated?: string;
 };
 
 // type CustomError = { errorCode: number; message: string };
@@ -463,7 +464,7 @@ export async function addFeed(
 
 	revalidatePath(APP_ROUTES.feeds);
 	return {
-		successMessage: successMsg,
+		successMsgNotTranslated: successMsg,
 	};
 }
 
@@ -535,7 +536,7 @@ export async function unfollowFeed(id: number): Promise<UnfollowFeedState> {
 
 	revalidatePath(APP_ROUTES.feeds);
 	return {
-		successMessage: successUnfollow,
+		successMsgNotTranslated: successUnfollow,
 	};
 }
 
@@ -827,44 +828,63 @@ export async function archiveFeedContent(
 }
 
 export type AddNewsletterState = ActionReturnType<{
-	title?: string;
+	title: string;
 }>;
 
 export async function addNewsletter(
 	_currState: AddNewsletterState,
 	formData: FormData,
 ): Promise<AddNewsletterState> {
-	const validatedFields = addNewsletterSchema.safeParse({
-		title: formData.get("title"),
-	});
-
-	if (!validatedFields.success) {
-		return {
-			errors: z.flattenError(validatedFields.error).fieldErrors,
-			payload: { title: formData.get("title")?.toString() },
-			defaultErrorMessage: "errors.missingFields",
-		};
-	}
-
 	try {
 		const user = await dal.verifySession();
 		if (!user) {
 			throw new Error("errors.notSignedIn");
 		}
 
+		const t = await getTranslations("newsletter");
+		const payload = { title: formData.get("title") as string };
+		const validatedFields = addNewsletterSchema.safeParse(payload, {
+			error: (iss) => {
+				const path = iss.path?.join(".");
+				if (!path) {
+					return { message: t("errors.unexpected") };
+				}
+
+				if (iss.code === "too_small") {
+					return { message: t("errors.titleFieldTooShort") };
+				}
+
+				if (iss.code === "too_big") {
+					return { message: t("errors.titleFieldTooLong") };
+				}
+
+				const message = {
+					title: t("errors.titleFieldInvalid"),
+				}[path];
+
+				return { message: message ?? t("errors.unexpected") };
+			},
+		});
+
+		if (!validatedFields.success) {
+			return {
+				errors: z.flattenError(validatedFields.error).fieldErrors,
+				payload: { title: formData.get("title") as string },
+			};
+		}
+
+		// Check if the user has reached the maximum number of feeds.
 		const userFeeds = await db.query.usersFeeds.findMany({
 			where: eq(usersFeeds.userId, user.user.id),
 		});
-
 		if (userFeeds.length >= LENGTHS.feeds.maxPerUser) {
 			return {
-				defaultErrorMessage: "errors.maxFeedsReached",
+				defaultErrorMessage: t("errors.maxFeedsReached"),
 				errors: undefined,
 			};
 		}
 
 		const eid = randomUUID();
-
 		const feed = await db
 			.insert(feeds)
 			.values({
@@ -883,13 +903,13 @@ export async function addNewsletter(
 	} catch (err) {
 		logger.error(err);
 		return {
-			defaultErrorMessage: "errors.unexpected",
+			defaultErrorMessage: DEFAULT_UNEXPECTED_ERROR_MESSAGE,
 		};
 	}
 
 	revalidatePath(APP_ROUTES.newsletters);
 	return {
-		successMessage: "success",
+		successMsgNotTranslated: "success",
 	};
 }
 

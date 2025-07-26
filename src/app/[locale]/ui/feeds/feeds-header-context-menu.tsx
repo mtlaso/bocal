@@ -85,7 +85,8 @@ function UnfollowFeed(): React.JSX.Element {
 				}
 
 				setSearchParamsState({ selectedFeed: searchParamsState.DEFAULT_FEED });
-				if (res.successMessage) toast.success(res.successMessage);
+				if (res.successMsgNotTranslated)
+					toast.success(res.successMsgNotTranslated);
 			} catch (err) {
 				if (err instanceof Error) {
 					toast.error(err.message);

@@ -24,7 +24,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { type AddLinkState, addLink } from "../../lib/actions";
+import { addLink } from "../../lib/actions";
 import { SPACING } from "../spacing";
 
 export function AddLinkForm(): React.JSX.Element {
@@ -103,13 +103,8 @@ function AddLinkFormMobile({
 function LinkForm({
 	className,
 }: React.ComponentProps<"form">): React.JSX.Element {
-	const initialState: AddLinkState = {
-		errors: undefined,
-		defaultErrorMessage: undefined,
-		payload: undefined,
-	};
 	const t = useTranslations("dashboard");
-	const [state, formAction, pending] = useActionState(addLink, initialState);
+	const [state, formAction, pending] = useActionState(addLink, {});
 
 	return (
 		<form className={cn(SPACING.MD, className)} action={formAction} id="form">

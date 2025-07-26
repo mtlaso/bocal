@@ -145,8 +145,10 @@ const FeedForm = ({
 					</p>
 				)}
 
-				{state?.successMessage && (
-					<p className="mt-2 text-sm text-green-500">{state.successMessage}</p>
+				{state?.successMsgNotTranslated && (
+					<p className="mt-2 text-sm text-green-500">
+						{state.successMsgNotTranslated}
+					</p>
 				)}
 			</div>
 

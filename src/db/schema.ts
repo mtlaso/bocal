@@ -17,6 +17,7 @@ import {
 	type DEFAULT_USERS_PREFERENCES,
 	FeedErrorType,
 	FeedStatusType,
+	LENGTHS,
 } from "@/app/[locale]/lib/constants";
 
 // biome-ignore lint/suspicious/noExplicitAny: locale exception.
@@ -272,15 +273,9 @@ export const deleteUsersFeedsReadContentSchema = createSelectSchema(
 
 export const addNewsletterSchema = z.object({
 	title: z
-		.string({
-			error: "errors.titleFieldInvalid",
-		})
-		.min(2, {
-			error: "errors.titleFieldTooShort",
-		})
-		.max(100, {
-			error: "errors.titleFieldTooLong",
-		}),
+		.string()
+		.min(LENGTHS.newsletters.title.min)
+		.max(LENGTHS.newsletters.title.max),
 });
 
 export const deleteNewsletterSchema = z.object({
