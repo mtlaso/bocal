@@ -25,8 +25,8 @@ importers:
         specifier: ^1.0.1
         version: 1.0.1
       '@next/env':
-        specifier: 15.4.4
-        version: 15.4.4
+        specifier: 15.4.5
+        version: 15.4.5
       '@next/mdx':
         specifier: 15.4.5
         version: 15.4.5(@mdx-js/loader@3.1.0(acorn@8.15.0))(@mdx-js/react@3.1.0(@types/react@19.1.8)(react@19.1.0))
@@ -881,8 +881,8 @@ packages:
   '@next/env@15.4.2-canary.27':
     resolution: {integrity: sha512-fWTmf0f+9ZAMpTqiPQZyst7UMlwGAn+6x3EFgaSl+TqZbOCcVjHDwsPF/zFU932jshs9109HttaRnpJMW3vaoQ==}
 
-  '@next/env@15.4.4':
-    resolution: {integrity: sha512-SJKOOkULKENyHSYXE5+KiFU6itcIb6wSBjgM92meK0HVKpo94dNOLZVdLLuS7/BxImROkGoPsjR4EnuDucqiiA==}
+  '@next/env@15.4.5':
+    resolution: {integrity: sha512-ruM+q2SCOVCepUiERoxOmZY9ZVoecR3gcXNwCYZRvQQWRjhOiPJGmQ2fAiLR6YKWXcSAh7G79KEFxN3rwhs4LQ==}
 
   '@next/mdx@15.4.5':
     resolution: {integrity: sha512-VQKJDAj/oRUG4vkxigCEEHalvXfTVtQyNsmIkXpFF+xSfN7GPnbvri2kzmMepWDA4ctaHKNEmvvEK53F4ZG3xg==}
@@ -3948,7 +3948,7 @@ snapshots:
 
   '@next/env@15.4.2-canary.27': {}
 
-  '@next/env@15.4.4': {}
+  '@next/env@15.4.5': {}
 
   '@next/mdx@15.4.5(@mdx-js/loader@3.1.0(acorn@8.15.0))(@mdx-js/react@3.1.0(@types/react@19.1.8)(react@19.1.0))':
     dependencies:
