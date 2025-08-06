@@ -161,7 +161,11 @@
 			"cancel": "Cancel"
 		},
 		"addFolder": {
-			"title": "Add a folder"
+			"title": "Add a folder",
+			"description": "Create a new folder to organize your feeds.",
+			"folder-name": "Folder name",
+			"add": "Add",
+			"cancel": "Cancel"
 		},
 		"errors": {
 			"unexpected": "An error happened.",

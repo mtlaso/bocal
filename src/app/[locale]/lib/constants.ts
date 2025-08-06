@@ -31,6 +31,12 @@ export enum FeedErrorType {
 export const LENGTHS = {
 	feeds: {
 		maxPerUser: 100,
+		addFeedFolder: {
+			name: {
+				min: 2,
+				max: 100,
+			},
+		},
 	},
 	newsletters: {
 		title: {

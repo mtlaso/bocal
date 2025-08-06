@@ -162,7 +162,11 @@
 			"cancel": "Annuler"
 		},
 		"addFolder": {
-			"title": "Créer un dossier"
+			"title": "Créer un dossier",
+			"description": "Créez un nouveau dossier pour organiser vos flux.",
+			"folder-name": "Nom du dossier",
+			"add": "Créer",
+			"cancel": "Annuler"
 		},
 		"errors": {
 			"unexpected": "Une erreur inattendue s'est produite.",
