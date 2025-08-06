@@ -23,7 +23,7 @@ export function FeedsSidebarMenuItemAll({ totalFeedsContents }: Props) {
 		},
 	);
 	return (
-		<SidebarMenuItem>
+		<SidebarMenuItem className="mb-4">
 			<SidebarFeedsMenuButton
 				isActive={selectedFeed === searchParamsState.DEFAULT_FEED}
 				asChild
