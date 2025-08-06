@@ -1,7 +1,7 @@
 import { ChevronUp } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Suspense } from "react";
-import { TbSettings } from "react-icons/tb";
+import { TbFolderPlus, TbSettings } from "react-icons/tb";
 import { FeedsSidebarContent } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-content";
 import { FeedsSidebarSkeleton } from "@/app/[locale]/ui/skeletons";
 import {
@@ -56,7 +56,10 @@ function Footer() {
 							</SidebarMenuButton>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent side="top">
-							<DropdownMenuItem>{t("addFolder.title")}</DropdownMenuItem>
+							<DropdownMenuItem>
+								<TbFolderPlus />
+								<span>{t("addFolder.title")}</span>
+							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
 				</SidebarMenuItem>
