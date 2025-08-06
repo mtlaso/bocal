@@ -129,6 +129,7 @@
 	"rssFeed": {
 		"rssFeed": "Feeds",
 		"add": "Add",
+		"actions": "Actions",
 		"unfollow": "Unfollow",
 		"success": "Feed added",
 		"successUnfollow": "Feed unfollowed",
@@ -158,6 +159,9 @@
 			"title": "Add a RSS/Atom feed",
 			"link": "Link",
 			"cancel": "Cancel"
+		},
+		"addFolder": {
+			"title": "Add a folder"
 		},
 		"errors": {
 			"unexpected": "An error happened.",

@@ -130,6 +130,7 @@
 	"rssFeed": {
 		"rssFeed": "Flux",
 		"add": "Ajouter",
+		"actions": "Actions",
 		"unfollow": "Ne plus suivre",
 		"success": "Flux ajouté",
 		"successUnfollow": "Flux plus suivi",
@@ -159,6 +160,9 @@
 			"title": "Ajouter un flux RSS/Atom",
 			"link": "Lien",
 			"cancel": "Annuler"
+		},
+		"addFolder": {
+			"title": "Créer un dossier"
 		},
 		"errors": {
 			"unexpected": "Une erreur inattendue s'est produite.",
