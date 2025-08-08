@@ -15,7 +15,7 @@ export default async function BaseLayout({
 	locale,
 }: Props): Promise<React.JSX.Element> {
 	return (
-		<html lang={locale} suppressHydrationWarning>
+		<html lang={locale} suppressHydrationWarning data-scroll-behavior="smooth">
 			<body className={`${inter.className} antialiased`}>
 				<NextIntlClientProvider>
 					<ThemeProvider

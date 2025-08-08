@@ -1,8 +1,9 @@
 "use client";
 import { ChevronUp } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import { TbFolderPlus, TbSettings } from "react-icons/tb";
+import { addFeedFolder } from "@/app/[locale]/lib/actions";
 import { LENGTHS } from "@/app/[locale]/lib/constants";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Button } from "@/components/ui/button";
@@ -88,10 +89,15 @@ function AddFeedFolderDesktop({
 
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
-			<DialogContent className="w-11/12 sm:max-w-md">
+			<DialogContent
+				aria-describedby="add-folder-description"
+				className="w-11/12 sm:max-w-md"
+			>
 				<DialogHeader>
 					<DialogTitle>{t("addFolder.title")}</DialogTitle>
-					<DialogDescription>{t("addFolder.description")}</DialogDescription>
+					<DialogDescription id="add-folder-description">
+						{t("addFolder.description")}
+					</DialogDescription>
 				</DialogHeader>
 				<FolderForm />
 			</DialogContent>
@@ -129,30 +135,50 @@ function AddFeedFolderFormMobile({
 
 function FolderForm({ className }: React.ComponentPropsWithRef<"form">) {
 	const t = useTranslations("rssFeed");
+	const [state, action, pending] = useActionState(addFeedFolder, {});
+
 	return (
-		<form className={cn(SPACING.MD, className)} id="form">
+		<form action={action} className={cn(SPACING.MD, className)} id="form">
 			<div className={SPACING.XS}>
-				<Label htmlFor="folder-name" className="block text-sm font-medium">
-					{t("addFolder.folder-name")}
+				<Label htmlFor="folderName" className="block text-sm font-medium">
+					{t("addFolder.folderName")}
 				</Label>
 
 				<div className="relative">
 					<Input
-						id="folder-name"
-						name="folder-name"
-						minLength={LENGTHS.feeds.addFeedFolder.name.min}
-						maxLength={LENGTHS.feeds.addFeedFolder.name.max}
+						id="folderName"
+						name="folderName"
 						required
 						className="block w-full cursor-pointer rounded-md py-2 pl-10 outline-2 placeholder:text-gray-500"
 						autoFocus
-						placeholder={t("addFolder.folder-name")}
+						defaultValue={state.payload?.name}
+						minLength={LENGTHS.feeds.addFeedFolder.name.min}
+						maxLength={LENGTHS.feeds.addFeedFolder.name.max}
+						placeholder={t("addFolder.folderName")}
 					/>
 
 					<TbFolderPlus className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
 				</div>
+
+				{state.errors?.name?.map((err) => (
+					<p className="mt-2 text-sm text-destructive" key={err}>
+						{err}
+					</p>
+				))}
+
+				{state?.errI18Key && (
+					<p className="mt-2 text-sm text-destructive">
+						{/* biome-ignore lint/suspicious/noExplicitAny: correct value */}
+						{t(state.errI18Key as any)}
+					</p>
+				)}
+
+				{state.isSuccessful && (
+					<p className="mt-2 text-sm text-primary">{t("success")}</p>
+				)}
 			</div>
 
-			<Button className="w-full" type="submit" form="form">
+			<Button disabled={pending} className="w-full" type="submit" form="form">
 				{t("addFolder.add")}
 			</Button>
 		</form>

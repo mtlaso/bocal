@@ -164,7 +164,7 @@
 		"addFolder": {
 			"title": "Créer un dossier",
 			"description": "Créez un nouveau dossier pour organiser vos flux.",
-			"folder-name": "Nom du dossier",
+			"folderName": "Nom du dossier",
 			"add": "Créer",
 			"cancel": "Annuler"
 		},
@@ -178,7 +178,11 @@
 			"missingFields": "Champ(s) manquant(s).",
 			"idFieldInvalid": "ID invalide.",
 			"feedContentIdFieldInvalid": "ID de contenu invalide.",
-			"cannotCopyFeedURL": "Impossible de copier l'URL du flux."
+			"cannotCopyFeedURL": "Impossible de copier l'URL du flux.",
+			"folderNameFieldTooSmall": "Le nom du dossier est trop court.",
+			"folderNameFieldTooBig": "Le nom du dossier est trop long.",
+			"folderNameFieldInvalid": "Le nom du dossier est invalide.",
+			"folderNameFieldAlreadyExists": "Un dossier avec ce nom existe déjà."
 		}
 	},
 	"newsletter": {

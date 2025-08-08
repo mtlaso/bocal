@@ -163,7 +163,7 @@
 		"addFolder": {
 			"title": "Add a folder",
 			"description": "Create a new folder to organize your feeds.",
-			"folder-name": "Folder name",
+			"folderName": "Folder name",
 			"add": "Add",
 			"cancel": "Cancel"
 		},
@@ -177,7 +177,11 @@
 			"missingFields": "Missing fields.",
 			"idFieldInvalid": "ID invalid.",
 			"feedContentIdFieldInvalid": "Content ID invalid.",
-			"cannotCopyFeedURL": "Cannot copy feed URL."
+			"cannotCopyFeedURL": "Cannot copy feed URL.",
+			"folderNameFieldTooSmall": "Folder name is too short.",
+			"folderNameFieldTooBig": "Folder name is too long.",
+			"folderNameFieldInvalid": "Folder name is invalid.",
+			"folderNameFieldAlreadyExists": "A folder with this name already exists."
 		}
 	},
 	"newsletter": {

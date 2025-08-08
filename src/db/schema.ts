@@ -154,7 +154,7 @@ export const usersFeeds = pgTable(
 );
 
 /**
- * usersFeedsFolder contains folders that hold user's feeds.
+ * usersFeedsFolders contains folders that hold user's feeds.
  */
 export const usersFeedsFolders = pgTable(
 	"users_feeds_folders",
@@ -164,6 +164,7 @@ export const usersFeedsFolders = pgTable(
 			.notNull()
 			.references(() => users.id, { onDelete: "cascade" }),
 		name: text().notNull(),
+		createdAt: timestamp().defaultNow().notNull(),
 	},
 	(table) => [uniqueIndex().on(table.userId, table.name)],
 );
@@ -299,6 +300,13 @@ export const addNewsletterSchema = z.object({
 export const deleteNewsletterSchema = z.object({
 	id: z.number().nonnegative(),
 });
+
+export const addFeedsFolderSchema = createInsertSchema(usersFeedsFolders, {
+	name: (schema) =>
+		schema
+			.min(LENGTHS.feeds.addFeedFolder.name.min)
+			.max(LENGTHS.feeds.addFeedFolder.name.max),
+}).pick({ name: true });
 
 const feedTimeline = z.object({
 	...createSelectSchema(feedsContent).shape,
