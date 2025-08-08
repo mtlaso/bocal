@@ -1,3 +1,24 @@
+export type FeedsFolders = Map<
+	/**
+	 * Represents the key for the feed folder.
+	 * This can either be a string identifier or null for folders without a specific identifier.
+	 * If it's null, that's means that the folder is uncategorized (no folderId parent).
+	 */
+	string | null,
+	{
+		// If the folder is uncategorized, the folderId will be a random number.
+		folderId: number;
+		name: string | null;
+		feeds: {
+			id: number;
+			title: string;
+			url: string;
+			status: FeedStatusType;
+			contentsCount: number;
+		}[];
+	}
+>;
+
 export type FeedWithContentsCount = {
 	id: number;
 	title: string;

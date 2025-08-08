@@ -9,11 +9,16 @@ import {
 	feedsTimelineSchema,
 	links,
 	usersFeeds,
+	usersFeedsFolders,
 } from "@/db/schema";
 import "server-only";
+import { randomInt } from "node:crypto";
 import type { Session } from "next-auth";
 import { cache } from "react";
-import type { FeedWithContentsCount } from "@/app/[locale]/lib/constants";
+import type {
+	FeedsFolders,
+	FeedWithContentsCount,
+} from "@/app/[locale]/lib/constants";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 import { logger } from "@/app/[locale]/lib/logging";
 import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
@@ -136,7 +141,7 @@ const getUserFeedsTimeline = cache(async (): Promise<FeedTimeline[]> => {
 
 /**
  * getUserFeedsWithContentsCount returns the feeds a user follows with the
- * number of feed_content in each feed.
+ * number of feeds_content in each feed.
  */
 const getUserFeedsWithContentsCount = cache(
 	async (): Promise<FeedWithContentsCount[]> => {
@@ -165,6 +170,75 @@ const getUserFeedsWithContentsCount = cache(
 		}
 	},
 );
+
+/**
+ * getUserFeedsWithFolderAndContentsCount gets the feeds a user follows with their folder and contents count.
+ */
+const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedsFolders> => {
+	try {
+		const user = await verifySession();
+		if (!user) {
+			throw new Error("errors.notSignedIn");
+		}
+
+		const res = await db
+			.select({
+				id: feeds.id,
+				title: feeds.title,
+				url: feeds.url,
+				status: feeds.status,
+				folderId: usersFeedsFolders.id,
+				folderName: usersFeedsFolders.name,
+				contentsCount: count(feedsContent.id),
+			})
+			.from(feeds)
+			.innerJoin(usersFeeds, eq(usersFeeds.feedId, feeds.id))
+			.leftJoin(
+				usersFeedsFolders,
+				eq(usersFeedsFolders.id, usersFeeds.folderId),
+			)
+			.leftJoin(feedsContent, eq(feedsContent.feedId, usersFeeds.feedId))
+			.where(eq(usersFeeds.userId, user.user.id))
+			.groupBy(feeds.id, usersFeedsFolders.id, usersFeedsFolders.id);
+
+		// Transform what the database query result into a data structure
+		// that can be easily consumed by the frontend (A map that groups the feeds by folder):
+		const folders: FeedsFolders = new Map();
+
+		// Group feeds by folder.
+		for (const el of res) {
+			const folderName = el.folderName; // If null, it's uncategorized.
+			const folderId = el.folderId ?? randomInt(999_999_999);
+
+			const feedData = {
+				id: el.id,
+				title: el.title,
+				url: el.url,
+				status: el.status,
+				contentsCount: el.contentsCount,
+			};
+
+			if (!folders.has(folderName)) {
+				folders.set(folderName, {
+					folderId,
+					name: folderName,
+					feeds: [feedData],
+				});
+			} else {
+				const folder = folders.get(folderName);
+				if (!folder)
+					throw new Error(
+						"Folder should exist at this point. Find why it doens't.",
+					);
+				folder.feeds.push(feedData);
+			}
+		}
+		return folders;
+	} catch (err) {
+		logger.error(err);
+		throw new Error("errors.unexpected");
+	}
+});
 
 /**
  * getUserNewsletters returns the newsletters a user has.
@@ -212,4 +286,5 @@ export const dal = {
 	getUserFeedsTimeline,
 	getUserFeedsWithContentsCount,
 	getUserNewsletters,
+	getUserFeedsGroupedByFolder,
 };

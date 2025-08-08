@@ -5,12 +5,14 @@ import { FeedsSidebarMenuItemAll } from "@/app/[locale]/ui/feeds/sidebar/feeds-s
 import { SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
 
 export async function FeedsSidebarContent(): Promise<React.JSX.Element> {
-	const [timeline, userFeedsWithContentsCount, t] = await Promise.all([
+	const [timeline, userFeedsWithContentsCount, t, shit] = await Promise.all([
 		dal.getUserFeedsTimeline(),
 		dal.getUserFeedsWithContentsCount(),
 		getTranslations("rssFeed.info"),
+		dal.getUserFeedsGroupedByFolder(),
 	]);
 
+	console.log(shit);
 	return (
 		<SidebarMenu>
 			<FeedsSidebarMenuItemAll totalFeedsContents={timeline.length} />

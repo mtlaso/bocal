@@ -1008,7 +1008,7 @@ export async function addFeedFolder(
 			};
 		}
 
-		// Check if folder with the same name already exists for the user
+		// Check if folder with the same name already exists for the user.
 		const existingFolder = await db
 			.select({ name: usersFeedsFolders.name })
 			.from(usersFeedsFolders)
