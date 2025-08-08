@@ -147,7 +147,7 @@ export const usersFeeds = pgTable(
 			.notNull()
 			.references(() => feeds.id, { onDelete: "cascade" }),
 		folderId: integer().references(() => usersFeedsFolders.id, {
-			onDelete: "cascade",
+			onDelete: "set null",
 		}),
 	},
 	(table) => [primaryKey({ columns: [table.userId, table.feedId] })],
@@ -293,6 +293,7 @@ export const deleteUsersFeedsReadContentSchema = createSelectSchema(
 export const addNewsletterSchema = z.object({
 	title: z
 		.string()
+		.trim()
 		.min(LENGTHS.newsletters.title.min)
 		.max(LENGTHS.newsletters.title.max),
 });
@@ -304,6 +305,7 @@ export const deleteNewsletterSchema = z.object({
 export const addFeedsFolderSchema = createInsertSchema(usersFeedsFolders, {
 	name: (schema) =>
 		schema
+			.trim()
 			.min(LENGTHS.feeds.addFeedFolder.name.min)
 			.max(LENGTHS.feeds.addFeedFolder.name.max),
 }).pick({ name: true });

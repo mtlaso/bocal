@@ -166,7 +166,8 @@
 			"description": "Créez un nouveau dossier pour organiser vos flux.",
 			"folderName": "Nom du dossier",
 			"add": "Créer",
-			"cancel": "Annuler"
+			"cancel": "Annuler",
+			"success": "Dossier créé"
 		},
 		"errors": {
 			"unexpected": "Une erreur inattendue s'est produite.",

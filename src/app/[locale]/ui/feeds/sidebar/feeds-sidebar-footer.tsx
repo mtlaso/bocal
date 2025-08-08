@@ -138,7 +138,7 @@ function FolderForm({ className }: React.ComponentPropsWithRef<"form">) {
 	const [state, action, pending] = useActionState(addFeedFolder, {});
 
 	return (
-		<form action={action} className={cn(SPACING.MD, className)} id="form">
+		<form action={action} className={cn(SPACING.MD, className)}>
 			<div className={SPACING.XS}>
 				<Label htmlFor="folderName" className="block text-sm font-medium">
 					{t("addFolder.folderName")}
@@ -174,11 +174,11 @@ function FolderForm({ className }: React.ComponentPropsWithRef<"form">) {
 				)}
 
 				{state.isSuccessful && (
-					<p className="mt-2 text-sm text-primary">{t("success")}</p>
+					<p className="mt-2 text-sm text-primary">{t("addFolder.success")}</p>
 				)}
 			</div>
 
-			<Button disabled={pending} className="w-full" type="submit" form="form">
+			<Button disabled={pending} className="w-full" type="submit">
 				{t("addFolder.add")}
 			</Button>
 		</form>

@@ -165,7 +165,8 @@
 			"description": "Create a new folder to organize your feeds.",
 			"folderName": "Folder name",
 			"add": "Add",
-			"cancel": "Cancel"
+			"cancel": "Cancel",
+			"success": "Folder created"
 		},
 		"errors": {
 			"unexpected": "An error happened.",
