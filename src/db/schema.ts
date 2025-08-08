@@ -149,6 +149,8 @@ export const usersFeeds = pgTable(
 		folderId: integer().references(() => usersFeedsFolders.id, {
 			onDelete: "cascade",
 		}),
+		// For position within a folder.
+		position: integer().notNull().default(0),
 	},
 	(table) => [primaryKey({ columns: [table.userId, table.feedId] })],
 );
@@ -164,6 +166,8 @@ export const usersFeedsFolders = pgTable(
 			.notNull()
 			.references(() => users.id, { onDelete: "cascade" }),
 		name: text().notNull(),
+		// Position relative to other folders.
+		// TODO: remove this if we sort folders by name (won't be used anymore).
 		position: integer().notNull().default(0),
 	},
 	(table) => [uniqueIndex().on(table.userId, table.name)],
