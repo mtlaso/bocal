@@ -6,7 +6,7 @@ export type FeedsFolders = Map<
 	 */
 	string | null,
 	{
-		// If the folder is uncategorized, the folderId will be a random number.
+		// If the folder is uncategorized, the folderId will be -1.
 		folderId: number;
 		name: string | null;
 		feeds: {

@@ -12,7 +12,6 @@ import {
 	usersFeedsFolders,
 } from "@/db/schema";
 import "server-only";
-import { randomInt } from "node:crypto";
 import type { Session } from "next-auth";
 import { cache } from "react";
 import type {
@@ -208,7 +207,7 @@ const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedsFolders> => {
 		// Group feeds by folder.
 		for (const el of res) {
 			const folderName = el.folderName; // If null, it's uncategorized.
-			const folderId = el.folderId ?? randomInt(999_999_999);
+			const folderId = el.folderId ?? -1;
 
 			const feedData = {
 				id: el.id,
@@ -228,7 +227,8 @@ const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedsFolders> => {
 				const folder = folders.get(folderName);
 				if (!folder)
 					throw new Error(
-						"Folder should exist at this point. Find why it doens't.",
+						`Folder with name '${folderName}' and id '${folderId}' should exist at this point, but doesn't.
+					 This indicates a logic error in grouping feeds by folder.`,
 					);
 				folder.feeds.push(feedData);
 			}
