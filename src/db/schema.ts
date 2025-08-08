@@ -146,8 +146,27 @@ export const usersFeeds = pgTable(
 		feedId: integer()
 			.notNull()
 			.references(() => feeds.id, { onDelete: "cascade" }),
+		folderId: integer().references(() => usersFeedsFolders.id, {
+			onDelete: "cascade",
+		}),
 	},
 	(table) => [primaryKey({ columns: [table.userId, table.feedId] })],
+);
+
+/**
+ * usersFeedsFolder contains folders that hold user's feeds.
+ */
+export const usersFeedsFolders = pgTable(
+	"users_feeds_folders",
+	{
+		id: integer().primaryKey().generatedAlwaysAsIdentity(),
+		userId: text()
+			.notNull()
+			.references(() => users.id, { onDelete: "cascade" }),
+		name: text().notNull(),
+		position: integer().notNull().default(0),
+	},
+	(table) => [uniqueIndex().on(table.userId, table.name)],
 );
 
 /**
