@@ -1,3 +1,22 @@
+/**
+ * FeedFolder represents a feed inside a folder.
+ */
+export type FeedFolder = {
+	// If the folder is uncategorized, the folderId will be -1.
+	folderId: number;
+	name: string | null;
+	feeds: {
+		id: number;
+		title: string;
+		url: string;
+		status: FeedStatusType;
+		contentsCount: number;
+	}[];
+};
+
+/**
+ * FeedsFolders is the structure containing feeds categorized in folders.
+ */
 export type FeedsFolders = Map<
 	/**
 	 * Represents the key for the feed folder.
@@ -5,18 +24,7 @@ export type FeedsFolders = Map<
 	 * If it's null, that's means that the folder is uncategorized (no folderId parent).
 	 */
 	string | null,
-	{
-		// If the folder is uncategorized, the folderId will be -1.
-		folderId: number;
-		name: string | null;
-		feeds: {
-			id: number;
-			title: string;
-			url: string;
-			status: FeedStatusType;
-			contentsCount: number;
-		}[];
-	}
+	FeedFolder
 >;
 
 export type FeedWithContentsCount = {

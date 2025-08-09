@@ -17,7 +17,7 @@ type Props = {
 	feed: FeedWithContentsCount;
 };
 
-export function FeedsSidebarMenuItem({ feed }: Props) {
+export function FeedsSidebarItem({ feed }: Props) {
 	const [{ selectedFeed }, setSearchParamsState] = useQueryStates(
 		searchParamsState.searchParams,
 		{
@@ -35,7 +35,7 @@ export function FeedsSidebarMenuItem({ feed }: Props) {
 			>
 				<button
 					type="button"
-					className="grid grid-cols-[min-content_1fr_auto] gap-4 hover:cursor-pointer"
+					className="grid grid-cols-[min-content_auto_auto] gap-4 hover:cursor-pointer"
 				>
 					{feed.status !== FeedStatusType.ACTIVE ? (
 						<TbPlugConnectedX />
