@@ -6,7 +6,6 @@ import {
 	type FeedWithContentsCount,
 } from "@/app/[locale]/lib/constants";
 import { FeedsHeaderContextMenu } from "@/app/[locale]/ui/feeds/feeds-header-context-menu";
-import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useSidebarFeeds } from "@/components/ui/sidebar";
@@ -24,7 +23,7 @@ export function FeedsHeader({
 	);
 
 	return (
-		<div className={SPACING.XS}>
+		<div>
 			<Details
 				totalFeeds={feeds.length}
 				totalUnreachableFeeds={unreachableFeeds.length}

@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import { Suspense } from "react";
 import { FeedsSidebarContent } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-content";
+import { FeedsSidebarFooter } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-footer";
 import { FeedsSidebarSkeleton } from "@/app/[locale]/ui/skeletons";
 import {
 	SidebarContent,
@@ -25,6 +26,7 @@ export function FeedsSidebar() {
 					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarContent>
+			<FeedsSidebarFooter />
 		</SidebarFeeds>
 	);
 }

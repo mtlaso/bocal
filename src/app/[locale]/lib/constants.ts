@@ -1,3 +1,32 @@
+/**
+ * FeedFolder represents a feed inside a folder.
+ */
+export type FeedFolder = {
+	// If the folder is uncategorized, the folderId will be -1.
+	folderId: number;
+	name: string | null;
+	feeds: {
+		id: number;
+		title: string;
+		url: string;
+		status: FeedStatusType;
+		contentsCount: number;
+	}[];
+};
+
+/**
+ * FeedsFolders is the structure containing feeds categorized in folders.
+ */
+export type FeedsFolders = Map<
+	/**
+	 * Represents the key for the feed folder.
+	 * This can either be a string identifier or null for folders without a specific identifier.
+	 * If it's null, that's means that the folder is uncategorized (no folderId parent).
+	 */
+	string | null,
+	FeedFolder
+>;
+
 export type FeedWithContentsCount = {
 	id: number;
 	title: string;
@@ -31,6 +60,12 @@ export enum FeedErrorType {
 export const LENGTHS = {
 	feeds: {
 		maxPerUser: 100,
+		addFeedFolder: {
+			name: {
+				min: 2,
+				max: 100,
+			},
+		},
 	},
 	newsletters: {
 		title: {
