@@ -12,7 +12,7 @@ export async function FeedsSidebarContent(): Promise<React.JSX.Element> {
 		dal.getUserFeedsGroupedByFolder(),
 	]);
 
-	const totalfeeds = userFeedsGroupedByFolder
+	const totalFeeds = userFeedsGroupedByFolder
 		.entries()
 		.reduce((acc, [_, val]) => {
 			return acc + val.feeds.length;
@@ -24,7 +24,7 @@ export async function FeedsSidebarContent(): Promise<React.JSX.Element> {
 
 			<SidebarMenuItem className="px-2">
 				<span className="text-xs font-md">
-					{t("textFeedsCount", { count: totalfeeds })}
+					{t("textFeedsCount", { count: totalFeeds })}
 				</span>
 			</SidebarMenuItem>
 

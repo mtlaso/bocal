@@ -28,7 +28,7 @@ export function FeedsSidebarFolder({ folder }: Props) {
 			<SidebarMenuButton>{folder.name ?? "uncategorized"}</SidebarMenuButton>
 			<SidebarMenuSub>
 				{folder.feeds.map((feed) => (
-					<SidebarMenuItem className="p-" key={feed.id}>
+					<SidebarMenuItem key={feed.id}>
 						<SidebarMenuSubButton
 							isActive={selectedFeed === feed.id.toString()}
 							onClick={(): void => {

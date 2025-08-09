@@ -198,7 +198,7 @@ const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedsFolders> => {
 			)
 			.leftJoin(feedsContent, eq(feedsContent.feedId, usersFeeds.feedId))
 			.where(eq(usersFeeds.userId, user.user.id))
-			.groupBy(feeds.id, usersFeedsFolders.id, usersFeedsFolders.id);
+			.groupBy(feeds.id, usersFeedsFolders.id);
 
 		// Transform what the database query result into a data structure
 		// that can be easily consumed by the frontend (A map that groups the feeds by folder):
