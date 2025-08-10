@@ -18,7 +18,7 @@ export type FeedFolder = {
  * Represents the key for the feed folder.
  * This can either be the id of a folder or null for the uncategorized folder.
  * */
-type FolderId = number | null;
+type FolderId = number;
 
 /**
  * FeedsFolders is the structure containing feeds categorized in folders.

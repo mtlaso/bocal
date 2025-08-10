@@ -220,7 +220,7 @@ const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedsFolders> => {
 		// Transform what the database query result into a data structure
 		// that can be easily consumed by the frontend (A map that groups the feeds by folder):
 		const folders: FeedsFolders = new Map();
-		folders.set(null, { folderId: -1, folderName: "Uncategorized", feeds: [] });
+		folders.set(-1, { folderId: -1, folderName: "Uncategorized", feeds: [] });
 
 		// Add folders to map.
 		for (const folder of feedsFolders) {
@@ -234,7 +234,7 @@ const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedsFolders> => {
 		// Add feeds to map.
 		for (const feed of userFeeds) {
 			if (!feed.folderId) {
-				const uncategorized = folders.get(null);
+				const uncategorized = folders.get(-1);
 				if (!uncategorized) {
 					throw new Error(
 						"Uncategorized folder not found. It should have been created before hand.",

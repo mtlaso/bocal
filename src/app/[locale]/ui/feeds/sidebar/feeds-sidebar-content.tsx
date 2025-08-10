@@ -29,7 +29,9 @@ export async function FeedsSidebarContent(): Promise<React.JSX.Element> {
 			</SidebarMenuItem>
 
 			{[...userFeedsGroupedByFolder.entries()].map(([key, val]) => {
-				if (key) {
+				// -1 = Uncategorized folder.
+				// So if it's not -1, it's a folder.
+				if (key !== -1) {
 					return <FeedsSidebarFolder key={key} folder={val} />;
 				}
 
