@@ -1,9 +1,19 @@
 "use client";
 
 import { useQueryStates } from "nuqs";
-import { TbFolder, TbPlugConnectedX, TbRss } from "react-icons/tb";
+import {
+	TbFolder,
+	TbFolderOpen,
+	TbPlugConnectedX,
+	TbRss,
+} from "react-icons/tb";
 import { type FeedFolder, FeedStatusType } from "@/app/[locale]/lib/constants";
 import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
+import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import {
 	SidebarMenuBadge,
 	SidebarMenuButton,
@@ -24,37 +34,44 @@ export function FeedsSidebarFolder({ folder }: Props) {
 		},
 	);
 	return (
-		<SidebarMenuItem>
-			<SidebarMenuButton>
-				<TbFolder />
-				{folder.folderName}
-			</SidebarMenuButton>
-			<SidebarMenuSub>
-				{folder.feeds.map((feed) => (
-					<SidebarMenuItem key={feed.id}>
-						<SidebarMenuSubButton
-							isActive={selectedFeed === feed.id.toString()}
-							onClick={(): void => {
-								setSearchParamsState({ selectedFeed: feed.id.toString() });
-							}}
-							asChild
-						>
-							<button
-								type="button"
-								className="grid grid-cols-[min-content_auto_auto] w-full text-left gap-4 hover:cursor-pointer"
-							>
-								{feed.status !== FeedStatusType.ACTIVE ? (
-									<TbPlugConnectedX />
-								) : (
-									<TbRss />
-								)}
-								<span className="truncate">{feed.title}</span>
-								<SidebarMenuBadge>{feed.contentsCount}</SidebarMenuBadge>
-							</button>
-						</SidebarMenuSubButton>
-					</SidebarMenuItem>
-				))}
-			</SidebarMenuSub>
-		</SidebarMenuItem>
+		<Collapsible defaultOpen className="group/collapsible">
+			<SidebarMenuItem>
+				<CollapsibleTrigger asChild>
+					<SidebarMenuButton>
+						<TbFolder className="group-data-[state=open]/collapsible:hidden" />
+						<TbFolderOpen className="group-data-[state=closed]/collapsible:hidden" />
+						{folder.folderName}
+					</SidebarMenuButton>
+				</CollapsibleTrigger>
+				<CollapsibleContent>
+					<SidebarMenuSub>
+						{folder.feeds.map((feed) => (
+							<SidebarMenuItem key={feed.id}>
+								<SidebarMenuSubButton
+									isActive={selectedFeed === feed.id.toString()}
+									onClick={(): void => {
+										setSearchParamsState({ selectedFeed: feed.id.toString() });
+									}}
+									asChild
+								>
+									<button
+										type="button"
+										className="grid grid-cols-[min-content_auto_auto] w-full text-left gap-4 hover:cursor-pointer"
+									>
+										{feed.status !== FeedStatusType.ACTIVE ? (
+											<TbPlugConnectedX />
+										) : (
+											<TbRss />
+										)}
+										<span className="truncate">{feed.title}</span>
+										<SidebarMenuBadge>{feed.contentsCount}</SidebarMenuBadge>
+									</button>
+								</SidebarMenuSubButton>
+							</SidebarMenuItem>
+						))}
+					</SidebarMenuSub>
+				</CollapsibleContent>
+			</SidebarMenuItem>
+		</Collapsible>
 	);
 }
