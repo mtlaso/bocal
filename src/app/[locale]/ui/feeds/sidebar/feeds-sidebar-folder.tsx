@@ -1,7 +1,7 @@
 "use client";
 
 import { useQueryStates } from "nuqs";
-import { TbPlugConnectedX, TbRss } from "react-icons/tb";
+import { TbFolder, TbPlugConnectedX, TbRss } from "react-icons/tb";
 import { type FeedFolder, FeedStatusType } from "@/app/[locale]/lib/constants";
 import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
 import {
@@ -25,7 +25,10 @@ export function FeedsSidebarFolder({ folder }: Props) {
 	);
 	return (
 		<SidebarMenuItem>
-			<SidebarMenuButton>{folder.name}</SidebarMenuButton>
+			<SidebarMenuButton>
+				<TbFolder />
+				{folder.folderName}
+			</SidebarMenuButton>
 			<SidebarMenuSub>
 				{folder.feeds.map((feed) => (
 					<SidebarMenuItem key={feed.id}>

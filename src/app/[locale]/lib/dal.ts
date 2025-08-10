@@ -171,7 +171,11 @@ const getUserFeedsWithContentsCount = cache(
 );
 
 /**
- * getUserFeedsWithFolderAndContentsCount gets the feeds a user follows with their folder and contents count.
+ * getUserFeedsGroupedByFolder gets:
+ *   1. All the feeds folders a user has (including empty folders), with
+ *   the feeds in each of those folders.
+ *   3. And the feeds that are not in a folder.
+ *   In other words: feeds in folder, empty folders, feeds without a folder
  */
 const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedsFolders> => {
 	try {
@@ -180,59 +184,86 @@ const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedsFolders> => {
 			throw new Error("errors.notSignedIn");
 		}
 
-		const res = await db
+		// No need for a transaction, a temporary inconsistency in the UI is acceptable
+		// e.g. If the first query returns folder programming, the second query returns the feed A is in programming,
+		// but the users removes feed A from the folder from an other device, it's ok if there is an inconsistency.
+		// Query 1: get the user feeds folders.
+		const queryFolders = db
+			.select({
+				folderId: usersFeedsFolders.id,
+				folderName: usersFeedsFolders.name,
+			})
+			.from(usersFeedsFolders)
+			.where(eq(usersFeedsFolders.userId, user.user.id));
+
+		// Query 2: get the user feeds.
+		const queryFeeds = db
 			.select({
 				id: feeds.id,
 				title: feeds.title,
 				url: feeds.url,
 				status: feeds.status,
-				folderId: usersFeedsFolders.id,
-				folderName: usersFeedsFolders.name,
+				folderId: usersFeeds.folderId,
 				contentsCount: count(feedsContent.id),
 			})
 			.from(feeds)
-			.innerJoin(usersFeeds, eq(usersFeeds.feedId, feeds.id))
-			.leftJoin(
-				usersFeedsFolders,
-				eq(usersFeedsFolders.id, usersFeeds.folderId),
-			)
+			.leftJoin(usersFeeds, eq(usersFeeds.feedId, feeds.id))
 			.leftJoin(feedsContent, eq(feedsContent.feedId, usersFeeds.feedId))
 			.where(eq(usersFeeds.userId, user.user.id))
-			.groupBy(feeds.id, usersFeedsFolders.id);
+			.groupBy(feeds.id, usersFeeds.folderId);
+
+		const [feedsFolders, userFeeds] = await Promise.all([
+			queryFolders,
+			queryFeeds,
+		]);
 
 		// Transform what the database query result into a data structure
 		// that can be easily consumed by the frontend (A map that groups the feeds by folder):
 		const folders: FeedsFolders = new Map();
+		folders.set(null, { folderId: -1, folderName: "Uncategorized", feeds: [] });
 
-		// Group feeds by folder.
-		for (const el of res) {
-			const folderName = el.folderName; // If null, it's uncategorized.
-			const folderId = el.folderId ?? -1;
+		// Add folders to map.
+		for (const folder of feedsFolders) {
+			folders.set(folder.folderId, {
+				folderId: folder.folderId,
+				folderName: folder.folderName,
+				feeds: [],
+			});
+		}
 
-			const feedData = {
-				id: el.id,
-				title: el.title,
-				url: el.url,
-				status: el.status,
-				contentsCount: el.contentsCount,
-			};
-
-			if (!folders.has(folderName)) {
-				folders.set(folderName, {
-					folderId,
-					name: folderName,
-					feeds: [feedData],
+		// Add feeds to map.
+		for (const feed of userFeeds) {
+			if (!feed.folderId) {
+				const uncategorized = folders.get(null);
+				if (!uncategorized) {
+					throw new Error(
+						"Uncategorized folder not found. It should have been created before hand.",
+					);
+				}
+				uncategorized.feeds.push({
+					id: feed.id,
+					title: feed.title,
+					url: feed.url,
+					status: feed.status,
+					contentsCount: feed.contentsCount,
 				});
 			} else {
-				const folder = folders.get(folderName);
-				if (!folder)
+				const folder = folders.get(feed.folderId);
+				if (!folder) {
 					throw new Error(
-						`Folder with name '${folderName}' and id '${folderId}' should exist at this point, but doesn't.
-					 This indicates a logic error in grouping feeds by folder.`,
+						`Folder ${feed.folderId} not found. It should already be inside the folders map.`,
 					);
-				folder.feeds.push(feedData);
+				}
+				folder.feeds.push({
+					id: feed.id,
+					title: feed.title,
+					url: feed.url,
+					status: feed.status,
+					contentsCount: feed.contentsCount,
+				});
 			}
 		}
+
 		return folders;
 	} catch (err) {
 		logger.error(err);
