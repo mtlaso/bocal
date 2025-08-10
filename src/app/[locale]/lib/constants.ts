@@ -33,6 +33,8 @@ export type FeedWithContentsCount = {
 	contentsCount: number;
 };
 
+export const UNCATEGORIZED_FEEDS_FOLDER_ID = -1;
+
 export enum SortOptions {
 	BY_DATE_ASC = "byDateAsc",
 	BY_DATE_DESC = "byDateDesc",

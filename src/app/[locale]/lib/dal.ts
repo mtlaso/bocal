@@ -14,9 +14,10 @@ import {
 import "server-only";
 import type { Session } from "next-auth";
 import { cache } from "react";
-import type {
-	FeedsFolders,
-	FeedWithContentsCount,
+import {
+	type FeedsFolders,
+	type FeedWithContentsCount,
+	UNCATEGORIZED_FEEDS_FOLDER_ID,
 } from "@/app/[locale]/lib/constants";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 import { logger } from "@/app/[locale]/lib/logging";
@@ -220,7 +221,11 @@ const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedsFolders> => {
 		// Transform what the database query result into a data structure
 		// that can be easily consumed by the frontend (A map that groups the feeds by folder):
 		const folders: FeedsFolders = new Map();
-		folders.set(-1, { folderId: -1, folderName: "Uncategorized", feeds: [] });
+		folders.set(UNCATEGORIZED_FEEDS_FOLDER_ID, {
+			folderId: UNCATEGORIZED_FEEDS_FOLDER_ID,
+			folderName: "Uncategorized",
+			feeds: [],
+		});
 
 		// Add folders to map.
 		for (const folder of feedsFolders) {
@@ -234,7 +239,7 @@ const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedsFolders> => {
 		// Add feeds to map.
 		for (const feed of userFeeds) {
 			if (!feed.folderId) {
-				const uncategorized = folders.get(-1);
+				const uncategorized = folders.get(UNCATEGORIZED_FEEDS_FOLDER_ID);
 				if (!uncategorized) {
 					throw new Error(
 						"Uncategorized folder not found. It should have been created before hand.",

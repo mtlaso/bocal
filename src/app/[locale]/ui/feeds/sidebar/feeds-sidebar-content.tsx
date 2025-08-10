@@ -18,6 +18,8 @@ export async function FeedsSidebarContent(): Promise<React.JSX.Element> {
 			return acc + val.feeds.length;
 		}, 0);
 
+	const UNCATEGORIZED_FOLDER_ID = -1;
+
 	return (
 		<SidebarMenu>
 			<FeedsSidebarItemAll totalFeedsContents={timeline.length} />
@@ -30,14 +32,13 @@ export async function FeedsSidebarContent(): Promise<React.JSX.Element> {
 
 			{[...userFeedsGroupedByFolder.entries()].map(([key, val]) => {
 				// -1 = Uncategorized folder.
-				// So if it's not -1, it's a folder.
-				if (key !== -1) {
-					return <FeedsSidebarFolder key={key} folder={val} />;
+				if (key === UNCATEGORIZED_FOLDER_ID) {
+					return val.feeds.map((feed) => {
+						return <FeedsSidebarItem key={feed.id} feed={feed} />;
+					});
 				}
 
-				return val.feeds.map((feed) => {
-					return <FeedsSidebarItem key={feed.id} feed={feed} />;
-				});
+				return <FeedsSidebarFolder key={key} folder={val} />;
 			})}
 		</SidebarMenu>
 	);

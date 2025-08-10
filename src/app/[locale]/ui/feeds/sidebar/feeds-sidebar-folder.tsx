@@ -34,7 +34,10 @@ export function FeedsSidebarFolder({ folder }: Props) {
 		},
 	);
 	return (
-		<Collapsible defaultOpen className="group/collapsible">
+		<Collapsible
+			defaultOpen={folder.feeds.length > 0}
+			className="group/collapsible"
+		>
 			<SidebarMenuItem>
 				<CollapsibleTrigger asChild>
 					<SidebarMenuButton>
