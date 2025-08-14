@@ -42,7 +42,7 @@ export function FeedsSidebarItem({ feed }: Props) {
 					) : (
 						<TbRss />
 					)}
-					<span className="truncate">{feed.title}</span>
+					<span className="truncate min-w-0">{feed.title}</span>
 					<SidebarMenuBadge>{feed.contentsCount}</SidebarMenuBadge>
 				</button>
 			</SidebarFeedsMenuButton>
