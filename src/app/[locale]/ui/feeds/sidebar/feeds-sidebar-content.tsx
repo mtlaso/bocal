@@ -1,16 +1,24 @@
-import { getTranslations } from "next-intl/server";
-import { UNCATEGORIZED_FEEDS_FOLDER_ID } from "@/app/[locale]/lib/constants";
-import { dal } from "@/app/[locale]/lib/dal";
+"use client";
+import { useTranslations } from "next-intl";
+import { use } from "react";
+import {
+	type FeedsFolders,
+	UNCATEGORIZED_FEEDS_FOLDER_ID,
+} from "@/app/[locale]/lib/constants";
 import { FeedsSidebarFolder } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-folder";
 import { FeedsSidebarItem } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-item";
 import { FeedsSidebarItemAll } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-item-all";
 import { SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
 
-export async function FeedsSidebarContent(): Promise<React.JSX.Element> {
-	const [t, userFeedsGroupedByFolder] = await Promise.all([
-		getTranslations("rssFeed.info"),
-		dal.getUserFeedsGroupedByFolder(),
-	]);
+type Props = {
+	userFeedsGroupedByFolderPromise: Promise<FeedsFolders>;
+};
+
+export function FeedsSidebarContent({
+	userFeedsGroupedByFolderPromise,
+}: Props) {
+	const userFeedsGroupedByFolder = use(userFeedsGroupedByFolderPromise);
+	const t = useTranslations("rssFeed.info");
 
 	const totalFeeds = userFeedsGroupedByFolder
 		.entries()
