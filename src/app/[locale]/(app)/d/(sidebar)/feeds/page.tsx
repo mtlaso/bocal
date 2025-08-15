@@ -6,7 +6,10 @@ import { dal } from "@/app/[locale]/lib/dal";
 import { AddFeedForm } from "@/app/[locale]/ui/feeds/add-feed-form";
 import { FeedsHeader } from "@/app/[locale]/ui/feeds/feeds-header";
 import { FeedsTimeline } from "@/app/[locale]/ui/feeds/feeds-timeline";
-import { FeedInfoSkeleton, FeedsSkeleton } from "@/app/[locale]/ui/skeletons";
+import {
+	FeedsHeaderSkeleton,
+	FeedsSkeleton,
+} from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
 export const experimental_ppr = true;
@@ -41,7 +44,7 @@ export default function Page(): React.JSX.Element {
 					<AddFeedForm />
 				</div>
 
-				<Suspense fallback={<FeedInfoSkeleton />}>
+				<Suspense fallback={<FeedsHeaderSkeleton />}>
 					<FeedsHeaderWrapper />
 				</Suspense>
 			</section>

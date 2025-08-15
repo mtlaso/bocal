@@ -1,0 +1,1 @@
+ALTER TABLE "users_feeds" ADD COLUMN "position" integer DEFAULT 0 NOT NULL;

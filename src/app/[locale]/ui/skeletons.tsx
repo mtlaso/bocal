@@ -19,7 +19,7 @@ export function LinksSkeleton(): React.JSX.Element {
 	);
 }
 
-export function FeedInfoSkeleton(): React.JSX.Element {
+export function FeedsHeaderSkeleton(): React.JSX.Element {
 	return (
 		<div className="flex flex-col space-y-2">
 			<Skeleton className="h-4 w-[250px]" />

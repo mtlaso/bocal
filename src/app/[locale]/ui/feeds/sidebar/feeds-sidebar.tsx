@@ -1,6 +1,8 @@
 import { useTranslations } from "next-intl";
 import { Suspense } from "react";
+import { dal } from "@/app/[locale]/lib/dal";
 import { FeedsSidebarContent } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-content";
+import { FeedsSidebarFooter } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-footer";
 import { FeedsSidebarSkeleton } from "@/app/[locale]/ui/skeletons";
 import {
 	SidebarContent,
@@ -12,6 +14,7 @@ import {
 
 export function FeedsSidebar() {
 	const t = useTranslations("rssFeed");
+	const userFeedsGroupedByFolder = dal.getUserFeedsGroupedByFolder();
 
 	return (
 		<SidebarFeeds>
@@ -20,11 +23,14 @@ export function FeedsSidebar() {
 					<SidebarGroupLabel>{t("rssFeed")}</SidebarGroupLabel>
 					<SidebarGroupContent>
 						<Suspense fallback={<FeedsSidebarSkeleton />}>
-							<FeedsSidebarContent />
+							<FeedsSidebarContent
+								userFeedsGroupedByFolderPromise={userFeedsGroupedByFolder}
+							/>
 						</Suspense>
 					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarContent>
+			<FeedsSidebarFooter />
 		</SidebarFeeds>
 	);
 }

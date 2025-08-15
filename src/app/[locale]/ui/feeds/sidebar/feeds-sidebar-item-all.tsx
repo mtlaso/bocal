@@ -14,7 +14,7 @@ type Props = {
 	totalFeedsContents: number;
 };
 
-export function FeedsSidebarMenuItemAll({ totalFeedsContents }: Props) {
+export function FeedsSidebarItemAll({ totalFeedsContents }: Props) {
 	const t = useTranslations("rssFeed.info");
 	const [{ selectedFeed }, setSearchParamsState] = useQueryStates(
 		searchParamsState.searchParams,
@@ -23,7 +23,7 @@ export function FeedsSidebarMenuItemAll({ totalFeedsContents }: Props) {
 		},
 	);
 	return (
-		<SidebarMenuItem>
+		<SidebarMenuItem className="mb-4">
 			<SidebarFeedsMenuButton
 				isActive={selectedFeed === searchParamsState.DEFAULT_FEED}
 				asChild
