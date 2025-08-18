@@ -13,6 +13,9 @@
 	},
 	"dependencies": {
 		"@auth/drizzle-adapter": "^1.10.0",
+		"@dnd-kit/abstract": "^0.1.21",
+		"@dnd-kit/dom": "^0.1.21",
+		"@dnd-kit/react": "^0.1.21",
 		"@mdx-js/loader": "^3.1.0",
 		"@mdx-js/react": "^3.1.0",
 		"@neondatabase/serverless": "^1.0.1",
