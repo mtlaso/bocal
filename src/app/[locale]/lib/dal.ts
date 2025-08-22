@@ -157,13 +157,14 @@ const getUserFeedsWithContentsCount = cache(
 					title: feeds.title,
 					url: feeds.url,
 					status: feeds.status,
+					folderId: sql<number>`COALESCE(${usersFeeds.folderId}, ${UNCATEGORIZED_FEEDS_FOLDER_ID})`,
 					contentsCount: count(feedsContent.id),
 				})
 				.from(feeds)
 				.innerJoin(usersFeeds, eq(usersFeeds.feedId, feeds.id))
 				.leftJoin(feedsContent, eq(feedsContent.feedId, feeds.id))
 				.where(eq(usersFeeds.userId, user.user.id))
-				.groupBy(feeds.id);
+				.groupBy(feeds.id, usersFeeds.folderId);
 		} catch (err) {
 			logger.error(err);
 			throw new Error("errors.unexpected");
@@ -253,6 +254,7 @@ const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedFolder[]> => {
 					url: feed.url,
 					status: feed.status,
 					contentsCount: feed.contentsCount,
+					folderId: UNCATEGORIZED_FEEDS_FOLDER_ID,
 				});
 			} else {
 				const folder = folders.find(
@@ -269,6 +271,7 @@ const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedFolder[]> => {
 					url: feed.url,
 					status: feed.status,
 					contentsCount: feed.contentsCount,
+					folderId: feed.folderId,
 				});
 			}
 		}

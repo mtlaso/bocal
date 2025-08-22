@@ -32,7 +32,7 @@ export function FeedsSidebarContent({
 	});
 
 	const _userFeedsGroupedByFolder = use(userFeedsGroupedByFolderPromise);
-	const [userFeedsGroupedByFolder, _setUserFeedsGroupedByFolder] = useState<
+	const [userFeedsGroupedByFolder, setUserFeedsGroupedByFolder] = useState<
 		FeedFolder[]
 	>(_userFeedsGroupedByFolder);
 	const t = useTranslations("rssFeed");
@@ -70,28 +70,33 @@ export function FeedsSidebarContent({
 				// To move feed into new folder (or uncategoriezed):
 				// 1. Find source feed.
 				const srcFeed = e.operation.source?.data as FeedWithContentsCount;
+				console.log(srcFeed);
 				if (!srcFeed) return;
 
 				// 2. Add feed to target folder.
-				// setUserFeedsGroupedByFolder((prev) => {
-				// 	// Create copy.
-				// 	const newFeedsGrouped = new Map(prev);
+				setUserFeedsGroupedByFolder((prev) => {
+					// Create copy.
+					const newFeedsGrouped: FeedFolder[] = [];
 
-				// 	// 2.1 Remove feed from source folder.
-				// 	const srcFolder = newFeedsGrouped.get(srcFeed.folderId);
-				// 	if (!srcFolder) return prev;
-				// 	console.log(`Will remove ${srcFeed.id} from ${srcFolder.folderId}`);
-				// 	srcFolder.feeds = srcFolder.feeds.filter(
-				// 		(feed) => feed.id !== srcFeed.id,
-				// 	);
+					// 2.1 Remove feed from source folder.
+					const srcFolder = newFeedsGrouped.find(
+						(folder) => folder.folderId === srcFeed.folderId,
+					);
+					if (!srcFolder) return prev;
+					console.log(`Will remove ${srcFeed.id} from ${srcFolder.folderId}`);
+					srcFolder.feeds = srcFolder.feeds.filter(
+						(feed) => feed.id !== srcFeed.id,
+					);
 
-				// 	// // 3.2 Add feed to new folder.
-				// 	const targetFolder = newFeedsGrouped.get(targetFolderId as number);
-				// 	if (!targetFolder) return prev;
-				// 	targetFolder.feeds.push(srcFeed);
+					// 2.2 Add feed to new folder.
+					const targetFolder = newFeedsGrouped.find(
+						(folder) => folder.folderId === targetFolderId,
+					);
+					if (!targetFolder) return prev;
+					targetFolder.feeds.push(srcFeed);
 
-				// 	return newFeedsGrouped;
-				// });
+					return newFeedsGrouped;
+				});
 			}}
 		>
 			<SidebarContent

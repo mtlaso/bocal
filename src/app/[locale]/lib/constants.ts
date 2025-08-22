@@ -19,6 +19,7 @@ export type FeedWithContentsCount = {
 	title: string;
 	url: string;
 	status: FeedStatusType;
+	folderId: FolderId;
 	contentsCount: number;
 };
 

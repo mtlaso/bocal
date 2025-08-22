@@ -36,7 +36,8 @@ type Props = {
 
 export function FeedsSidebarFolder({ folder }: Props) {
 	const { ref, isDropTarget } = useDroppable({
-		id: folder.folderId,
+		// folderId will be defined here.
+		id: folder.folderId!,
 	});
 
 	return (
