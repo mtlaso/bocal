@@ -31,6 +31,7 @@ export function FeedsSidebarItem({ feed }: Props) {
 	);
 	const { ref, handleRef, isDragging } = useDraggable({
 		id: feed.id,
+		data: feed,
 	});
 
 	return (
@@ -53,7 +54,6 @@ export function FeedsSidebarItem({ feed }: Props) {
 					className="grid grid-cols-[min-content_auto_auto] gap-4 hover:cursor-pointer"
 				>
 					<ItemIcon
-						aria-grabbed={isDragging}
 						feed={feed}
 						handleRef={handleRef}
 						isHovered={isHovered}

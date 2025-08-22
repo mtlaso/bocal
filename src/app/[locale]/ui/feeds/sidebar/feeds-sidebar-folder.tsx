@@ -71,6 +71,7 @@ function Draggable({ feed }: { feed: FeedWithContentsCount }) {
 	const [isHovered, setIsHovered] = useState(false);
 	const { ref, handleRef, isDragging } = useDraggable({
 		id: feed.id,
+		data: feed,
 	});
 	const [{ selectedFeed }, setSearchParamsState] = useQueryStates(
 		searchParamsState.searchParams,
@@ -99,7 +100,6 @@ function Draggable({ feed }: { feed: FeedWithContentsCount }) {
 					className="grid grid-cols-[min-content_auto_auto] w-full text-left gap-4 hover:cursor-pointer"
 				>
 					<ItemIcon
-						aria-grabbed={isDragging}
 						feed={feed}
 						handleRef={handleRef}
 						isHovered={isHovered}

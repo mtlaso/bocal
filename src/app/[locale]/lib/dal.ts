@@ -15,7 +15,7 @@ import "server-only";
 import type { Session } from "next-auth";
 import { cache } from "react";
 import {
-	type FeedsFolders,
+	type FeedFolder,
 	type FeedWithContentsCount,
 	UNCATEGORIZED_FEEDS_FOLDER_ID,
 } from "@/app/[locale]/lib/constants";
@@ -178,7 +178,7 @@ const getUserFeedsWithContentsCount = cache(
  *   3. And the feeds that are not in a folder.
  *   In other words: feeds in folder, empty folders, feeds without a folder
  */
-const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedsFolders> => {
+const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedFolder[]> => {
 	try {
 		const user = await verifySession();
 		if (!user) {
@@ -220,8 +220,8 @@ const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedsFolders> => {
 
 		// Transform what the database query result into a data structure
 		// that can be easily consumed by the frontend (A map that groups the feeds by folder):
-		const folders: FeedsFolders = new Map();
-		folders.set(UNCATEGORIZED_FEEDS_FOLDER_ID, {
+		const folders: FeedFolder[] = [];
+		folders.push({
 			folderId: UNCATEGORIZED_FEEDS_FOLDER_ID,
 			folderName: "Uncategorized",
 			feeds: [],
@@ -229,7 +229,7 @@ const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedsFolders> => {
 
 		// Add folders to map.
 		for (const folder of feedsFolders) {
-			folders.set(folder.folderId, {
+			folders.push({
 				folderId: folder.folderId,
 				folderName: folder.folderName,
 				feeds: [],
@@ -239,7 +239,9 @@ const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedsFolders> => {
 		// Add feeds to map.
 		for (const feed of userFeeds) {
 			if (!feed.folderId) {
-				const uncategorized = folders.get(UNCATEGORIZED_FEEDS_FOLDER_ID);
+				const uncategorized = folders.find(
+					(folder) => folder.folderId === UNCATEGORIZED_FEEDS_FOLDER_ID,
+				);
 				if (!uncategorized) {
 					throw new Error(
 						"Uncategorized folder not found. It should have been created before hand.",
@@ -253,7 +255,9 @@ const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedsFolders> => {
 					contentsCount: feed.contentsCount,
 				});
 			} else {
-				const folder = folders.get(feed.folderId);
+				const folder = folders.find(
+					(folder) => folder.folderId === feed.folderId,
+				);
 				if (!folder) {
 					throw new Error(
 						`Folder ${feed.folderId} not found. It should already be inside the folders map.`,
