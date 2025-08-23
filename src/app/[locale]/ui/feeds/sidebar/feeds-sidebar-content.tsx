@@ -70,7 +70,6 @@ export function FeedsSidebarContent({
 				// To move feed into new folder (or uncategoriezed):
 				// 1. Find source feed.
 				const srcFeed = e.operation.source?.data as FeedWithContentsCount;
-				console.log(srcFeed);
 				if (!srcFeed) return;
 
 				// 2. Add feed to target folder.
@@ -83,7 +82,6 @@ export function FeedsSidebarContent({
 						(folder) => folder.folderId === srcFeed.folderId,
 					);
 					if (!srcFolder) return prev;
-					console.log(`Will remove ${srcFeed.id} from ${srcFolder.folderId}`);
 					srcFolder.feeds = srcFolder.feeds.filter(
 						(feed) => feed.id !== srcFeed.id,
 					);
