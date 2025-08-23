@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { Suspense } from "react";
 import { dal } from "@/app/[locale]/lib/dal";
 import { FeedsSidebarContent } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-content";
@@ -5,7 +6,8 @@ import { FeedsSidebarFooter } from "@/app/[locale]/ui/feeds/sidebar/feeds-sideba
 import { FeedsSidebarSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SidebarFeeds } from "@/components/ui/sidebar";
 
-export function FeedsSidebar() {
+export async function FeedsSidebar() {
+	await connection();
 	const userFeedsGroupedByFolder = dal.getUserFeedsGroupedByFolder();
 
 	return (
