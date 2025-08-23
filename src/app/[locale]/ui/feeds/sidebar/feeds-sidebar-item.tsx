@@ -83,7 +83,7 @@ function ItemIcon({
 	if (isMobile) {
 		return (
 			<div ref={handleRef} className="ml-auto">
-				<RxDragHandleDots2 aria-describedby="drag-handle" />
+				<RxDragHandleDots2 />
 			</div>
 		);
 	}
