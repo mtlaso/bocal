@@ -76,7 +76,7 @@ export function FeedsSidebarContent({
 				// 2. Add feed to target folder.
 				setUserFeedsGroupedByFolder((prev) => {
 					// Create copy.
-					const newFeedsGrouped: FeedFolder[] = [];
+					const newFeedsGrouped: FeedFolder[] = structuredClone(prev);
 
 					// 2.1 Remove feed from source folder.
 					const srcFolder = newFeedsGrouped.find(
