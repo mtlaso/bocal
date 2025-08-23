@@ -27,26 +27,10 @@ type Props = {
 export function FeedsSidebarContent({
 	userFeedsGroupedByFolderPromise,
 }: Props) {
-	const { ref, isDropTarget } = useDroppable({
-		id: UNCATEGORIZED_FEEDS_FOLDER_ID,
-	});
-
 	const _userFeedsGroupedByFolder = use(userFeedsGroupedByFolderPromise);
 	const [userFeedsGroupedByFolder, setUserFeedsGroupedByFolder] = useState<
 		FeedFolder[]
 	>(_userFeedsGroupedByFolder);
-	const t = useTranslations("rssFeed");
-
-	const totalFeeds = userFeedsGroupedByFolder.values().reduce((acc, folder) => {
-		return acc + folder.feeds.length;
-	}, 0);
-	const totalFeedsContents = userFeedsGroupedByFolder
-		.values()
-		.reduce(
-			(acc, folder) =>
-				acc + folder.feeds.reduce((s, f) => s + f.contentsCount, 0),
-			0,
-		);
 
 	return (
 		<DragDropProvider
@@ -101,38 +85,67 @@ export function FeedsSidebarContent({
 				});
 			}}
 		>
-			<SidebarContent
-				ref={ref}
-				className={`${isDropTarget ? "bg-red-200 border" : ""}`}
-			>
-				<SidebarGroup>
-					<SidebarGroupLabel>{t("rssFeed")}</SidebarGroupLabel>
-					<SidebarGroupContent>
-						<SidebarMenu>
-							<FeedsSidebarItemAll totalFeedsContents={totalFeedsContents} />
-
-							<SidebarMenuItem className="px-2">
-								<span className="text-xs">
-									{t("info.textFeedsCount", { count: totalFeeds })}
-								</span>
-							</SidebarMenuItem>
-
-							{userFeedsGroupedByFolder.map((folder) => {
-								// -1 = Uncategorized folder.
-								if (folder.folderId === UNCATEGORIZED_FEEDS_FOLDER_ID) {
-									return folder.feeds.map((feed) => {
-										return <FeedsSidebarItem key={feed.id} feed={feed} />;
-									});
-								}
-
-								return (
-									<FeedsSidebarFolder key={folder.folderId} folder={folder} />
-								);
-							})}
-						</SidebarMenu>
-					</SidebarGroupContent>
-				</SidebarGroup>
-			</SidebarContent>
+			<Content userFeedsGroupedByFolder={userFeedsGroupedByFolder} />
 		</DragDropProvider>
+	);
+}
+
+// This needs to be it's own component so it can be a droppable zone.
+// The drop mechanism wouldn't work if it's a direct descendant of the parent component.
+function Content({
+	userFeedsGroupedByFolder,
+}: {
+	userFeedsGroupedByFolder: FeedFolder[];
+}) {
+	const t = useTranslations("rssFeed");
+
+	const totalFeeds = userFeedsGroupedByFolder.values().reduce((acc, folder) => {
+		return acc + folder.feeds.length;
+	}, 0);
+	const totalFeedsContents = userFeedsGroupedByFolder
+		.values()
+		.reduce(
+			(acc, folder) =>
+				acc + folder.feeds.reduce((s, f) => s + f.contentsCount, 0),
+			0,
+		);
+	const { ref, isDropTarget } = useDroppable({
+		id: UNCATEGORIZED_FEEDS_FOLDER_ID,
+	});
+
+	return (
+		<SidebarContent
+			ref={ref}
+			className={`${isDropTarget ? "bg-accent" : ""}`}
+			// className="bg-red-300"
+		>
+			<SidebarGroup>
+				<SidebarGroupLabel>{t("rssFeed")}</SidebarGroupLabel>
+				<SidebarGroupContent>
+					<SidebarMenu>
+						<FeedsSidebarItemAll totalFeedsContents={totalFeedsContents} />
+
+						<SidebarMenuItem className="px-2">
+							<span className="text-xs">
+								{t("info.textFeedsCount", { count: totalFeeds })}
+							</span>
+						</SidebarMenuItem>
+
+						{userFeedsGroupedByFolder.map((folder) => {
+							// -1 = Uncategorized folder.
+							if (folder.folderId === UNCATEGORIZED_FEEDS_FOLDER_ID) {
+								return folder.feeds.map((feed) => {
+									return <FeedsSidebarItem key={feed.id} feed={feed} />;
+								});
+							}
+
+							return (
+								<FeedsSidebarFolder key={folder.folderId} folder={folder} />
+							);
+						})}
+					</SidebarMenu>
+				</SidebarGroupContent>
+			</SidebarGroup>
+		</SidebarContent>
 	);
 }

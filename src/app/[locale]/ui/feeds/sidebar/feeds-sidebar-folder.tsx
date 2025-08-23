@@ -42,12 +42,10 @@ export function FeedsSidebarFolder({ folder }: Props) {
 	return (
 		<Collapsible
 			defaultOpen={folder.feeds.length > 0}
-			className="group/collapsible"
+			ref={ref}
+			className={`group/collapsible ${isDropTarget ? "bg-accent border" : ""}`}
 		>
-			<SidebarMenuItem
-				ref={ref}
-				className={`${isDropTarget ? "bg-accent border" : ""}`}
-			>
+			<SidebarMenuItem>
 				<CollapsibleTrigger asChild>
 					<SidebarMenuButton>
 						<TbFolder className="group-data-[state=open]/collapsible:hidden" />
