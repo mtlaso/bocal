@@ -75,7 +75,7 @@ export function FeedsSidebarContent({
 
 				// 2. Add feed to target folder.
 				setUserFeedsGroupedByFolder((prev) => {
-					// Create copy.
+					// Create a deep copy.
 					const newFeedsGrouped: FeedFolder[] = structuredClone(prev);
 
 					// 2.1 Remove feed from source folder.
@@ -93,7 +93,11 @@ export function FeedsSidebarContent({
 						(folder) => folder.folderId === targetFolderId,
 					);
 					if (!targetFolder) return prev;
-					targetFolder.feeds.push(srcFeed);
+					targetFolder.feeds.push({
+						...srcFeed,
+						// 2.3 Change srcFeed folderId.
+						folderId: targetFolder.folderId,
+					});
 
 					return newFeedsGrouped;
 				});
