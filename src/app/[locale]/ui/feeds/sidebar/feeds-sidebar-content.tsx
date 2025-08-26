@@ -64,6 +64,10 @@ export function FeedsSidebarContent({
 				folderId: targetFolder.folderId,
 			});
 
+			// 2.3 Sort feeds in the new target folder to prevent layout shift.
+			// Feeds are also fetched from the db in descending order.
+			targetFolder.feeds.sort((a, b) => a.title.localeCompare(b.title));
+
 			return newFeedsGrouped;
 		});
 	};
