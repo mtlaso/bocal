@@ -186,6 +186,9 @@ const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedFolder[]> => {
 			throw new Error("errors.notSignedIn");
 		}
 
+		// We use two queries because doing this in one query results in
+		// a query that is hard to understand. This is simpler.
+		//
 		// No need for a transaction, a temporary inconsistency in the UI is acceptable
 		// e.g. If the first query returns folder programming, the second query returns the feed A is in programming,
 		// but the users removes feed A from the folder from an other device, it's ok if there is an inconsistency.
@@ -212,7 +215,8 @@ const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedFolder[]> => {
 			.leftJoin(usersFeeds, eq(usersFeeds.feedId, feeds.id))
 			.leftJoin(feedsContent, eq(feedsContent.feedId, usersFeeds.feedId))
 			.where(eq(usersFeeds.userId, user.user.id))
-			.groupBy(feeds.id, usersFeeds.folderId);
+			.groupBy(feeds.id, usersFeeds.folderId)
+			.orderBy(feeds.title);
 
 		const [feedsFolders, userFeeds] = await Promise.all([
 			queryFolders,
