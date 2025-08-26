@@ -92,6 +92,8 @@ export function FeedsSidebarContent({
 				const srcFeed = e.operation.source?.data as FeedWithContentsCount;
 				if (!srcFeed) return;
 
+				if (targetFolderId === srcFeed.folderId) return;
+
 				startTransition(async () => {
 					handleOnMove(srcFeed, targetFolderId as number);
 					try {
