@@ -18,6 +18,7 @@ import {
 	FeedErrorType,
 	FeedStatusType,
 	LENGTHS,
+	UNCATEGORIZED_FEEDS_FOLDER_ID,
 } from "@/app/[locale]/lib/constants";
 
 // biome-ignore lint/suspicious/noExplicitAny: locale exception.
@@ -309,6 +310,11 @@ export const addFeedsFolderSchema = createInsertSchema(usersFeedsFolders, {
 			.min(LENGTHS.feeds.addFeedFolder.name.min)
 			.max(LENGTHS.feeds.addFeedFolder.name.max),
 }).pick({ name: true });
+
+export const moveFeedIntoFolderSchema = z.object({
+	feedId: z.number().nonnegative(),
+	folderId: z.number().min(UNCATEGORIZED_FEEDS_FOLDER_ID),
+});
 
 const feedTimeline = z.object({
 	...createSelectSchema(feedsContent).shape,

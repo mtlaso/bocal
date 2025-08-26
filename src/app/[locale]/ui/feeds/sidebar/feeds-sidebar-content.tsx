@@ -2,7 +2,9 @@
 import { RestrictToVerticalAxis } from "@dnd-kit/abstract/modifiers";
 import { DragDropProvider, PointerSensor, useDroppable } from "@dnd-kit/react";
 import { useTranslations } from "next-intl";
-import { use, useState } from "react";
+import { startTransition, use, useOptimistic } from "react";
+import { toast } from "sonner";
+import { moveFeedIntoFolder } from "@/app/[locale]/lib/actions";
 import {
 	type FeedFolder,
 	type FeedWithContentsCount,
@@ -28,9 +30,43 @@ export function FeedsSidebarContent({
 	userFeedsGroupedByFolderPromise,
 }: Props) {
 	const _userFeedsGroupedByFolder = use(userFeedsGroupedByFolderPromise);
-	const [userFeedsGroupedByFolder, setUserFeedsGroupedByFolder] = useState<
+	const [userFeedsGroupedByFolder, setUserFeedsGroupedByFolder] = useOptimistic<
 		FeedFolder[]
 	>(_userFeedsGroupedByFolder);
+	const t = useTranslations("rssFeed");
+
+	const handleOnMove = (
+		srcFeed: FeedWithContentsCount,
+		targetFolderId: number,
+	) => {
+		// 2. Add feed to target folder.
+		setUserFeedsGroupedByFolder((prev) => {
+			// Create a deep copy.
+			const newFeedsGrouped: FeedFolder[] = structuredClone(prev);
+
+			// 2.1 Remove feed from source folder.
+			const srcFolder = newFeedsGrouped.find(
+				(folder) => folder.folderId === srcFeed.folderId,
+			);
+			if (!srcFolder) return prev;
+			srcFolder.feeds = srcFolder.feeds.filter(
+				(feed) => feed.id !== srcFeed.id,
+			);
+
+			// 2.2 Add feed to new folder.
+			const targetFolder = newFeedsGrouped.find(
+				(folder) => folder.folderId === targetFolderId,
+			);
+			if (!targetFolder) return prev;
+			targetFolder.feeds.push({
+				...srcFeed,
+				// 2.3 Change srcFeed folderId.
+				folderId: targetFolder.folderId,
+			});
+
+			return newFeedsGrouped;
+		});
+	};
 
 	return (
 		<DragDropProvider
@@ -56,32 +92,30 @@ export function FeedsSidebarContent({
 				const srcFeed = e.operation.source?.data as FeedWithContentsCount;
 				if (!srcFeed) return;
 
-				// 2. Add feed to target folder.
-				setUserFeedsGroupedByFolder((prev) => {
-					// Create a deep copy.
-					const newFeedsGrouped: FeedFolder[] = structuredClone(prev);
+				startTransition(async () => {
+					handleOnMove(srcFeed, targetFolderId as number);
+					try {
+						const res = await moveFeedIntoFolder(
+							srcFeed.id,
+							targetFolderId as number,
+						);
+						if (res.errors) {
+							toast.error([res.errors.feedId, res.errors.folderId].join(", "));
+							return;
+						}
 
-					// 2.1 Remove feed from source folder.
-					const srcFolder = newFeedsGrouped.find(
-						(folder) => folder.folderId === srcFeed.folderId,
-					);
-					if (!srcFolder) return prev;
-					srcFolder.feeds = srcFolder.feeds.filter(
-						(feed) => feed.id !== srcFeed.id,
-					);
-
-					// 2.2 Add feed to new folder.
-					const targetFolder = newFeedsGrouped.find(
-						(folder) => folder.folderId === targetFolderId,
-					);
-					if (!targetFolder) return prev;
-					targetFolder.feeds.push({
-						...srcFeed,
-						// 2.3 Change srcFeed folderId.
-						folderId: targetFolder.folderId,
-					});
-
-					return newFeedsGrouped;
+						if (res.errI18Key) {
+							// biome-ignore lint/suspicious/noExplicitAny: valid type.
+							toast.error(t(res.errI18Key as any));
+							return;
+						}
+					} catch (err) {
+						if (err instanceof Error) {
+							toast.error(err.message);
+						} else {
+							toast.error(t("errors.unexpected"));
+						}
+					}
 				});
 			}}
 		>

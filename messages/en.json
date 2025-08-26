@@ -182,7 +182,9 @@
 			"folderNameFieldTooSmall": "Folder name is too short.",
 			"folderNameFieldTooBig": "Folder name is too long.",
 			"folderNameFieldInvalid": "Folder name is invalid.",
-			"folderNameFieldAlreadyExists": "A folder with this name already exists."
+			"folderNameFieldAlreadyExists": "A folder with this name already exists.",
+			"feedIdFieldInvalid": "Feed ID invalid.",
+			"folderIdFieldInvalid": "Folder ID invalid."
 		}
 	},
 	"newsletter": {

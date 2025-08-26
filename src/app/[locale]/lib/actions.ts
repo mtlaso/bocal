@@ -6,7 +6,11 @@ import { revalidatePath } from "next/cache";
 import { AuthError } from "next-auth";
 import { getTranslations } from "next-intl/server";
 import { z } from "zod/v4";
-import { APP_ROUTES, LENGTHS } from "@/app/[locale]/lib/constants";
+import {
+	APP_ROUTES,
+	LENGTHS,
+	UNCATEGORIZED_FEEDS_FOLDER_ID,
+} from "@/app/[locale]/lib/constants";
 import { dal } from "@/app/[locale]/lib/dal";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 import { logger } from "@/app/[locale]/lib/logging";
@@ -26,6 +30,7 @@ import {
 	insertLinkSchema,
 	insertUsersFeedsReadContentSchema,
 	links,
+	moveFeedIntoFolderSchema,
 	unfollowFeedSchema,
 	usersFeeds,
 	usersFeedsFolders,
@@ -1040,4 +1045,66 @@ export async function addFeedFolder(
 	return {
 		isSuccessful: true,
 	};
+}
+
+type MoveFeedIntoFolderState = ActionReturnType<{
+	feedId: number;
+	folderId: number;
+}>;
+
+export async function moveFeedIntoFolder(
+	feedId: number,
+	folderId: number,
+): Promise<MoveFeedIntoFolderState> {
+	try {
+		const user = await dal.verifySession();
+		if (!user) {
+			throw new Error("not signed in");
+		}
+
+		const t = await getTranslations("rssFeed");
+		const payload = {
+			feedId,
+			folderId,
+		};
+		const validatedFields = moveFeedIntoFolderSchema.safeParse(payload, {
+			error: (iss) => {
+				const path = iss.path?.join(".");
+				if (!path) {
+					return { message: t("errors.unexpected") };
+				}
+
+				const message = {
+					feedId: t("errors.feedIdFieldInvalid"),
+					folderId: t("errors.folderIdFieldInvalid"),
+				}[path];
+
+				return { message: message ?? t("errors.unexpected") };
+			},
+		});
+
+		if (!validatedFields.success) {
+			return {
+				errors: z.flattenError(validatedFields.error).fieldErrors,
+				payload: { feedId, folderId },
+			};
+		}
+
+		await db
+			.update(usersFeeds)
+			.set({
+				folderId: folderId === UNCATEGORIZED_FEEDS_FOLDER_ID ? null : folderId,
+			})
+			.where(
+				and(eq(usersFeeds.feedId, feedId), eq(usersFeeds.userId, user.user.id)),
+			);
+	} catch (err) {
+		logger.error(err);
+		return {
+			errI18Key: "errors.unexpected",
+		};
+	}
+
+	revalidatePath(APP_ROUTES.feeds);
+	return {};
 }

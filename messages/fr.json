@@ -183,7 +183,9 @@
 			"folderNameFieldTooSmall": "Le nom du dossier est trop court.",
 			"folderNameFieldTooBig": "Le nom du dossier est trop long.",
 			"folderNameFieldInvalid": "Le nom du dossier est invalide.",
-			"folderNameFieldAlreadyExists": "Un dossier avec ce nom existe déjà."
+			"folderNameFieldAlreadyExists": "Un dossier avec ce nom existe déjà.",
+			"feedIdFieldInvalid": "ID de flux invalide.",
+			"folderIdFieldInvalid": "ID du dossier invalide."
 		}
 	},
 	"newsletter": {
