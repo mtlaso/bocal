@@ -63,7 +63,7 @@
 		"zod": "^3.25.76"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.1.3",
+		"@biomejs/biome": "^2.2.3",
 		"@lingual/i18n-check": "^0.8.4",
 		"@tailwindcss/postcss": "^4.1.11",
 		"@tailwindcss/typography": "^0.5.16",
