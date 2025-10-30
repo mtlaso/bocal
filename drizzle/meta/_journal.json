@@ -127,6 +127,20 @@
       "when": 1754633800849,
       "tag": "0017_rare_peter_parker",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1761796269680,
+      "tag": "0018_overconfident_gideon",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1761796644761,
+      "tag": "0019_omniscient_mastermind",
+      "breakpoints": true
     }
   ]
 }

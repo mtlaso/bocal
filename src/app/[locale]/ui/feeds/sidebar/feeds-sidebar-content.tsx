@@ -154,11 +154,7 @@ function Content({
 	});
 
 	return (
-		<SidebarContent
-			ref={ref}
-			className={`${isDropTarget ? "bg-accent" : ""}`}
-			// className="bg-red-300"
-		>
+		<SidebarContent ref={ref} className={`${isDropTarget ? "bg-accent" : ""}`}>
 			<SidebarGroup>
 				<SidebarGroupLabel>{t("rssFeed")}</SidebarGroupLabel>
 				<SidebarGroupContent>

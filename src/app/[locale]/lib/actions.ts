@@ -1090,6 +1090,7 @@ export async function moveFeedIntoFolder(
 			};
 		}
 
+		// Check if the user owns this folder.
 		await db
 			.update(usersFeeds)
 			.set({

@@ -1,6 +1,7 @@
 import type { InferSelectModel } from "drizzle-orm";
 import {
 	boolean,
+	foreignKey,
 	integer,
 	jsonb,
 	pgTable,
@@ -147,15 +148,22 @@ export const usersFeeds = pgTable(
 		feedId: integer()
 			.notNull()
 			.references(() => feeds.id, { onDelete: "cascade" }),
-		folderId: integer().references(() => usersFeedsFolders.id, {
-			onDelete: "set null",
-		}),
+		folderId: integer(),
 	},
-	(table) => [primaryKey({ columns: [table.userId, table.feedId] })],
+	(table) => [
+		primaryKey({ columns: [table.userId, table.feedId] }),
+		// Foreign key uses the user's ID and folder ID.
+		// To make sure that a user only has access to his folders.
+		foreignKey({
+			columns: [table.userId, table.folderId],
+			name: "users_feeds_folder_ownership_fk",
+			foreignColumns: [usersFeedsFolders.userId, usersFeedsFolders.id],
+		}).onDelete("set null"),
+	],
 );
 
 /**
- * usersFeedsFolders contains folders that hold user's feeds.
+ * usersFeedsFolders contains folders that hold users feeds.
  */
 export const usersFeedsFolders = pgTable(
 	"users_feeds_folders",
@@ -167,7 +175,16 @@ export const usersFeedsFolders = pgTable(
 		name: text().notNull(),
 		createdAt: timestamp().defaultNow().notNull(),
 	},
-	(table) => [uniqueIndex().on(table.userId, table.name)],
+	(table) => [
+		// Unique folder name per user.
+		uniqueIndex().on(table.userId, table.name),
+
+		// This composite unique index is REQUIRED.
+		// It serves as the target for the composite foreign key in the 'users_feeds' table.
+		// This is what allows us to enforce that a user can only assign a feed
+		// to a folder that they actually own.
+		uniqueIndex().on(table.userId, table.id),
+	],
 );
 
 /**
