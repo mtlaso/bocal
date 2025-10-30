@@ -129,6 +129,7 @@
 	"rssFeed": {
 		"rssFeed": "Feeds",
 		"add": "Add",
+		"actions": "Actions",
 		"unfollow": "Unfollow",
 		"success": "Feed added",
 		"successUnfollow": "Feed unfollowed",
@@ -159,6 +160,14 @@
 			"link": "Link",
 			"cancel": "Cancel"
 		},
+		"addFolder": {
+			"title": "Add a folder",
+			"description": "Create a new folder to organize your feeds.",
+			"folderName": "Folder name",
+			"add": "Add",
+			"cancel": "Cancel",
+			"success": "Folder created"
+		},
 		"errors": {
 			"unexpected": "An error happened.",
 			"urlFieldInvalid": "URL invalid.",
@@ -169,7 +178,13 @@
 			"missingFields": "Missing fields.",
 			"idFieldInvalid": "ID invalid.",
 			"feedContentIdFieldInvalid": "Content ID invalid.",
-			"cannotCopyFeedURL": "Cannot copy feed URL."
+			"cannotCopyFeedURL": "Cannot copy feed URL.",
+			"folderNameFieldTooSmall": "Folder name is too short.",
+			"folderNameFieldTooBig": "Folder name is too long.",
+			"folderNameFieldInvalid": "Folder name is invalid.",
+			"folderNameFieldAlreadyExists": "A folder with this name already exists.",
+			"feedIdFieldInvalid": "Feed ID invalid.",
+			"folderIdFieldInvalid": "Folder ID invalid."
 		}
 	},
 	"newsletter": {

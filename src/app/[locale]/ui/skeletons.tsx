@@ -19,7 +19,7 @@ export function LinksSkeleton(): React.JSX.Element {
 	);
 }
 
-export function FeedInfoSkeleton(): React.JSX.Element {
+export function FeedsHeaderSkeleton(): React.JSX.Element {
 	return (
 		<div className="flex flex-col space-y-2">
 			<Skeleton className="h-4 w-[250px]" />
@@ -46,7 +46,10 @@ export function FeedsSkeleton(): React.JSX.Element {
 
 export function FeedsSidebarSkeleton() {
 	return (
-		<SidebarMenu>
+		<SidebarMenu
+			// These styles are need to push it to the bottom.
+			className="flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden"
+		>
 			{Array.from({ length: 5 }).map((_, index) => (
 				// biome-ignore lint/suspicious/noArrayIndexKey: skeleton.
 				<SidebarMenuItem key={index}>

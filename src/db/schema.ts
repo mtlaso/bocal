@@ -1,6 +1,7 @@
 import type { InferSelectModel } from "drizzle-orm";
 import {
 	boolean,
+	foreignKey,
 	integer,
 	jsonb,
 	pgTable,
@@ -18,6 +19,7 @@ import {
 	FeedErrorType,
 	FeedStatusType,
 	LENGTHS,
+	UNCATEGORIZED_FEEDS_FOLDER_ID,
 } from "@/app/[locale]/lib/constants";
 
 // biome-ignore lint/suspicious/noExplicitAny: locale exception.
@@ -146,8 +148,43 @@ export const usersFeeds = pgTable(
 		feedId: integer()
 			.notNull()
 			.references(() => feeds.id, { onDelete: "cascade" }),
+		folderId: integer(),
 	},
-	(table) => [primaryKey({ columns: [table.userId, table.feedId] })],
+	(table) => [
+		primaryKey({ columns: [table.userId, table.feedId] }),
+		// Foreign key uses the user's ID and folder ID.
+		// To make sure that a user only has access to his folders.
+		foreignKey({
+			columns: [table.userId, table.folderId],
+			name: "users_feeds_folder_ownership_fk",
+			foreignColumns: [usersFeedsFolders.userId, usersFeedsFolders.id],
+		}).onDelete("set null"),
+	],
+);
+
+/**
+ * usersFeedsFolders contains folders that hold users feeds.
+ */
+export const usersFeedsFolders = pgTable(
+	"users_feeds_folders",
+	{
+		id: integer().primaryKey().generatedAlwaysAsIdentity(),
+		userId: text()
+			.notNull()
+			.references(() => users.id, { onDelete: "cascade" }),
+		name: text().notNull(),
+		createdAt: timestamp().defaultNow().notNull(),
+	},
+	(table) => [
+		// Unique folder name per user.
+		uniqueIndex().on(table.userId, table.name),
+
+		// This composite unique index is REQUIRED.
+		// It serves as the target for the composite foreign key in the 'users_feeds' table.
+		// This is what allows us to enforce that a user can only assign a feed
+		// to a folder that they actually own.
+		uniqueIndex().on(table.userId, table.id),
+	],
 );
 
 /**
@@ -274,12 +311,26 @@ export const deleteUsersFeedsReadContentSchema = createSelectSchema(
 export const addNewsletterSchema = z.object({
 	title: z
 		.string()
+		.trim()
 		.min(LENGTHS.newsletters.title.min)
 		.max(LENGTHS.newsletters.title.max),
 });
 
 export const deleteNewsletterSchema = z.object({
 	id: z.number().nonnegative(),
+});
+
+export const addFeedsFolderSchema = createInsertSchema(usersFeedsFolders, {
+	name: (schema) =>
+		schema
+			.trim()
+			.min(LENGTHS.feeds.addFeedFolder.name.min)
+			.max(LENGTHS.feeds.addFeedFolder.name.max),
+}).pick({ name: true });
+
+export const moveFeedIntoFolderSchema = z.object({
+	feedId: z.number().nonnegative(),
+	folderId: z.number().min(UNCATEGORIZED_FEEDS_FOLDER_ID),
 });
 
 const feedTimeline = z.object({

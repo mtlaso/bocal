@@ -1,8 +1,25 @@
+/**
+ * Represents the key for the feed folder.
+ * This can either be the id of a folder or -1 for the uncategorized folder.
+ * */
+type FolderId = number;
+export const UNCATEGORIZED_FEEDS_FOLDER_ID = -1;
+
+/**
+ * FeedFolder represents a feed inside a folder.
+ */
+export type FeedFolder = {
+	folderId: FolderId;
+	folderName: string | null;
+	feeds: FeedWithContentsCount[];
+};
+
 export type FeedWithContentsCount = {
 	id: number;
 	title: string;
 	url: string;
 	status: FeedStatusType;
+	folderId: FolderId;
 	contentsCount: number;
 };
 
@@ -31,6 +48,12 @@ export enum FeedErrorType {
 export const LENGTHS = {
 	feeds: {
 		maxPerUser: 100,
+		addFeedFolder: {
+			name: {
+				min: 2,
+				max: 100,
+			},
+		},
 	},
 	newsletters: {
 		title: {

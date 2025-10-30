@@ -9,11 +9,16 @@ import {
 	feedsTimelineSchema,
 	links,
 	usersFeeds,
+	usersFeedsFolders,
 } from "@/db/schema";
 import "server-only";
 import type { Session } from "next-auth";
 import { cache } from "react";
-import type { FeedWithContentsCount } from "@/app/[locale]/lib/constants";
+import {
+	type FeedFolder,
+	type FeedWithContentsCount,
+	UNCATEGORIZED_FEEDS_FOLDER_ID,
+} from "@/app/[locale]/lib/constants";
 import { feedService } from "@/app/[locale]/lib/feed-service";
 import { logger } from "@/app/[locale]/lib/logging";
 import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
@@ -136,7 +141,7 @@ const getUserFeedsTimeline = cache(async (): Promise<FeedTimeline[]> => {
 
 /**
  * getUserFeedsWithContentsCount returns the feeds a user follows with the
- * number of feed_content in each feed.
+ * number of feeds_content in each feed.
  */
 const getUserFeedsWithContentsCount = cache(
 	async (): Promise<FeedWithContentsCount[]> => {
@@ -152,19 +157,135 @@ const getUserFeedsWithContentsCount = cache(
 					title: feeds.title,
 					url: feeds.url,
 					status: feeds.status,
+					folderId: sql<number>`COALESCE(${usersFeeds.folderId}, ${UNCATEGORIZED_FEEDS_FOLDER_ID})`,
 					contentsCount: count(feedsContent.id),
 				})
 				.from(feeds)
 				.innerJoin(usersFeeds, eq(usersFeeds.feedId, feeds.id))
 				.leftJoin(feedsContent, eq(feedsContent.feedId, feeds.id))
 				.where(eq(usersFeeds.userId, user.user.id))
-				.groupBy(feeds.id);
+				.groupBy(feeds.id, usersFeeds.folderId);
 		} catch (err) {
 			logger.error(err);
 			throw new Error("errors.unexpected");
 		}
 	},
 );
+
+/**
+ * getUserFeedsGroupedByFolder gets:
+ *   1. All the feeds folders a user has (including empty folders), with
+ *   the feeds in each of those folders.
+ *   3. And the feeds that are not in a folder.
+ *   In other words: feeds in folder, empty folders, feeds without a folder
+ */
+const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedFolder[]> => {
+	try {
+		const user = await verifySession();
+		if (!user) {
+			throw new Error("errors.notSignedIn");
+		}
+
+		// We use two queries because doing this in one query results in
+		// a query that is hard to understand. This is simpler.
+		//
+		// No need for a transaction, a temporary inconsistency in the UI is acceptable
+		// e.g. If the first query returns folder programming, the second query returns the feed A is in programming,
+		// but the users removes feed A from the folder from an other device, it's ok if there is an inconsistency.
+		// Query 1: get the user feeds folders.
+		const queryFolders = db
+			.select({
+				folderId: usersFeedsFolders.id,
+				folderName: usersFeedsFolders.name,
+			})
+			.from(usersFeedsFolders)
+			.where(eq(usersFeedsFolders.userId, user.user.id));
+
+		// Query 2: get the user feeds.
+		const queryFeeds = db
+			.select({
+				id: feeds.id,
+				title: feeds.title,
+				url: feeds.url,
+				status: feeds.status,
+				folderId: usersFeeds.folderId,
+				contentsCount: count(feedsContent.id),
+			})
+			.from(feeds)
+			.leftJoin(usersFeeds, eq(usersFeeds.feedId, feeds.id))
+			.leftJoin(feedsContent, eq(feedsContent.feedId, usersFeeds.feedId))
+			.where(eq(usersFeeds.userId, user.user.id))
+			.groupBy(feeds.id, usersFeeds.folderId)
+			.orderBy(feeds.title);
+
+		const [feedsFolders, userFeeds] = await Promise.all([
+			queryFolders,
+			queryFeeds,
+		]);
+
+		// Transform what the database query result into a data structure
+		// that can be easily consumed by the frontend (A map that groups the feeds by folder):
+		const folders: FeedFolder[] = [];
+		folders.push({
+			folderId: UNCATEGORIZED_FEEDS_FOLDER_ID,
+			folderName: "Uncategorized",
+			feeds: [],
+		});
+
+		// Add folders to map.
+		for (const folder of feedsFolders) {
+			folders.push({
+				folderId: folder.folderId,
+				folderName: folder.folderName,
+				feeds: [],
+			});
+		}
+
+		// Add feeds to map.
+		for (const feed of userFeeds) {
+			if (!feed.folderId) {
+				const uncategorized = folders.find(
+					(folder) => folder.folderId === UNCATEGORIZED_FEEDS_FOLDER_ID,
+				);
+				if (!uncategorized) {
+					throw new Error(
+						"Uncategorized folder not found. It should have been created before hand.",
+					);
+				}
+				uncategorized.feeds.push({
+					id: feed.id,
+					title: feed.title,
+					url: feed.url,
+					status: feed.status,
+					contentsCount: feed.contentsCount,
+					folderId: UNCATEGORIZED_FEEDS_FOLDER_ID,
+				});
+			} else {
+				const folder = folders.find(
+					(folder) => folder.folderId === feed.folderId,
+				);
+				if (!folder) {
+					throw new Error(
+						`Folder ${feed.folderId} not found. It should already be inside the folders map.`,
+					);
+				}
+				folder.feeds.push({
+					id: feed.id,
+					title: feed.title,
+					url: feed.url,
+					status: feed.status,
+					contentsCount: feed.contentsCount,
+					folderId: feed.folderId,
+				});
+			}
+		}
+
+		return folders;
+	} catch (err) {
+		logger.error(err);
+		throw new Error("errors.unexpected");
+	}
+});
 
 /**
  * getUserNewsletters returns the newsletters a user has.
@@ -212,4 +333,5 @@ export const dal = {
 	getUserFeedsTimeline,
 	getUserFeedsWithContentsCount,
 	getUserNewsletters,
+	getUserFeedsGroupedByFolder,
 };
