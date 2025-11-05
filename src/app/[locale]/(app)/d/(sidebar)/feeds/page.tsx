@@ -12,7 +12,6 @@ import {
 } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
-export const experimental_ppr = true;
 
 export async function generateMetadata({
 	params,

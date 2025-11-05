@@ -39,9 +39,7 @@ function getSessionCookieName(): string {
 
 const i18nMiddleware = createMiddleware(routing);
 
-export default async function middleware(
-	req: NextRequest,
-): Promise<NextResponse> {
+export default async function proxy(req: NextRequest): Promise<NextResponse> {
 	const langPrefix = getLanguagePrefix(req);
 	const pathname = removeLanguagePrefix(req.nextUrl.pathname);
 	const isProtectedRoute = PROTECTED_ROUTES.has(pathname);

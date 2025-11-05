@@ -8,7 +8,6 @@ import { Settings } from "@/app/[locale]/ui/settings/settings";
 import { SettingsSkeleton } from "@/app/[locale]/ui/skeletons";
 import { Separator } from "@/components/ui/separator";
 import { redirect } from "@/i18n/routing";
-export const experimental_ppr = true;
 
 export async function generateMetadata({
 	params,
