@@ -1,12 +1,12 @@
 "use client";
 import { ArrowDownUp } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useMediaQuery } from "@/app/[locale]/lib/hooks/use-media-query";
+import { Activity, useEffect, useState } from "react";
+import { useIsMobile } from "@/lib/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
 export function ScrollIndicator(): React.JSX.Element {
 	const [isVisible, setIsVisible] = useState(true);
-	const smallScreen = useMediaQuery("(max-width: 768px)");
+	const isMobile = useIsMobile();
 
 	useEffect(() => {
 		const scrollListener = (): void => {
@@ -21,15 +21,16 @@ export function ScrollIndicator(): React.JSX.Element {
 	}, []);
 
 	return (
-		<ArrowDownUp
-			className={cn(
-				"size-6 z-10 fixed right-12 bottom-12  transition-all duration-400 ease-out",
-				{
-					"opacity-0": !isVisible,
-					"opacity-100": isVisible,
-					"scale-0": smallScreen,
-				},
-			)}
-		/>
+		<Activity mode={isMobile ? "hidden" : "visible"}>
+			<ArrowDownUp
+				className={cn(
+					"size-6 z-10 fixed right-12 bottom-12 transition-all duration-400 ease-out",
+					{
+						"opacity-0": !isVisible,
+						"opacity-100": isVisible,
+					},
+				)}
+			/>
+		</Activity>
 	);
 }

@@ -3,7 +3,6 @@ import { useTranslations } from "next-intl";
 import { useActionState, useState } from "react";
 import { TbLinkPlus } from "react-icons/tb";
 import { addFeed } from "@/app/[locale]/lib/actions";
-import { useMediaQuery } from "@/app/[locale]/lib/hooks/use-media-query";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,19 +22,20 @@ import {
 } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useIsMobile } from "@/lib/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
 export function AddFeedForm(): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
-	const isDesktop = useMediaQuery("(min-width: 768px)");
+	const isMobile = useIsMobile();
 
-	return isDesktop ? (
-		<AddFeedFormDesktop
+	return isMobile ? (
+		<AddFeedFormMobile
 			isOpen={isOpen}
 			onOpen={(status: boolean): void => setIsOpen(status)}
 		/>
 	) : (
-		<AddFeedFormMobile
+		<AddFeedFormDesktop
 			isOpen={isOpen}
 			onOpen={(status: boolean): void => setIsOpen(status)}
 		/>
