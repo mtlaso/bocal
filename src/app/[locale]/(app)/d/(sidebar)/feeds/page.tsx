@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { type Locale, useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
-import { dal } from "@/app/[locale]/lib/dal";
 import { AddFeedForm } from "@/app/[locale]/ui/feeds/add-feed-form";
 import { FeedsHeader } from "@/app/[locale]/ui/feeds/feeds-header";
 import { FeedsTimeline } from "@/app/[locale]/ui/feeds/feeds-timeline";
@@ -12,6 +11,7 @@ import {
 } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
+import { dal } from "@/lib/dal";
 
 export async function generateMetadata({
 	params,

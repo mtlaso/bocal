@@ -14,15 +14,15 @@ import {
 import "server-only";
 import type { Session } from "next-auth";
 import { cache } from "react";
+import { auth } from "@/auth";
 import {
 	type FeedFolder,
 	type FeedWithContentsCount,
 	UNCATEGORIZED_FEEDS_FOLDER_ID,
-} from "@/app/[locale]/lib/constants";
-import { feedService } from "@/app/[locale]/lib/feed-service";
-import { logger } from "@/app/[locale]/lib/logging";
-import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
-import { auth } from "@/auth";
+} from "@/lib/constants";
+import { feedService } from "@/lib/feed-service";
+import { logger } from "@/lib/logging";
+import { userfeedsfuncs } from "@/lib/userfeeds-funcs";
 
 const ONE_HOUR = 60 * 60 * 1000;
 

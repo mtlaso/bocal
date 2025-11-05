@@ -6,16 +6,6 @@ import { revalidatePath } from "next/cache";
 import { AuthError } from "next-auth";
 import { getTranslations } from "next-intl/server";
 import { z } from "zod/v4";
-import {
-	APP_ROUTES,
-	LENGTHS,
-	UNCATEGORIZED_FEEDS_FOLDER_ID,
-} from "@/app/[locale]/lib/constants";
-import { dal } from "@/app/[locale]/lib/dal";
-import { feedService } from "@/app/[locale]/lib/feed-service";
-import { logger } from "@/app/[locale]/lib/logging";
-import { og } from "@/app/[locale]/lib/og";
-import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
 import { signIn, signOut } from "@/auth";
 import { db } from "@/db/db";
 import {
@@ -37,6 +27,16 @@ import {
 	usersFeedsReadContent,
 	usersPreferences,
 } from "@/db/schema";
+import {
+	APP_ROUTES,
+	LENGTHS,
+	UNCATEGORIZED_FEEDS_FOLDER_ID,
+} from "@/lib/constants";
+import { dal } from "@/lib/dal";
+import { feedService } from "@/lib/feed-service";
+import { logger } from "@/lib/logging";
+import { og } from "@/lib/og";
+import { userfeedsfuncs } from "@/lib/userfeeds-funcs";
 
 type ActionReturnType<T, E extends string = keyof T & string> = {
 	/**

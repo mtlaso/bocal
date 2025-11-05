@@ -20,7 +20,7 @@ import {
 	FeedStatusType,
 	LENGTHS,
 	UNCATEGORIZED_FEEDS_FOLDER_ID,
-} from "@/app/[locale]/lib/constants";
+} from "@/lib/constants";
 
 // biome-ignore lint/suspicious/noExplicitAny: locale exception.
 function enumToPgEnum<T extends Record<string, any>>(

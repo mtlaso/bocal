@@ -2,11 +2,6 @@
 import { useTranslations } from "next-intl";
 import { startTransition, useOptimistic } from "react";
 import { toast } from "sonner";
-import {
-	setFeedContentLimit,
-	setHideReadFeedContent,
-} from "@/app/[locale]/lib/actions";
-import type { UserPreferences } from "@/app/[locale]/lib/constants";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Label } from "@/components/ui/label";
 import {
@@ -17,6 +12,8 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { setFeedContentLimit, setHideReadFeedContent } from "@/lib/actions";
+import type { UserPreferences } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 type Props = {

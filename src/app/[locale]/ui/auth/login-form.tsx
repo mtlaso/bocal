@@ -4,9 +4,9 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import { toast } from "sonner";
+import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Button } from "@/components/ui/button";
-import { authenticate } from "../../lib/actions";
-import { SPACING } from "../spacing";
+import { authenticate } from "@/lib/actions";
 
 export function LoginForm(): React.JSX.Element {
 	const t = useTranslations("login");

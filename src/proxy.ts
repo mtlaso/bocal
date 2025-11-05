@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
-import { APP_ROUTES } from "@/app/[locale]/lib/constants";
+import { APP_ROUTES } from "@/lib/constants";
 import { routing } from "./i18n/routing";
 
 const PROTECTED_ROUTES: ReadonlySet<string> = new Set([

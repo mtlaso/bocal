@@ -5,8 +5,6 @@ import { useState, useTransition } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { TbAlertCircle, TbCopy, TbNews } from "react-icons/tb";
 import { toast } from "sonner";
-import { deleteNewsletter } from "@/app/[locale]/lib/actions";
-import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import {
 	AlertDialog,
@@ -29,6 +27,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { Feed } from "@/db/schema";
+import { deleteNewsletter } from "@/lib/actions";
+import { userfeedsfuncs } from "@/lib/userfeeds-funcs";
 
 export function NewsletterItem({ item }: { item: Feed }): React.JSX.Element {
 	const t = useTranslations("newsletter");

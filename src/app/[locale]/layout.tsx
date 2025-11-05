@@ -1,4 +1,4 @@
-import { getAppBaseURL } from "@/app/[locale]/lib/get-app-base-url";
+import { getAppBaseURL } from "@/lib/get-app-base-url";
 import "@/app/[locale]/ui/globals.css";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";

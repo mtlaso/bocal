@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import type { Locale } from "next-intl";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Suspense } from "react";
-import { APP_ROUTES } from "@/app/[locale]/lib/constants";
-import { dal } from "@/app/[locale]/lib/dal";
 import { Settings } from "@/app/[locale]/ui/settings/settings";
 import { SettingsSkeleton } from "@/app/[locale]/ui/skeletons";
 import { Separator } from "@/components/ui/separator";
 import { redirect } from "@/i18n/routing";
+import { APP_ROUTES } from "@/lib/constants";
+import { dal } from "@/lib/dal";
 
 export async function generateMetadata({
 	params,

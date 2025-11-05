@@ -1,14 +1,11 @@
 "use client";
 import { PanelLeftOpen, PanelRightOpen } from "lucide-react";
 import { useTranslations } from "next-intl";
-import {
-	FeedStatusType,
-	type FeedWithContentsCount,
-} from "@/app/[locale]/lib/constants";
 import { FeedsHeaderContextMenu } from "@/app/[locale]/ui/feeds/feeds-header-context-menu";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useSidebarFeeds } from "@/components/ui/sidebar";
+import { FeedStatusType, type FeedWithContentsCount } from "@/lib/constants";
 
 type Props = {
 	userFeedsWithContentsCount: FeedWithContentsCount[];

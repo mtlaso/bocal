@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { type Locale, useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
-import { dal } from "@/app/[locale]/lib/dal";
 import { AddLinkForm } from "@/app/[locale]/ui/links/add-link-form";
 import { Links } from "@/app/[locale]/ui/links/links";
 import {
@@ -13,6 +12,7 @@ import { SortLinks } from "@/app/[locale]/ui/links/sort-links";
 import { LinksSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
+import { dal } from "@/lib/dal";
 
 export async function generateMetadata({
 	params,

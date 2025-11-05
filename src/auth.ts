@@ -3,11 +3,8 @@ import { eq } from "drizzle-orm";
 import NextAuth, { type DefaultSession, type NextAuthConfig } from "next-auth";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
-import {
-	APP_ROUTES,
-	DEFAULT_USERS_PREFERENCES,
-} from "@/app/[locale]/lib/constants";
-import { logger } from "@/app/[locale]/lib/logging";
+import { APP_ROUTES, DEFAULT_USERS_PREFERENCES } from "@/lib/constants";
+import { logger } from "@/lib/logging";
 import { db } from "./db/db";
 import {
 	accounts,

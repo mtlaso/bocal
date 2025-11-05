@@ -5,9 +5,6 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useQueryStates } from "nuqs";
 import { useEffect, useState } from "react";
-import { SortOptions } from "@/app/[locale]/lib/constants";
-import { parsing } from "@/app/[locale]/lib/parsing";
-import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
 import {
 	Card,
 	CardContent,
@@ -16,6 +13,9 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Link } from "@/i18n/routing";
+import { SortOptions } from "@/lib/constants";
+import { parsing } from "@/lib/parsing";
+import { searchParamsState } from "@/lib/stores/search-params-states";
 import { cn } from "@/lib/utils";
 import { LinksContextMenu } from "./links-context-menu";
 

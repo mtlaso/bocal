@@ -4,12 +4,6 @@ import { useTransition } from "react";
 import { BsArchive, BsThreeDots } from "react-icons/bs";
 import { TbLinkPlus } from "react-icons/tb";
 import { toast } from "sonner";
-import {
-	archiveLink,
-	deleteLink,
-	unarchiveLink,
-} from "@/app/[locale]/lib/actions";
-import { APP_ROUTES } from "@/app/[locale]/lib/constants";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -19,6 +13,8 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { usePathname } from "@/i18n/routing";
+import { archiveLink, deleteLink, unarchiveLink } from "@/lib/actions";
+import { APP_ROUTES } from "@/lib/constants";
 
 export function LinksContextMenu({
 	id,

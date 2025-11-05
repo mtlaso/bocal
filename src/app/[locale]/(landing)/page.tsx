@@ -1,6 +1,5 @@
 import { useTranslations } from "next-intl";
 import { TbArchive, TbMail, TbRss } from "react-icons/tb";
-import { APP_ROUTES } from "@/app/[locale]/lib/constants";
 import { ScrollIndicator } from "@/app/[locale]/ui/landing/scroll-indicator";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import BlurFade from "@/components/ui/blur-fade";
@@ -20,6 +19,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { Link } from "@/i18n/routing";
+import { APP_ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 export default function Home(): React.JSX.Element {

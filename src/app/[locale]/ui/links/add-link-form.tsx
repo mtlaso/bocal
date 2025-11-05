@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useActionState, useState } from "react";
 import { TbLinkPlus } from "react-icons/tb";
+import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -22,10 +23,9 @@ import {
 } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { addLink } from "@/lib/actions";
 import { useIsMobile } from "@/lib/hooks/use-mobile";
 import { cn } from "@/lib/utils";
-import { addLink } from "../../lib/actions";
-import { SPACING } from "../spacing";
 
 export function AddLinkForm(): React.JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);

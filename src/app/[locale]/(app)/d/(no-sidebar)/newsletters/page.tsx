@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { type Locale, useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
-import { dal } from "@/app/[locale]/lib/dal";
 import { AddNewsletterForm } from "@/app/[locale]/ui/newsletters/add-newsletter-form";
 import { Newsletters } from "@/app/[locale]/ui/newsletters/newsletters";
 import { NewsletterSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
+import { dal } from "@/lib/dal";
 
 export async function generateMetadata({
 	params,

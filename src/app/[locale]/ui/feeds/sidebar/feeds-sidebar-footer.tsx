@@ -3,8 +3,6 @@ import { ChevronUp } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useActionState, useState } from "react";
 import { TbFolderPlus, TbSettings } from "react-icons/tb";
-import { addFeedFolder } from "@/app/[locale]/lib/actions";
-import { LENGTHS } from "@/app/[locale]/lib/constants";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Button } from "@/components/ui/button";
 import {
@@ -35,6 +33,8 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { addFeedFolder } from "@/lib/actions";
+import { LENGTHS } from "@/lib/constants";
 import { useIsMobile } from "@/lib/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 

@@ -2,8 +2,6 @@
 import { useTranslations } from "next-intl";
 import { useActionState, useState } from "react";
 import { TbLinkPlus, TbMail } from "react-icons/tb";
-import { addNewsletter } from "@/app/[locale]/lib/actions";
-import { LENGTHS } from "@/app/[locale]/lib/constants";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +21,8 @@ import {
 } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { addNewsletter } from "@/lib/actions";
+import { LENGTHS } from "@/lib/constants";
 import { useIsMobile } from "@/lib/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
