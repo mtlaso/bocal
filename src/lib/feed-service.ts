@@ -171,7 +171,7 @@ const generateUserAtomFeed = cache(
 				},
 			});
 
-			contents.map((content) => {
+			contents.forEach((content) => {
 				// https://validator.w3.org/feed/docs/atom.html
 				atom.addItem({
 					title: content.title,

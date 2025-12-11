@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.1.3/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.3.8/schema.json",
 	"vcs": {
 		"enabled": false,
 		"clientKind": "git",
@@ -9,10 +9,10 @@
 		"ignoreUnknown": false,
 		"includes": [
 			"**",
-			"!**/.git/**",
+			"!**/.git",
 			"!**/*.min.js",
-			"!**/.next/**",
-			"!**/node_modules/**",
+			"!**/.next",
+			"!**/node_modules",
 			"!**/*.config.*",
 			"!**/*.d.*",
 			"!**/*.css",
@@ -36,8 +36,7 @@
 		"rules": {
 			"recommended": true,
 			"nursery": {
-				"useExplicitType": "off",
-				"useUniqueElementIds": "off"
+				"useExplicitType": "off"
 			},
 			"correctness": {
 				"noUnusedVariables": {

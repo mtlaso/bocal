@@ -55,9 +55,9 @@ function FeedContentLimitForm({
 	const handleFeedLimit = (e: string): void => {
 		startTransition(async () => {
 			try {
-				setValue(Number.parseInt(e));
+				setValue(Number.parseInt(e, 10));
 				toast.success(t("success"));
-				const res = await setFeedContentLimit(Number.parseInt(e));
+				const res = await setFeedContentLimit(Number.parseInt(e, 10));
 
 				if (res.errors) {
 					setValue(feedContentLimit);

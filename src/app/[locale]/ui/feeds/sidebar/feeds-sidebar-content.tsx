@@ -74,7 +74,7 @@ export function FeedsSidebarContent({
 
 	return (
 		<DragDropProvider
-			// @ts-ignore
+			// @ts-expect-error
 			modifiers={[RestrictToVerticalAxis]}
 			sensors={[
 				PointerSensor.configure({

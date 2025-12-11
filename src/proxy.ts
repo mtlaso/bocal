@@ -13,7 +13,6 @@ const PROTECTED_ROUTES: ReadonlySet<string> = new Set([
 ]);
 const PUBLIC_ROUTES = new Set(["/", APP_ROUTES.login]);
 const LANG_PREFIX_REGEX = /^\/(?:en|fr)\//;
-const LOGIN_PATH = APP_ROUTES.login;
 
 function removeLanguagePrefix(path: string): string {
 	return path.replace(LANG_PREFIX_REGEX, "/");
@@ -40,7 +39,6 @@ function getSessionCookieName(): string {
 const i18nMiddleware = createMiddleware(routing);
 
 export default async function proxy(req: NextRequest): Promise<NextResponse> {
-	const langPrefix = getLanguagePrefix(req);
 	const pathname = removeLanguagePrefix(req.nextUrl.pathname);
 	const isProtectedRoute = PROTECTED_ROUTES.has(pathname);
 	const isPublicRoute = PUBLIC_ROUTES.has(pathname);
@@ -53,9 +51,10 @@ export default async function proxy(req: NextRequest): Promise<NextResponse> {
     Using optimistic authorization by only checking for the presence of a cookie.
     https://nextjs.org/docs/app/building-your-application/authentication#authorization
   */
+	const langPrefix = getLanguagePrefix(req);
 	if (isProtectedRoute && !sessionCookie) {
 		return NextResponse.redirect(
-			new URL(`${langPrefix}${LOGIN_PATH}`, req.nextUrl.origin),
+			new URL(`${langPrefix}${APP_ROUTES.login}`, req.nextUrl.origin),
 		);
 	}
 

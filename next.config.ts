@@ -15,14 +15,11 @@ const nextConfig: NextConfig = {
 
   reactCompiler: true,
 
-  cacheComponents: true,
+  cacheComponents: false,
 
   experimental: {
     // Forward browser logs to the terminal for easier debugging
     browserDebugInfoInTerminal: true,
-
-    // Activate new client-side router improvements
-    clientSegmentCache: true,
 
     // Enable support for `global-not-found`, which allows you to more easily define a global 404 page.
     globalNotFound: true,

@@ -73,7 +73,7 @@ function UnfollowFeed(): React.JSX.Element {
 				e.preventDefault();
 				if (selectedFeed === searchParamsState.DEFAULT_FEED) return;
 
-				const res = await unfollowFeed(Number.parseInt(selectedFeed));
+				const res = await unfollowFeed(Number.parseInt(selectedFeed, 10));
 				if (res.errors) {
 					toast.error(res.errors.feedId?.join("."));
 					return;

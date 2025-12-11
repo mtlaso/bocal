@@ -1,4 +1,3 @@
-import { getAppBaseURL } from "@/lib/get-app-base-url";
 import "@/app/[locale]/ui/globals.css";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -6,6 +5,7 @@ import type { Locale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import BaseLayout from "@/components/ui/base-layout";
 import { routing } from "@/i18n/routing";
+import { getAppBaseURL } from "@/lib/get-app-base-url";
 
 export async function generateMetadata({
 	params,
@@ -36,6 +36,10 @@ export async function generateMetadata({
 			],
 		},
 	} satisfies Metadata;
+}
+
+export async function generateStaticParams() {
+	return [{ locale: "fr" }, { locale: "en" }];
 }
 
 export default async function RootLayout({

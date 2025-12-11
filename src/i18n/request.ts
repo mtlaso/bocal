@@ -2,6 +2,9 @@ import type { Formats, Locale } from "next-intl";
 import { getRequestConfig } from "next-intl/server";
 import { routing } from "./routing";
 
+// getRequestConfig creates a request-scoped configuration object,
+// which is used to provide messages and other options
+// based on the user’s locale to Server Components.
 export default getRequestConfig(async (config) => {
 	let locale = await config.requestLocale;
 
