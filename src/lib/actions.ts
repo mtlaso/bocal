@@ -3,7 +3,6 @@
 import { randomUUID } from "node:crypto";
 import { and, eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { AuthError } from "next-auth";
 import { getTranslations } from "next-intl/server";
 import { z } from "zod/v4";
 import { signIn, signOut } from "@/auth";
@@ -64,37 +63,12 @@ type ActionReturnType<T, E extends string = keyof T & string> = {
 };
 
 /**
- * authenticate authenticates a user using the specified provider. Returns the TRANSLATED error message if any.
+ * authenticate authenticates a user using the specified provider.
+ * It returns the TRANSLATED error message if any.
  * @param provider - The authentication provider to use.
  */
 export async function authenticate(provider: string) {
-	try {
-		await signIn(provider);
-	} catch (err) {
-		logger.error(err);
-		const t = await getTranslations("login");
-
-		if (err instanceof AuthError) {
-			switch (err.type) {
-				case "CredentialsSignin":
-					return t("errors.CredentialsSignin");
-				case "OAuthSignInError":
-					return t("errors.OAuthSignInError");
-				case "OAuthCallbackError":
-					return t("errors.OAuthCallbackError");
-				case "InvalidCallbackUrl":
-					return t("errors.InvalidCallbackUrl");
-				case "CallbackRouteError":
-					return t("errors.CallbackRouteError");
-				default:
-					return t("errors.unexpected");
-			}
-		}
-
-		throw err;
-	}
-
-	// return "";
+	await signIn(provider);
 }
 
 export async function logout(): Promise<void> {
