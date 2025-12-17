@@ -6,7 +6,6 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "eslint .",
 		"migration:generate": "pnpm drizzle-kit generate",
 		"migration:migrate": "pnpm drizzle-kit migrate",
 		"i18n:check": "pnpm i18n-check -s en --locales messages/ --unused src/ --format next-intl -i \"metadata.features.0.key\""
@@ -78,7 +77,6 @@
 		"@types/react": "19.2.2",
 		"@types/react-dom": "19.2.2",
 		"drizzle-kit": "^0.31.8",
-		"eslint-config-next": "16.0.1",
 		"postcss": "^8.5.6",
 		"tailwindcss": "^4.1.18",
 		"typescript": "^5.9.3"
