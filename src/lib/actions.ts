@@ -69,7 +69,7 @@ type ActionReturnType<T, E extends string = keyof T & string> = {
  */
 export async function authenticate(provider: string) {
 	try {
-		await signIn(provider, { redirect: true });
+		await signIn(provider);
 	} catch (err) {
 		logger.error(err);
 		const t = await getTranslations("login");
@@ -93,6 +93,8 @@ export async function authenticate(provider: string) {
 
 		throw err;
 	}
+
+	// return "";
 }
 
 export async function logout(): Promise<void> {
