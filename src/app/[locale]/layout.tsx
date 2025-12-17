@@ -60,7 +60,7 @@ export default async function RootLayout({
 
 	return (
 		<Suspense fallback={<div>Loading...</div>}>
-			<BaseLayout locale={"fr"}>{children}</BaseLayout>
+			<BaseLayout locale={locale}>{children}</BaseLayout>
 		</Suspense>
 	);
 }
