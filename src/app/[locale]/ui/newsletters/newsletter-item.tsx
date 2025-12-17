@@ -42,14 +42,10 @@ export function NewsletterItem({ item }: { item: Feed }): React.JSX.Element {
 				toast.error(t("failedToCopyToClipboard"));
 			});
 	}
-
 	return (
 		<div className={SPACING.MD}>
 			<div className="flex justify-between">
-				<h2
-					className="tracking-tight text-xl font-semibold line-clamp-3
-        flex items-center gap-2"
-				>
+				<h2 className="tracking-tight text-xl font-semibold line-clamp-3 flex items-center gap-2">
 					<TbNews />
 					{item.title}
 				</h2>

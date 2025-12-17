@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { Locale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Suspense } from "react";
 import BaseLayout from "@/components/ui/base-layout";
 import { routing } from "@/i18n/routing";
 import { getAppBaseURL } from "@/lib/get-app-base-url";
@@ -39,7 +40,7 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-	return [{ locale: "fr" }, { locale: "en" }];
+	return routing.locales.map((locale) => ({ locale }));
 }
 
 export default async function RootLayout({
@@ -57,5 +58,9 @@ export default async function RootLayout({
 
 	setRequestLocale(locale as Locale);
 
-	return <BaseLayout locale={locale}>{children}</BaseLayout>;
+	return (
+		<Suspense fallback={<div>Loading...</div>}>
+			<BaseLayout locale={"fr"}>{children}</BaseLayout>
+		</Suspense>
+	);
 }

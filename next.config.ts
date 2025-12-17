@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
 
   reactCompiler: true,
 
-  cacheComponents: false,
+  cacheComponents: true,
 
   experimental: {
     // Forward browser logs to the terminal for easier debugging

@@ -106,7 +106,7 @@ export default function Home(): React.JSX.Element {
 					</Button>
 				</Link>
 				<p className="text-sm text-center">{t("footerShortDescription")}</p>
-				<p className="text-xs">&copy; {new Date().getFullYear()} Bocal.</p>
+				<p className="text-xs">&copy; {new Date().getFullYear()} [bocal]</p>
 			</footer>
 		</>
 	);
@@ -154,7 +154,7 @@ const FeaturesSection = (): React.JSX.Element => {
 					(feature: { key: string; title: string; description: string }) => (
 						<Card
 							className={cn(
-								"hover:shadow-md transition-all duration-200 break-words",
+								"hover:shadow-md transition-all duration-200 wrap-break-word",
 								{
 									"md:row-start-1 md:col-span-2": feature.key === "0",
 									"md:row-start-1 md:row-span-2": feature.key === "1",
