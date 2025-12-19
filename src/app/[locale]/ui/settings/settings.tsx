@@ -1,22 +1,32 @@
+import { redirect } from "next/navigation";
 import type { Session } from "next-auth";
 import { useTranslations } from "next-intl";
+import { use } from "react";
 import { TbMail, TbUser } from "react-icons/tb";
 import { ViewSection } from "@/app/[locale]/ui/settings/view/view-section";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { APP_ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 type Props = {
-	user: Session["user"];
+	sess: Promise<Session | null>;
 };
 
-export function Settings({ user }: Props): React.JSX.Element {
+export function Settings({ sess }: Props): React.JSX.Element {
+	const session = use(sess);
+	if (!session?.user) {
+		return redirect(APP_ROUTES.login);
+	}
 	return (
 		<section>
-			<ProfileSection name={user.name ?? ""} email={user.email ?? ""} />
-			<ViewSection userPreferences={user.preferences} />
+			<ProfileSection
+				name={session.user.name ?? ""}
+				email={session.user.email ?? ""}
+			/>
+			<ViewSection userPreferences={session.user.preferences} />
 			<ExportDataSection />
 			<DeleteAccountSection />
 		</section>

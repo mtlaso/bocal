@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { Locale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Suspense } from "react";
 import BaseLayout from "@/components/ui/base-layout";
 import { routing } from "@/i18n/routing";
 import { getAppBaseURL } from "@/lib/get-app-base-url";
@@ -46,21 +45,12 @@ export async function generateStaticParams() {
 export default async function RootLayout({
 	children,
 	params,
-}: Readonly<{
-	children: React.ReactNode;
-	params: Promise<{ locale: string }>;
-}>): Promise<React.JSX.Element> {
-	const locale = (await params).locale;
-
+}: LayoutProps<"/[locale]">): Promise<React.JSX.Element> {
+	const { locale } = await params;
 	if (!routing.locales.includes(locale as Locale)) {
 		notFound();
 	}
-
 	setRequestLocale(locale as Locale);
 
-	return (
-		<Suspense fallback={<div>Loading...</div>}>
-			<BaseLayout locale={locale}>{children}</BaseLayout>
-		</Suspense>
-	);
+	return <BaseLayout locale={locale}>{children}</BaseLayout>;
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { Locale } from "next-intl";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 export async function generateMetadata({
 	params,
@@ -22,11 +22,10 @@ export async function generateMetadata({
 
 export default async function HomePage({
 	params,
-}: {
-	params: Promise<{ locale: string }>;
-}): Promise<React.JSX.Element> {
+}: PageProps<"/[locale]/legal/privacy">): Promise<React.JSX.Element> {
 	try {
 		const { locale } = await params;
+		setRequestLocale(locale as Locale);
 		const Content = (await import(`./${locale}.mdx`)).default;
 		return (
 			<section className="prose dark:prose-invert mx-auto">

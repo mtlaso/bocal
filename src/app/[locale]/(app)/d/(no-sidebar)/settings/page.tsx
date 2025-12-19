@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import type { Locale } from "next-intl";
-import { getLocale, getTranslations } from "next-intl/server";
-import { Suspense } from "react";
+import { type Locale, useTranslations } from "next-intl";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Suspense, use } from "react";
 import { Settings } from "@/app/[locale]/ui/settings/settings";
 import { SettingsSkeleton } from "@/app/[locale]/ui/skeletons";
 import { Separator } from "@/components/ui/separator";
-import { redirect } from "@/i18n/routing";
-import { APP_ROUTES } from "@/lib/constants";
 import { dal } from "@/lib/dal";
 
 export async function generateMetadata({
@@ -26,13 +24,13 @@ export async function generateMetadata({
 	} satisfies Metadata;
 }
 
-export default async function Page(): Promise<React.JSX.Element> {
-	const [t, sess, locale] = await Promise.all([
-		getTranslations("settings"),
-		dal.verifySession(),
-		getLocale(),
-	]);
-	if (!sess) return redirect({ href: APP_ROUTES.login, locale: locale });
+export default function Page({
+	params,
+}: PageProps<"/[locale]/d/settings">): React.JSX.Element {
+	const { locale } = use(params);
+	setRequestLocale(locale as Locale);
+	const t = useTranslations("settings");
+	const sess = dal.verifySession();
 
 	return (
 		<>
@@ -43,7 +41,7 @@ export default async function Page(): Promise<React.JSX.Element> {
 			<Separator className="my-4" />
 
 			<Suspense fallback={<SettingsSkeleton />}>
-				<Settings user={sess.user} />
+				<Settings sess={sess} />
 			</Suspense>
 		</>
 	);
