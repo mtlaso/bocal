@@ -1,8 +1,13 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
+import { customSession } from "better-auth/plugins";
+import { eq } from "drizzle-orm";
 import { db } from "@/db/db";
 import * as schema from "@/db/schema";
+import { usersPreferences } from "@/db/schema";
+import { DEFAULT_USERS_PREFERENCES } from "@/lib/constants";
+import { logger } from "@/lib/logging";
 
 export const auth = betterAuth({
 	// TODO: en prod sur vercel, mettre https://www.bocal.fyi
@@ -19,6 +24,7 @@ export const auth = betterAuth({
 			verifications: schema.verificationTokens,
 		},
 	}),
+
 	user: {
 		additionalFields: {
 			preferences: {
@@ -31,67 +37,27 @@ export const auth = betterAuth({
 			},
 		},
 	},
-	hooks: {
-		// before: async (ctx) => {
-		// 	console.log("before hook", ctx);
-		// },
-		// after: async (ctx) => {
-		// 	console.log("after hook", ctx);
-		// },
+	databaseHooks: {
+		user: {
+			create: {
+				after: async (user, _ctx) => {
+					logger.info("User created", { user });
+					await db.insert(usersPreferences).values({
+						userId: user.id,
+						prefs: DEFAULT_USERS_PREFERENCES,
+					});
+					logger.info("Preferences created", { user });
+				},
+			},
+		},
+		account: {
+			create: {
+				after: async (account) => {
+					logger.info("Account created", { account });
+				},
+			},
+		},
 	},
-	// databaseHooks: {
-	// 	user: {
-	// 		create: {
-	// 			before: async (data, ctx) => {
-	// 				logger.info("Creating user", { data });
-	// 				return { data };
-	// 			},
-
-	// 			after: async (user, ctx) => {
-	// 				logger.info("User created", { user });
-	// 			},
-	// 		},
-	// 	},
-	// 	account: {
-	// 		create: {
-	// 			after: async (user) => {
-	// 				await db.insert(usersPreferences).values({
-	// 					userId: user.id,
-	// 					prefs: DEFAULT_USERS_PREFERENCES,
-	// 				});
-	// 			},
-	// 		},
-	// 	},
-	// 	session: {
-	// 		create: {
-	// 			before: async (data, ctx) => {
-	// 				logger.info("Creating session", { data });
-	// 				return { data };
-	// 			},
-
-	// 			after: async (session, ctx) => {
-	// 				logger.info("Session created", { session });
-	// 			},
-	// 		},
-	// 		update: {
-	// 			before: async (data, ctx) => {
-	// 				logger.info("Creating session", { data });
-	// 				const userPrefs = await db.query.usersPreferences.findFirst({
-	// 					where: eq(usersPreferences.userId, data.id!),
-	// 				});
-	// 				const finalPreferences = {
-	// 					...DEFAULT_USERS_PREFERENCES,
-	// 					...userPrefs?.prefs,
-	// 				};
-	// 				data.preferences = finalPreferences;
-	// 				return { data };
-	// 			},
-	// 			after: async (session, ctx) => {
-	// 				logger.info("Session updated", { session });
-	// 			},
-	// 		},
-	// 	},
-	// },
 	emailAndPassword: {
 		enabled: false,
 	},
@@ -109,6 +75,28 @@ export const auth = betterAuth({
 			clientSecret: process.env.AUTH_GOOGLE_SECRET as string,
 		},
 	},
-	// nextCookies() HAS TO BE LAST!!
-	plugins: [nextCookies()],
+	plugins: [
+		customSession(async ({ user, session }) => {
+			const userPrefs = await db.query.usersPreferences.findFirst({
+				where: eq(usersPreferences.userId, session.userId),
+			});
+
+			const finalPreferences = {
+				...DEFAULT_USERS_PREFERENCES,
+				...userPrefs?.prefs,
+			};
+
+			return {
+				user: {
+					...user,
+					preferences: finalPreferences,
+				},
+				session,
+			};
+		}),
+		// nextCookies() HAS TO BE LAST!!
+		nextCookies(),
+	],
 });
+
+export type BocalUserSession = typeof auth.$Infer.Session;

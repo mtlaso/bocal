@@ -14,7 +14,7 @@ import {
 import "server-only";
 import { headers } from "next/headers";
 import { cache } from "react";
-import { auth } from "@/auth";
+import { auth, type BocalUserSession } from "@/auth";
 // import { auth } from "@/auth";
 import {
 	type FeedFolder,
@@ -30,7 +30,7 @@ const ONE_HOUR = 60 * 60 * 1000;
 /**
  * verifySession returns the current session (logged in user).
  */
-const verifySession = cache(async () => {
+const verifySession = cache(async (): Promise<BocalUserSession | null> => {
 	return await auth.api.getSession({
 		headers: await headers(),
 	});
