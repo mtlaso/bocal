@@ -10,8 +10,11 @@ import { DEFAULT_USERS_PREFERENCES } from "@/lib/constants";
 import { logger } from "@/lib/logging";
 
 export const auth = betterAuth({
-	// TODO: en prod sur vercel, mettre https://www.bocal.fyi
 	baseURL: process.env.BETTER_AUTH_URL,
+	trustedOrigins: [
+		process.env.BETTER_AUTH_URL as string,
+		process.env.BETTER_AUTH_URL as string,
+	],
 	database: drizzleAdapter(db, {
 		provider: "pg", // or "mysql", "sqlite"
 		usePlural: true,
