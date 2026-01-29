@@ -22,6 +22,7 @@ import {
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { Link } from "@/i18n/routing";
 import { APP_ROUTES } from "@/lib/constants";
+import { logger } from "@/lib/logging";
 import { cn } from "@/lib/utils";
 
 export default function Home({
@@ -120,6 +121,7 @@ export default function Home({
 
 const HeroSection = async (locale: Locale): Promise<React.JSX.Element> => {
 	const t = await getTranslations({ locale, namespace: "metadata" });
+	logger.info(process.env);
 	return (
 		<section
 			className={cn(
