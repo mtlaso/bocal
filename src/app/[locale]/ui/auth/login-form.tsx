@@ -8,6 +8,7 @@ import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Button } from "@/components/ui/button";
 import { authenticate } from "@/lib/actions";
 
+import { authClient } from "@/auth";
 export function LoginForm(): React.JSX.Element {
 	const t = useTranslations("login");
 	const [isDisabled, setIsDisabled] = useState(false);
