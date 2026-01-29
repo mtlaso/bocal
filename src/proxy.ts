@@ -1,4 +1,4 @@
-import { cookies } from "next/headers";
+import { getSessionCookie } from "better-auth/cookies";
 import { type NextRequest, NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
 import { APP_ROUTES } from "@/lib/constants";
@@ -24,7 +24,7 @@ function getLanguagePrefix(req: NextRequest): string {
 		: "";
 }
 
-function getSessionCookieName(): string {
+function _getSessionCookieName(): string {
 	// See next-auth/packages/core/src/lib/utils/cookie.ts (on github).
 	// https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/lib/utils/cookie.ts#L59
 	const cookieName = "authjs.session-token";
@@ -43,9 +43,7 @@ export default async function proxy(req: NextRequest): Promise<NextResponse> {
 	const isProtectedRoute = PROTECTED_ROUTES.has(pathname);
 	const isPublicRoute = PUBLIC_ROUTES.has(pathname);
 
-	const cookieStore = await cookies();
-	const sessCookieName = getSessionCookieName();
-	const sessionCookie = cookieStore.get(sessCookieName)?.value;
+	const sessionCookie = getSessionCookie(req);
 
 	/**
     Using optimistic authorization by only checking for the presence of a cookie.

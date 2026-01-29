@@ -141,6 +141,41 @@
       "when": 1761796644761,
       "tag": "0019_omniscient_mastermind",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1766715415223,
+      "tag": "0020_daffy_nekra",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1766718960801,
+      "tag": "0021_absent_iceman",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1766722793602,
+      "tag": "0022_worried_mac_gargan",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1766723294496,
+      "tag": "0023_flimsy_magneto",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1769653980086,
+      "tag": "0024_famous_nico_minoru",
+      "breakpoints": true
     }
   ]
 }
