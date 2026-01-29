@@ -1,5 +1,4 @@
 import { redirect } from "next/navigation";
-import type { Session } from "next-auth";
 import { useTranslations } from "next-intl";
 import { use } from "react";
 import { TbMail, TbUser } from "react-icons/tb";
@@ -9,13 +8,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { APP_ROUTES } from "@/lib/constants";
+import type { dal } from "@/lib/dal";
 import { cn } from "@/lib/utils";
 
 type Props = {
-	sess: Promise<Session | null>;
+	sess: ReturnType<typeof dal.verifySession> | null;
 };
 
 export function Settings({ sess }: Props): React.JSX.Element {
+	if (!sess) return <div>Loading...</div>;
 	const session = use(sess);
 	if (!session?.user) {
 		return redirect(APP_ROUTES.login);
@@ -26,6 +27,8 @@ export function Settings({ sess }: Props): React.JSX.Element {
 				name={session.user.name ?? ""}
 				email={session.user.email ?? ""}
 			/>
+			{/* TODO: corriger quand j'aurais trouvé comment utiliser Preferences dans auth.ts */}
+			{/* @ts-ignore*/}
 			<ViewSection userPreferences={session.user.preferences} />
 			<ExportDataSection />
 			<DeleteAccountSection />
