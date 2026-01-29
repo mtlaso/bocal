@@ -83,8 +83,6 @@ async function FeedsWrapper(): Promise<React.JSX.Element> {
 			timeline={timeline}
 			// At this point, we have verified the session and have access to the user's preferences.
 			// So we can assert with '!'.
-			// @ts-expect-error
-			// TODO: corriger quand Prefenreces fonctionnera dans auth.ts
 			userPreferences={sess.user.preferences}
 		/>
 	);
