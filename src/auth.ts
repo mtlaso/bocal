@@ -1,7 +1,7 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
-import { customSession } from "better-auth/plugins";
+import { customSession, oAuthProxy } from "better-auth/plugins";
 import { eq } from "drizzle-orm";
 import { db } from "@/db/db";
 import * as schema from "@/db/schema";
@@ -69,6 +69,10 @@ export const auth = betterAuth({
 			scopes: ["read:user", "user:email"],
 			clientId: process.env.AUTH_GITHUB_ID as string,
 			clientSecret: process.env.AUTH_GITHUB_SECRET as string,
+			// https://www.better-auth.com/docs/plugins/oauth-proxy#add-redirect-url-to-your-oauth-provider
+			// > For the proxy server to work properly, you’ll need to pass the redirect URL of your main production app
+			// ...registered with the OAuth provider in your social provider config
+			redirectURI: "https://www.bocal.fyi/api/auth/callback/github",
 		},
 		google: {
 			// https://www.better-auth.com/docs/authentication/google#always-get-refresh-tokenaccessType: "offline",
@@ -76,9 +80,17 @@ export const auth = betterAuth({
 			prompt: "select_account consent",
 			clientId: process.env.AUTH_GOOGLE_ID as string,
 			clientSecret: process.env.AUTH_GOOGLE_SECRET as string,
+			// https://www.better-auth.com/docs/plugins/oauth-proxy#add-redirect-url-to-your-oauth-provider
+			// > For the proxy server to work properly, you’ll need to pass the redirect URL of your main production app
+			// ...registered with the OAuth provider in your social provider config
+			redirectURI: "https://www.bocal.fyi/api/auth/callback/google",
 		},
 	},
 	plugins: [
+		// Customizing Session Response.
+		// > When you call getSession or useSession, the session data is returned as a user and session object.
+		// ...You can customize this response using the customSession plugin.
+		// https://www.better-auth.com/docs/concepts/session-management#customizing-session-response
 		customSession(async ({ user, session }) => {
 			const userPrefs = await db.query.usersPreferences.findFirst({
 				where: eq(usersPreferences.userId, session.userId),
@@ -96,6 +108,10 @@ export const auth = betterAuth({
 				},
 				session,
 			};
+		}),
+		oAuthProxy({
+			// productionURL: "https://bocal.fyi", // Optional - if the URL isn't inferred correctly
+			// currentURL: "http://localhost:3000", // Optional - if the URL isn't inferred correctly
 		}),
 		// nextCookies() HAS TO BE LAST!!
 		nextCookies(),
