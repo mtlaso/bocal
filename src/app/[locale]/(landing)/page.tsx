@@ -120,8 +120,6 @@ export default function Home({
 
 const HeroSection = async (locale: Locale): Promise<React.JSX.Element> => {
 	const t = await getTranslations({ locale, namespace: "metadata" });
-	// biome-ignore lint/suspicious/noConsole: blalala
-	console.log(JSON.stringify(process.env));
 	return (
 		<section
 			className={cn(
