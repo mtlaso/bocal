@@ -10,10 +10,11 @@ import { DEFAULT_USERS_PREFERENCES } from "@/lib/constants";
 import { logger } from "@/lib/logging";
 
 export const auth = betterAuth({
-	baseURL: process.env.BETTER_AUTH_URL,
+	baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
 	trustedOrigins: [
 		process.env.BETTER_AUTH_URL as string,
 		`https://${process.env.VERCEL_URL as string}`,
+		"http://localhost:3000",
 	],
 	database: drizzleAdapter(db, {
 		provider: "pg", // or "mysql", "sqlite"
@@ -109,11 +110,8 @@ export const auth = betterAuth({
 				session,
 			};
 		}),
-		oAuthProxy({
-			// productionURL: "https://bocal.fyi", // Optional - if the URL isn't inferred correctly
-			// currentURL: "http://localhost:3000", // Optional - if the URL isn't inferred correctly
-		}),
-		// nextCookies() HAS TO BE LAST!!
+		oAuthProxy(),
+		// nextCookies() (DOIT être le dernier plugin!!!)
 		nextCookies(),
 	],
 });
