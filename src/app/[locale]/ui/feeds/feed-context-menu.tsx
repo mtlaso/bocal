@@ -4,7 +4,6 @@ import { useTransition } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { TbArchive } from "react-icons/tb";
 import { toast } from "sonner";
-import { archiveFeedContent } from "@/app/[locale]/lib/actions";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -13,6 +12,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { archiveFeedContent } from "@/lib/actions";
 
 type Props = {
 	url: string;

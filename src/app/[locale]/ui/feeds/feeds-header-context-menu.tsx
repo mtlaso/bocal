@@ -4,10 +4,6 @@ import { useQueryStates } from "nuqs";
 import { useTransition } from "react";
 import { TbClipboard, TbSettings } from "react-icons/tb";
 import { toast } from "sonner";
-import { unfollowFeed } from "@/app/[locale]/lib/actions";
-import type { FeedWithContentsCount } from "@/app/[locale]/lib/constants";
-import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
-import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -15,6 +11,10 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { unfollowFeed } from "@/lib/actions";
+import type { FeedWithContentsCount } from "@/lib/constants";
+import { searchParamsState } from "@/lib/stores/search-params-states";
+import { userfeedsfuncs } from "@/lib/userfeeds-funcs";
 
 export function FeedsHeaderContextMenu({
 	feeds,
@@ -73,7 +73,7 @@ function UnfollowFeed(): React.JSX.Element {
 				e.preventDefault();
 				if (selectedFeed === searchParamsState.DEFAULT_FEED) return;
 
-				const res = await unfollowFeed(Number.parseInt(selectedFeed));
+				const res = await unfollowFeed(Number.parseInt(selectedFeed, 10));
 				if (res.errors) {
 					toast.error(res.errors.feedId?.join("."));
 					return;

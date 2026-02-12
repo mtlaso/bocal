@@ -1,6 +1,7 @@
-import { useTranslations } from "next-intl";
+import { type Locale, useTranslations } from "next-intl";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { use } from "react";
 import { TbArchive, TbMail, TbRss } from "react-icons/tb";
-import { APP_ROUTES } from "@/app/[locale]/lib/constants";
 import { ScrollIndicator } from "@/app/[locale]/ui/landing/scroll-indicator";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import BlurFade from "@/components/ui/blur-fade";
@@ -20,24 +21,30 @@ import {
 } from "@/components/ui/navigation-menu";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { Link } from "@/i18n/routing";
+import { APP_ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
-export default function Home(): React.JSX.Element {
+export default function Home({
+	params,
+}: PageProps<"/[locale]">): React.JSX.Element {
+	const { locale } = use(params);
+	setRequestLocale(locale as Locale);
 	const t = useTranslations("metadata");
+
 	const elements: {
-		el: () => React.JSX.Element;
+		el: () => Promise<React.JSX.Element> | React.JSX.Element;
 		index: number;
 	}[] = [
 		{
-			el: HeroSection,
+			el: () => HeroSection(locale as Locale),
 			index: 0,
 		},
 		{
-			el: FeaturesSection,
+			el: () => FeaturesSection(locale as Locale),
 			index: 1,
 		},
 		{
-			el: CtaSection,
+			el: () => CtaSection(locale as Locale),
 			index: 2,
 		},
 	];
@@ -45,7 +52,7 @@ export default function Home(): React.JSX.Element {
 	return (
 		<>
 			<main className="min-h-screen px-4 overflow-x-hidden mb-12">
-				<NavigationMenu className="px-4 h-[10dvh] flex justif-around">
+				<NavigationMenu className="px-4 h-[10dvh] flex justify-around">
 					<NavigationMenuList>
 						<NavigationMenuItem>
 							<NavigationMenuLink
@@ -106,14 +113,13 @@ export default function Home(): React.JSX.Element {
 					</Button>
 				</Link>
 				<p className="text-sm text-center">{t("footerShortDescription")}</p>
-				<p className="text-xs">&copy; {new Date().getFullYear()} Bocal.</p>
 			</footer>
 		</>
 	);
 }
 
-const HeroSection = (): React.JSX.Element => {
-	const t = useTranslations("metadata");
+const HeroSection = async (locale: Locale): Promise<React.JSX.Element> => {
+	const t = await getTranslations({ locale, namespace: "metadata" });
 	return (
 		<section
 			className={cn(
@@ -138,8 +144,8 @@ const HeroSection = (): React.JSX.Element => {
 	);
 };
 
-const FeaturesSection = (): React.JSX.Element => {
-	const t = useTranslations("metadata");
+const FeaturesSection = async (locale: Locale): Promise<React.JSX.Element> => {
+	const t = await getTranslations({ locale, namespace: "metadata" });
 
 	return (
 		<section
@@ -154,7 +160,7 @@ const FeaturesSection = (): React.JSX.Element => {
 					(feature: { key: string; title: string; description: string }) => (
 						<Card
 							className={cn(
-								"hover:shadow-md transition-all duration-200 break-words",
+								"hover:shadow-md transition-all duration-200 wrap-break-word",
 								{
 									"md:row-start-1 md:col-span-2": feature.key === "0",
 									"md:row-start-1 md:row-span-2": feature.key === "1",
@@ -192,8 +198,8 @@ const FeaturesSection = (): React.JSX.Element => {
 	);
 };
 
-const CtaSection = (): React.JSX.Element => {
-	const t = useTranslations("metadata");
+const CtaSection = async (locale: Locale): Promise<React.JSX.Element> => {
+	const t = await getTranslations({ locale, namespace: "metadata" });
 	return (
 		<section
 			className={cn(

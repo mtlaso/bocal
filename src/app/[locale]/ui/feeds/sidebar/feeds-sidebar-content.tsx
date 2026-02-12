@@ -4,12 +4,6 @@ import { DragDropProvider, PointerSensor, useDroppable } from "@dnd-kit/react";
 import { useTranslations } from "next-intl";
 import { startTransition, use, useOptimistic } from "react";
 import { toast } from "sonner";
-import { moveFeedIntoFolder } from "@/app/[locale]/lib/actions";
-import {
-	type FeedFolder,
-	type FeedWithContentsCount,
-	UNCATEGORIZED_FEEDS_FOLDER_ID,
-} from "@/app/[locale]/lib/constants";
 import { FeedsSidebarFolder } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-folder";
 import { FeedsSidebarItem } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-item";
 import { FeedsSidebarItemAll } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-item-all";
@@ -21,6 +15,12 @@ import {
 	SidebarMenu,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { moveFeedIntoFolder } from "@/lib/actions";
+import {
+	type FeedFolder,
+	type FeedWithContentsCount,
+	UNCATEGORIZED_FEEDS_FOLDER_ID,
+} from "@/lib/constants";
 
 type Props = {
 	userFeedsGroupedByFolderPromise: Promise<FeedFolder[]>;
@@ -74,7 +74,7 @@ export function FeedsSidebarContent({
 
 	return (
 		<DragDropProvider
-			// @ts-ignore
+			// @ts-expect-error
 			modifiers={[RestrictToVerticalAxis]}
 			sensors={[
 				PointerSensor.configure({

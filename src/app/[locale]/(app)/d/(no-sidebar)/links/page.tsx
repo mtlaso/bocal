@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { type Locale, useTranslations } from "next-intl";
-import { getTranslations } from "next-intl/server";
-import { Suspense } from "react";
-import { dal } from "@/app/[locale]/lib/dal";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Suspense, use } from "react";
 import { AddLinkForm } from "@/app/[locale]/ui/links/add-link-form";
 import { Links } from "@/app/[locale]/ui/links/links";
 import {
@@ -13,7 +12,7 @@ import { SortLinks } from "@/app/[locale]/ui/links/sort-links";
 import { LinksSkeleton } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
-export const experimental_ppr = true;
+import { dal } from "@/lib/dal";
 
 export async function generateMetadata({
 	params,
@@ -32,7 +31,11 @@ export async function generateMetadata({
 	} satisfies Metadata;
 }
 
-export default function Page(): React.JSX.Element {
+export default function Page({
+	params,
+}: PageProps<"/[locale]/d/links">): React.JSX.Element {
+	const { locale } = use(params);
+	setRequestLocale(locale as Locale);
 	const t = useTranslations("dashboard");
 
 	return (

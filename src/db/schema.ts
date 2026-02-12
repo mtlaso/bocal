@@ -2,6 +2,7 @@ import type { InferSelectModel } from "drizzle-orm";
 import {
 	boolean,
 	foreignKey,
+	index,
 	integer,
 	jsonb,
 	pgTable,
@@ -12,7 +13,6 @@ import {
 	uuid,
 } from "drizzle-orm/pg-core";
 import { createSchemaFactory } from "drizzle-zod";
-import type { AdapterAccountType } from "next-auth/adapters";
 import { z } from "zod/v4";
 import {
 	type DEFAULT_USERS_PREFERENCES,
@@ -20,7 +20,7 @@ import {
 	FeedStatusType,
 	LENGTHS,
 	UNCATEGORIZED_FEEDS_FOLDER_ID,
-} from "@/app/[locale]/lib/constants";
+} from "@/lib/constants";
 
 // biome-ignore lint/suspicious/noExplicitAny: locale exception.
 function enumToPgEnum<T extends Record<string, any>>(
@@ -34,16 +34,26 @@ const { createSelectSchema, createInsertSchema } = createSchemaFactory({
 	coerce: true,
 });
 
+const timestampFields = {
+	createdAt: timestamp("created_at").defaultNow().notNull(),
+	updatedAt: timestamp("updated_at")
+		.defaultNow()
+		.$onUpdate(() => /* @__PURE__ */ new Date())
+		.notNull(),
+};
+
 export const users = pgTable(
 	"users",
 	{
 		id: text()
 			.primaryKey()
 			.$defaultFn(() => crypto.randomUUID()),
-		name: text(),
+		name: text().notNull().unique(),
 		email: text().unique(),
-		emailVerified: timestamp({ mode: "date" }),
+		// emailVerified: timestamp({ mode: "date" }),
+		emailVerified: boolean().default(false).notNull(),
 		image: text(),
+		...timestampFields,
 	},
 	// (table) => [
 	// 	check(
@@ -214,45 +224,63 @@ export const usersFeedsReadContent = pgTable(
 export const accounts = pgTable(
 	"accounts",
 	{
+		id: text("id").primaryKey(),
+		accountId: text().notNull(),
+		providerId: text().notNull(),
 		userId: text()
 			.notNull()
 			.references(() => users.id, { onDelete: "cascade" }),
-		type: text().$type<AdapterAccountType>().notNull(),
-		provider: text().notNull(),
-		providerAccountId: text().notNull(),
-		refresh_token: text(),
-		access_token: text(),
-		expires_at: integer(),
-		token_type: text(),
+		// type: text().$type<AdapterAccountType>().notNull(),
+		// providerAccountId: text().notNull(),
+		refreshToken: text(),
+		accessToken: text(),
+		expiresAt: integer(),
+		// token_type: text(),
 		scope: text(),
-		id_token: text(),
-		session_state: text(),
+		idToken: text(),
+		// session_state: text(),
+		accessTokenExpiresAt: timestamp(),
+		refreshTokenExpiresAt: timestamp(),
+		password: text(),
+		...timestampFields,
 	},
-	(table) => [
-		primaryKey({ columns: [table.provider, table.providerAccountId] }),
-	],
+	(table) => [index("accounts_userId_idx").on(table.userId)],
+	// (table) => [
+	// primaryKey({ columns: [table.providerId, table.providerAccountId] }),
+	// ],
 );
 
 export const sessions = pgTable("sessions", {
-	sessionToken: text().primaryKey(),
+	// sessionToken: text().primaryKey(),
+	id: text("id").primaryKey(),
+	token: text("token").notNull().unique(),
 	userId: text()
 		.notNull()
 		.references(() => users.id, { onDelete: "cascade" }),
-	expires: timestamp({ mode: "date" }).notNull(),
+	// expires: timestamp({ mode: "date" }).notNull(),
+	expiresAt: timestamp("expires_at").notNull(),
+	ipAddress: text("ip_address"),
+	userAgent: text("user_agent"),
+	...timestampFields,
 });
 
 export const verificationTokens = pgTable(
-	"verification_tokens",
+	"verifications",
 	{
+		id: text().primaryKey(),
 		identifier: text().notNull(),
-		token: text().notNull(),
-		expires: timestamp({ mode: "date" }).notNull(),
+		// token: text().notNull(),
+		value: text().notNull(),
+		// expires: timestamp({ mode: "date" }).notNull(),
+		expiresAt: timestamp().notNull(),
+		...timestampFields,
 	},
-	(table) => [
-		primaryKey({
-			columns: [table.identifier, table.token],
-		}),
-	],
+	// (table) => [
+	// 	primaryKey({
+	// 		columns: [table.identifier, table.token],
+	// 	}),
+	// ],
+	(table) => [index("verification_identifier_idx").on(table.identifier)],
 );
 
 export const authenticators = pgTable(

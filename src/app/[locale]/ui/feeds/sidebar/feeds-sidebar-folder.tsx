@@ -11,12 +11,6 @@ import {
 	TbRss,
 } from "react-icons/tb";
 import {
-	type FeedFolder,
-	FeedStatusType,
-	type FeedWithContentsCount,
-} from "@/app/[locale]/lib/constants";
-import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
-import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
@@ -28,7 +22,13 @@ import {
 	SidebarMenuSub,
 	SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
+import {
+	type FeedFolder,
+	FeedStatusType,
+	type FeedWithContentsCount,
+} from "@/lib/constants";
 import { useIsMobile } from "@/lib/hooks/use-mobile";
+import { searchParamsState } from "@/lib/stores/search-params-states";
 
 type Props = {
 	folder: FeedFolder;

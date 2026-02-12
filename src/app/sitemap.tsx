@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
-import { APP_ROUTES } from "@/app/[locale]/lib/constants";
-import { getAppBaseURL } from "@/app/[locale]/lib/get-app-base-url";
 import { getPathname, type Locale, routing } from "@/i18n/routing";
+import { APP_ROUTES } from "@/lib/constants";
+import { getAppBaseURL } from "@/lib/get-app-base-url";
 
 export default function sitemap(): MetadataRoute.Sitemap {
 	const routes = Object.values(APP_ROUTES);

@@ -6,16 +6,13 @@ import { useState } from "react";
 import { RxDragHandleDots2 } from "react-icons/rx";
 import { TbPlugConnectedX, TbRss } from "react-icons/tb";
 import {
-	FeedStatusType,
-	type FeedWithContentsCount,
-} from "@/app/[locale]/lib/constants";
-import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
-import {
 	SidebarFeedsMenuButton,
 	SidebarMenuBadge,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { FeedStatusType, type FeedWithContentsCount } from "@/lib/constants";
 import { useIsMobile } from "@/lib/hooks/use-mobile";
+import { searchParamsState } from "@/lib/stores/search-params-states";
 
 type Props = {
 	feed: FeedWithContentsCount;

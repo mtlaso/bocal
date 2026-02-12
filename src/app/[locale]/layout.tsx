@@ -1,4 +1,3 @@
-import { getAppBaseURL } from "@/app/[locale]/lib/get-app-base-url";
 import "@/app/[locale]/ui/globals.css";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -6,6 +5,7 @@ import type { Locale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import BaseLayout from "@/components/ui/base-layout";
 import { routing } from "@/i18n/routing";
+import { getAppBaseURL } from "@/lib/get-app-base-url";
 
 export async function generateMetadata({
 	params,
@@ -38,19 +38,18 @@ export async function generateMetadata({
 	} satisfies Metadata;
 }
 
+export async function generateStaticParams() {
+	return routing.locales.map((locale) => ({ locale }));
+}
+
 export default async function RootLayout({
 	children,
 	params,
-}: Readonly<{
-	children: React.ReactNode;
-	params: Promise<{ locale: string }>;
-}>): Promise<React.JSX.Element> {
-	const locale = (await params).locale;
-
+}: LayoutProps<"/[locale]">): Promise<React.JSX.Element> {
+	const { locale } = await params;
 	if (!routing.locales.includes(locale as Locale)) {
 		notFound();
 	}
-
 	setRequestLocale(locale as Locale);
 
 	return <BaseLayout locale={locale}>{children}</BaseLayout>;

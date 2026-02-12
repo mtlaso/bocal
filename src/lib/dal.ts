@@ -12,26 +12,36 @@ import {
 	usersFeedsFolders,
 } from "@/db/schema";
 import "server-only";
-import type { Session } from "next-auth";
+import { headers } from "next/headers";
 import { cache } from "react";
+import { auth, type BocalUserSession } from "@/auth";
+// import { auth } from "@/auth";
 import {
 	type FeedFolder,
 	type FeedWithContentsCount,
 	UNCATEGORIZED_FEEDS_FOLDER_ID,
-} from "@/app/[locale]/lib/constants";
-import { feedService } from "@/app/[locale]/lib/feed-service";
-import { logger } from "@/app/[locale]/lib/logging";
-import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
-import { auth } from "@/auth";
+} from "@/lib/constants";
+import { feedService } from "@/lib/feed-service";
+import { logger } from "@/lib/logging";
+import { userfeedsfuncs } from "@/lib/userfeeds-funcs";
 
 const ONE_HOUR = 60 * 60 * 1000;
 
 /**
  * verifySession returns the current session (logged in user).
  */
-const verifySession = cache(async (): Promise<Session | null> => {
-	return await auth();
+const verifySession = cache(async (): Promise<BocalUserSession | null> => {
+	return await auth.api.getSession({
+		headers: await headers(),
+	});
 });
+
+// /**
+//  * verifySession returns the current session (logged in user).
+//  */
+// const verifySession = cache(async (): Promise<Session | null> => {
+// 	return await auth();
+// });
 
 type GetLinksProps = {
 	/**

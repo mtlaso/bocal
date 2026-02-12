@@ -4,19 +4,16 @@ import { useLocale, useTranslations } from "next-intl";
 import { useQueryStates } from "nuqs";
 import { startTransition, useOptimistic } from "react";
 import { toast } from "sonner";
-import {
-	markFeedContentAsRead,
-	markFeedContentAsUnread,
-} from "@/app/[locale]/lib/actions";
-import type { UserPreferences } from "@/app/[locale]/lib/constants";
-import { parsing } from "@/app/[locale]/lib/parsing";
-import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
-import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
 import { FeedContextMenu } from "@/app/[locale]/ui/feeds/feed-context-menu";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { FeedTimeline } from "@/db/schema";
 import { Link } from "@/i18n/routing";
+import { markFeedContentAsRead, markFeedContentAsUnread } from "@/lib/actions";
+import type { UserPreferences } from "@/lib/constants";
+import { parsing } from "@/lib/parsing";
+import { searchParamsState } from "@/lib/stores/search-params-states";
+import { userfeedsfuncs } from "@/lib/userfeeds-funcs";
 import { cn } from "@/lib/utils";
 
 type Props = {

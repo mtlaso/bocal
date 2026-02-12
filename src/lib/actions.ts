@@ -3,20 +3,9 @@
 import { randomUUID } from "node:crypto";
 import { and, eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { AuthError } from "next-auth";
 import { getTranslations } from "next-intl/server";
 import { z } from "zod/v4";
-import {
-	APP_ROUTES,
-	LENGTHS,
-	UNCATEGORIZED_FEEDS_FOLDER_ID,
-} from "@/app/[locale]/lib/constants";
-import { dal } from "@/app/[locale]/lib/dal";
-import { feedService } from "@/app/[locale]/lib/feed-service";
-import { logger } from "@/app/[locale]/lib/logging";
-import { og } from "@/app/[locale]/lib/og";
-import { userfeedsfuncs } from "@/app/[locale]/lib/userfeeds-funcs";
-import { signIn, signOut } from "@/auth";
+// import { signIn, signOut } from "@/auth";
 import { db } from "@/db/db";
 import {
 	addFeedsFolderSchema,
@@ -37,6 +26,16 @@ import {
 	usersFeedsReadContent,
 	usersPreferences,
 } from "@/db/schema";
+import {
+	APP_ROUTES,
+	LENGTHS,
+	UNCATEGORIZED_FEEDS_FOLDER_ID,
+} from "@/lib/constants";
+import { dal } from "@/lib/dal";
+import { feedService } from "@/lib/feed-service";
+import { logger } from "@/lib/logging";
+import { og } from "@/lib/og";
+import { userfeedsfuncs } from "@/lib/userfeeds-funcs";
 
 type ActionReturnType<T, E extends string = keyof T & string> = {
 	/**
@@ -62,42 +61,6 @@ type ActionReturnType<T, E extends string = keyof T & string> = {
 	 */
 	isSuccessful?: boolean;
 };
-
-/**
- * authenticate authenticates a user using the specified provider. Returns the TRANSLATED error message if any.
- * @param provider - The authentication provider to use.
- */
-export async function authenticate(provider: string) {
-	try {
-		await signIn(provider, { redirect: true });
-	} catch (err) {
-		logger.error(err);
-		const t = await getTranslations("login");
-
-		if (err instanceof AuthError) {
-			switch (err.type) {
-				case "CredentialsSignin":
-					return t("errors.CredentialsSignin");
-				case "OAuthSignInError":
-					return t("errors.OAuthSignInError");
-				case "OAuthCallbackError":
-					return t("errors.OAuthCallbackError");
-				case "InvalidCallbackUrl":
-					return t("errors.InvalidCallbackUrl");
-				case "CallbackRouteError":
-					return t("errors.CallbackRouteError");
-				default:
-					return t("errors.unexpected");
-			}
-		}
-
-		throw err;
-	}
-}
-
-export async function logout(): Promise<void> {
-	await signOut({ redirectTo: "/" });
-}
 
 export type AddLinkState = ActionReturnType<{
 	url: string;

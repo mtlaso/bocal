@@ -3,12 +3,12 @@
 import { useTranslations } from "next-intl";
 import { useQueryStates } from "nuqs";
 import { TbRadarFilled } from "react-icons/tb";
-import { searchParamsState } from "@/app/[locale]/lib/stores/search-params-states";
 import {
 	SidebarFeedsMenuButton,
 	SidebarMenuBadge,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { searchParamsState } from "@/lib/stores/search-params-states";
 
 type Props = {
 	totalFeedsContents: number;

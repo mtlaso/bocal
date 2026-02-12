@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { type Locale, useTranslations } from "next-intl";
-import { getTranslations } from "next-intl/server";
-import { Suspense } from "react";
-import { dal } from "@/app/[locale]/lib/dal";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Suspense, use } from "react";
 import { AddFeedForm } from "@/app/[locale]/ui/feeds/add-feed-form";
 import { FeedsHeader } from "@/app/[locale]/ui/feeds/feeds-header";
 import { FeedsTimeline } from "@/app/[locale]/ui/feeds/feeds-timeline";
@@ -12,7 +11,7 @@ import {
 } from "@/app/[locale]/ui/skeletons";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Separator } from "@/components/ui/separator";
-export const experimental_ppr = true;
+import { dal } from "@/lib/dal";
 
 export async function generateMetadata({
 	params,
@@ -31,7 +30,11 @@ export async function generateMetadata({
 	} satisfies Metadata;
 }
 
-export default function Page(): React.JSX.Element {
+export default function Page({
+	params,
+}: PageProps<"/[locale]/d/feeds">): React.JSX.Element {
+	const { locale } = use(params);
+	setRequestLocale(locale as Locale);
 	const t = useTranslations("rssFeed");
 
 	return (
@@ -71,13 +74,16 @@ async function FeedsWrapper(): Promise<React.JSX.Element> {
 		dal.verifySession(),
 	]);
 
+	if (!sess) {
+		return <div>Not logged in</div>;
+	}
+
 	return (
 		<FeedsTimeline
 			timeline={timeline}
 			// At this point, we have verified the session and have access to the user's preferences.
 			// So we can assert with '!'.
-			// biome-ignore lint/style/noNonNullAssertion: it's defined.
-			userPreferences={sess!.user.preferences}
+			userPreferences={sess.user.preferences}
 		/>
 	);
 }
