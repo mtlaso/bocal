@@ -73,7 +73,7 @@ export const auth = betterAuth({
 			// https://www.better-auth.com/docs/plugins/oauth-proxy#add-redirect-url-to-your-oauth-provider
 			// > For the proxy server to work properly, you’ll need to pass the redirect URL of your main production app
 			// ...registered with the OAuth provider in your social provider config
-			// redirectURI: "https://www.bocal.fyi/api/auth/callback/github",
+			redirectURI: "https://www.bocal.fyi/api/auth/callback/github",
 		},
 		google: {
 			// https://www.better-auth.com/docs/authentication/google#always-get-refresh-tokenaccessType: "offline",
@@ -84,7 +84,7 @@ export const auth = betterAuth({
 			// https://www.better-auth.com/docs/plugins/oauth-proxy#add-redirect-url-to-your-oauth-provider
 			// > For the proxy server to work properly, you’ll need to pass the redirect URL of your main production app
 			// ...registered with the OAuth provider in your social provider config
-			// redirectURI: "https://www.bocal.fyi/api/auth/callback/google",
+			redirectURI: "https://www.bocal.fyi/api/auth/callback/google",
 		},
 	},
 	plugins: [
