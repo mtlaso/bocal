@@ -44,19 +44,19 @@ export const auth = betterAuth({
 		user: {
 			create: {
 				after: async (user, _ctx) => {
-					logger.info("User created", { user });
+					logger.info("User created", { userId: user.id });
 					await db.insert(usersPreferences).values({
 						userId: user.id,
 						prefs: DEFAULT_USERS_PREFERENCES,
 					});
-					logger.info("Preferences created", { user });
+					logger.info("Preferences created", { userId: user.id });
 				},
 			},
 		},
 		account: {
 			create: {
 				after: async (account) => {
-					logger.info("Account created", { account });
+					logger.info("Account created", { accountId: account.id });
 				},
 			},
 		},
