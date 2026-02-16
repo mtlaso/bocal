@@ -16,8 +16,8 @@ importers:
         specifier: ^1.11.1
         version: 1.11.1
       '@dnd-kit/abstract':
-        specifier: ^0.1.21
-        version: 0.1.21
+        specifier: ^0.3.0
+        version: 0.3.0
       '@dnd-kit/dom':
         specifier: ^0.1.21
         version: 0.1.21
@@ -391,6 +391,9 @@ packages:
   '@dnd-kit/abstract@0.1.21':
     resolution: {integrity: sha512-6sJut6/D21xPIK8EFMu+JJeF+fBCOmQKN1BRpeUYFi5m9P1CJpTYbBwfI107h7PHObI6a5bsckiKkRpF2orHpw==}
 
+  '@dnd-kit/abstract@0.3.0':
+    resolution: {integrity: sha512-bHBwR8GGGwaZ/I6cjY8EUrFLEZgCcfanVjDaGcll48rLzwtzcYwMAflTdJe/9EMeQHA3cMkjLI2fbGqAgkrYOQ==}
+
   '@dnd-kit/collision@0.1.21':
     resolution: {integrity: sha512-9AJ4NbuwGDexxMCZXZyKdNQhbAe93p6C6IezQaDaWmdCqZHMHmC3+ul7pGefBQfOooSarGwIf8Bn182o9SMa1A==}
 
@@ -400,6 +403,9 @@ packages:
   '@dnd-kit/geometry@0.1.21':
     resolution: {integrity: sha512-Tir97wNJbopN2HgkD7AjAcoB3vvrVuUHvwdPALmNDUH0fWR637c4MKQ66YjjZAbUEAR8KL6mlDiHH4MzTLd7CQ==}
 
+  '@dnd-kit/geometry@0.3.0':
+    resolution: {integrity: sha512-3cnhDaX6ornsuz1HmLrS8JxJCCUcK/pmeGpylrlEhlnUG/3IgwNDTTuRx5MxN8GQBXUkOtDmAq7CMWKK7v6n9A==}
+
   '@dnd-kit/react@0.1.21':
     resolution: {integrity: sha512-fxcr1tWF7+KSNq464ZOGvQETSH9zYb68VOdx8Ie3XoCUnNicJW5YBZrwvMeDhUDnvLS+W2iHiVuUjtXDKJjNeg==}
     peerDependencies:
@@ -408,6 +414,9 @@ packages:
 
   '@dnd-kit/state@0.1.21':
     resolution: {integrity: sha512-pdhntEPvn/QttcF295bOJpWiLsRqA/Iczh1ODOJUxGiR+E4GkYVz9VapNNm9gDq6ST0tr/e1Q2xBztUHlJqQgA==}
+
+  '@dnd-kit/state@0.3.0':
+    resolution: {integrity: sha512-IXiEVsBIEMaBLr1JB7fLRBPOkjYSwvKXBAur3VjaDF5z2qg/dUMADsu0V7meQfTFU4JGbV19Lwi73H21a2qNpg==}
 
   '@drizzle-team/brocli@0.10.2':
     resolution: {integrity: sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==}
@@ -4037,6 +4046,12 @@ snapshots:
       '@dnd-kit/state': 0.1.21
       tslib: 2.8.1
 
+  '@dnd-kit/abstract@0.3.0':
+    dependencies:
+      '@dnd-kit/geometry': 0.3.0
+      '@dnd-kit/state': 0.3.0
+      tslib: 2.8.1
+
   '@dnd-kit/collision@0.1.21':
     dependencies:
       '@dnd-kit/abstract': 0.1.21
@@ -4056,6 +4071,11 @@ snapshots:
       '@dnd-kit/state': 0.1.21
       tslib: 2.8.1
 
+  '@dnd-kit/geometry@0.3.0':
+    dependencies:
+      '@dnd-kit/state': 0.3.0
+      tslib: 2.8.1
+
   '@dnd-kit/react@0.1.21(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@dnd-kit/abstract': 0.1.21
@@ -4066,6 +4086,11 @@ snapshots:
       tslib: 2.8.1
 
   '@dnd-kit/state@0.1.21':
+    dependencies:
+      '@preact/signals-core': 1.13.0
+      tslib: 2.8.1
+
+  '@dnd-kit/state@0.3.0':
     dependencies:
       '@preact/signals-core': 1.13.0
       tslib: 2.8.1
