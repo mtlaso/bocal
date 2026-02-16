@@ -13,7 +13,7 @@
 	"dependencies": {
 		"@auth/drizzle-adapter": "^1.11.1",
 		"@dnd-kit/abstract": "^0.1.21",
-		"@dnd-kit/dom": "^0.1.21",
+		"@dnd-kit/dom": "^0.3.0",
 		"@dnd-kit/react": "^0.1.21",
 		"@mdx-js/loader": "^3.1.1",
 		"@mdx-js/react": "^3.1.1",
