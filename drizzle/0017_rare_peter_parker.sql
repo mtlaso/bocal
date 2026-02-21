@@ -1,1 +1,0 @@
-ALTER TABLE "users_feeds_folders" ADD COLUMN "createdAt" timestamp DEFAULT now() NOT NULL;

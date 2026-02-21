@@ -1,5 +1,7 @@
 import { and, count, desc, eq, like, type SQL, sql } from "drizzle-orm";
-import { z } from "zod/v4";
+import type { Session } from "next-auth";
+import { cache } from "react";
+import { auth } from "@/auth";
 import { db } from "@/db/db";
 import {
 	type Feed,
@@ -12,10 +14,7 @@ import {
 	usersFeedsFolders,
 } from "@/db/schema";
 import "server-only";
-import { headers } from "next/headers";
-import { cache } from "react";
-import { auth, type BocalUserSession } from "@/auth";
-// import { auth } from "@/auth";
+import { z } from "zod/v4";
 import {
 	type FeedFolder,
 	type FeedWithContentsCount,
@@ -30,10 +29,8 @@ const ONE_HOUR = 60 * 60 * 1000;
 /**
  * verifySession returns the current session (logged in user).
  */
-const verifySession = cache(async (): Promise<BocalUserSession | null> => {
-	return await auth.api.getSession({
-		headers: await headers(),
-	});
+const verifySession = cache(async (): Promise<Session | null> => {
+	return await auth();
 });
 
 // /**

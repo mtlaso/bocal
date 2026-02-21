@@ -8,6 +8,7 @@
 		"start": "next start",
 		"migration:generate": "pnpm drizzle-kit generate",
 		"migration:migrate": "pnpm drizzle-kit migrate",
+		"studio": "pnpm drizzle-kit studio",
 		"i18n:check": "pnpm i18n-check -s en --locales messages/ --unused src/ --format next-intl -i \"metadata.features.0.key\""
 	},
 	"dependencies": {
@@ -38,7 +39,6 @@
 		"@radix-ui/react-tooltip": "^1.2.8",
 		"@types/mdx": "^2.0.13",
 		"babel-plugin-react-compiler": "^1.0.0",
-		"better-auth": "^1.4.18",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"drizzle-orm": "^0.45.1",
@@ -97,5 +97,5 @@
 			"unrs-resolver"
 		]
 	},
-	"packageManager": "pnpm@10.25.0+sha512.5e82639027af37cf832061bcc6d639c219634488e0f2baebe785028a793de7b525ffcd3f7ff574f5e9860654e098fe852ba8ac5dd5cefe1767d23a020a92f501"
+	"packageManager": "pnpm@10.29.3+sha512.498e1fb4cca5aa06c1dcf2611e6fafc50972ffe7189998c409e90de74566444298ffe43e6cd2acdc775ba1aa7cc5e092a8b7054c811ba8c5770f84693d33d2dc"
 }

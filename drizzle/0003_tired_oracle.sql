@@ -1,1 +1,0 @@
-ALTER TABLE "links" ADD COLUMN "eid" uuid DEFAULT gen_random_uuid() NOT NULL;

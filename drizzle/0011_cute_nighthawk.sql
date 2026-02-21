@@ -1,1 +1,0 @@
-DROP INDEX "eid_user_id";
