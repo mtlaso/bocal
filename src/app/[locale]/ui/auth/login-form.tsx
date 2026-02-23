@@ -3,50 +3,56 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { FaGithub, FaGoogle } from "react-icons/fa";
+import { toast } from "sonner";
 import { SPACING } from "@/app/[locale]/ui/spacing";
-import { authClient } from "@/auth-client";
 import { Button } from "@/components/ui/button";
-import { APP_ROUTES } from "@/lib/constants";
+import { authenticate } from "@/lib/actions";
 
 export function LoginForm(): React.JSX.Element {
 	const t = useTranslations("login");
 	const [isDisabled, setIsDisabled] = useState(false);
 	const [redirectingMsg, setRedirectingMsg] = useState("");
 
+	const handleProviderSignIn = async (
+		e: React.MouseEvent,
+		provider: string,
+	): Promise<void> => {
+		try {
+			setIsDisabled(true);
+			setRedirectingMsg("");
+			e.preventDefault();
+			await authenticate(provider);
+
+			setRedirectingMsg(t("redirecting"));
+		} catch (err) {
+			if (err instanceof Error) {
+				toast.error(err.message);
+			} else {
+				toast.error(t("errors.unexpected"));
+			}
+		} finally {
+			setIsDisabled(false);
+		}
+	};
+
 	return (
-		<form className={`${SPACING.LG} `}>
+		<form className={`${SPACING.LG}`}>
 			<h1 className="text-center">{t("title")}</h1>
 
 			<div className="flex flex-col gap-2">
 				<Button
 					disabled={isDisabled}
-					onClick={async () => {
-						setIsDisabled(true);
-						await authClient.signIn.social({
-							provider: "google",
-							callbackURL: APP_ROUTES.links,
-						});
-						setIsDisabled(false);
-						setRedirectingMsg(t("redirecting"));
-					}}
+					onClick={(e): Promise<void> => handleProviderSignIn(e, "google")}
+					className="dark:bg-white dark:hover:bg-gray-200"
 				>
-					<FaGoogle className="text-white" />
+					<FaGoogle />
 					{t("google")}
 				</Button>
 
 				<Button
 					disabled={isDisabled}
-					className="text-white bg-[#24292e] dark:bg-[#24292e]"
-					onClick={async () => {
-						setIsDisabled(true);
-						await authClient.signIn.social({
-							provider: "github",
-							callbackURL: APP_ROUTES.links,
-							scopes: ["read:user", "user:email"],
-						});
-						setIsDisabled(false);
-						setRedirectingMsg(t("redirecting"));
-					}}
+					className="text-white bg-[#24292e] dark:hover:bg-gray-700"
+					onClick={(e): Promise<void> => handleProviderSignIn(e, "github")}
 				>
 					<FaGithub className="text-white" />
 					{t("github")}

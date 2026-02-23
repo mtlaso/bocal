@@ -74,7 +74,8 @@ export function FeedsSidebarContent({
 
 	return (
 		<DragDropProvider
-			// @ts-expect-error
+			// biome-ignore lint/suspicious/noTsIgnore: valid type.
+			// @ts-ignore
 			modifiers={[RestrictToVerticalAxis]}
 			sensors={[
 				PointerSensor.configure({

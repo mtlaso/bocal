@@ -5,6 +5,7 @@ import { and, eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { getTranslations } from "next-intl/server";
 import { z } from "zod/v4";
+import { signIn, signOut } from "@/auth";
 // import { signIn, signOut } from "@/auth";
 import { db } from "@/db/db";
 import {
@@ -61,6 +62,18 @@ type ActionReturnType<T, E extends string = keyof T & string> = {
 	 */
 	isSuccessful?: boolean;
 };
+
+/**
+ * authenticate authenticates a user using the specified provider.
+ * @param provider - The authentication provider to use.
+ */
+export async function authenticate(provider: string) {
+	await signIn(provider);
+}
+
+export async function logout(): Promise<void> {
+	await signOut({ redirectTo: "/" });
+}
 
 export type AddLinkState = ActionReturnType<{
 	url: string;

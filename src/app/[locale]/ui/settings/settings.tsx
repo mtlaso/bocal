@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
+import type { Session } from "next-auth";
 import { useTranslations } from "next-intl";
 import { use } from "react";
 import { TbMail, TbUser } from "react-icons/tb";
 import { ViewSection } from "@/app/[locale]/ui/settings/view/view-section";
 import { SPACING } from "@/app/[locale]/ui/spacing";
-import type { BocalUserSession } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,7 +12,7 @@ import { APP_ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 type Props = {
-	sess: Promise<BocalUserSession | null>;
+	sess: Promise<Session | null>;
 };
 
 export function Settings({ sess }: Props): React.JSX.Element {
