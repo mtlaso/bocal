@@ -21,12 +21,7 @@ export function LoginForm(): React.JSX.Element {
 			setIsDisabled(true);
 			setRedirectingMsg("");
 			e.preventDefault();
-			const authErrMsg = await authenticate(provider);
-
-			if (typeof authErrMsg === "string") {
-				toast.error(authErrMsg);
-				return;
-			}
+			await authenticate(provider);
 
 			setRedirectingMsg(t("redirecting"));
 		} catch (err) {
@@ -41,7 +36,7 @@ export function LoginForm(): React.JSX.Element {
 	};
 
 	return (
-		<form className={`${SPACING.LG} `}>
+		<form className={`${SPACING.LG}`}>
 			<h1 className="text-center">{t("title")}</h1>
 
 			<div className="flex flex-col gap-2">
@@ -56,7 +51,7 @@ export function LoginForm(): React.JSX.Element {
 				<Button
 					disabled={isDisabled}
 					className="text-white bg-[#24292e] dark:bg-[#24292e]"
-					onClick={(e): Promise<void> => handleProviderSignIn(e, "google")}
+					onClick={(e): Promise<void> => handleProviderSignIn(e, "github")}
 				>
 					<FaGithub className="text-white" />
 					{t("github")}
