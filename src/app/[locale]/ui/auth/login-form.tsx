@@ -43,14 +43,15 @@ export function LoginForm(): React.JSX.Element {
 				<Button
 					disabled={isDisabled}
 					onClick={(e): Promise<void> => handleProviderSignIn(e, "google")}
+					className="dark:bg-white dark:hover:bg-gray-200"
 				>
-					<FaGoogle className="text-white" />
+					<FaGoogle />
 					{t("google")}
 				</Button>
 
 				<Button
 					disabled={isDisabled}
-					className="text-white bg-[#24292e] dark:bg-[#24292e]"
+					className="text-white bg-[#24292e] dark:hover:bg-gray-700"
 					onClick={(e): Promise<void> => handleProviderSignIn(e, "github")}
 				>
 					<FaGithub className="text-white" />
