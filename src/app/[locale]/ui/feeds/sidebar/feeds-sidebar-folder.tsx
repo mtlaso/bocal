@@ -67,11 +67,11 @@ export function FeedsSidebarFolder({
 			<SidebarMenuItem>
 				<CollapsibleTrigger asChild>
 					<SidebarMenuButton asChild>
-						<a href="##">
+						<button type="submit">
 							<TbFolder className="group-data-[state=open]/collapsible:hidden" />
 							<TbFolderOpen className="group-data-[state=closed]/collapsible:hidden" />
 							<span className="truncate">{folder.folderName}</span>
-						</a>
+						</button>
 					</SidebarMenuButton>
 				</CollapsibleTrigger>
 
