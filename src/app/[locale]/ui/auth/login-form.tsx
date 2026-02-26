@@ -23,8 +23,18 @@ export function LoginForm(): React.JSX.Element {
 			e.preventDefault();
 			await authenticate(provider);
 		} catch (err) {
-			// Ignorer les erreurs 'NEXT_REDIRECT' de auth.js.
-			if (!(err instanceof Error)) toast.error(t("errors.unexpected"));
+			// Ignorer erreurs NEXT_REDIRECT par auth.js pendant la redirection.
+			const isNextRedirect =
+				err instanceof Error &&
+				(((err as Error & { digest?: string }).digest?.startsWith(
+					"NEXT_REDIRECT;",
+				) ??
+					false) ||
+					err.message === "NEXT_REDIRECT");
+			if (!isNextRedirect) {
+				toast.error(t("errors.unexpected"));
+				setRedirectingMsg("");
+			}
 		} finally {
 			setIsDisabled(false);
 		}
