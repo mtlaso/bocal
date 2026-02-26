@@ -6,7 +6,6 @@ import { revalidatePath } from "next/cache";
 import { getTranslations } from "next-intl/server";
 import { z } from "zod/v4";
 import { signIn, signOut } from "@/auth";
-// import { signIn, signOut } from "@/auth";
 import { db } from "@/db/db";
 import {
 	addFeedsFolderSchema,
@@ -340,6 +339,7 @@ export async function addFeed(
 				return;
 			}
 
+			// Vérifie si ce flux est déjà présent dans la base de données (ex. ajouté par un autre utilisateur).
 			let feed = await tx.query.feeds.findFirst({
 				where: eq(feeds.url, validatedFields.data.url),
 			});
@@ -409,12 +409,14 @@ export async function addFeed(
 		if (isFeedAlreadyFollowed) {
 			return {
 				errI18Key: "errors.feedAlreadyFollowed",
+				payload: { url: formData.get("url") as string },
 			};
 		}
 
 		if (isFeedsLimitReached) {
 			return {
 				errI18Key: "errors.maxFeedsReached",
+				payload: { url: formData.get("url") as string },
 			};
 		}
 	} catch (err) {
@@ -422,23 +424,27 @@ export async function addFeed(
 		if (err instanceof feedService.FeedUnreachable) {
 			return {
 				errI18Key: "errors.feedUnreachable",
+				payload: { url: formData.get("url") as string },
 			};
 		}
 
 		if (err instanceof feedService.FeedCannotBeProcessed) {
 			return {
 				errI18Key: "errors.feedCannotBeProcessed",
+				payload: { url: formData.get("url") as string },
 			};
 		}
 
 		if (err instanceof feedService.FeedTimeout) {
 			return {
 				errI18Key: "errors.feedTimeout",
+				payload: { url: formData.get("url") as string },
 			};
 		}
 
 		return {
 			errI18Key: "errors.unexpected",
+			payload: { url: formData.get("url") as string },
 		};
 	}
 

@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/card";
 import { Link } from "@/i18n/routing";
 import { SortOptions } from "@/lib/constants";
-import { parsing } from "@/lib/parsing";
+import { parsing } from "@/lib/parsing.client";
 import { searchParamsState } from "@/lib/stores/search-params-states";
 import { cn } from "@/lib/utils";
 import { LinksContextMenu } from "./links-context-menu";

@@ -17,18 +17,23 @@ export function LoginForm(): React.JSX.Element {
 		e: React.MouseEvent,
 		provider: string,
 	): Promise<void> => {
+		e.preventDefault();
 		try {
 			setIsDisabled(true);
-			setRedirectingMsg("");
-			e.preventDefault();
-			await authenticate(provider);
-
 			setRedirectingMsg(t("redirecting"));
+			await authenticate(provider);
 		} catch (err) {
-			if (err instanceof Error) {
-				toast.error(err.message);
-			} else {
+			// Ignorer erreurs NEXT_REDIRECT par auth.js pendant la redirection.
+			const isNextRedirect =
+				err instanceof Error &&
+				(((err as Error & { digest?: string }).digest?.startsWith(
+					"NEXT_REDIRECT;",
+				) ??
+					false) ||
+					err.message === "NEXT_REDIRECT");
+			if (!isNextRedirect) {
 				toast.error(t("errors.unexpected"));
+				setRedirectingMsg("");
 			}
 		} finally {
 			setIsDisabled(false);
