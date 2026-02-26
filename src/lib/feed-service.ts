@@ -73,6 +73,7 @@ export async function parse(url: string): Promise<ParseResponse> {
 			content,
 		};
 	} catch (err) {
+		logger.error(err);
 		// biome-ignore lint/suspicious/noExplicitAny: no choice.
 		if ((err as any)?.errno === -3008) throw new FeedUnreachable();
 

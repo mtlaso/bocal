@@ -1,4 +1,4 @@
-"use client";
+import "server-only";
 import DOMPurify from "isomorphic-dompurify";
 
 /**
