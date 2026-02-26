@@ -1,8 +1,12 @@
-"use client";
-import DOMPurify from "isomorphic-dompurify";
+import "server-only";
+import DOMPurify from "dompurify";
+import { JSDOM } from "jsdom";
+
+const window = new JSDOM("").window;
+const DOMPurifyServer = DOMPurify(window);
 
 /**
- * readableUrl retourne une URL lisible. Retirer le 'www.' ou le 'http(s)://'.
+ * readableUrl retourne une URL plus lisible. Retirer le 'www.' ou le 'http(s)://'.
  */
 const readableUrl = (url: string): string => {
 	const parsedURL = URL.parse(url);
@@ -21,7 +25,7 @@ const readableUrl = (url: string): string => {
  * sanitizeHTML retire les balises HTML non autorisées.
  */
 function sanitizeHTML(html: string): string {
-	return DOMPurify.sanitize(html, {
+	return DOMPurifyServer.sanitize(html, {
 		ALLOWED_TAGS: [
 			"h1",
 			"h2",
