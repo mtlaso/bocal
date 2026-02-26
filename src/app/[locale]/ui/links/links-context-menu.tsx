@@ -1,7 +1,7 @@
-import { Trash } from "lucide-react";
+import { MoreHorizontal, Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useTransition } from "react";
-import { BsArchive, BsThreeDots } from "react-icons/bs";
+import { BsArchive } from "react-icons/bs";
 import { TbLinkPlus } from "react-icons/tb";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -38,7 +38,7 @@ export function LinksContextMenu({
 					size="icon"
 					className="max-w-min text-foreground"
 				>
-					<BsThreeDots />
+					<MoreHorizontal />
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56">

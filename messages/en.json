@@ -168,6 +168,10 @@
 			"cancel": "Cancel",
 			"success": "Folder created"
 		},
+		"folderContextMenu": {
+			"deleteFolder": "Delete folder"
+		},
+		"more": "more",
 		"errors": {
 			"unexpected": "An error happened.",
 			"urlFieldInvalid": "URL invalid.",

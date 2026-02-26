@@ -1,6 +1,8 @@
 "use client";
 
 import { useDraggable, useDroppable } from "@dnd-kit/react";
+import { MoreHorizontal, Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useQueryStates } from "nuqs";
 import { useState } from "react";
 import { RxDragHandleDots2 } from "react-icons/rx";
@@ -16,6 +18,13 @@ import {
 	CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+	SidebarMenuAction,
 	SidebarMenuBadge,
 	SidebarMenuButton,
 	SidebarMenuItem,
@@ -38,6 +47,8 @@ export function FeedsSidebarFolder({ folder }: Props) {
 	const { ref, isDropTarget } = useDroppable({
 		id: folder.folderId,
 	});
+	const isMobile = useIsMobile();
+	const t = useTranslations("rssFeed");
 
 	return (
 		<Collapsible
@@ -47,12 +58,36 @@ export function FeedsSidebarFolder({ folder }: Props) {
 		>
 			<SidebarMenuItem>
 				<CollapsibleTrigger asChild>
-					<SidebarMenuButton>
-						<TbFolder className="group-data-[state=open]/collapsible:hidden" />
-						<TbFolderOpen className="group-data-[state=closed]/collapsible:hidden" />
-						{folder.folderName}
+					<SidebarMenuButton asChild>
+						<a href="##" className="peer/linkhoveritem">
+							<TbFolder className="group-data-[state=open]/collapsible:hidden" />
+							<TbFolderOpen className="group-data-[state=closed]/collapsible:hidden" />
+							<span className="truncate">{folder.folderName}</span>
+						</a>
 					</SidebarMenuButton>
 				</CollapsibleTrigger>
+
+				{/* Context menu */}
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<SidebarMenuAction showOnHover>
+							{/* Afficher sur hover sur les grands écrans (élément visuel, peut être enlevé en cas de problèmes d'accésibilités. */}
+							<MoreHorizontal />
+							<span className="sr-only">{t("more")}</span>
+						</SidebarMenuAction>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent
+						className="w-48 rounded-lg"
+						side={isMobile ? "bottom" : "right"}
+						align={isMobile ? "end" : "start"}
+					>
+						<DropdownMenuItem variant="destructive">
+							<Trash2 className="text-muted-foreground" />
+							<span>{t("folderContextMenu.deleteFolder")}</span>
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+
 				<CollapsibleContent>
 					<SidebarMenuSub>
 						{folder.feeds.map((feed) => (

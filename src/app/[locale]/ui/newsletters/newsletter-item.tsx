@@ -1,8 +1,7 @@
 "use client";
-import { Trash } from "lucide-react";
+import { MoreHorizontal, Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState, useTransition } from "react";
-import { BsThreeDots } from "react-icons/bs";
 import { TbAlertCircle, TbCopy, TbNews } from "react-icons/tb";
 import { toast } from "sonner";
 import { SPACING } from "@/app/[locale]/ui/spacing";
@@ -122,7 +121,7 @@ function ContextMenu({ item }: { item: Feed }): React.JSX.Element {
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
 					<Button variant="ghost" className="text-muted-foreground">
-						<BsThreeDots />
+						<MoreHorizontal />
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent className="w-56">

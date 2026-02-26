@@ -1,7 +1,7 @@
 "use client";
+import { MoreHorizontal } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useTransition } from "react";
-import { BsThreeDots } from "react-icons/bs";
 import { TbArchive } from "react-icons/tb";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -23,7 +23,7 @@ export function FeedContextMenu({ url }: Props): React.JSX.Element {
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
 				<Button variant="ghost" className="text-muted-foreground">
-					<BsThreeDots />
+					<MoreHorizontal />
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56">
