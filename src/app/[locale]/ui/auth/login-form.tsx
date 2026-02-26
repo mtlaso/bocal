@@ -21,7 +21,6 @@ export function LoginForm(): React.JSX.Element {
 		try {
 			setIsDisabled(true);
 			setRedirectingMsg(t("redirecting"));
-			e.preventDefault();
 			await authenticate(provider);
 		} catch (err) {
 			// Ignorer erreurs NEXT_REDIRECT par auth.js pendant la redirection.
