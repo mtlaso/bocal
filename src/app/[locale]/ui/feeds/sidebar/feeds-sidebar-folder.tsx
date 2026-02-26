@@ -32,6 +32,7 @@ import {
 	SidebarMenuSub,
 	SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
+import { deleteFeedFolder } from "@/lib/actions";
 import {
 	type FeedFolder,
 	FeedStatusType,
@@ -190,24 +191,22 @@ function DeleteFolder({ id }: { id: number }): React.JSX.Element {
 	const t = useTranslations("rssFeed");
 	const [isPending, startTransition] = useTransition();
 
-	const handleDeleteFolder = (e: React.MouseEvent): void => {
+	const handleDeleteFeedFolder = (e: React.MouseEvent): void => {
 		startTransition(async () => {
 			try {
 				e.preventDefault();
-				// const res = await deleteLink(id);
+				const res = await deleteFeedFolder(id);
 
-				// if (res.errors) {
-				// 	toast.error(res.errors.id?.join(", "));
-				// 	return;
-				// }
+				if (res.errors) {
+					toast.error(res.errors.id?.join(", "));
+					return;
+				}
 
-				// if (res.errI18Key) {
-				// 	// biome-ignore lint/suspicious/noExplicitAny: valid type.
-				// 	toast.error(t(res.errI18Key as any));
-				// 	return;
-				// }
-				//
-				toast.success("cool");
+				if (res.errI18Key) {
+					// biome-ignore lint/suspicious/noExplicitAny: valid type.
+					toast.error(t(res.errI18Key as any));
+					return;
+				}
 			} catch (err) {
 				if (err instanceof Error) {
 					toast.error(err.message);
@@ -222,7 +221,7 @@ function DeleteFolder({ id }: { id: number }): React.JSX.Element {
 		<button
 			className="flex justify-start items-center grow text-sm gap-2 p-1 cursor-pointer"
 			type="button"
-			onClick={(e): void => handleDeleteFolder(e)}
+			onClick={(e): void => handleDeleteFeedFolder(e)}
 			disabled={isPending}
 		>
 			<Trash2 className="text-destructive" />

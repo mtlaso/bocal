@@ -10,6 +10,7 @@ import { db } from "@/db/db";
 import {
 	addFeedsFolderSchema,
 	addNewsletterSchema,
+	deleteFeedFolderSchema,
 	deleteLinkSchema,
 	deleteNewsletterSchema,
 	deleteUsersFeedsReadContentSchema,
@@ -1088,6 +1089,72 @@ export async function moveFeedIntoFolder(
 		};
 	}
 
+	revalidatePath(APP_ROUTES.feeds);
+	return {};
+}
+
+type DeleteFeedFolderState = ActionReturnType<{
+	id: number;
+}>;
+
+export async function deleteFeedFolder(
+	id: number,
+): Promise<DeleteFeedFolderState> {
+	try {
+		const user = await dal.verifySession();
+		if (!user) {
+			throw new Error("not signed in");
+		}
+
+		const t = await getTranslations("rssFeed");
+		const payload = { id };
+		const validatedFields = deleteFeedFolderSchema.safeParse(payload, {
+			error: (iss) => {
+				const path = iss.path?.join(".");
+				if (!path) {
+					return { message: t("errors.unexpected") };
+				}
+
+				const message = {
+					id: t("errors.idFieldInvalid"),
+				}[path];
+
+				return { message: message ?? t("errors.unexpected") };
+			},
+		});
+		if (!validatedFields.success) {
+			return {
+				errors: z.flattenError(validatedFields.error).fieldErrors,
+				payload: { id: id },
+			};
+		}
+
+		await db.transaction(async (tx) => {
+			await tx
+				.update(usersFeeds)
+				.set({ folderId: null })
+				.where(
+					and(
+						eq(usersFeeds.folderId, validatedFields.data.id),
+						eq(usersFeeds.userId, user.user.id),
+					),
+				);
+
+			await tx
+				.delete(usersFeedsFolders)
+				.where(
+					and(
+						eq(usersFeedsFolders.id, validatedFields.data.id),
+						eq(usersFeedsFolders.userId, user.user.id),
+					),
+				);
+		});
+	} catch (err) {
+		logger.error(err);
+		return {
+			errI18Key: "errors.unexpected",
+		};
+	}
 	revalidatePath(APP_ROUTES.feeds);
 	return {};
 }
