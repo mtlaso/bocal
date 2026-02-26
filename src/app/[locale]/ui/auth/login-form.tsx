@@ -19,17 +19,12 @@ export function LoginForm(): React.JSX.Element {
 	): Promise<void> => {
 		try {
 			setIsDisabled(true);
-			setRedirectingMsg("");
+			setRedirectingMsg(t("redirecting"));
 			e.preventDefault();
 			await authenticate(provider);
-
-			setRedirectingMsg(t("redirecting"));
 		} catch (err) {
-			if (err instanceof Error) {
-				toast.error(err.message);
-			} else {
-				toast.error(t("errors.unexpected"));
-			}
+			// Ignorer les erreurs 'NEXT_REDIRECT' de auth.js.
+			if (!(err instanceof Error)) toast.error(t("errors.unexpected"));
 		} finally {
 			setIsDisabled(false);
 		}

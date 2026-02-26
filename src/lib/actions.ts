@@ -6,7 +6,6 @@ import { revalidatePath } from "next/cache";
 import { getTranslations } from "next-intl/server";
 import { z } from "zod/v4";
 import { signIn, signOut } from "@/auth";
-// import { signIn, signOut } from "@/auth";
 import { db } from "@/db/db";
 import {
 	addFeedsFolderSchema,
