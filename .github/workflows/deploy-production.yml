@@ -59,4 +59,4 @@ jobs:
 
       - name: Deploy Project Artifacts to Vercel
         id: deploy
-        run: vercel deploy --archive --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel deploy --archive=tgz --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
