@@ -11,7 +11,7 @@ import type { FeedTimeline } from "@/db/schema";
 import { Link } from "@/i18n/routing";
 import { markFeedContentAsRead, markFeedContentAsUnread } from "@/lib/actions";
 import type { UserPreferences } from "@/lib/constants";
-// import { parsing } from "@/lib/parsing.client";
+import { parsing } from "@/lib/parsing.client";
 import { searchParamsState } from "@/lib/stores/search-params-states";
 import { userfeedsfuncs } from "@/lib/userfeeds-funcs";
 import { cn } from "@/lib/utils";
@@ -161,8 +161,7 @@ const Item = ({ item }: { item: FeedTimeline }): React.JSX.Element => {
 				</h2>
 				<div>
 					<p className="text-primary font-medium">
-						{/*{parsing.readableUrl(item.url)}*/}
-						{item.url}
+						{parsing.readableUrl(item.url)}
 					</p>
 					<p className="text-muted-foreground">
 						{new Date(item.date).toLocaleDateString(locale)}
