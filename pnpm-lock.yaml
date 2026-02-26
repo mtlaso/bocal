@@ -102,6 +102,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      dompurify:
+        specifier: ^3.3.1
+        version: 3.3.1
       drizzle-orm:
         specifier: ^0.45.1
         version: 0.45.1(@neondatabase/serverless@1.0.2)(@types/pg@8.16.0)(pg@8.19.0)
@@ -114,9 +117,6 @@ importers:
       html-entities:
         specifier: ^2.6.0
         version: 2.6.0
-      isomorphic-dompurify:
-        specifier: ^3.0.0
-        version: 3.0.0(@noble/hashes@2.0.1)
       jsdom:
         specifier: ^28.1.0
         version: 28.1.0(@noble/hashes@2.0.1)
@@ -2696,10 +2696,6 @@ packages:
 
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
-
-  isomorphic-dompurify@3.0.0:
-    resolution: {integrity: sha512-5K+MYP7Nrg74+Bi+QmQGzQ/FgEOyVHWsN8MuJy5wYQxxBRxPnWsD25Tjjt5FWYhan3OQ+vNLubyNJH9dfG03lQ==}
-    engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
 
   jackspeak@3.4.3:
     resolution: {integrity: sha512-OGlZQpz2yfahA/Rd1Y8Cd9SIEsqvXkLVoSw/cgwhnhFMDbsQFeZYoJJ7bIZBS9BcamUW96asq/npPWugM+RQBw==}
@@ -6085,15 +6081,6 @@ snapshots:
   isarray@2.0.5: {}
 
   isexe@2.0.0: {}
-
-  isomorphic-dompurify@3.0.0(@noble/hashes@2.0.1):
-    dependencies:
-      dompurify: 3.3.1
-      jsdom: 28.1.0(@noble/hashes@2.0.1)
-    transitivePeerDependencies:
-      - '@noble/hashes'
-      - canvas
-      - supports-color
 
   jackspeak@3.4.3:
     dependencies:
