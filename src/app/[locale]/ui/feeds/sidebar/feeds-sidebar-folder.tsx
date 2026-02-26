@@ -91,8 +91,8 @@ export function FeedsSidebarFolder({
 					>
 						<DropdownMenuItem variant="destructive">
 							<DeleteFolder
-								onDelete={(id) => onRemove(id)}
-								onDeleteFailed={(id) => onRemoveFailed(id)}
+								onDelete={onRemove}
+								onDeleteFailed={onRemoveFailed}
 								id={folder.folderId}
 							/>
 						</DropdownMenuItem>
