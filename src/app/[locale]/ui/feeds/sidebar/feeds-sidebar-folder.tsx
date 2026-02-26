@@ -210,10 +210,10 @@ function DeleteFolder({
 	const [isPending, startTransition] = useTransition();
 
 	const handleDeleteFeedFolder = (e: React.MouseEvent): void => {
+		e.preventDefault();
 		onDelete(id);
 		startTransition(async () => {
 			try {
-				e.preventDefault();
 				const res = await deleteFeedFolder(id);
 
 				if (res.errors) {

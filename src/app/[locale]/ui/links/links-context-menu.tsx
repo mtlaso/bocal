@@ -89,10 +89,10 @@ function UnArchiveLink({
 	const [isPending, startTransition] = useTransition();
 
 	const handleUnArchiveLink = (e: React.MouseEvent): void => {
+		e.preventDefault();
 		onUnarchive(id);
 		startTransition(async () => {
 			try {
-				e.preventDefault();
 				const res = await unarchiveLink(id);
 
 				if (res.errors) {
@@ -144,10 +144,10 @@ function ArchiveLink({
 	const [isPending, startTransition] = useTransition();
 
 	const handleArchiveLink = (e: React.MouseEvent): void => {
+		e.preventDefault();
 		onArchive(id);
 		startTransition(async () => {
 			try {
-				e.preventDefault();
 				const res = await archiveLink(id);
 
 				if (res.errors) {
@@ -199,10 +199,10 @@ function DeleteLink({
 	const [isPending, startTransition] = useTransition();
 
 	const handleDeleteLink = (e: React.MouseEvent): void => {
+		e.preventDefault();
 		onDelete(id);
 		startTransition(async () => {
 			try {
-				e.preventDefault();
 				const res = await deleteLink(id);
 
 				if (res.errors) {
