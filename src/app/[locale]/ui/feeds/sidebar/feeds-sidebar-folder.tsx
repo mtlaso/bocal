@@ -43,9 +43,15 @@ import { searchParamsState } from "@/lib/stores/search-params-states";
 
 type Props = {
 	folder: FeedFolder;
+	onRemove: (id: number) => void;
+	onRemoveFailed: (id: number) => void;
 };
 
-export function FeedsSidebarFolder({ folder }: Props) {
+export function FeedsSidebarFolder({
+	folder,
+	onRemove,
+	onRemoveFailed,
+}: Props) {
 	const { ref, isDropTarget } = useDroppable({
 		id: folder.folderId,
 	});
@@ -84,7 +90,11 @@ export function FeedsSidebarFolder({ folder }: Props) {
 						align={isMobile ? "end" : "start"}
 					>
 						<DropdownMenuItem variant="destructive">
-							<DeleteFolder id={folder.folderId} />
+							<DeleteFolder
+								onDelete={(id) => onRemove(id)}
+								onDeleteFailed={(id) => onRemoveFailed(id)}
+								id={folder.folderId}
+							/>
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
@@ -187,27 +197,39 @@ function ItemIcon({
 	);
 }
 
-function DeleteFolder({ id }: { id: number }): React.JSX.Element {
+function DeleteFolder({
+	id,
+	onDelete,
+	onDeleteFailed,
+}: {
+	id: number;
+	onDelete: (id: number) => void;
+	onDeleteFailed: (id: number) => void;
+}): React.JSX.Element {
 	const t = useTranslations("rssFeed");
 	const [isPending, startTransition] = useTransition();
 
 	const handleDeleteFeedFolder = (e: React.MouseEvent): void => {
+		onDelete(id);
 		startTransition(async () => {
 			try {
 				e.preventDefault();
 				const res = await deleteFeedFolder(id);
 
 				if (res.errors) {
+					onDeleteFailed(id);
 					toast.error(res.errors.id?.join(", "));
 					return;
 				}
 
 				if (res.errI18Key) {
+					onDeleteFailed(id);
 					// biome-ignore lint/suspicious/noExplicitAny: valid type.
 					toast.error(t(res.errI18Key as any));
 					return;
 				}
 			} catch (err) {
+				onDeleteFailed(id);
 				if (err instanceof Error) {
 					toast.error(err.message);
 				} else {

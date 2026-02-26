@@ -72,6 +72,45 @@ export function FeedsSidebarContent({
 		});
 	};
 
+	// Optimistic delete de dossier de flux.
+	const handleOnRemove = (id: number) => {
+		startTransition(() => {
+			// Retirer le dossier de flux de la liste des dossiers de flux.
+			// Trouver le dossier orignal, puis mettre id par défaut (-1).
+			setUserFeedsGroupedByFolder((prev) => {
+				const folders: FeedFolder[] = structuredClone(prev);
+
+				// Trouver le dossier.
+				const deletedFolder = folders.find((item) => item.folderId === id);
+				if (!deletedFolder) return prev;
+
+				// Changer id à -1.
+				deletedFolder.folderId = UNCATEGORIZED_FEEDS_FOLDER_ID;
+
+				return folders;
+			});
+		});
+	};
+
+	// Optimistic delete.
+	// Si la suppression ne fonctionne pas, remettre l'id à son ancienne valeur.
+	const handleOnRemoveFailed = (id: number) => {
+		startTransition(() => {
+			setUserFeedsGroupedByFolder((prev) => {
+				const folders: FeedFolder[] = structuredClone(prev);
+
+				// Trouver le dossier.
+				const deletedFolder = folders.find((item) => item.folderId === id);
+				if (!deletedFolder) return prev;
+
+				// Remettre id à son ancienne valeur.
+				deletedFolder.folderId = id;
+
+				return folders;
+			});
+		});
+	};
+
 	return (
 		<DragDropProvider
 			// biome-ignore lint/suspicious/noTsIgnore: valid type.
@@ -126,7 +165,11 @@ export function FeedsSidebarContent({
 				});
 			}}
 		>
-			<Content userFeedsGroupedByFolder={userFeedsGroupedByFolder} />
+			<Content
+				userFeedsGroupedByFolder={userFeedsGroupedByFolder}
+				handleOnRemove={handleOnRemove}
+				handleOnRemoveFailed={handleOnRemoveFailed}
+			/>
 		</DragDropProvider>
 	);
 }
@@ -135,8 +178,12 @@ export function FeedsSidebarContent({
 // The drop mechanism wouldn't work if it's a direct descendant of the parent component.
 function Content({
 	userFeedsGroupedByFolder,
+	handleOnRemove,
+	handleOnRemoveFailed,
 }: {
 	userFeedsGroupedByFolder: FeedFolder[];
+	handleOnRemove: (id: number) => void;
+	handleOnRemoveFailed: (id: number) => void;
 }) {
 	const t = useTranslations("rssFeed");
 
@@ -177,7 +224,16 @@ function Content({
 							}
 
 							return (
-								<FeedsSidebarFolder key={folder.folderId} folder={folder} />
+								<FeedsSidebarFolder
+									key={folder.folderId}
+									folder={folder}
+									onRemove={(id) => {
+										handleOnRemove(id);
+									}}
+									onRemoveFailed={(id) => {
+										handleOnRemoveFailed(id);
+									}}
+								/>
 							);
 						})}
 					</SidebarMenu>
