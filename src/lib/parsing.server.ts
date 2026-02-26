@@ -6,7 +6,7 @@ const window = new JSDOM("").window;
 const DOMPurifyServer = DOMPurify(window);
 
 /**
- * readableUrl retourne une URL lisible. Retirer le 'www.' ou le 'http(s)://'.
+ * readableUrl retourne une URL plus lisible. Retirer le 'www.' ou le 'http(s)://'.
  */
 const readableUrl = (url: string): string => {
 	const parsedURL = URL.parse(url);
