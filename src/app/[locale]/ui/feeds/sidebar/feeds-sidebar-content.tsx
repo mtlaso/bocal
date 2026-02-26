@@ -2,7 +2,7 @@
 import { RestrictToVerticalAxis } from "@dnd-kit/abstract/modifiers";
 import { DragDropProvider, PointerSensor, useDroppable } from "@dnd-kit/react";
 import { useTranslations } from "next-intl";
-import { startTransition, use, useOptimistic } from "react";
+import { startTransition, use, useOptimistic, useState } from "react";
 import { toast } from "sonner";
 import { FeedsSidebarFolder } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-folder";
 import { FeedsSidebarItem } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-item";
@@ -33,6 +33,7 @@ export function FeedsSidebarContent({
 	const [userFeedsGroupedByFolder, setUserFeedsGroupedByFolder] = useOptimistic<
 		FeedFolder[]
 	>(_userFeedsGroupedByFolder);
+	const [oldUserFeedsGroupedByFolder, _] = useState(userFeedsGroupedByFolder);
 	const t = useTranslations("rssFeed");
 
 	const handleOnMove = (
@@ -96,12 +97,14 @@ export function FeedsSidebarContent({
 	// Si la suppression ne fonctionne pas, remettre l'id à son ancienne valeur.
 	const handleOnRemoveFailed = (id: number) => {
 		startTransition(() => {
-			setUserFeedsGroupedByFolder((prev) => {
-				const folders: FeedFolder[] = structuredClone(prev);
+			setUserFeedsGroupedByFolder(() => {
+				const folders: FeedFolder[] = structuredClone(
+					oldUserFeedsGroupedByFolder,
+				);
 
 				// Trouver le dossier.
 				const deletedFolder = folders.find((item) => item.folderId === id);
-				if (!deletedFolder) return prev;
+				if (!deletedFolder) return folders;
 
 				// Remettre id à son ancienne valeur.
 				deletedFolder.folderId = id;
