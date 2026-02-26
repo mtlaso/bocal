@@ -408,12 +408,14 @@ export async function addFeed(
 		if (isFeedAlreadyFollowed) {
 			return {
 				errI18Key: "errors.feedAlreadyFollowed",
+				payload: { url: formData.get("url") as string },
 			};
 		}
 
 		if (isFeedsLimitReached) {
 			return {
 				errI18Key: "errors.maxFeedsReached",
+				payload: { url: formData.get("url") as string },
 			};
 		}
 	} catch (err) {
@@ -421,23 +423,27 @@ export async function addFeed(
 		if (err instanceof feedService.FeedUnreachable) {
 			return {
 				errI18Key: "errors.feedUnreachable",
+				payload: { url: formData.get("url") as string },
 			};
 		}
 
 		if (err instanceof feedService.FeedCannotBeProcessed) {
 			return {
 				errI18Key: "errors.feedCannotBeProcessed",
+				payload: { url: formData.get("url") as string },
 			};
 		}
 
 		if (err instanceof feedService.FeedTimeout) {
 			return {
 				errI18Key: "errors.feedTimeout",
+				payload: { url: formData.get("url") as string },
 			};
 		}
 
 		return {
 			errI18Key: "errors.unexpected",
+			payload: { url: formData.get("url") as string },
 		};
 	}
 
