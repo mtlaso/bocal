@@ -8,7 +8,7 @@ import { db } from "@/db/db";
 import { feeds, feedsContent } from "@/db/schema";
 import { FeedErrorType, FeedStatusType, LENGTHS } from "@/lib/constants";
 import { logger } from "@/lib/logging";
-import { parsing } from "@/lib/parsing";
+import { parsing } from "@/lib/parsing.server";
 import "server-only";
 
 const USER_AGENT = "RSS https://bocal.fyi/1.0";

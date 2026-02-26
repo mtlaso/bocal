@@ -11,7 +11,7 @@ import type { FeedTimeline } from "@/db/schema";
 import { Link } from "@/i18n/routing";
 import { markFeedContentAsRead, markFeedContentAsUnread } from "@/lib/actions";
 import type { UserPreferences } from "@/lib/constants";
-import { parsing } from "@/lib/parsing";
+import { parsing } from "@/lib/parsing.client";
 import { searchParamsState } from "@/lib/stores/search-params-states";
 import { userfeedsfuncs } from "@/lib/userfeeds-funcs";
 import { cn } from "@/lib/utils";
