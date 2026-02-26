@@ -18,7 +18,6 @@ export function LoginForm(): React.JSX.Element {
 		provider: string,
 	): Promise<void> => {
 		e.preventDefault();
-		await authenticate(provider);
 		try {
 			setIsDisabled(true);
 			setRedirectingMsg(t("redirecting"));
