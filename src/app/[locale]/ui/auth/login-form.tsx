@@ -3,14 +3,15 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { FaGithub, FaGoogle } from "react-icons/fa";
+import { toast } from "sonner";
 import { SPACING } from "@/app/[locale]/ui/spacing";
 import { Button } from "@/components/ui/button";
 import { authenticate } from "@/lib/actions";
 
 export function LoginForm(): React.JSX.Element {
 	const t = useTranslations("login");
-	const [isDisabled, _setIsDisabled] = useState(false);
-	const [redirectingMsg, _setRedirectingMsg] = useState("");
+	const [isDisabled, setIsDisabled] = useState(false);
+	const [redirectingMsg, setRedirectingMsg] = useState("");
 
 	const handleProviderSignIn = async (
 		e: React.MouseEvent,
@@ -18,27 +19,27 @@ export function LoginForm(): React.JSX.Element {
 	): Promise<void> => {
 		e.preventDefault();
 		await authenticate(provider);
-		// try {
-		// 	setIsDisabled(true);
-		// 	setRedirectingMsg(t("redirecting"));
-		// 	e.preventDefault();
-		// 	await authenticate(provider);
-		// } catch (err) {
-		// 	// Ignorer erreurs NEXT_REDIRECT par auth.js pendant la redirection.
-		// 	const isNextRedirect =
-		// 		err instanceof Error &&
-		// 		(((err as Error & { digest?: string }).digest?.startsWith(
-		// 			"NEXT_REDIRECT;",
-		// 		) ??
-		// 			false) ||
-		// 			err.message === "NEXT_REDIRECT");
-		// 	if (!isNextRedirect) {
-		// 		toast.error(t("errors.unexpected"));
-		// 		setRedirectingMsg("");
-		// 	}
-		// } finally {
-		// 	setIsDisabled(false);
-		// }
+		try {
+			setIsDisabled(true);
+			setRedirectingMsg(t("redirecting"));
+			e.preventDefault();
+			await authenticate(provider);
+		} catch (err) {
+			// Ignorer erreurs NEXT_REDIRECT par auth.js pendant la redirection.
+			const isNextRedirect =
+				err instanceof Error &&
+				(((err as Error & { digest?: string }).digest?.startsWith(
+					"NEXT_REDIRECT;",
+				) ??
+					false) ||
+					err.message === "NEXT_REDIRECT");
+			if (!isNextRedirect) {
+				toast.error(t("errors.unexpected"));
+				setRedirectingMsg("");
+			}
+		} finally {
+			setIsDisabled(false);
+		}
 	};
 
 	return (
