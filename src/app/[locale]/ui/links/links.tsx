@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/card";
 import { Link } from "@/i18n/routing";
 import { SortOptions } from "@/lib/constants";
-import { parsing } from "@/lib/parsing.client";
+// import { parsing } from "@/lib/parsing.client";
 import { searchParamsState } from "@/lib/stores/search-params-states";
 import { cn } from "@/lib/utils";
 import { LinksContextMenu } from "./links-context-menu";
@@ -108,7 +108,8 @@ export function Links({ links }: Props): React.JSX.Element {
 												"aspect-video bg-linear-to-br rounded-t-xl",
 												randomBackground(
 													item.ogTitle ??
-														parsing.readableUrl(new URL(item.url).host),
+														// parsing.readableUrl(new URL(item.url).host),
+														new URL(item.url).host,
 												),
 											)}
 										/>
@@ -134,7 +135,8 @@ export function Links({ links }: Props): React.JSX.Element {
 									target="_blank"
 									className=" text-sm text-muted-foreground truncate"
 								>
-									{parsing.readableUrl(new URL(item.url).host)}
+									{/*{parsing.readableUrl(new URL(item.url).host)}*/}
+									{new URL(item.url).host}
 								</Link>
 
 								<LinksContextMenu
