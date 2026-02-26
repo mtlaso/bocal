@@ -1,7 +1,7 @@
-import { Trash } from "lucide-react";
+import { MoreHorizontal, Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useTransition } from "react";
-import { BsArchive, BsThreeDots } from "react-icons/bs";
+import { BsArchive } from "react-icons/bs";
 import { TbLinkPlus } from "react-icons/tb";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -38,7 +38,7 @@ export function LinksContextMenu({
 					size="icon"
 					className="max-w-min text-foreground"
 				>
-					<BsThreeDots />
+					<MoreHorizontal />
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56">
@@ -89,10 +89,10 @@ function UnArchiveLink({
 	const [isPending, startTransition] = useTransition();
 
 	const handleUnArchiveLink = (e: React.MouseEvent): void => {
+		e.preventDefault();
 		onUnarchive(id);
 		startTransition(async () => {
 			try {
-				e.preventDefault();
 				const res = await unarchiveLink(id);
 
 				if (res.errors) {
@@ -144,10 +144,10 @@ function ArchiveLink({
 	const [isPending, startTransition] = useTransition();
 
 	const handleArchiveLink = (e: React.MouseEvent): void => {
+		e.preventDefault();
 		onArchive(id);
 		startTransition(async () => {
 			try {
-				e.preventDefault();
 				const res = await archiveLink(id);
 
 				if (res.errors) {
@@ -199,10 +199,10 @@ function DeleteLink({
 	const [isPending, startTransition] = useTransition();
 
 	const handleDeleteLink = (e: React.MouseEvent): void => {
+		e.preventDefault();
 		onDelete(id);
 		startTransition(async () => {
 			try {
-				e.preventDefault();
 				const res = await deleteLink(id);
 
 				if (res.errors) {

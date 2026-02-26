@@ -169,6 +169,10 @@
 			"cancel": "Annuler",
 			"success": "Dossier créé"
 		},
+		"folderContextMenu": {
+			"deleteFolder": "Supprimer dossier"
+		},
+		"more": "plus",
 		"errors": {
 			"unexpected": "Une erreur inattendue s'est produite.",
 			"urlFieldInvalid": "URL invalide.",

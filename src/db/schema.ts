@@ -328,6 +328,10 @@ const feedTimeline = z.object({
 	feedLastSyncAt: z.coerce.date(),
 });
 
+export const deleteFeedFolderSchema = createSelectSchema(usersFeedsFolders, {
+	id: (schema): z.ZodCoercedNumber => schema.nonnegative(),
+}).pick({ id: true });
+
 export const feedsTimelineSchema = z.array(feedTimeline);
 
 export type User = InferSelectModel<typeof users>;

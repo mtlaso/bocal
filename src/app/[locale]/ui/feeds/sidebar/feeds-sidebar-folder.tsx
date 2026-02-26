@@ -1,8 +1,10 @@
 "use client";
 
 import { useDraggable, useDroppable } from "@dnd-kit/react";
+import { MoreHorizontal, Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useQueryStates } from "nuqs";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { RxDragHandleDots2 } from "react-icons/rx";
 import {
 	TbFolder,
@@ -10,18 +12,27 @@ import {
 	TbPlugConnectedX,
 	TbRss,
 } from "react-icons/tb";
+import { toast } from "sonner";
 import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+	SidebarMenuAction,
 	SidebarMenuBadge,
 	SidebarMenuButton,
 	SidebarMenuItem,
 	SidebarMenuSub,
 	SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
+import { deleteFeedFolder } from "@/lib/actions";
 import {
 	type FeedFolder,
 	FeedStatusType,
@@ -32,12 +43,20 @@ import { searchParamsState } from "@/lib/stores/search-params-states";
 
 type Props = {
 	folder: FeedFolder;
+	onRemove: (id: number) => void;
+	onRemoveFailed: (id: number) => void;
 };
 
-export function FeedsSidebarFolder({ folder }: Props) {
+export function FeedsSidebarFolder({
+	folder,
+	onRemove,
+	onRemoveFailed,
+}: Props) {
 	const { ref, isDropTarget } = useDroppable({
 		id: folder.folderId,
 	});
+	const isMobile = useIsMobile();
+	const t = useTranslations("rssFeed");
 
 	return (
 		<Collapsible
@@ -47,12 +66,39 @@ export function FeedsSidebarFolder({ folder }: Props) {
 		>
 			<SidebarMenuItem>
 				<CollapsibleTrigger asChild>
-					<SidebarMenuButton>
-						<TbFolder className="group-data-[state=open]/collapsible:hidden" />
-						<TbFolderOpen className="group-data-[state=closed]/collapsible:hidden" />
-						{folder.folderName}
+					<SidebarMenuButton asChild>
+						<button type="submit">
+							<TbFolder className="group-data-[state=open]/collapsible:hidden" />
+							<TbFolderOpen className="group-data-[state=closed]/collapsible:hidden" />
+							<span className="truncate">{folder.folderName}</span>
+						</button>
 					</SidebarMenuButton>
 				</CollapsibleTrigger>
+
+				{/* Context menu */}
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<SidebarMenuAction showOnHover>
+							{/* Afficher sur hover sur les grands écrans (élément visuel, peut être enlevé en cas de problèmes d'accésibilités. */}
+							<MoreHorizontal />
+							<span className="sr-only">{t("more")}</span>
+						</SidebarMenuAction>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent
+						className="w-48 rounded-lg"
+						side={isMobile ? "bottom" : "right"}
+						align={isMobile ? "end" : "start"}
+					>
+						<DropdownMenuItem variant="destructive">
+							<DeleteFolder
+								onDelete={onRemove}
+								onDeleteFailed={onRemoveFailed}
+								id={folder.folderId}
+							/>
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+
 				<CollapsibleContent>
 					<SidebarMenuSub>
 						{folder.feeds.map((feed) => (
@@ -148,5 +194,60 @@ function ItemIcon({
 				<RxDragHandleDots2 />
 			</div>
 		</div>
+	);
+}
+
+function DeleteFolder({
+	id,
+	onDelete,
+	onDeleteFailed,
+}: {
+	id: number;
+	onDelete: (id: number) => void;
+	onDeleteFailed: (id: number) => void;
+}): React.JSX.Element {
+	const t = useTranslations("rssFeed");
+	const [isPending, startTransition] = useTransition();
+
+	const handleDeleteFeedFolder = (e: React.MouseEvent): void => {
+		e.preventDefault();
+		onDelete(id);
+		startTransition(async () => {
+			try {
+				const res = await deleteFeedFolder(id);
+
+				if (res.errors) {
+					onDeleteFailed(id);
+					toast.error(res.errors.id?.join(", "));
+					return;
+				}
+
+				if (res.errI18Key) {
+					onDeleteFailed(id);
+					// biome-ignore lint/suspicious/noExplicitAny: valid type.
+					toast.error(t(res.errI18Key as any));
+					return;
+				}
+			} catch (err) {
+				onDeleteFailed(id);
+				if (err instanceof Error) {
+					toast.error(err.message);
+				} else {
+					toast.error(t("errors.unexpected"));
+				}
+			}
+		});
+	};
+
+	return (
+		<button
+			className="flex justify-start items-center grow text-sm gap-2 p-1 cursor-pointer"
+			type="button"
+			onClick={(e): void => handleDeleteFeedFolder(e)}
+			disabled={isPending}
+		>
+			<Trash2 className="text-destructive" />
+			{t("folderContextMenu.deleteFolder")}
+		</button>
 	);
 }

@@ -2,7 +2,7 @@
 import { RestrictToVerticalAxis } from "@dnd-kit/abstract/modifiers";
 import { DragDropProvider, PointerSensor, useDroppable } from "@dnd-kit/react";
 import { useTranslations } from "next-intl";
-import { startTransition, use, useOptimistic } from "react";
+import { startTransition, use, useOptimistic, useRef } from "react";
 import { toast } from "sonner";
 import { FeedsSidebarFolder } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-folder";
 import { FeedsSidebarItem } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-item";
@@ -33,6 +33,8 @@ export function FeedsSidebarContent({
 	const [userFeedsGroupedByFolder, setUserFeedsGroupedByFolder] = useOptimistic<
 		FeedFolder[]
 	>(_userFeedsGroupedByFolder);
+	// Sauvegarder les éléments au cas si optimistic delete ne fonctionne pas.
+	const rollbackSnapshotRef = useRef<FeedFolder[] | null>(null);
 	const t = useTranslations("rssFeed");
 
 	const handleOnMove = (
@@ -69,6 +71,40 @@ export function FeedsSidebarContent({
 			targetFolder.feeds.sort((a, b) => a.title.localeCompare(b.title));
 
 			return newFeedsGrouped;
+		});
+	};
+
+	// Optimistic delete de dossier de flux.
+	const handleOnRemove = (id: number) => {
+		startTransition(() => {
+			// Retirer le dossier de flux de la liste des dossiers de flux.
+			// Trouver le dossier orignal, puis mettre id par défaut (-1).
+			setUserFeedsGroupedByFolder((prev) => {
+				const folders: FeedFolder[] = structuredClone(prev);
+				// Sauvegarder les éléments au cas si optimistic delete ne fonctionne pas.
+				rollbackSnapshotRef.current = folders;
+
+				// Trouver le dossier.
+				const deletedFolder = folders.find((item) => item.folderId === id);
+				if (!deletedFolder) return prev;
+
+				// Changer id à -1.
+				deletedFolder.folderId = UNCATEGORIZED_FEEDS_FOLDER_ID;
+
+				return folders;
+			});
+		});
+	};
+
+	// Optimistic delete.
+	// Si la suppression ne fonctionne pas, remettre l'id à son ancienne valeur,
+	// en remettant la snapshot.
+	const handleOnRemoveFailed = (_id: number) => {
+		startTransition(() => {
+			// Trouver le dossier.
+			const snapshot = rollbackSnapshotRef.current;
+			if (!snapshot) return;
+			return setUserFeedsGroupedByFolder(() => structuredClone(snapshot));
 		});
 	};
 
@@ -126,7 +162,11 @@ export function FeedsSidebarContent({
 				});
 			}}
 		>
-			<Content userFeedsGroupedByFolder={userFeedsGroupedByFolder} />
+			<Content
+				userFeedsGroupedByFolder={userFeedsGroupedByFolder}
+				handleOnRemove={handleOnRemove}
+				handleOnRemoveFailed={handleOnRemoveFailed}
+			/>
 		</DragDropProvider>
 	);
 }
@@ -135,8 +175,12 @@ export function FeedsSidebarContent({
 // The drop mechanism wouldn't work if it's a direct descendant of the parent component.
 function Content({
 	userFeedsGroupedByFolder,
+	handleOnRemove,
+	handleOnRemoveFailed,
 }: {
 	userFeedsGroupedByFolder: FeedFolder[];
+	handleOnRemove: (id: number) => void;
+	handleOnRemoveFailed: (id: number) => void;
 }) {
 	const t = useTranslations("rssFeed");
 
@@ -177,7 +221,16 @@ function Content({
 							}
 
 							return (
-								<FeedsSidebarFolder key={folder.folderId} folder={folder} />
+								<FeedsSidebarFolder
+									key={folder.folderId}
+									folder={folder}
+									onRemove={(id) => {
+										handleOnRemove(id);
+									}}
+									onRemoveFailed={(id) => {
+										handleOnRemoveFailed(id);
+									}}
+								/>
 							);
 						})}
 					</SidebarMenu>
