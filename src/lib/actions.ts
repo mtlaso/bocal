@@ -339,6 +339,7 @@ export async function addFeed(
 				return;
 			}
 
+			// Vérifie si ce flux est déjà présent dans la base de données (ex. ajouté par un autre utilisateur).
 			let feed = await tx.query.feeds.findFirst({
 				where: eq(feeds.url, validatedFields.data.url),
 			});
