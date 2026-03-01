@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useQueryStates } from "nuqs";
-import { useEffect, useState } from "react";
+import { startTransition, useOptimistic, useRef } from "react";
 import {
 	Card,
 	CardContent,
@@ -36,13 +36,10 @@ export function Links({ links }: Props): React.JSX.Element {
 		},
 	);
 	const t = useTranslations("dashboard");
-	const [items, setItems] = useState<typeof links>(
+	const [items, setItems] = useOptimistic(
 		filter(links, sortLinks, searchedLink),
 	);
-
-	useEffect(() => {
-		setItems(filter(links, sortLinks, searchedLink));
-	}, [links, sortLinks, searchedLink]);
+	const rollbackSnapshotRef = useRef<typeof links>(items);
 
 	const randomBackground = (firstLetter: string): string => {
 		const letter = firstLetter.toUpperCase();
@@ -61,18 +58,10 @@ export function Links({ links }: Props): React.JSX.Element {
 
 	// Optimistic delete.
 	const handleOnRemove = (id: number) => {
-		setItems((prev) => prev.filter((item) => item.id !== id));
-	};
-
-	// Optimistic delete.
-	// If the deletion fails, add the last deleted item back to the list.
-	const handleOnRemoveFailed = (id: number) => {
-		const lastDeletedItem = links.find((item) => item.id === id);
-		if (lastDeletedItem) {
-			setItems((prev) =>
-				filter([...prev, lastDeletedItem], sortLinks, searchedLink),
-			);
-		}
+		rollbackSnapshotRef.current = items;
+		startTransition(() => {
+			setItems((prev) => prev.filter((item) => item.id !== id));
+		});
 	};
 
 	return (
@@ -139,7 +128,6 @@ export function Links({ links }: Props): React.JSX.Element {
 
 								<LinksContextMenu
 									onRemove={(id) => handleOnRemove(id)}
-									onRemoveFailed={(id) => handleOnRemoveFailed(id)}
 									id={item.id}
 								/>
 							</CardFooter>
