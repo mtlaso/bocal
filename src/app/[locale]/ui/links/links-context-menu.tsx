@@ -19,11 +19,9 @@ import { APP_ROUTES } from "@/lib/constants";
 export function LinksContextMenu({
 	id,
 	onRemove,
-	onRemoveFailed,
 }: {
 	id: number;
 	onRemove: (id: number) => void;
-	onRemoveFailed: (id: number) => void;
 }): React.JSX.Element {
 	const pathname = usePathname();
 
@@ -45,30 +43,18 @@ export function LinksContextMenu({
 				<DropdownMenuGroup>
 					{isDashboardPage && (
 						<DropdownMenuItem>
-							<ArchiveLink
-								id={id}
-								onArchive={(id) => onRemove(id)}
-								onArchiveFailed={(id) => onRemoveFailed(id)}
-							/>
+							<ArchiveLink id={id} onArchive={(id) => onRemove(id)} />
 						</DropdownMenuItem>
 					)}
 
 					{isArchivePage && (
 						<DropdownMenuItem>
-							<UnArchiveLink
-								id={id}
-								onUnarchive={(id) => onRemove(id)}
-								onUnarchiveFailed={(id) => onRemoveFailed(id)}
-							/>
+							<UnArchiveLink id={id} onUnarchive={(id) => onRemove(id)} />
 						</DropdownMenuItem>
 					)}
 
 					<DropdownMenuItem variant="destructive">
-						<DeleteLink
-							id={id}
-							onDelete={(id) => onRemove(id)}
-							onDeleteFailed={(id) => onRemoveFailed(id)}
-						/>
+						<DeleteLink id={id} onDelete={(id) => onRemove(id)} />
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 			</DropdownMenuContent>
@@ -79,11 +65,9 @@ export function LinksContextMenu({
 function UnArchiveLink({
 	id,
 	onUnarchive,
-	onUnarchiveFailed,
 }: {
 	id: number;
 	onUnarchive: (id: number) => void;
-	onUnarchiveFailed: (id: number) => void;
 }): React.JSX.Element {
 	const t = useTranslations("dashboard");
 	const [isPending, startTransition] = useTransition();
@@ -96,19 +80,16 @@ function UnArchiveLink({
 				const res = await unarchiveLink(id);
 
 				if (res.errors) {
-					onUnarchiveFailed(id);
 					toast.error(res.errors.id?.join(", "));
 					return;
 				}
 
 				if (res.errI18Key) {
-					onUnarchiveFailed(id);
 					// biome-ignore lint/suspicious/noExplicitAny: valid type.
 					toast.error(t(res.errI18Key as any));
 					return;
 				}
 			} catch (err) {
-				onUnarchiveFailed(id);
 				if (err instanceof Error) {
 					toast.error(err.message);
 				} else {
@@ -134,11 +115,9 @@ function UnArchiveLink({
 function ArchiveLink({
 	id,
 	onArchive,
-	onArchiveFailed,
 }: {
 	id: number;
 	onArchive: (id: number) => void;
-	onArchiveFailed: (id: number) => void;
 }): React.JSX.Element {
 	const t = useTranslations("dashboard");
 	const [isPending, startTransition] = useTransition();
@@ -152,18 +131,15 @@ function ArchiveLink({
 
 				if (res.errors) {
 					toast.error(res.errors.id?.join(", "));
-					onArchiveFailed(id);
 					return;
 				}
 
 				if (res.errI18Key) {
-					onArchiveFailed(id);
 					// biome-ignore lint/suspicious/noExplicitAny: valid type.
 					toast.error(t(res.errI18Key as any));
 					return;
 				}
 			} catch (err) {
-				onArchiveFailed(id);
 				if (err instanceof Error) {
 					toast.error(err.message);
 				} else {
@@ -189,11 +165,9 @@ function ArchiveLink({
 function DeleteLink({
 	id,
 	onDelete,
-	onDeleteFailed,
 }: {
 	id: number;
 	onDelete: (id: number) => void;
-	onDeleteFailed: (id: number) => void;
 }): React.JSX.Element {
 	const t = useTranslations("dashboard");
 	const [isPending, startTransition] = useTransition();
@@ -206,19 +180,16 @@ function DeleteLink({
 				const res = await deleteLink(id);
 
 				if (res.errors) {
-					onDeleteFailed(id);
 					toast.error(res.errors.id?.join(", "));
 					return;
 				}
 
 				if (res.errI18Key) {
-					onDeleteFailed(id);
 					// biome-ignore lint/suspicious/noExplicitAny: valid type.
 					toast.error(t(res.errI18Key as any));
 					return;
 				}
 			} catch (err) {
-				onDeleteFailed(id);
 				if (err instanceof Error) {
 					toast.error(err.message);
 				} else {
