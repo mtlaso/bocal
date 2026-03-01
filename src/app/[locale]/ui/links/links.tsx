@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useQueryStates } from "nuqs";
-import { startTransition, useOptimistic, useRef } from "react";
+import { startTransition, useOptimistic } from "react";
 import {
 	Card,
 	CardContent,
@@ -39,7 +39,6 @@ export function Links({ links }: Props): React.JSX.Element {
 	const [items, setItems] = useOptimistic(
 		filter(links, sortLinks, searchedLink),
 	);
-	const rollbackSnapshotRef = useRef<typeof links>(items);
 
 	const randomBackground = (firstLetter: string): string => {
 		const letter = firstLetter.toUpperCase();
@@ -58,7 +57,6 @@ export function Links({ links }: Props): React.JSX.Element {
 
 	// Optimistic delete.
 	const handleOnRemove = (id: number) => {
-		rollbackSnapshotRef.current = items;
 		startTransition(() => {
 			setItems((prev) => prev.filter((item) => item.id !== id));
 		});
