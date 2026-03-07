@@ -22,7 +22,7 @@ export type FeedWithContentsCount = {
 	folderId: FolderId;
 	/** Total number of items. */
 	contentsCount: number;
-	/** Number of items that where read. */
+	/** Number of items that were read. */
 	readContentsCount: number;
 };
 

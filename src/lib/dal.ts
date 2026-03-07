@@ -174,7 +174,10 @@ const getUserFeedsWithContentsCount = cache(
 				.leftJoin(feedsContent, eq(feedsContent.feedId, feeds.id))
 				.leftJoin(
 					usersFeedsReadContent,
-					eq(usersFeedsReadContent.feedContentId, feedsContent.id),
+					and(
+						eq(usersFeedsReadContent.feedContentId, feedsContent.id),
+						eq(usersFeedsReadContent.userId, user.user.id),
+					),
 				)
 				.where(eq(usersFeeds.userId, user.user.id))
 				.groupBy(feeds.id, usersFeeds.folderId);
@@ -230,7 +233,10 @@ const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedFolder[]> => {
 			.leftJoin(feedsContent, eq(feedsContent.feedId, usersFeeds.feedId))
 			.leftJoin(
 				usersFeedsReadContent,
-				eq(usersFeedsReadContent.feedContentId, feedsContent.id),
+				and(
+					eq(usersFeedsReadContent.feedContentId, feedsContent.id),
+					eq(usersFeedsReadContent.userId, user.user.id),
+				),
 			)
 			.where(eq(usersFeeds.userId, user.user.id))
 			.groupBy(feeds.id, usersFeeds.folderId)
