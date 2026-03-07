@@ -57,7 +57,9 @@ export function FeedsSidebarItem({ feed }: Props) {
 						isDragging={isDragging}
 					/>
 					<span className="truncate min-w-0">{feed.title}</span>
-					<SidebarMenuBadge>{feed.contentsCount}</SidebarMenuBadge>
+					<SidebarMenuBadge>
+						{feed.contentsCount - feed.readContentsCount}
+					</SidebarMenuBadge>
 				</button>
 			</SidebarFeedsMenuButton>
 		</SidebarMenuItem>

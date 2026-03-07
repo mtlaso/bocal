@@ -141,7 +141,9 @@ function Draggable({ feed }: { feed: FeedWithContentsCount }) {
 						isDragging={isDragging}
 					/>
 					<span className="truncate">{feed.title}</span>
-					<SidebarMenuBadge>{feed.contentsCount}</SidebarMenuBadge>
+					<SidebarMenuBadge>
+						{feed.contentsCount - feed.readContentsCount}
+					</SidebarMenuBadge>
 				</button>
 			</SidebarMenuSubButton>
 		</SidebarMenuItem>
