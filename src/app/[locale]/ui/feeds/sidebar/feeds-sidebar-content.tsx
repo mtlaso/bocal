@@ -172,7 +172,11 @@ function Content({
 		.values()
 		.reduce(
 			(acc, folder) =>
-				acc + folder.feeds.reduce((s, f) => s + f.contentsCount, 0),
+				acc +
+				folder.feeds.reduce(
+					(sacc, f) => sacc + (f.contentsCount - f.readContentsCount),
+					0,
+				),
 			0,
 		);
 	const { ref, isDropTarget } = useDroppable({
