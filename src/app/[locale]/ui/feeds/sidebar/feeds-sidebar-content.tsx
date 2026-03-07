@@ -96,18 +96,6 @@ export function FeedsSidebarContent({
 		});
 	};
 
-	// Optimistic delete.
-	// Si la suppression ne fonctionne pas, remettre l'id à son ancienne valeur,
-	// en remettant la snapshot.
-	const handleOnRemoveFailed = (_id: number) => {
-		startTransition(() => {
-			// Trouver le dossier.
-			const snapshot = rollbackSnapshotRef.current;
-			if (!snapshot) return;
-			return setUserFeedsGroupedByFolder(() => structuredClone(snapshot));
-		});
-	};
-
 	return (
 		<DragDropProvider
 			// biome-ignore lint/suspicious/noTsIgnore: valid type.
@@ -165,7 +153,6 @@ export function FeedsSidebarContent({
 			<Content
 				userFeedsGroupedByFolder={userFeedsGroupedByFolder}
 				handleOnRemove={handleOnRemove}
-				handleOnRemoveFailed={handleOnRemoveFailed}
 			/>
 		</DragDropProvider>
 	);
@@ -176,11 +163,9 @@ export function FeedsSidebarContent({
 function Content({
 	userFeedsGroupedByFolder,
 	handleOnRemove,
-	handleOnRemoveFailed,
 }: {
 	userFeedsGroupedByFolder: FeedFolder[];
 	handleOnRemove: (id: number) => void;
-	handleOnRemoveFailed: (id: number) => void;
 }) {
 	const t = useTranslations("rssFeed");
 
@@ -226,9 +211,6 @@ function Content({
 									folder={folder}
 									onRemove={(id) => {
 										handleOnRemove(id);
-									}}
-									onRemoveFailed={(id) => {
-										handleOnRemoveFailed(id);
 									}}
 								/>
 							);
