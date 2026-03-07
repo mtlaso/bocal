@@ -183,7 +183,7 @@ const getUserFeedsWithContentsCount = cache(
  * getUserFeedsGroupedByFolder gets:
  *   1. All the feeds folders a user has (including empty folders), with
  *   the feeds in each of those folders.
- *   3. And the feeds that are not in a folder.
+ *   2. And the feeds that are not in a folder.
  *   In other words: feeds in folder, empty folders, feeds without a folder
  */
 const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedFolder[]> => {

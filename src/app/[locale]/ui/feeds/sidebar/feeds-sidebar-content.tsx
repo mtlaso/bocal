@@ -2,7 +2,7 @@
 import { RestrictToVerticalAxis } from "@dnd-kit/abstract/modifiers";
 import { DragDropProvider, PointerSensor, useDroppable } from "@dnd-kit/react";
 import { useTranslations } from "next-intl";
-import { startTransition, use, useOptimistic, useRef } from "react";
+import { startTransition, use, useOptimistic } from "react";
 import { toast } from "sonner";
 import { FeedsSidebarFolder } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-folder";
 import { FeedsSidebarItem } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-item";
@@ -34,7 +34,6 @@ export function FeedsSidebarContent({
 		FeedFolder[]
 	>(_userFeedsGroupedByFolder);
 	// Sauvegarder les éléments au cas si optimistic delete ne fonctionne pas.
-	const rollbackSnapshotRef = useRef<FeedFolder[] | null>(null);
 	const t = useTranslations("rssFeed");
 
 	const handleOnMove = (
@@ -81,9 +80,6 @@ export function FeedsSidebarContent({
 			// Trouver le dossier orignal, puis mettre id par défaut (-1).
 			setUserFeedsGroupedByFolder((prev) => {
 				const folders: FeedFolder[] = structuredClone(prev);
-				// Sauvegarder les éléments au cas si optimistic delete ne fonctionne pas.
-				rollbackSnapshotRef.current = folders;
-
 				// Trouver le dossier.
 				const deletedFolder = folders.find((item) => item.folderId === id);
 				if (!deletedFolder) return prev;
