@@ -20,7 +20,10 @@ export type FeedWithContentsCount = {
 	url: string;
 	status: FeedStatusType;
 	folderId: FolderId;
+	/** Total number of items. */
 	contentsCount: number;
+	/** Number of items that where read. */
+	readContentsCount: number;
 };
 
 export enum SortOptions {

@@ -155,7 +155,7 @@ export function FeedsSidebarContent({
 }
 
 // This needs to be it's own component so it can be a droppable zone.
-// The drop mechanism wouldn't work if it's a direct descendant of the parent component.
+// The drop mechanism wouldn't work if it's directly code in the parent component.
 function Content({
 	userFeedsGroupedByFolder,
 	handleOnRemove,
