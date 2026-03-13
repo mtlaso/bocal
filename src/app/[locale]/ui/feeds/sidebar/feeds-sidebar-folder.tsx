@@ -39,6 +39,7 @@ import {
 	type FeedWithContentsCount,
 } from "@/lib/constants";
 import { useIsMobile } from "@/lib/hooks/use-mobile";
+import { useFeedsUnereadCount } from "@/lib/stores/feeds-read-count-context";
 import { searchParamsState } from "@/lib/stores/search-params-states";
 
 type Props = {
@@ -114,6 +115,7 @@ function Draggable({ feed }: { feed: FeedWithContentsCount }) {
 			urlKeys: searchParamsState.urlKeys,
 		},
 	);
+	const feedsReadCount = useFeedsUnereadCount();
 
 	return (
 		<SidebarMenuItem
@@ -141,7 +143,12 @@ function Draggable({ feed }: { feed: FeedWithContentsCount }) {
 						isDragging={isDragging}
 					/>
 					<span className="truncate">{feed.title}</span>
-					<SidebarMenuBadge>{feed.contentsCount}</SidebarMenuBadge>
+					<SidebarMenuBadge>
+						{feedsReadCount.getUnreadCount(
+							feed.id,
+							feed.contentsCount - feed.readContentsCount,
+						)}
+					</SidebarMenuBadge>
 				</button>
 			</SidebarMenuSubButton>
 		</SidebarMenuItem>

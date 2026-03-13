@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/sidebar";
 import { FeedStatusType, type FeedWithContentsCount } from "@/lib/constants";
 import { useIsMobile } from "@/lib/hooks/use-mobile";
+import { useFeedsUnereadCount } from "@/lib/stores/feeds-read-count-context";
 import { searchParamsState } from "@/lib/stores/search-params-states";
 
 type Props = {
@@ -30,6 +31,7 @@ export function FeedsSidebarItem({ feed }: Props) {
 		id: feed.id,
 		data: feed,
 	});
+	const feedsReadCount = useFeedsUnereadCount();
 
 	return (
 		<SidebarMenuItem
@@ -57,7 +59,12 @@ export function FeedsSidebarItem({ feed }: Props) {
 						isDragging={isDragging}
 					/>
 					<span className="truncate min-w-0">{feed.title}</span>
-					<SidebarMenuBadge>{feed.contentsCount}</SidebarMenuBadge>
+					<SidebarMenuBadge>
+						{feedsReadCount.getUnreadCount(
+							feed.id,
+							feed.contentsCount - feed.readContentsCount,
+						)}
+					</SidebarMenuBadge>
 				</button>
 			</SidebarFeedsMenuButton>
 		</SidebarMenuItem>

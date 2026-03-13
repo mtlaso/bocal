@@ -12,6 +12,7 @@ import { Link } from "@/i18n/routing";
 import { markFeedContentAsRead, markFeedContentAsUnread } from "@/lib/actions";
 import type { UserPreferences } from "@/lib/constants";
 import { parsing } from "@/lib/parsing.client";
+import { useFeedsUnereadCount } from "@/lib/stores/feeds-read-count-context";
 import { searchParamsState } from "@/lib/stores/search-params-states";
 import { userfeedsfuncs } from "@/lib/userfeeds-funcs";
 import { cn } from "@/lib/utils";
@@ -29,6 +30,16 @@ export function FeedsTimeline({
 		urlKeys: searchParamsState.urlKeys,
 	});
 
+	const feedUnreadCounts: Map<number, number> = new Map();
+	for (const item of timeline) {
+		if (item.readAt === null) {
+			feedUnreadCounts.set(
+				item.feedId,
+				(feedUnreadCounts.get(item.feedId) ?? 0) + 1,
+			);
+		}
+	}
+
 	const items = timeline
 		.filter((el) => {
 			if (selectedFeed === searchParamsState.DEFAULT_FEED) return true;
@@ -44,40 +55,78 @@ export function FeedsTimeline({
 	return (
 		<section className={cn("wrap-anywhere", SPACING.LG)}>
 			{items.map((item) => {
-				return <Item item={item} key={`${item.id}`} />;
+				return (
+					<Item
+						item={item}
+						feedUnreadCounts={feedUnreadCounts.get(item.feedId) ?? 0}
+						key={`${item.id}`}
+					/>
+				);
 			})}
 		</section>
 	);
 }
 
-const Item = ({ item }: { item: FeedTimeline }): React.JSX.Element => {
+const Item = ({
+	item,
+	feedUnreadCounts,
+}: {
+	item: FeedTimeline;
+	/**
+	 * feedUnreadCounts is the initial number of items left to read in a feed.
+	 * Used for optimistic updates to sync with the sidebar through the context.
+	 */
+	feedUnreadCounts: number;
+}): React.JSX.Element => {
 	const t = useTranslations("rssFeed");
 	const locale = useLocale();
 
 	const [isRead, setIsRead] = useOptimistic(item.readAt !== null);
+	const feedsReadCount = useFeedsUnereadCount();
 
 	const handleMarkAsRead = async (
 		feedId: number,
 		feedContentId: number,
 	): Promise<void> => {
+		feedsReadCount.setOptimisticUnread(
+			feedId,
+			feedUnreadCounts - 1,
+			feedUnreadCounts,
+		);
+
 		startTransition(async () => {
 			try {
 				setIsRead(true);
 				const res = await markFeedContentAsRead(feedId, feedContentId);
 
 				if (res.errors) {
+					feedsReadCount.setOptimisticUnread(
+						feedId,
+						feedUnreadCounts + 1,
+						feedUnreadCounts,
+					);
 					setIsRead(false);
 					toast.error([res.errors.feedId, res.errors.feedContentId].join(", "));
 					return;
 				}
 
 				if (res.errI18Key) {
+					feedsReadCount.setOptimisticUnread(
+						feedId,
+						feedUnreadCounts + 1,
+						feedUnreadCounts,
+					);
 					setIsRead(false);
 					// biome-ignore lint/suspicious/noExplicitAny: valid type.
 					toast.error(t(res.errI18Key as any));
 					return;
 				}
 			} catch (err) {
+				feedsReadCount.setOptimisticUnread(
+					feedId,
+					feedUnreadCounts + 1,
+					feedUnreadCounts,
+				);
 				setIsRead(false);
 				if (err instanceof Error) {
 					toast.error(err.message);
@@ -92,24 +141,45 @@ const Item = ({ item }: { item: FeedTimeline }): React.JSX.Element => {
 		feedId: number,
 		feedContentId: number,
 	): Promise<void> => {
+		feedsReadCount.setOptimisticUnread(
+			feedId,
+			feedUnreadCounts + 1,
+			feedUnreadCounts,
+		);
 		startTransition(async () => {
 			try {
 				setIsRead(false);
 				const res = await markFeedContentAsUnread(feedId, feedContentId);
+				// Prevent double subtraction.
 
 				if (res.errors) {
+					feedsReadCount.setOptimisticUnread(
+						feedId,
+						feedUnreadCounts - 1,
+						feedUnreadCounts,
+					);
 					setIsRead(true);
 					toast.error([res.errors.feedId, res.errors.feedContentId].join(", "));
 					return;
 				}
 
 				if (res.errI18Key) {
+					feedsReadCount.setOptimisticUnread(
+						feedId,
+						feedUnreadCounts - 1,
+						feedUnreadCounts,
+					);
 					setIsRead(true);
 					// biome-ignore lint/suspicious/noExplicitAny: valid type.
 					toast.error(t(res.errI18Key as any));
 					return;
 				}
 			} catch (err) {
+				feedsReadCount.setOptimisticUnread(
+					feedId,
+					feedUnreadCounts - 1,
+					feedUnreadCounts,
+				);
 				setIsRead(true);
 				if (err instanceof Error) {
 					toast.error(err.message);

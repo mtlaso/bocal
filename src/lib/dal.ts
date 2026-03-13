@@ -12,6 +12,7 @@ import {
 	links,
 	usersFeeds,
 	usersFeedsFolders,
+	usersFeedsReadContent,
 } from "@/db/schema";
 import "server-only";
 import { z } from "zod/v4";
@@ -166,10 +167,18 @@ const getUserFeedsWithContentsCount = cache(
 					status: feeds.status,
 					folderId: sql<number>`COALESCE(${usersFeeds.folderId}, ${UNCATEGORIZED_FEEDS_FOLDER_ID})`,
 					contentsCount: count(feedsContent.id),
+					readContentsCount: count(usersFeedsReadContent.readAt),
 				})
 				.from(feeds)
 				.innerJoin(usersFeeds, eq(usersFeeds.feedId, feeds.id))
 				.leftJoin(feedsContent, eq(feedsContent.feedId, feeds.id))
+				.leftJoin(
+					usersFeedsReadContent,
+					and(
+						eq(usersFeedsReadContent.feedContentId, feedsContent.id),
+						eq(usersFeedsReadContent.userId, user.user.id),
+					),
+				)
 				.where(eq(usersFeeds.userId, user.user.id))
 				.groupBy(feeds.id, usersFeeds.folderId);
 		} catch (err) {
@@ -183,7 +192,7 @@ const getUserFeedsWithContentsCount = cache(
  * getUserFeedsGroupedByFolder gets:
  *   1. All the feeds folders a user has (including empty folders), with
  *   the feeds in each of those folders.
- *   3. And the feeds that are not in a folder.
+ *   2. And the feeds that are not in a folder.
  *   In other words: feeds in folder, empty folders, feeds without a folder
  */
 const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedFolder[]> => {
@@ -217,10 +226,18 @@ const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedFolder[]> => {
 				status: feeds.status,
 				folderId: usersFeeds.folderId,
 				contentsCount: count(feedsContent.id),
+				readContentsCount: count(usersFeedsReadContent.readAt),
 			})
 			.from(feeds)
 			.leftJoin(usersFeeds, eq(usersFeeds.feedId, feeds.id))
 			.leftJoin(feedsContent, eq(feedsContent.feedId, usersFeeds.feedId))
+			.leftJoin(
+				usersFeedsReadContent,
+				and(
+					eq(usersFeedsReadContent.feedContentId, feedsContent.id),
+					eq(usersFeedsReadContent.userId, user.user.id),
+				),
+			)
 			.where(eq(usersFeeds.userId, user.user.id))
 			.groupBy(feeds.id, usersFeeds.folderId)
 			.orderBy(feeds.title);
@@ -251,20 +268,21 @@ const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedFolder[]> => {
 		// Add feeds to map.
 		for (const feed of userFeeds) {
 			if (!feed.folderId) {
-				const uncategorized = folders.find(
+				const uncategorizedFolder = folders.find(
 					(folder) => folder.folderId === UNCATEGORIZED_FEEDS_FOLDER_ID,
 				);
-				if (!uncategorized) {
+				if (!uncategorizedFolder) {
 					throw new Error(
 						"Uncategorized folder not found. It should have been created before hand.",
 					);
 				}
-				uncategorized.feeds.push({
+				uncategorizedFolder.feeds.push({
 					id: feed.id,
 					title: feed.title,
 					url: feed.url,
 					status: feed.status,
 					contentsCount: feed.contentsCount,
+					readContentsCount: feed.readContentsCount,
 					folderId: UNCATEGORIZED_FEEDS_FOLDER_ID,
 				});
 			} else {
@@ -282,6 +300,7 @@ const getUserFeedsGroupedByFolder = cache(async (): Promise<FeedFolder[]> => {
 					url: feed.url,
 					status: feed.status,
 					contentsCount: feed.contentsCount,
+					readContentsCount: feed.readContentsCount,
 					folderId: feed.folderId,
 				});
 			}

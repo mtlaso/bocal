@@ -2,7 +2,7 @@
 import { RestrictToVerticalAxis } from "@dnd-kit/abstract/modifiers";
 import { DragDropProvider, PointerSensor, useDroppable } from "@dnd-kit/react";
 import { useTranslations } from "next-intl";
-import { startTransition, use, useOptimistic, useRef } from "react";
+import { startTransition, use, useOptimistic } from "react";
 import { toast } from "sonner";
 import { FeedsSidebarFolder } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-folder";
 import { FeedsSidebarItem } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar-item";
@@ -21,6 +21,7 @@ import {
 	type FeedWithContentsCount,
 	UNCATEGORIZED_FEEDS_FOLDER_ID,
 } from "@/lib/constants";
+import { useFeedsUnereadCount } from "@/lib/stores/feeds-read-count-context";
 
 type Props = {
 	userFeedsGroupedByFolderPromise: Promise<FeedFolder[]>;
@@ -34,7 +35,6 @@ export function FeedsSidebarContent({
 		FeedFolder[]
 	>(_userFeedsGroupedByFolder);
 	// Sauvegarder les éléments au cas si optimistic delete ne fonctionne pas.
-	const rollbackSnapshotRef = useRef<FeedFolder[] | null>(null);
 	const t = useTranslations("rssFeed");
 
 	const handleOnMove = (
@@ -81,9 +81,6 @@ export function FeedsSidebarContent({
 			// Trouver le dossier orignal, puis mettre id par défaut (-1).
 			setUserFeedsGroupedByFolder((prev) => {
 				const folders: FeedFolder[] = structuredClone(prev);
-				// Sauvegarder les éléments au cas si optimistic delete ne fonctionne pas.
-				rollbackSnapshotRef.current = folders;
-
 				// Trouver le dossier.
 				const deletedFolder = folders.find((item) => item.folderId === id);
 				if (!deletedFolder) return prev;
@@ -159,7 +156,7 @@ export function FeedsSidebarContent({
 }
 
 // This needs to be it's own component so it can be a droppable zone.
-// The drop mechanism wouldn't work if it's a direct descendant of the parent component.
+// The drop mechanism wouldn't work if it's directly code in the parent component.
 function Content({
 	userFeedsGroupedByFolder,
 	handleOnRemove,
@@ -168,17 +165,22 @@ function Content({
 	handleOnRemove: (id: number) => void;
 }) {
 	const t = useTranslations("rssFeed");
+	const feedsReadCount = useFeedsUnereadCount();
 
 	const totalFeeds = userFeedsGroupedByFolder.values().reduce((acc, folder) => {
 		return acc + folder.feeds.length;
 	}, 0);
-	const totalFeedsContents = userFeedsGroupedByFolder
-		.values()
-		.reduce(
-			(acc, folder) =>
-				acc + folder.feeds.reduce((s, f) => s + f.contentsCount, 0),
-			0,
-		);
+
+	const totalFeedsContents = userFeedsGroupedByFolder.values().reduce(
+		(acc, folder) =>
+			acc +
+			folder.feeds.reduce((sacc, f) => {
+				const serverUnread = f.contentsCount - f.readContentsCount;
+				const resolved = feedsReadCount.getUnreadCount(f.id, serverUnread);
+				return sacc + resolved;
+			}, 0),
+		0,
+	);
 	const { ref, isDropTarget } = useDroppable({
 		id: UNCATEGORIZED_FEEDS_FOLDER_ID,
 	});
