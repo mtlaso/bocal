@@ -1,36 +1,22 @@
 "use client";
+
 import { createContext, useContext, useState } from "react";
 
 type feedId = number;
-/**
- * delta represents the change amount.
- * e.g : +1, -1.
- */
-type delta = number;
-type FeedsReadCountContextType = {
-	/**
-	 * Returns the delta change for a given feedId.
-	 */
-	getDelta: (feedId: feedId) => delta;
-	/**
-	 *
-	 * @param feedId feedId
-	 * @param delta represents the change amount.
-	 *  e.g : +1, -1.
-	 */
-	updateDelta: (feedId: feedId, delta: delta) => void;
-	/**
-	 * Resets the delata for a given feedId to 0.
-	 *
-	 * @param feedId feedId
-	 */
-	resetDelta: (feedId: feedId) => void;
+type FeedsUnreadCountContextType = {
+	getUnreadCount: (feedId: number, serverUnread: number) => number;
+	setOptimisticUnread: (
+		feedId: number,
+		optimistic: number,
+		baseline: number,
+	) => void;
+	clearOptimistic: (feedId: number) => void;
 };
-const FeedsReadCountContext = createContext<FeedsReadCountContextType | null>(
+const FeedsReadCountContext = createContext<FeedsUnreadCountContextType | null>(
 	null,
 );
 
-export const useFeedsReadCount = () => {
+export const useFeedsUnereadCount = () => {
 	const ctx = useContext(FeedsReadCountContext);
 	if (!ctx) {
 		throw new Error(
@@ -40,40 +26,46 @@ export const useFeedsReadCount = () => {
 	return ctx;
 };
 
-export default function FeedsReadCountProvider({
+export default function FeedsUnreadCountProvider({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
-	const [delta, setDelata] = useState<Map<feedId, delta>>(new Map());
+	const [optimistic, setOptimistic] = useState<
+		Map<feedId, { optimistic: number; baseline: number }>
+	>(new Map());
 
-	const getDelta = (feedId: feedId) => {
-		return delta.get(feedId) ?? 0;
+	const getUnreadCount = (feedId: feedId, serverUnreadCount: number) => {
+		const entry = optimistic.get(feedId);
+		if (!entry) return serverUnreadCount;
+		// server has caught up -> ignore optimistic automatically.
+		if (serverUnreadCount !== entry.baseline) return serverUnreadCount;
+		return entry.optimistic;
 	};
 
-	const updateDelta = (feedId: feedId, delta: number) => {
-		setDelata((prev) => {
-			const current = prev.get(feedId) ?? 0;
+	const setOptimisticUnread = (
+		feedId: number,
+		optimistic: number,
+		baseline: number,
+	) => {
+		setOptimistic((prev) =>
+			new Map(prev).set(feedId, { optimistic, baseline }),
+		);
+	};
+
+	const clearOptimistic = (feedId: number) =>
+		setOptimistic((prev) => {
 			const next = new Map(prev);
-			next.set(feedId, current + delta);
+			next.delete(feedId);
 			return next;
 		});
-	};
-
-	// un/markFeedContentAsRead calls revalidatePath server-side.
-	// By the time the client's startTransition callback finishes, Next.js has already pushed the updated RSC payload,
-	// meaning userFeedsGroupedByFolderPromise resolves with fresh delta.
-	// Calling resetDeltas() at that point ensures the delta doesn't double-subtract from the already-updated server value.
-	const resetDelta = (feedId: feedId) => {
-		setDelata((prev) => new Map(prev).set(feedId, 0));
-	};
 
 	return (
 		<FeedsReadCountContext.Provider
 			value={{
-				getDelta,
-				updateDelta,
-				resetDelta,
+				getUnreadCount,
+				setOptimisticUnread,
+				clearOptimistic,
 			}}
 		>
 			{children}

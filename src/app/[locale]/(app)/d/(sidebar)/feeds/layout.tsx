@@ -1,7 +1,7 @@
 import { AppNavigationMenu } from "@/app/[locale]/ui/app-navigation-menu";
 import { FeedsSidebar } from "@/app/[locale]/ui/feeds/sidebar/feeds-sidebar";
 import { SidebarFeedsProvider } from "@/components/ui/sidebar";
-import FeedsReadCountProvider from "@/lib/stores/feeds-read-count-context";
+import FeedsUnreadCountProvider from "@/lib/stores/feeds-read-count-context";
 
 export default function DashboardLayout({
 	children,
@@ -10,13 +10,13 @@ export default function DashboardLayout({
 }): React.JSX.Element {
 	return (
 		<SidebarFeedsProvider>
-			<FeedsReadCountProvider>
+			<FeedsUnreadCountProvider>
 				<FeedsSidebar />
 				<div className="min-h-screen w-full max-w-6xl mx-auto px-4 mb-12 peer-data-[state=expanded]:px-10">
 					<AppNavigationMenu />
 					<main>{children}</main>
 				</div>
-			</FeedsReadCountProvider>
+			</FeedsUnreadCountProvider>
 		</SidebarFeedsProvider>
 	);
 }
