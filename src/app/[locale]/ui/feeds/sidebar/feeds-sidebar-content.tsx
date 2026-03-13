@@ -21,6 +21,7 @@ import {
 	type FeedWithContentsCount,
 	UNCATEGORIZED_FEEDS_FOLDER_ID,
 } from "@/lib/constants";
+import { useFeedsReadCount } from "@/lib/stores/feeds-read-count-context";
 
 type Props = {
 	userFeedsGroupedByFolderPromise: Promise<FeedFolder[]>;
@@ -164,6 +165,7 @@ function Content({
 	handleOnRemove: (id: number) => void;
 }) {
 	const t = useTranslations("rssFeed");
+	const feedsReadCount = useFeedsReadCount();
 
 	const totalFeeds = userFeedsGroupedByFolder.values().reduce((acc, folder) => {
 		return acc + folder.feeds.length;
@@ -174,7 +176,11 @@ function Content({
 			(acc, folder) =>
 				acc +
 				folder.feeds.reduce(
-					(sacc, f) => sacc + (f.contentsCount - f.readContentsCount),
+					(sacc, f) =>
+						sacc +
+						(f.contentsCount -
+							f.readContentsCount +
+							feedsReadCount.getReadCount(f.id)),
 					0,
 				),
 			0,
