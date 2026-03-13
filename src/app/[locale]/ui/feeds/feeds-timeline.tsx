@@ -84,10 +84,6 @@ const Item = ({
 	const [isRead, setIsRead] = useOptimistic(item.readAt !== null);
 	const feedsReadCount = useFeedsUnereadCount();
 
-	const wait = async (ms: number) => {
-		await new Promise((resolve) => setTimeout(resolve, ms));
-	};
-
 	const handleMarkAsRead = async (
 		feedId: number,
 		feedContentId: number,
@@ -101,11 +97,7 @@ const Item = ({
 		startTransition(async () => {
 			try {
 				setIsRead(true);
-				await wait(2000);
 				const res = await markFeedContentAsRead(feedId, feedContentId);
-				// Prevent double subtraction.
-				feedsReadCount.clearOptimistic(feedId);
-				// await wait(2000);
 
 				if (res.errors) {
 					feedsReadCount.setOptimisticUnread(
@@ -159,7 +151,6 @@ const Item = ({
 				setIsRead(false);
 				const res = await markFeedContentAsUnread(feedId, feedContentId);
 				// Prevent double subtraction.
-				feedsReadCount.clearOptimistic(feedId);
 
 				if (res.errors) {
 					feedsReadCount.setOptimisticUnread(

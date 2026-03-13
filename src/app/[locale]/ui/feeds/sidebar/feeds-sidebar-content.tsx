@@ -170,19 +170,15 @@ function Content({
 	const totalFeeds = userFeedsGroupedByFolder.values().reduce((acc, folder) => {
 		return acc + folder.feeds.length;
 	}, 0);
+
 	const totalFeedsContents = userFeedsGroupedByFolder.values().reduce(
 		(acc, folder) =>
 			acc +
-			folder.feeds.reduce(
-				(sacc, f) =>
-					sacc +
-					feedsReadCount.getUnreadCount(
-						f.id,
-						f.contentsCount - f.readContentsCount,
-					),
-				// + feedsReadCount.getDelta(f.id)
-				0,
-			),
+			folder.feeds.reduce((sacc, f) => {
+				const serverUnread = f.contentsCount - f.readContentsCount;
+				const resolved = feedsReadCount.getUnreadCount(f.id, serverUnread);
+				return sacc + resolved;
+			}, 0),
 		0,
 	);
 	const { ref, isDropTarget } = useDroppable({
