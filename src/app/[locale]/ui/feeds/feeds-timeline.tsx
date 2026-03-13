@@ -82,6 +82,8 @@ const Item = ({ item }: { item: FeedTimeline }): React.JSX.Element => {
 					toast.error(t(res.errI18Key as any));
 					return;
 				}
+
+				feedsReadCount.resetReadCount(feedId);
 			} catch (err) {
 				feedsReadCount.updateReadCount(feedId, +1);
 				setIsRead(false);
@@ -118,6 +120,8 @@ const Item = ({ item }: { item: FeedTimeline }): React.JSX.Element => {
 					toast.error(t(res.errI18Key as any));
 					return;
 				}
+
+				feedsReadCount.resetReadCount(feedId);
 			} catch (err) {
 				feedsReadCount.updateReadCount(feedId, -1);
 				setIsRead(true);
