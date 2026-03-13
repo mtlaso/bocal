@@ -21,6 +21,7 @@ import {
 	type FeedWithContentsCount,
 	UNCATEGORIZED_FEEDS_FOLDER_ID,
 } from "@/lib/constants";
+import { useFeedsReadCount } from "@/lib/stores/feeds-read-count-context";
 
 type Props = {
 	userFeedsGroupedByFolderPromise: Promise<FeedFolder[]>;
@@ -164,21 +165,26 @@ function Content({
 	handleOnRemove: (id: number) => void;
 }) {
 	const t = useTranslations("rssFeed");
-	// const feedsReadCount = useFeedsReadCount();
+	const feedsReadCount = useFeedsReadCount();
 
 	const totalFeeds = userFeedsGroupedByFolder.values().reduce((acc, folder) => {
 		return acc + folder.feeds.length;
 	}, 0);
-	const totalFeedsContents = userFeedsGroupedByFolder.values().reduce(
-		(acc, folder) =>
-			acc +
-			folder.feeds.reduce(
-				(sacc, f) => sacc + (f.contentsCount - f.readContentsCount),
-				// + feedsReadCount.getReadCount(f.id)
-				0,
-			),
-		0,
-	);
+	const totalFeedsContents = userFeedsGroupedByFolder
+		.values()
+		.reduce(
+			(acc, folder) =>
+				acc +
+				folder.feeds.reduce(
+					(sacc, f) =>
+						sacc +
+						(f.contentsCount -
+							f.readContentsCount +
+							feedsReadCount.getDelta(f.id)),
+					0,
+				),
+			0,
+		);
 	const { ref, isDropTarget } = useDroppable({
 		id: UNCATEGORIZED_FEEDS_FOLDER_ID,
 	});
