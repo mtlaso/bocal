@@ -146,7 +146,7 @@ function Draggable({ feed }: { feed: FeedWithContentsCount }) {
 					<SidebarMenuBadge>
 						{feed.contentsCount -
 							feed.readContentsCount +
-							feedsReadCount.getReadCount(feed.id)}
+							feedsReadCount.getDelta(feed.id)}
 					</SidebarMenuBadge>
 				</button>
 			</SidebarMenuSubButton>

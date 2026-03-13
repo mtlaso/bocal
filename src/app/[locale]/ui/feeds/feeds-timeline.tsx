@@ -64,28 +64,29 @@ const Item = ({ item }: { item: FeedTimeline }): React.JSX.Element => {
 	): Promise<void> => {
 		startTransition(async () => {
 			try {
-				feedsReadCount.updateReadCount(feedId, -1);
+				feedsReadCount.updateDelta(feedId, -1);
 				setIsRead(true);
 				const res = await markFeedContentAsRead(feedId, feedContentId);
 
 				if (res.errors) {
-					feedsReadCount.updateReadCount(feedId, +1);
+					feedsReadCount.updateDelta(feedId, +1);
 					setIsRead(false);
 					toast.error([res.errors.feedId, res.errors.feedContentId].join(", "));
 					return;
 				}
 
 				if (res.errI18Key) {
-					feedsReadCount.updateReadCount(feedId, +1);
+					feedsReadCount.updateDelta(feedId, +1);
 					setIsRead(false);
 					// biome-ignore lint/suspicious/noExplicitAny: valid type.
 					toast.error(t(res.errI18Key as any));
 					return;
 				}
 
-				feedsReadCount.resetReadCount(feedId);
+				// Ensure no double substract.
+				feedsReadCount.resetDelta(feedId);
 			} catch (err) {
-				feedsReadCount.updateReadCount(feedId, +1);
+				feedsReadCount.updateDelta(feedId, +1);
 				setIsRead(false);
 				if (err instanceof Error) {
 					toast.error(err.message);
@@ -102,28 +103,28 @@ const Item = ({ item }: { item: FeedTimeline }): React.JSX.Element => {
 	): Promise<void> => {
 		startTransition(async () => {
 			try {
-				feedsReadCount.updateReadCount(feedId, +1);
+				feedsReadCount.updateDelta(feedId, +1);
 				setIsRead(false);
 				const res = await markFeedContentAsUnread(feedId, feedContentId);
 
 				if (res.errors) {
-					feedsReadCount.updateReadCount(feedId, -1);
+					feedsReadCount.updateDelta(feedId, -1);
 					setIsRead(true);
 					toast.error([res.errors.feedId, res.errors.feedContentId].join(", "));
 					return;
 				}
 
 				if (res.errI18Key) {
-					feedsReadCount.updateReadCount(feedId, -1);
+					feedsReadCount.updateDelta(feedId, -1);
 					setIsRead(true);
 					// biome-ignore lint/suspicious/noExplicitAny: valid type.
 					toast.error(t(res.errI18Key as any));
 					return;
 				}
 
-				feedsReadCount.resetReadCount(feedId);
+				feedsReadCount.resetDelta(feedId);
 			} catch (err) {
-				feedsReadCount.updateReadCount(feedId, -1);
+				feedsReadCount.updateDelta(feedId, -1);
 				setIsRead(true);
 				if (err instanceof Error) {
 					toast.error(err.message);

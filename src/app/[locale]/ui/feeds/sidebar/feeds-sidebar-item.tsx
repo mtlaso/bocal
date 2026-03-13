@@ -62,7 +62,7 @@ export function FeedsSidebarItem({ feed }: Props) {
 					<SidebarMenuBadge>
 						{feed.contentsCount -
 							feed.readContentsCount +
-							feedsReadCount.getReadCount(feed.id)}
+							feedsReadCount.getDelta(feed.id)}
 					</SidebarMenuBadge>
 				</button>
 			</SidebarFeedsMenuButton>
