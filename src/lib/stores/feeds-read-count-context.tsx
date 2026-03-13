@@ -20,7 +20,7 @@ export const useFeedsUnereadCount = () => {
 	const ctx = useContext(FeedsReadCountContext);
 	if (!ctx) {
 		throw new Error(
-			"useFeedsReadCount must be used within a FeedsReadCountProvider",
+			`${useFeedsUnereadCount.name} must be used within a ${FeedsUnreadCountProvider.name}`,
 		);
 	}
 	return ctx;
