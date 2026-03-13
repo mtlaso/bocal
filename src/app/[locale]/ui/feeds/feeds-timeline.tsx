@@ -119,7 +119,7 @@ const Item = ({ item }: { item: FeedTimeline }): React.JSX.Element => {
 					return;
 				}
 			} catch (err) {
-				feedsReadCount.updateReadCount(feedId, +1);
+				feedsReadCount.updateReadCount(feedId, -1);
 				setIsRead(true);
 				if (err instanceof Error) {
 					toast.error(err.message);
