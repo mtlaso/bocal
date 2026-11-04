@@ -27,7 +27,7 @@ declare module "next-auth" {
 }
 
 const config = {
-	providers: [GitHub, Google],
+	providers: [GitHub({ issuer: "https://github.com/login/oauth" }), Google],
 	pages: {
 		signIn: APP_ROUTES.login,
 		newUser: APP_ROUTES.links,
