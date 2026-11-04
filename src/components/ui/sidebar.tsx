@@ -778,6 +778,10 @@ function SidebarMenuSubButton({
 export {
 	Sidebar,
 	SidebarContent,
+	SidebarFeeds,
+	SidebarFeedsMenuButton,
+	SidebarFeedsProvider,
+	SidebarFeedsTrigger,
 	SidebarFooter,
 	SidebarGroup,
 	SidebarGroupAction,
@@ -801,8 +805,4 @@ export {
 	SidebarTrigger,
 	useSidebar,
 	useSidebarFeeds,
-	SidebarFeedsProvider,
-	SidebarFeedsTrigger,
-	SidebarFeeds,
-	SidebarFeedsMenuButton,
 };
