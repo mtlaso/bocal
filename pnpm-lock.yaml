@@ -107,10 +107,10 @@ importers:
         version: 3.3.2
       drizzle-orm:
         specifier: ^0.45.1
-        version: 0.45.1(@neondatabase/serverless@1.0.2)(@types/pg@8.18.0)(pg@8.19.0)
+        version: 0.45.1(@neondatabase/serverless@1.0.2)(@types/pg@8.23.1)(pg@8.23.1)
       drizzle-zod:
         specifier: ^0.8.3
-        version: 0.8.3(drizzle-orm@0.45.1(@neondatabase/serverless@1.0.2)(@types/pg@8.18.0)(pg@8.19.0))(zod@4.3.6)
+        version: 0.8.3(drizzle-orm@0.45.1(@neondatabase/serverless@1.0.2)(@types/pg@8.23.1)(pg@8.23.1))(zod@4.3.6)
       feed:
         specifier: ^5.2.0
         version: 5.2.0
@@ -145,8 +145,8 @@ importers:
         specifier: ^6.11.0
         version: 6.11.0
       pg:
-        specifier: ^8.19.0
-        version: 8.19.0
+        specifier: ^8.23.1
+        version: 8.23.1
       react:
         specifier: 19.2.4
         version: 19.2.4
@@ -194,8 +194,8 @@ importers:
         specifier: ^25.3.5
         version: 25.3.5
       '@types/pg':
-        specifier: ^8.18.0
-        version: 8.18.0
+        specifier: ^8.23.1
+        version: 8.23.1
       '@types/react':
         specifier: 19.2.2
         version: 19.2.2
@@ -402,11 +402,11 @@ packages:
 
   '@esbuild-kit/core-utils@3.3.2':
     resolution: {integrity: sha512-sPRAnw9CdSsRmEtnsl2WXWdyquogVpB3yZ3dgwJfe8zrOzTsV7cJvmwrKVa+0ma5BoiGJ+BoqkMvawbayKUsqQ==}
-    deprecated: 'Merged into tsx: https://tsx.is'
+    deprecated: 'Merged into tsx: https://tsx.hirok.io'
 
   '@esbuild-kit/esm-loader@2.6.5':
     resolution: {integrity: sha512-FxEMIkJKnodyA1OaCUoEvbYRkoZlLZ4d/eXFu9Fh8CbBBgP5EmZxrfTRyN0qpXZ4vOvqnE5YdRdcrmUUXuU+dA==}
-    deprecated: 'Merged into tsx: https://tsx.is'
+    deprecated: 'Merged into tsx: https://tsx.hirok.io'
 
   '@esbuild/aix-ppc64@0.25.12':
     resolution: {integrity: sha512-Hhmwd6CInZ3dwpuGTF8fJG6yoWmsToE+vYgD4nytZVxcu1ulHpUQRAB1UJ8+N1Am3Mz4+xOByoQoSZf4D+CpkA==}
@@ -1902,11 +1902,14 @@ packages:
   '@types/node@22.19.15':
     resolution: {integrity: sha512-F0R/h2+dsy5wJAUe3tAU6oqa2qbWY5TpNfL/RGmo1y38hiyO1w3x2jPtt76wmuaJI4DQnOBu21cNXQ2STIUUWg==}
 
+  '@types/node@22.20.5':
+    resolution: {integrity: sha512-U2+DNr+wSjpsTS/wZGYHq7GcwfuSmKiKvoPvK22zwTlRhU91yOniN4qRR5KhIjvif7ysw/dz/hKmfDH0Ris4aA==}
+
   '@types/node@25.3.5':
     resolution: {integrity: sha512-oX8xrhvpiyRCQkG1MFchB09f+cXftgIXb3a7UUa4Y3wpmZPw5tyZGTLWhlESOLq1Rq6oDlc8npVU2/9xiCuXMA==}
 
-  '@types/pg@8.18.0':
-    resolution: {integrity: sha512-gT+oueVQkqnj6ajGJXblFR4iavIXWsGAFCk3dP4Kki5+a9R4NMt0JARdk6s8cUKcfUoqP5dAtDSLU8xYUTFV+Q==}
+  '@types/pg@8.23.1':
+    resolution: {integrity: sha512-fKVHpikPdg4GKks3JuLEhvwSyvwzF23hnabPy6DD8ljVbC7+6J5dQzdv4arV6jqq57djnMgs1HKBxX4P8aBI3A==}
 
   '@types/react-dom@19.2.2':
     resolution: {integrity: sha512-9KQPoO6mZCi7jcIStSnlOWn2nEF3mNmyr3rIAsGnAbQKYbRLyqmeSc39EVgtxXVia+LMT8j3knZLAZAh+xLmrw==}
@@ -1933,6 +1936,7 @@ packages:
 
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
+    deprecated: Potential CWE-502 - Update to 1.3.1 or higher
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -3176,30 +3180,30 @@ packages:
     resolution: {integrity: sha512-3O/iVVsJAPsOnpwWIeD+d6z/7PmqApyQePUtCndjatj/9I5LylHvt5qluFaBT3I5h3r1ejfR056c+FCv+NnNXg==}
     engines: {node: 18 || 20 || >=22}
 
-  pg-cloudflare@1.3.0:
-    resolution: {integrity: sha512-6lswVVSztmHiRtD6I8hw4qP/nDm1EJbKMRhf3HCYaqud7frGysPv7FYJ5noZQdhQtN2xJnimfMtvQq21pdbzyQ==}
+  pg-cloudflare@1.4.1:
+    resolution: {integrity: sha512-6PQbsFWZcp9EmJEwy5cGQ2La+AMWpP46lgbb8X+U/XsHIUweYDNCpeuKck5RxL2MdVFi7krbbEi5nX4Zh7JhrQ==}
 
-  pg-connection-string@2.11.0:
-    resolution: {integrity: sha512-kecgoJwhOpxYU21rZjULrmrBJ698U2RxXofKVzOn5UDj61BPj/qMb7diYUR1nLScCDbrztQFl1TaQZT0t1EtzQ==}
+  pg-connection-string@2.14.1:
+    resolution: {integrity: sha512-qR3kGNPBLpCNtz0evbKA0Y/MRFXwSSdT+pTJvYp/bXTcReZbvX1kzF0IyTc1QnxqF7AZbOeBhNL8R5mYQZV/MA==}
 
   pg-int8@1.0.1:
     resolution: {integrity: sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==}
     engines: {node: '>=4.0.0'}
 
-  pg-pool@3.12.0:
-    resolution: {integrity: sha512-eIJ0DES8BLaziFHW7VgJEBPi5hg3Nyng5iKpYtj3wbcAUV9A1wLgWiY7ajf/f/oO1wfxt83phXPY8Emztg7ITg==}
+  pg-pool@3.14.0:
+    resolution: {integrity: sha512-gKtPkFdQPU3DksooVLi9LsjZxrsBUZIpa+7aVx+LV5pNh0KzP4Zleud2po+ConrxbuXGBJ6Hfer6hdgpIBpBaw==}
     peerDependencies:
       pg: '>=8.0'
 
-  pg-protocol@1.12.0:
-    resolution: {integrity: sha512-uOANXNRACNdElMXJ0tPz6RBM0XQ61nONGAwlt8da5zs/iUOOCLBQOHSXnrC6fMsvtjxbOJrZZl5IScGv+7mpbg==}
+  pg-protocol@1.16.1:
+    resolution: {integrity: sha512-p9VOFMiHB/ZbJATetbg+99PxssTVSQRnyuPSQ67mN1+1KBOjZaZ83ZQzltnxPhJwSsC3nwVjJ10DVJlerbFzLg==}
 
   pg-types@2.2.0:
     resolution: {integrity: sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA==}
     engines: {node: '>=4'}
 
-  pg@8.19.0:
-    resolution: {integrity: sha512-QIcLGi508BAHkQ3pJNptsFz5WQMlpGbuBGBaIaXsWK8mel2kQ/rThYI+DbgjUvZrIr7MiuEuc9LcChJoEZK1xQ==}
+  pg@8.23.1:
+    resolution: {integrity: sha512-aL96AHANtWjPLDOLqnhx+ngp9+UK7ETEU8VJrDCGvsSSi/mGLcWYsS6Herg7lmaBJe4uwrfqsa7gTEFaSizDoQ==}
     engines: {node: '>= 16.0.0'}
     peerDependencies:
       pg-native: '>=3.0.1'
@@ -4136,7 +4140,7 @@ snapshots:
       '@types/estree': 1.0.8
       '@types/fs-extra': 11.0.4
       '@types/json-stable-stringify': 1.2.0
-      '@types/node': 22.19.15
+      '@types/node': 22.20.5
       chalk: 4.1.2
       commander: 12.1.0
       fast-glob: 3.3.3
@@ -4230,7 +4234,7 @@ snapshots:
     dependencies:
       '@formatjs/icu-messageformat-parser': 2.9.4
       '@types/json-stable-stringify': 1.2.0
-      '@types/node': 22.19.15
+      '@types/node': 22.20.5
       chalk: 4.1.2
       json-stable-stringify: 1.3.0
       tslib: 2.8.1
@@ -4437,7 +4441,7 @@ snapshots:
   '@neondatabase/serverless@1.0.2':
     dependencies:
       '@types/node': 22.19.15
-      '@types/pg': 8.18.0
+      '@types/pg': 8.23.1
 
   '@next/env@16.1.6': {}
 
@@ -5234,14 +5238,18 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
+  '@types/node@22.20.5':
+    dependencies:
+      undici-types: 6.21.0
+
   '@types/node@25.3.5':
     dependencies:
       undici-types: 7.18.2
 
-  '@types/pg@8.18.0':
+  '@types/pg@8.23.1':
     dependencies:
       '@types/node': 25.3.5
-      pg-protocol: 1.12.0
+      pg-protocol: 1.16.1
       pg-types: 2.2.0
 
   '@types/react-dom@19.2.2(@types/react@19.2.2)':
@@ -5565,15 +5573,15 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.45.1(@neondatabase/serverless@1.0.2)(@types/pg@8.18.0)(pg@8.19.0):
+  drizzle-orm@0.45.1(@neondatabase/serverless@1.0.2)(@types/pg@8.23.1)(pg@8.23.1):
     optionalDependencies:
       '@neondatabase/serverless': 1.0.2
-      '@types/pg': 8.18.0
-      pg: 8.19.0
+      '@types/pg': 8.23.1
+      pg: 8.23.1
 
-  drizzle-zod@0.8.3(drizzle-orm@0.45.1(@neondatabase/serverless@1.0.2)(@types/pg@8.18.0)(pg@8.19.0))(zod@4.3.6):
+  drizzle-zod@0.8.3(drizzle-orm@0.45.1(@neondatabase/serverless@1.0.2)(@types/pg@8.23.1)(pg@8.23.1))(zod@4.3.6):
     dependencies:
-      drizzle-orm: 0.45.1(@neondatabase/serverless@1.0.2)(@types/pg@8.18.0)(pg@8.19.0)
+      drizzle-orm: 0.45.1(@neondatabase/serverless@1.0.2)(@types/pg@8.23.1)(pg@8.23.1)
       zod: 4.3.6
 
   dunder-proto@1.0.1:
@@ -6721,18 +6729,18 @@ snapshots:
       lru-cache: 11.2.6
       minipass: 7.1.3
 
-  pg-cloudflare@1.3.0:
+  pg-cloudflare@1.4.1:
     optional: true
 
-  pg-connection-string@2.11.0: {}
+  pg-connection-string@2.14.1: {}
 
   pg-int8@1.0.1: {}
 
-  pg-pool@3.12.0(pg@8.19.0):
+  pg-pool@3.14.0(pg@8.23.1):
     dependencies:
-      pg: 8.19.0
+      pg: 8.23.1
 
-  pg-protocol@1.12.0: {}
+  pg-protocol@1.16.1: {}
 
   pg-types@2.2.0:
     dependencies:
@@ -6742,15 +6750,15 @@ snapshots:
       postgres-date: 1.0.7
       postgres-interval: 1.2.0
 
-  pg@8.19.0:
+  pg@8.23.1:
     dependencies:
-      pg-connection-string: 2.11.0
-      pg-pool: 3.12.0(pg@8.19.0)
-      pg-protocol: 1.12.0
+      pg-connection-string: 2.14.1
+      pg-pool: 3.14.0(pg@8.23.1)
+      pg-protocol: 1.16.1
       pg-types: 2.2.0
       pgpass: 1.0.5
     optionalDependencies:
-      pg-cloudflare: 1.3.0
+      pg-cloudflare: 1.4.1
 
   pgpass@1.0.5:
     dependencies:
